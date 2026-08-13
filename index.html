@@ -25,11 +25,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 24px;
       font-weight: bold;
+    }
+
+    .logo img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: white;
     }
 
     nav a {
@@ -119,7 +132,10 @@
 <body>
 
   <header>
-    <div class="logo">Mehedi Xpress BD</div>
+    <div class="logo">
+      <img src="logo.jpeg" alt="Mehedi Xpress BD Logo">
+      <span>Mehedi Xpress BD</span>
+    </div>
 
     <nav>
       <a href="#">হোম</a>
