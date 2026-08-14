@@ -398,6 +398,51 @@
     return {price, qty, weight, subtotal, delivery, total: subtotal+delivery};
   }
 
+  // =========================
+  // CATEGORY FILTER
+  // =========================
+  const categoryCards = document.querySelectorAll(".category-card");
+  const productCards = document.querySelectorAll(".product-card");
+  const productsSection = document.getElementById("products");
+  const productCount = document.getElementById("productCount");
+
+  function showAllProducts(){
+    productCards.forEach(function(card){ card.style.display = ""; });
+    if(productCount){ productCount.textContent = productCards.length + "টি পণ্য দেখানো হচ্ছে"; }
+  }
+
+  categoryCards.forEach(function(card){
+    card.addEventListener("click", function(){
+      const selected = String(this.dataset.category || "").trim().toLowerCase();
+      let visible = 0;
+
+      productCards.forEach(function(product){
+        const productCategory = String(product.dataset.category || "").trim().toLowerCase();
+        const match = productCategory === selected;
+        product.style.display = match ? "" : "none";
+        if(match) visible++;
+      });
+
+      if(productCount){
+        productCount.textContent = visible
+          ? visible + "টি " + this.querySelector("h3").textContent.trim() + " পণ্য"
+          : "এই ক্যাটাগরিতে এখনো কোনো পণ্য যোগ করা হয়নি";
+      }
+
+      productsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // Home button: সব পণ্য আবার দেখিয়ে একদম উপরে নিয়ে যাবে
+  document.querySelectorAll('a[href="#top"]').forEach(function(homeLink){
+    homeLink.addEventListener("click", function(e){
+      e.preventDefault();
+      showAllProducts();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      history.replaceState(null, "", "#top");
+    });
+  });
+
   document.querySelectorAll(".buy-btn").forEach(function(btn){
     btn.addEventListener("click", function(e){
       e.preventDefault();
