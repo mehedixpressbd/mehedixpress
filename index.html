@@ -4,28 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Mehedi Xpress</title>
-
-  <!-- Website Logo / Favicon -->
-  <link rel="icon" type="image/jpeg" href="logo.jpeg">
+  <title>Mehedi Xpress BD</title>
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html {
       scroll-behavior: smooth;
     }
 
     body {
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background: #f7f7f7;
       color: #222;
       line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
     }
 
     /* ================= HEADER ================= */
@@ -48,7 +44,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 24px;
+      font-size: 23px;
       font-weight: bold;
     }
 
@@ -69,112 +65,76 @@
 
     nav a {
       color: white;
+      text-decoration: none;
       font-size: 15px;
-      transition: 0.3s;
     }
 
     nav a:hover {
-      color: #ffd700;
-    }
-
-    .header-btn {
-      background: #25d366;
-      color: white;
-      padding: 9px 15px;
-      border-radius: 6px;
-      font-weight: bold;
+      color: #25d366;
     }
 
     /* ================= HERO ================= */
 
     .hero {
-      min-height: 520px;
       padding: 90px 5%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      background:
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-        linear-gradient(135deg, #111, #333);
+      background: linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.65)
+      ),
+      url("hero-banner.jpg") center/cover no-repeat;
+
       color: white;
     }
 
-    .hero-content {
-      max-width: 850px;
-    }
-
     .hero h1 {
-      font-size: 48px;
-      margin-bottom: 18px;
-    }
-
-    .hero h1 span {
-      color: #ffd700;
+      font-size: 44px;
+      margin-bottom: 15px;
     }
 
     .hero p {
-      font-size: 20px;
-      margin-bottom: 30px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
+      font-size: 19px;
+      margin-bottom: 25px;
     }
 
     .btn {
       display: inline-block;
       background: #111;
       color: white;
-      padding: 12px 25px;
-      border-radius: 6px;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
       font-weight: bold;
-      transition: 0.3s;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.9;
+      opacity: 0.85;
     }
 
-    .btn-yellow {
-      background: #ffd700;
-      color: #111;
-    }
-
-    .btn-whatsapp {
+    .whatsapp-btn {
       background: #25d366;
-      color: white;
     }
 
-    /* ================= COMMON ================= */
+    /* ================= COMMON SECTION ================= */
+
+    section {
+      scroll-margin-top: 80px;
+    }
 
     .section {
-      padding: 65px 5%;
+      padding: 55px 5%;
     }
 
     .section-title {
       text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .section-title h2 {
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    .section-title p {
-      color: #666;
+      font-size: 30px;
+      margin-bottom: 35px;
     }
 
     /* ================= CATEGORIES ================= */
-
-    .categories {
-      background: white;
-    }
 
     .category-container {
       display: grid;
@@ -183,11 +143,11 @@
     }
 
     .category {
-      background: #f8f8f8;
+      background: white;
       border-radius: 12px;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       transition: 0.3s;
     }
 
@@ -199,48 +159,34 @@
       width: 100%;
       height: 170px;
       object-fit: cover;
-      display: block;
     }
 
     .category h3 {
-      padding: 15px 8px;
-      font-size: 18px;
+      padding: 15px;
     }
 
     /* ================= PRODUCTS ================= */
 
-    .products {
-      background: #f5f7fa;
-    }
-
     .product-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 22px;
     }
 
     .product {
       background: white;
+      padding: 18px;
       border-radius: 12px;
-      overflow: hidden;
       text-align: center;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-      transition: 0.3s;
-    }
-
-    .product:hover {
-      transform: translateY(-5px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
     .product img {
       width: 100%;
       height: 220px;
       object-fit: cover;
-      display: block;
-    }
-
-    .product-content {
-      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
     }
 
     .product h3 {
@@ -248,29 +194,25 @@
     }
 
     .price {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: bold;
       margin-bottom: 15px;
-      color: #111;
     }
 
-    /* ================= WHY US ================= */
-
-    .why-us {
-      background: white;
-    }
+    /* ================= FEATURES ================= */
 
     .feature-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 20px;
     }
 
     .feature {
-      text-align: center;
+      background: white;
       padding: 25px 15px;
-      background: #f8f8f8;
-      border-radius: 10px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     }
 
     .feature-icon {
@@ -279,136 +221,60 @@
     }
 
     .feature h3 {
-      margin-bottom: 8px;
-    }
-
-    .feature p {
-      color: #666;
-      font-size: 14px;
+      margin-bottom: 7px;
     }
 
     /* ================= ABOUT ================= */
 
-    .about {
-      background: #111;
-      color: white;
-    }
-
-    .about-content {
-      max-width: 900px;
+    .about-box {
+      max-width: 850px;
       margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
       text-align: center;
-    }
-
-    .about-content h2 {
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-
-    .about-content p {
-      color: #ddd;
-      margin-bottom: 12px;
     }
 
     /* ================= DELIVERY ================= */
 
-    .delivery {
-      background: white;
-    }
-
     .delivery-box {
-      max-width: 850px;
+      max-width: 800px;
       margin: auto;
-      background: #f5f7fa;
+      background: white;
       padding: 30px;
       border-radius: 12px;
-      text-align: center;
-    }
-
-    .delivery-box h3 {
-      margin-bottom: 15px;
-      font-size: 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     }
 
     .delivery-box p {
       margin: 8px 0;
     }
 
-    .notice {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff3cd;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+    /* ================= CONTACT ================= */
 
-    /* ================= REVIEWS ================= */
-
-    .reviews {
-      background: #f5f7fa;
-    }
-
-    .review-container {
+    .contact-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
     }
 
-    .review {
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
-    }
-
-    .stars {
-      color: #f5b400;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
-
-    .review p {
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .review strong {
-      color: #111;
-    }
-
-    /* ================= CONTACT ================= */
-
-    .contact {
-      background: white;
-    }
-
-    .contact-container {
-      max-width: 950px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
     .contact-box {
-      background: #f5f7fa;
+      background: white;
       padding: 25px;
-      border-radius: 10px;
+      border-radius: 12px;
       text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     }
 
     .contact-box h3 {
       margin-bottom: 10px;
     }
 
-    .contact-box p {
-      color: #555;
-      word-break: break-word;
-    }
-
     .contact-box a {
-      color: #111;
-      font-weight: bold;
+      color: #222;
+      text-decoration: none;
+      word-break: break-word;
     }
 
     /* ================= FOOTER ================= */
@@ -417,49 +283,149 @@
       background: #111;
       color: white;
       text-align: center;
-      padding: 30px 5%;
+      padding: 30px 15px;
+      margin-top: 20px;
     }
 
     footer p {
       margin: 5px 0;
-      color: #ddd;
-    }
-
-    .social-links {
-      margin: 15px 0;
-    }
-
-    .social-links a {
-      color: white;
-      margin: 0 8px;
-      font-weight: bold;
     }
 
     /* ================= BACK TO TOP ================= */
 
-    .back-top {
+    #backToTop {
       position: fixed;
       right: 20px;
       bottom: 20px;
       width: 45px;
       height: 45px;
+      border: none;
+      border-radius: 50%;
       background: #111;
       color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
       font-size: 20px;
-      z-index: 999;
+      cursor: pointer;
+      display: none;
+      z-index: 1500;
+    }
+
+    /* ================= ORDER MODAL ================= */
+
+    .order-modal {
+      display: none;
+      position: fixed;
+      z-index: 3000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      overflow-y: auto;
+      padding: 25px 15px;
+    }
+
+    .order-modal.show {
+      display: block;
+    }
+
+    .order-box {
+      background: white;
+      max-width: 550px;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .order-box h2 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .order-subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .close-order {
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      font-size: 32px;
+      cursor: pointer;
+      color: #555;
+    }
+
+    .order-group {
+      margin-bottom: 16px;
+    }
+
+    .order-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .order-group input,
+    .order-group select,
+    .order-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+
+    .order-group input:focus,
+    .order-group select:focus,
+    .order-group textarea:focus {
+      outline: none;
+      border-color: #25d366;
+    }
+
+    .delivery-note {
+      background: #fff3cd;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin: 20px 0;
+    }
+
+    .order-summary {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .order-summary p {
+      margin: 5px 0;
+    }
+
+    .order-submit {
+      width: 100%;
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 7px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-submit:hover {
+      background: #1da851;
     }
 
     /* ================= MOBILE ================= */
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
 
       header {
         justify-content: center;
-        text-align: center;
       }
 
       .logo {
@@ -472,43 +438,33 @@
       }
 
       nav a {
-        font-size: 13px;
-      }
-
-      .header-btn {
-        padding: 7px 10px;
+        font-size: 14px;
       }
 
       .hero {
-        min-height: 450px;
-        padding: 70px 5%;
+        padding: 70px 20px;
       }
 
       .hero h1 {
-        font-size: 34px;
+        font-size: 32px;
       }
 
       .hero p {
-        font-size: 17px;
+        font-size: 16px;
       }
 
       .section {
-        padding: 50px 5%;
+        padding: 45px 18px;
       }
 
-      .section-title h2 {
-        font-size: 27px;
+      .section-title {
+        font-size: 26px;
       }
 
-      .category img {
-        height: 150px;
-      }
-
-      .product img {
-        height: 200px;
+      .order-box {
+        padding: 22px 18px;
       }
     }
-
   </style>
 </head>
 
@@ -516,25 +472,19 @@
 
   <!-- ================= HEADER ================= -->
 
-  <header id="top">
+  <header>
 
     <div class="logo">
-      <img src="logo.jpeg" alt="Mehedi Xpress Logo">
-      <span>Mehedi Xpress</span>
+      <img src="logo.jpeg" alt="Mehedi Xpress BD Logo">
+      <span>Mehedi Xpress BD</span>
     </div>
 
     <nav>
-      <a href="#top">হোম</a>
+      <a href="#">হোম</a>
       <a href="#categories">ক্যাটাগরি</a>
       <a href="#products">পণ্য</a>
       <a href="#about">আমাদের সম্পর্কে</a>
       <a href="#contact">যোগাযোগ</a>
-      <a
-        href="https://wa.me/8801820693313"
-        class="header-btn"
-        target="_blank">
-        WhatsApp
-      </a>
     </nav>
 
   </header>
@@ -544,51 +494,34 @@
 
   <section class="hero">
 
-    <div class="hero-content">
+    <h1>স্বাগতম Mehedi Xpress BD</h1>
 
-      <h1>
-        স্বাগতম <span>Mehedi Xpress</span>
-      </h1>
+    <p>
+      আপনার পছন্দের স্পোর্টস পণ্য ও পোশাক
+      সহজে অর্ডার করুন।
+    </p>
 
-      <p>
-        আপনার পছন্দের স্পোর্টস পোশাক ও সরঞ্জাম
-        এখন সহজেই অর্ডার করুন।
-      </p>
+    <a href="#products" class="btn">
+      Shop Now
+    </a>
 
-      <div class="hero-buttons">
-
-        <a href="#products" class="btn btn-yellow">
-          🛍️ Shop Now
-        </a>
-
-        <a
-          href="https://wa.me/8801820693313?text=আসসালামু%20আলাইকুম,%20আমি%20পণ্য%20সম্পর্কে%20জানতে%20চাই।"
-          class="btn btn-whatsapp"
-          target="_blank">
-          💬 WhatsApp Order
-        </a>
-
-      </div>
-
-    </div>
+    <button
+      type="button"
+      class="btn whatsapp-btn"
+      onclick="openGeneralWhatsApp()">
+      WhatsApp Order
+    </button>
 
   </section>
 
 
   <!-- ================= CATEGORIES ================= -->
 
-  <section class="section categories" id="categories">
+  <section class="section" id="categories">
 
-    <div class="section-title">
-
-      <h2>আমাদের ক্যাটাগরি</h2>
-
-      <p>
-        আপনার পছন্দের পণ্য বেছে নিন
-      </p>
-
-    </div>
-
+    <h2 class="section-title">
+      আমাদের ক্যাটাগরি
+    </h2>
 
     <div class="category-container">
 
@@ -637,22 +570,18 @@
   </section>
 
 
-  <!-- ================= FEATURED PRODUCTS ================= -->
+  <!-- ================= PRODUCTS ================= -->
 
-  <section class="section products" id="products">
+  <section class="section" id="products">
 
-    <div class="section-title">
-
-      <h2>Featured Products</h2>
-
-      <p>
-        আমাদের জনপ্রিয় পণ্যগুলো দেখুন
-      </p>
-
-    </div>
-
+    <h2 class="section-title">
+      Featured Products
+    </h2>
 
     <div class="product-container">
+
+
+      <!-- PRODUCT 1 -->
 
       <div class="product">
 
@@ -660,25 +589,25 @@
           src="football-jersey.jpg"
           alt="ফুটবল জার্সি">
 
-        <div class="product-content">
+        <h3>ফুটবল জার্সি</h3>
 
-          <h3>ফুটবল জার্সি</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৪০০ 
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('ফুটবল জার্সি')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20ফুটবল%20জার্সি%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 2 -->
 
       <div class="product">
 
@@ -686,25 +615,25 @@
           src="cricket-jersey.jpg"
           alt="ক্রিকেট জার্সি">
 
-        <div class="product-content">
+        <h3>ক্রিকেট জার্সি</h3>
 
-          <h3>ক্রিকেট জার্সি</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৪০০ 
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('ক্রিকেট জার্সি')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20ক্রিকেট%20জার্সি%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 3 -->
 
       <div class="product">
 
@@ -712,51 +641,51 @@
           src="t-shirt.jpg"
           alt="টি-শার্ট">
 
-        <div class="product-content">
+        <h3>টি-শার্ট</h3>
 
-          <h3>স্পোর্টস টি-শার্ট</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৪০০
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('টি-শার্ট')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20টি-শার্ট%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 4 -->
 
       <div class="product">
 
         <img
           src="shorts.jpg"
-          alt="স্পোর্টস শর্টস">
+          alt="শর্টস">
 
-        <div class="product-content">
+        <h3>শর্টস</h3>
 
-          <h3>স্পোর্টস শর্টস</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৩০০
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('শর্টস')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20শর্টস%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 5 -->
 
       <div class="product">
 
@@ -764,25 +693,25 @@
           src="football.jpg"
           alt="ফুটবল">
 
-        <div class="product-content">
+        <h3>ফুটবল</h3>
 
-          <h3>ফুটবল</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৬৫০
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('ফুটবল')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20ফুটবল%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 6 -->
 
       <div class="product">
 
@@ -790,25 +719,25 @@
           src="cricket-bat.jpg"
           alt="ক্রিকেট ব্যাট">
 
-        <div class="product-content">
+        <h3>ক্রিকেট ব্যাট</h3>
 
-          <h3>ক্রিকেট ব্যাট</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ১২০০
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('ক্রিকেট ব্যাট')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20ক্রিকেট%20ব্যাট%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 7 -->
 
       <div class="product">
 
@@ -816,25 +745,25 @@
           src="gloves.jpg"
           alt="গ্লাভস">
 
-        <div class="product-content">
+        <h3>গ্লাভস</h3>
 
-          <h3>স্পোর্টস গ্লাভস</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            ৳ ৬৫০
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('গ্লাভস')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20গ্লাভস%20অর্ডার%20করতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            Buy Now
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
+
+      <!-- PRODUCT 8 -->
 
       <div class="product">
 
@@ -842,22 +771,20 @@
           src="custom-printing.jpg"
           alt="কাস্টম প্রিন্টিং">
 
-        <div class="product-content">
+        <h3>কাস্টম প্রিন্টিং</h3>
 
-          <h3>কাস্টম প্রিন্টিং</h3>
+        <p class="price">
+          দাম জানতে যোগাযোগ করুন
+        </p>
 
-          <p class="price">
-            মূল্য জানতে যোগাযোগ করুন
-          </p>
+        <button
+          type="button"
+          class="btn whatsapp-btn"
+          onclick="openOrderForm('কাস্টম প্রিন্টিং')">
 
-          <a
-            href="https://wa.me/8801820693313?text=আমি%20কাস্টম%20প্রিন্টিং%20সম্পর্কে%20জানতে%20চাই।"
-            class="btn btn-whatsapp"
-            target="_blank">
-            বিস্তারিত জানুন
-          </a>
+          Buy Now
 
-        </div>
+        </button>
 
       </div>
 
@@ -868,55 +795,42 @@
 
   <!-- ================= WHY CHOOSE US ================= -->
 
-  <section class="section why-us">
+  <section class="section">
 
-    <div class="section-title">
-
-      <h2>কেন Mehedi Xpress?</h2>
-
-      <p>
-        আপনার সুবিধাই আমাদের অগ্রাধিকার
-      </p>
-
-    </div>
-
+    <h2 class="section-title">
+      কেন Mehedi Xpress BD?
+    </h2>
 
     <div class="feature-container">
 
       <div class="feature">
-        <div class="feature-icon">🚚</div>
-        <h3>হোম ডেলিভারি</h3>
-        <p>সারা বাংলাদেশে পণ্য পৌঁছে দেওয়ার সুবিধা।</p>
-      </div>
-
-      <div class="feature">
         <div class="feature-icon">💵</div>
         <h3>Cash on Delivery</h3>
-        <p>পণ্য হাতে পেয়ে মূল্য পরিশোধের সুবিধা।</p>
+        <p>সুবিধাজনক Cash on Delivery সুবিধা।</p>
       </div>
 
       <div class="feature">
-        <div class="feature-icon">⚡</div>
-        <h3>দ্রুত ডেলিভারি</h3>
-        <p>যত দ্রুত সম্ভব আপনার পণ্য পাঠানোর চেষ্টা করি।</p>
+        <div class="feature-icon">🏠</div>
+        <h3>Home Delivery</h3>
+        <p>আপনার ঠিকানায় পণ্য পৌঁছে দেওয়া হবে।</p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">🚚</div>
+        <h3>Fast Delivery</h3>
+        <p>দ্রুত ও যত্নসহকারে ডেলিভারি।</p>
       </div>
 
       <div class="feature">
         <div class="feature-icon">⭐</div>
-        <h3>ভালো মান</h3>
-        <p>মানসম্মত পণ্য দেওয়াই আমাদের লক্ষ্য।</p>
+        <h3>Best Quality</h3>
+        <p>মানসম্মত পণ্য দেওয়ার চেষ্টা করি।</p>
       </div>
 
       <div class="feature">
-        <div class="feature-icon">🔒</div>
-        <h3>নিরাপদ অর্ডার</h3>
-        <p>WhatsApp-এর মাধ্যমে সহজে অর্ডার করতে পারবেন।</p>
-      </div>
-
-      <div class="feature">
-        <div class="feature-icon">📞</div>
+        <div class="feature-icon">💬</div>
         <h3>Customer Support</h3>
-        <p>প্রয়োজনে সরাসরি আমাদের সাথে যোগাযোগ করুন।</p>
+        <p>প্রয়োজনে আমাদের সাথে যোগাযোগ করুন।</p>
       </div>
 
     </div>
@@ -926,26 +840,29 @@
 
   <!-- ================= ABOUT ================= -->
 
-  <section class="section about" id="about">
+  <section class="section" id="about">
 
-    <div class="about-content">
+    <h2 class="section-title">
+      আমাদের সম্পর্কে
+    </h2>
 
-      <h2>Mehedi Xpress সম্পর্কে</h2>
+    <div class="about-box">
 
       <p>
-        Mehedi Xpress হলো স্পোর্টস পোশাক, স্পোর্টস সরঞ্জাম
-        এবং কাস্টম প্রিন্টিংয়ের জন্য একটি অনলাইন শপ।
+        <strong>Mehedi Xpress BD</strong>
+        একটি স্পোর্টস ও ফ্যাশন পণ্যভিত্তিক অনলাইন শপ।
       </p>
 
       <p>
-        ফুটবল জার্সি, ক্রিকেট জার্সি, টি-শার্ট, শর্টস,
-        ফুটবল, ক্রিকেট ব্যাট, গ্লাভসসহ বিভিন্ন পণ্য
+        ফুটবল জার্সি, ক্রিকেট জার্সি, টি-শার্ট,
+        শর্টস, ফুটবল, ক্রিকেট ব্যাট, গ্লাভস
+        এবং কাস্টম প্রিন্টিংসহ বিভিন্ন পণ্য
         আমরা সরবরাহ করি।
       </p>
 
       <p>
-        ভবিষ্যতে আমাদের পণ্যের তালিকায় আরো নতুন
-        ক্যাটাগরি ও পণ্য যুক্ত করা হবে।
+        ভবিষ্যতে আমাদের পণ্যের তালিকায়
+        আরও নতুন পণ্য যুক্ত করা হবে।
       </p>
 
     </div>
@@ -953,116 +870,40 @@
   </section>
 
 
-  <!-- ================= DELIVERY INFORMATION ================= -->
+  <!-- ================= DELIVERY ================= -->
 
-  <section class="section delivery">
+  <section class="section">
 
-    <div class="section-title">
-
-      <h2>ডেলিভারি তথ্য</h2>
-
-      <p>
-        অর্ডারের আগে ডেলিভারি চার্জ জেনে নিন
-      </p>
-
-    </div>
-
+    <h2 class="section-title">
+      ডেলিভারি চার্জ
+    </h2>
 
     <div class="delivery-box">
 
-      <h3>🚚 Delivery Charge</h3>
-
       <p>
-        <strong>কুমিল্লা জেলার ভিতরে:</strong>
-        ৳ ৮০
+        🚚 <strong>কুমিল্লা জেলার ভিতরে:</strong>
+        ৳৮০
       </p>
 
       <p>
-        <strong>কুমিল্লা জেলার বাইরে:</strong>
-        ৳ ১৫০
+        🚚 <strong>কুমিল্লা জেলার বাইরে:</strong>
+        প্রথম ১ কেজিতে ৳১৫০
       </p>
 
       <p>
-        <strong>১ কেজির বেশি হলে:</strong>
-        অতিরিক্ত প্রতি কেজিতে ৳ ৩০
+        ➕ ১ কেজির বেশি হলে প্রতি অতিরিক্ত
+        কেজিতে ৳৩০ যোগ হবে।
       </p>
-
-      <div class="notice">
-        ⚠️ Cash on Delivery উপলব্ধ।
-        তবে ডেলিভারি চার্জ আগে পরিশোধ করতে হবে।
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= REVIEWS ================= -->
-
-  <section class="section reviews">
-
-    <div class="section-title">
-
-      <h2>Customer Reviews</h2>
 
       <p>
-        আমাদের গ্রাহকদের মতামত
+        💵 <strong>Cash on Delivery:</strong>
+        হ্যাঁ।
       </p>
 
-    </div>
-
-
-    <div class="review-container">
-
-      <div class="review">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          “পণ্যের মান ভালো এবং ব্যবহারও ভালো লেগেছে।”
-        </p>
-
-        <strong>
-          — একজন সম্মানিত গ্রাহক
-        </strong>
-
-      </div>
-
-
-      <div class="review">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          “অর্ডার করা সহজ এবং ডেলিভারিও ভালো ছিল।”
-        </p>
-
-        <strong>
-          — একজন সম্মানিত গ্রাহক
-        </strong>
-
-      </div>
-
-
-      <div class="review">
-
-        <div class="stars">
-          ★★★★★
-        </div>
-
-        <p>
-          “কাস্টম প্রিন্টিংয়ের জন্য খুব ভালো সার্ভিস।”
-        </p>
-
-        <strong>
-          — একজন সম্মানিত গ্রাহক
-        </strong>
-
-      </div>
+      <p>
+        ⚠️ তবে Cash on Delivery-এর ক্ষেত্রে
+        ডেলিভারি চার্জ আগে পরিশোধ করতে হবে।
+      </p>
 
     </div>
 
@@ -1071,30 +912,22 @@
 
   <!-- ================= CONTACT ================= -->
 
-  <section class="section contact" id="contact">
+  <section class="section" id="contact">
 
-    <div class="section-title">
-
-      <h2>যোগাযোগ করুন</h2>
-
-      <p>
-        অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন
-      </p>
-
-    </div>
-
+    <h2 class="section-title">
+      যোগাযোগ করুন
+    </h2>
 
     <div class="contact-container">
+
 
       <div class="contact-box">
 
         <h3>📱 মোবাইল</h3>
 
-        <p>
-          <a href="tel:01612961523">
-            01612961523
-          </a>
-        </p>
+        <a href="tel:01612961523">
+          01612961523
+        </a>
 
       </div>
 
@@ -1103,39 +936,13 @@
 
         <h3>💬 WhatsApp</h3>
 
-        <p>
-          <a
-            href="https://wa.me/8801820693313"
-            target="_blank">
-            01820-693313
-          </a>
-        </p>
+        <a
+          href="https://wa.me/8801820693313"
+          target="_blank">
 
-      </div>
+          01820-693313
 
-
-      <div class="contact-box">
-
-        <h3>📧 Email</h3>
-
-        <p>
-          <a href="mailto:mehedixpress522@gmail.com">
-            mehedixpress522@gmail.com
-          </a>
-        </p>
-
-      </div>
-
-
-      <div class="contact-box">
-
-        <h3>📍 ঠিকানা</h3>
-
-        <p>
-          দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে,
-          বাংগরা বাজার থানা,
-          মুরাদনগর, কুমিল্লা
-        </p>
+        </a>
 
       </div>
 
@@ -1144,13 +951,13 @@
 
         <h3>📘 Facebook</h3>
 
-        <p>
-          <a
-            href="https://www.facebook.com/share/1U5HD22xSw/"
-            target="_blank">
-            Facebook Page
-          </a>
-        </p>
+        <a
+          href="https://www.facebook.com/share/1U5HD22xSw/"
+          target="_blank">
+
+          Facebook Page
+
+        </a>
 
       </div>
 
@@ -1159,12 +966,39 @@
 
         <h3>🎵 TikTok</h3>
 
+        <a
+          href="https://www.tiktok.com/@mehedi.xpress"
+          target="_blank">
+
+          @mehedi.xpress
+
+        </a>
+
+      </div>
+
+
+      <div class="contact-box">
+
+        <h3>📧 Email</h3>
+
+        <a
+          href="mailto:mehedixpress522@gmail.com">
+
+          mehedixpress522@gmail.com
+
+        </a>
+
+      </div>
+
+
+      <div class="contact-box">
+
+        <h3>📍 দোকানের ঠিকানা</h3>
+
         <p>
-          <a
-            href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7"
-            target="_blank">
-            @mehedi.xpress
-          </a>
+          দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের
+          উত্তর পাশে, বাংগরা বাজার থানা,
+          মুরাদনগর, কুমিল্লা
         </p>
 
       </div>
@@ -1178,38 +1012,12 @@
 
   <footer>
 
-    <div class="social-links">
-
-      <a
-        href="https://www.facebook.com/share/1U5HD22xSw/"
-        target="_blank">
-        Facebook
-      </a>
-
-      |
-
-      <a
-        href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7"
-        target="_blank">
-        TikTok
-      </a>
-
-      |
-
-      <a
-        href="https://wa.me/8801820693313"
-        target="_blank">
-        WhatsApp
-      </a>
-
-    </div>
-
     <p>
-      © 2026 Mehedi Xpress. সকল অধিকার সংরক্ষিত।
+      © 2026 Mehedi Xpress BD
     </p>
 
     <p>
-      আপনার বিশ্বস্ত স্পোর্টস শপ
+      সকল অধিকার সংরক্ষিত
     </p>
 
   </footer>
@@ -1217,10 +1025,449 @@
 
   <!-- ================= BACK TO TOP ================= -->
 
-  <a href="#top" class="back-top" title="উপরে যান">
+  <button id="backToTop" onclick="goToTop()">
     ↑
-  </a>
+  </button>
 
+
+  <!-- ================= ORDER FORM ================= -->
+
+  <div id="orderModal" class="order-modal">
+
+    <div class="order-box">
+
+      <span
+        class="close-order"
+        onclick="closeOrderForm()">
+
+        &times;
+
+      </span>
+
+      <h2>
+        অর্ডার করুন
+      </h2>
+
+      <p class="order-subtitle">
+        আপনার তথ্য পূরণ করে WhatsApp-এ অর্ডার পাঠান
+      </p>
+
+
+      <form id="orderForm">
+
+
+        <div class="order-group">
+
+          <label>
+            আপনার নাম *
+          </label>
+
+          <input
+            type="text"
+            id="customerName"
+            placeholder="আপনার সম্পূর্ণ নাম"
+            required>
+
+        </div>
+
+
+        <div class="order-group">
+
+          <label>
+            মোবাইল নম্বর *
+          </label>
+
+          <input
+            type="tel"
+            id="customerPhone"
+            placeholder="01XXXXXXXXX"
+            required>
+
+        </div>
+
+
+        <div class="order-group">
+
+          <label>
+            সম্পূর্ণ ডেলিভারি ঠিকানা *
+          </label>
+
+          <textarea
+            id="customerAddress"
+            rows="3"
+            placeholder="বাড়ি/গ্রাম, বাজার, থানা, জেলা"
+            required></textarea>
+
+        </div>
+
+
+        <div class="order-group">
+
+          <label>
+            পণ্য
+          </label>
+
+          <input
+            type="text"
+            id="productName"
+            readonly>
+
+        </div>
+
+
+        <div class="order-group">
+
+          <label>
+            পরিমাণ *
+          </label>
+
+          <input
+            type="number"
+            id="quantity"
+            value="1"
+            min="1"
+            required>
+
+        </div>
+
+
+        <div class="order-group">
+
+          <label>
+            জেলা *
+          </label>
+
+          <select
+            id="district"
+            required>
+
+            <option value="">
+              জেলা নির্বাচন করুন
+            </option>
+
+            <option value="cumilla">
+              কুমিল্লা
+            </option>
+
+            <option value="outside">
+              কুমিল্লার বাইরে
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="delivery-note">
+
+          🚚 <strong>ডেলিভারি চার্জ</strong><br><br>
+
+          কুমিল্লার ভিতরে — ৳৮০<br>
+
+          কুমিল্লার বাইরে — প্রথম ১ কেজিতে ৳১৫০<br>
+
+          ১ কেজির বেশি হলে প্রতি অতিরিক্ত
+          কেজিতে ৳৩০ যোগ হবে।<br><br>
+
+          ⚠️ Cash on Delivery থাকবে,
+          তবে ডেলিভারি চার্জ আগে পরিশোধ করতে হবে।
+
+        </div>
+
+
+        <div class="order-summary">
+
+          <p>
+            <strong>পণ্য:</strong>
+            <span id="summaryProduct">-</span>
+          </p>
+
+          <p>
+            <strong>পরিমাণ:</strong>
+            <span id="summaryQuantity">1</span>
+          </p>
+
+          <p>
+            <strong>ডেলিভারি চার্জ:</strong>
+            ৳<span id="deliveryCharge">0</span>
+          </p>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="order-submit">
+
+          💬 WhatsApp-এ অর্ডার পাঠান
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+
+  <script>
+
+    /* ================= ORDER FORM ================= */
+
+    function openOrderForm(productName) {
+
+      document.getElementById("productName").value = productName;
+
+      document.getElementById("summaryProduct").textContent =
+        productName;
+
+      document.getElementById("quantity").value = 1;
+
+      document.getElementById("district").value = "";
+
+      document.getElementById("deliveryCharge").textContent = "0";
+
+      document.getElementById("orderModal").classList.add("show");
+
+      document.body.style.overflow = "hidden";
+    }
+
+
+    function closeOrderForm() {
+
+      document.getElementById("orderModal").classList.remove("show");
+
+      document.body.style.overflow = "auto";
+    }
+
+
+    /* ================= DELIVERY CALCULATION ================= */
+
+    function calculateDelivery() {
+
+      const district =
+        document.getElementById("district").value;
+
+      const quantity =
+        parseInt(
+          document.getElementById("quantity").value
+        ) || 1;
+
+      document.getElementById("summaryQuantity").textContent =
+        quantity;
+
+      let delivery = 0;
+
+      if (district === "cumilla") {
+
+        delivery = 80;
+
+      } else if (district === "outside") {
+
+        delivery = 150;
+
+        if (quantity > 1) {
+
+          delivery =
+            150 + ((quantity - 1) * 30);
+
+        }
+
+      }
+
+      document.getElementById("deliveryCharge").textContent =
+        delivery;
+    }
+
+
+    document.getElementById("district").addEventListener(
+      "change",
+      calculateDelivery
+    );
+
+
+    document.getElementById("quantity").addEventListener(
+      "input",
+      calculateDelivery
+    );
+
+
+    /* ================= WHATSAPP ORDER ================= */
+
+    document.getElementById("orderForm").addEventListener(
+      "submit",
+      function(event) {
+
+        event.preventDefault();
+
+        const name =
+          document.getElementById("customerName").value.trim();
+
+        const phone =
+          document.getElementById("customerPhone").value.trim();
+
+        const address =
+          document.getElementById("customerAddress").value.trim();
+
+        const product =
+          document.getElementById("productName").value;
+
+        const quantity =
+          document.getElementById("quantity").value;
+
+        const district =
+          document.getElementById("district").value;
+
+        const delivery =
+          document.getElementById("deliveryCharge").textContent;
+
+
+        if (
+          !name ||
+          !phone ||
+          !address ||
+          !product ||
+          !district
+        ) {
+
+          alert(
+            "দয়া করে সব প্রয়োজনীয় তথ্য পূরণ করুন।"
+          );
+
+          return;
+        }
+
+
+        let districtText =
+          district === "cumilla"
+          ? "কুমিল্লা"
+          : "কুমিল্লার বাইরে";
+
+
+        const message =
+`🛍️ নতুন অর্ডার - Mehedi Xpress BD
+
+👤 কাস্টমারের নাম:
+${name}
+
+📱 মোবাইল:
+${phone}
+
+📦 পণ্য:
+${product}
+
+🔢 পরিমাণ:
+${quantity}
+
+📍 ডেলিভারি ঠিকানা:
+${address}
+
+🏙️ জেলা:
+${districtText}
+
+🚚 ডেলিভারি চার্জ:
+৳${delivery}
+
+💵 পেমেন্ট:
+Cash on Delivery
+
+⚠️ ডেলিভারি চার্জ আগে পরিশোধ করতে হবে।
+
+ধন্যবাদ।
+Mehedi Xpress BD`;
+
+
+        const whatsappNumber =
+          "8801820693313";
+
+
+        const whatsappURL =
+          "https://wa.me/" +
+          whatsappNumber +
+          "?text=" +
+          encodeURIComponent(message);
+
+
+        window.open(
+          whatsappURL,
+          "_blank"
+        );
+
+      }
+    );
+
+
+    /* ================= GENERAL WHATSAPP ================= */
+
+    function openGeneralWhatsApp() {
+
+      const number =
+        "8801820693313";
+
+      const message =
+        "আসসালামু আলাইকুম, Mehedi Xpress BD থেকে কিছু পণ্য সম্পর্কে জানতে চাই।";
+
+      const url =
+        "https://wa.me/" +
+        number +
+        "?text=" +
+        encodeURIComponent(message);
+
+      window.open(url, "_blank");
+    }
+
+
+    /* ================= BACK TO TOP ================= */
+
+    window.addEventListener(
+      "scroll",
+      function() {
+
+        const button =
+          document.getElementById("backToTop");
+
+        if (window.scrollY > 400) {
+
+          button.style.display = "block";
+
+        } else {
+
+          button.style.display = "none";
+
+        }
+
+      }
+    );
+
+
+    function goToTop() {
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+
+
+    /* ================= CLOSE MODAL OUTSIDE ================= */
+
+    document.getElementById("orderModal").addEventListener(
+      "click",
+      function(event) {
+
+        if (event.target === this) {
+
+          closeOrderForm();
+
+        }
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
