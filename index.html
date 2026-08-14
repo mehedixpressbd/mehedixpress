@@ -8,1166 +8,482 @@
   <meta name="description" content="Mehedi Xpress - Sports ও Fashion পণ্যের অনলাইন শপ। সহজে অর্ডার করুন এবং ঘরে বসে পণ্য গ্রহণ করুন।">
 
   <style>
-    /* =========================
-       RESET & GLOBAL
-    ========================== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    :root {
-      --primary: #111111;
-      --secondary: #222222;
-      --accent: #e63946;
-      --light: #f5f6f8;
-      --white: #ffffff;
-      --text: #222222;
-      --muted: #666666;
-      --border: #e5e5e5;
-      --success: #128c7e;
-      --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      --radius: 14px;
-    }
-
-    body {
-      font-family: Arial, "Noto Sans Bengali", sans-serif;
-      background: var(--light);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: min(1180px, 92%);
-      margin: auto;
-    }
-
-    .section {
-      padding: 70px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 38px;
-    }
-
-    .section-title h2 {
-      font-size: 34px;
-      margin-bottom: 8px;
-    }
-
-    .section-title p {
-      color: var(--muted);
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      padding: 12px 22px;
-      border-radius: 8px;
-      font-weight: 700;
-      transition: 0.25s ease;
-    }
-
-    .btn-primary {
-      background: var(--white);
-      color: var(--primary);
-    }
-
-    .btn-dark {
-      background: var(--primary);
-      color: var(--white);
-    }
-
-    .btn-success {
-      background: var(--success);
-      color: var(--white);
-    }
-
-    .btn-outline {
-      border: 1px solid var(--border);
-      background: var(--white);
-      color: var(--primary);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.92;
-    }
-
-    /* =========================
-       HEADER
-    ========================== */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(17, 17, 17, 0.98);
-      color: var(--white);
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .header-inner {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      font-size: 22px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .logo img {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      border-radius: 9px;
-      background: var(--white);
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.2s;
-    }
-
-    nav a:hover {
-      opacity: 0.7;
-    }
-
-    .search-box {
-      width: 170px;
-      padding: 9px 12px;
-      border: none;
-      outline: none;
-      border-radius: 7px;
-    }
-
-    /* =========================
-       HERO
-    ========================== */
-    .hero {
-      min-height: 570px;
-      display: flex;
-      align-items: center;
-      background:
-        linear-gradient(rgba(0,0,0,0.68), rgba(0,0,0,0.68)),
-        url("hero-banner.jpg") center/cover no-repeat,
-        linear-gradient(135deg, #111111, #343434);
-      color: var(--white);
-    }
-
-    .hero-content {
-      max-width: 780px;
-      text-align: center;
-      margin: auto;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      padding: 7px 14px;
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 50px;
-      margin-bottom: 18px;
-      font-size: 14px;
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 6vw, 62px);
-      line-height: 1.12;
-      margin-bottom: 18px;
-    }
-
-    .hero p {
-      font-size: 19px;
-      color: #eeeeee;
-      margin-bottom: 28px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* =========================
-       CATEGORIES
-    ========================== */
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .category-card {
-      position: relative;
-      overflow: hidden;
-      min-height: 150px;
-      padding: 25px 18px;
-      border-radius: var(--radius);
-      background: var(--white);
-      box-shadow: var(--shadow);
-      text-align: center;
-      cursor: pointer;
-      transition: 0.25s;
-    }
-
-    .category-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .category-icon {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-
-    .category-card p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    /* =========================
-       PRODUCTS
-    ========================== */
-    .product-tools {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-
-    .product-count {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .product-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: 0.25s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .product-image {
-      width: 100%;
-      height: 230px;
-      object-fit: cover;
-      background: #e9e9e9;
-    }
-
-    .product-body {
-      padding: 18px;
-    }
-
-    .product-category {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
-
-    .product-title {
-      font-size: 18px;
-      margin-bottom: 7px;
-    }
-
-    .product-price {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .product-actions .btn {
-      flex: 1;
-      padding: 10px 12px;
-      font-size: 13px;
-    }
-
-    /* =========================
-       WHY CHOOSE US
-    ========================== */
-    .features {
-      background: var(--white);
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .feature-card {
-      padding: 28px 20px;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--white);
-    }
-
-    .feature-icon {
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-top: 6px;
-    }
-
-    /* =========================
-       ABOUT
-    ========================== */
-    .about-box {
-      max-width: 900px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .about-box p {
-      color: #555;
-      margin-bottom: 14px;
-    }
-
-    /* =========================
-       REVIEWS
-    ========================== */
-    .review-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .review-card {
-      background: var(--white);
-      padding: 25px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .stars {
-      margin-bottom: 10px;
-      font-size: 19px;
-    }
-
-    .review-card p {
-      color: #555;
-      margin-bottom: 12px;
-    }
-
-    /* =========================
-       CONTACT
-    ========================== */
-    .contact {
-      background: var(--primary);
-      color: var(--white);
-    }
-
-    .contact .section-title p {
-      color: #cccccc;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .contact-card {
-      padding: 24px 18px;
-      text-align: center;
-      border: 1px solid #444;
-      border-radius: var(--radius);
-    }
-
-    .contact-card h3 {
-      margin-bottom: 8px;
-    }
-
-    .contact-card p,
-    .contact-card a {
-      color: #dddddd;
-      text-decoration: none;
-      word-break: break-word;
-    }
-
-    /* =========================
-       FOOTER
-    ========================== */
-    footer {
-      background: #000;
-      color: var(--white);
-      text-align: center;
-      padding: 28px 0;
-    }
-
-    footer p {
-      margin: 4px 0;
-      font-size: 14px;
-      color: #cccccc;
-    }
-
-    /* =========================
-       BACK TO TOP
-    ========================== */
-    .back-top {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      width: 46px;
-      height: 46px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--primary);
-      color: var(--white);
-      border-radius: 50%;
-      text-decoration: none;
-      box-shadow: var(--shadow);
-      z-index: 900;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================== */
-    @media (max-width: 980px) {
-      .category-grid,
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .feature-grid,
-      .review-grid,
-      .contact-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .header-inner {
-        justify-content: center;
-        padding: 10px 0;
-      }
-
-      nav {
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .section {
-        padding: 50px 0;
-      }
-
-      .category-grid,
-      .product-grid,
-      .feature-grid,
-      .review-grid,
-      .contact-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .logo {
-        font-size: 19px;
-      }
-
-      .logo img {
-        width: 46px;
-        height: 46px;
-      }
-
-      nav {
-        gap: 10px;
-      }
-
-      nav a {
-        font-size: 13px;
-      }
-
-      .search-box {
-        width: 145px;
-      }
-
-      .hero {
-        min-height: 520px;
-      }
-
-      .hero p {
-        font-size: 16px;
-      }
+    *{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+    :root{
+      --primary:#111;--accent:#e63946;--light:#f5f6f8;--white:#fff;
+      --text:#222;--muted:#666;--border:#e5e5e5;--success:#128c7e;
+      --shadow:0 8px 25px rgba(0,0,0,.08);--radius:14px
+    }
+    body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:var(--light);color:var(--text);line-height:1.6}
+    a{color:inherit} button,input,select,textarea{font:inherit}
+    img{max-width:100%;display:block}.container{width:min(1180px,92%);margin:auto}
+    .section{padding:70px 0}.section-title{text-align:center;margin-bottom:38px}
+    .section-title h2{font-size:34px;margin-bottom:8px}.section-title p{color:var(--muted)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;text-decoration:none;padding:12px 22px;border-radius:8px;font-weight:700;transition:.25s}
+    .btn:hover{transform:translateY(-2px);opacity:.92}.btn-primary{background:#fff;color:#111}.btn-dark{background:#111;color:#fff}
+    .btn-success{background:#128c7e;color:#fff}.btn-outline{border:1px solid var(--border);background:#fff;color:#111}
+
+    header{position:sticky;top:0;z-index:1000;background:rgba(17,17,17,.98);color:#fff;box-shadow:0 2px 15px rgba(0,0,0,.15)}
+    .header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:22px;font-weight:800;white-space:nowrap}
+    .logo img{width:52px;height:52px;object-fit:contain;border-radius:9px;background:#fff}
+    nav{display:flex;align-items:center;gap:16px;flex-wrap:wrap}nav a{text-decoration:none;font-size:14px}
+    .search-box{width:170px;padding:9px 12px;border:0;outline:0;border-radius:7px}
+
+    .hero{min-height:570px;display:flex;align-items:center;background:linear-gradient(rgba(0,0,0,.68),rgba(0,0,0,.68)),url("hero-banner.jpg") center/cover no-repeat,linear-gradient(135deg,#111,#343434);color:#fff}
+    .hero-content{max-width:780px;text-align:center;margin:auto}.hero-badge{display:inline-block;padding:7px 14px;border:1px solid rgba(255,255,255,.35);border-radius:50px;margin-bottom:18px;font-size:14px}
+    .hero h1{font-size:clamp(36px,6vw,62px);line-height:1.12;margin-bottom:18px}.hero p{font-size:19px;color:#eee;margin-bottom:28px}
+    .hero-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+
+    .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .category-card{min-height:150px;padding:25px 18px;border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);text-align:center;cursor:pointer;transition:.25s}
+    .category-card:hover{transform:translateY(-5px)}.category-icon{font-size:42px;margin-bottom:10px}.category-card p{color:var(--muted);font-size:13px}
+
+    .product-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:25px;flex-wrap:wrap}
+    .product-count{color:var(--muted);font-size:14px}.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .product-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.25s}
+    .product-card:hover{transform:translateY(-5px)}.product-image{width:100%;height:230px;object-fit:cover;background:#e9e9e9}
+    .product-body{padding:18px}.product-category{color:var(--muted);font-size:12px;margin-bottom:5px}.product-title{font-size:18px;margin-bottom:7px}
+    .product-price{font-size:20px;font-weight:800;margin-bottom:14px}.product-actions{display:flex;gap:8px}.product-actions .btn{flex:1;padding:10px 12px;font-size:13px}
+
+    .features{background:#fff}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .feature-card{padding:28px 20px;text-align:center;border:1px solid var(--border);border-radius:var(--radius);background:#fff}
+    .feature-icon{font-size:36px;margin-bottom:10px}.feature-card p{color:var(--muted);font-size:14px;margin-top:6px}
+    .about-box{max-width:900px;margin:auto;text-align:center}.about-box p{color:#555;margin-bottom:14px}
+
+    .review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.review-card{background:#fff;padding:25px;border-radius:var(--radius);box-shadow:var(--shadow)}
+    .stars{margin-bottom:10px;font-size:19px}.review-card p{color:#555;margin-bottom:12px}
+
+    .contact{background:#111;color:#fff}.contact .section-title p{color:#ccc}
+    .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.contact-card{padding:24px 18px;text-align:center;border:1px solid #444;border-radius:var(--radius)}
+    .contact-card h3{margin-bottom:8px}.contact-card p,.contact-card a{color:#ddd;text-decoration:none;word-break:break-word}
+
+    footer{background:#000;color:#fff;text-align:center;padding:28px 0}footer p{margin:4px 0;font-size:14px;color:#ccc}
+    .back-top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;border-radius:50%;text-decoration:none;box-shadow:var(--shadow);z-index:900}
+
+    /* ORDER MODAL */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:2000;overflow:auto;padding:25px 12px}
+    .modal.show{display:flex;align-items:flex-start;justify-content:center}
+    .order-box{width:min(720px,100%);background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+    .order-head{background:#111;color:#fff;padding:20px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+    .order-head h2{font-size:22px}.close-btn{background:transparent;border:0;color:#fff;font-size:30px;cursor:pointer;line-height:1}
+    .order-body{padding:22px}.selected-product{background:#f5f6f8;border-radius:10px;padding:14px;margin-bottom:18px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.form-group{margin-bottom:14px}.form-group.full{grid-column:1/-1}
+    label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}label span{color:#e63946}
+    input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d9d9d9;border-radius:8px;outline:none;background:#fff}
+    input:focus,select:focus,textarea:focus{border-color:#111}textarea{min-height:90px;resize:vertical}
+    .payment-box{border:1px solid var(--border);border-radius:10px;padding:15px;margin:8px 0 18px}.payment-box h3{font-size:16px;margin-bottom:8px}
+    .payment-options{display:flex;gap:10px;flex-wrap:wrap}.payment-option{flex:1;min-width:130px;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center;cursor:pointer}
+    .payment-option input{width:auto;margin-right:5px}.delivery-note{background:#fff8e6;border-left:4px solid #f0ad00;padding:12px;margin:15px 0;font-size:14px}
+    .order-summary{background:#f5f6f8;border-radius:10px;padding:15px;margin:15px 0}.summary-row{display:flex;justify-content:space-between;margin:5px 0}
+    .summary-row.total{font-size:18px;font-weight:800;border-top:1px solid #ddd;padding-top:10px;margin-top:10px}
+    .form-actions{display:flex;gap:10px;flex-wrap:wrap}.form-actions .btn{flex:1}
+    .success-box{display:none;text-align:center;padding:25px}.success-box.show{display:block}.success-icon{font-size:50px;margin-bottom:10px}
+
+    @media(max-width:980px){
+      .category-grid,.product-grid{grid-template-columns:repeat(2,1fr)}
+      .feature-grid,.review-grid,.contact-grid{grid-template-columns:repeat(2,1fr)}
+      .header-inner{justify-content:center;padding:10px 0}nav{justify-content:center}
+    }
+    @media(max-width:600px){
+      .section{padding:50px 0}.category-grid,.product-grid,.feature-grid,.review-grid,.contact-grid{grid-template-columns:1fr}
+      .logo{font-size:19px}.logo img{width:46px;height:46px}.search-box{width:145px}.hero{min-height:520px}.hero p{font-size:16px}
+      .form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.order-body{padding:16px}
     }
   </style>
 </head>
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================== -->
-  <header id="top">
-    <div class="container header-inner">
+<header id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">
+      <img src="logo.jpeg" alt="Mehedi Xpress Logo">
+      <span>Mehedi Xpress</span>
+    </a>
+    <nav>
+      <a href="#top">হোম</a>
+      <a href="#categories">ক্যাটাগরি</a>
+      <a href="#products">পণ্য</a>
+      <a href="#about">আমাদের সম্পর্কে</a>
+      <a href="#contact">যোগাযোগ</a>
+      <input id="searchInput" class="search-box" type="search" placeholder="পণ্য খুঁজুন...">
+      <a href="#products" class="btn btn-primary">Shop Now</a>
+    </nav>
+  </div>
+</header>
 
-      <a href="#top" class="logo">
-        <img src="logo.jpeg" alt="Mehedi Xpress Logo">
-        <span>Mehedi Xpress</span>
-      </a>
+<section class="hero">
+  <div class="container hero-content">
+    <span class="hero-badge">Mehedi Xpress • Sports & Fashion</span>
+    <h1>আপনার পছন্দের স্পোর্টস ও ফ্যাশন পণ্য, এখন আরও সহজে</h1>
+    <p>ফুটবল ও ক্রিকেট জার্সি, টি-শার্ট, শর্টস, স্পোর্টস সরঞ্জাম এবং কাস্টম প্রিন্টিং—সবকিছু এক জায়গায়।</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn btn-primary">পণ্য দেখুন</a>
+      <a href="https://wa.me/8801612961523" target="_blank" rel="noopener" class="btn btn-success">WhatsApp Order</a>
+    </div>
+  </div>
+</section>
 
-      <nav>
-        <a href="#top">হোম</a>
-        <a href="#categories">ক্যাটাগরি</a>
-        <a href="#products">পণ্য</a>
-        <a href="#about">আমাদের সম্পর্কে</a>
-        <a href="#contact">যোগাযোগ</a>
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-title">
+      <h2>আমাদের ক্যাটাগরি</h2>
+      <p>আপনার প্রয়োজন অনুযায়ী ক্যাটাগরি বেছে নিন</p>
+    </div>
+    <div class="category-grid">
+      <div class="category-card" data-category="Football Jersey"><div class="category-icon">⚽</div><h3>ফুটবল জার্সি</h3><p>Football Jersey</p></div>
+      <div class="category-card" data-category="Cricket Jersey"><div class="category-icon">🏏</div><h3>ক্রিকেট জার্সি</h3><p>Cricket Jersey</p></div>
+      <div class="category-card" data-category="T-Shirt"><div class="category-icon">👕</div><h3>টি-শার্ট</h3><p>T-Shirt</p></div>
+      <div class="category-card" data-category="Shorts"><div class="category-icon">🩳</div><h3>শর্টস</h3><p>Sports Shorts</p></div>
+      <div class="category-card" data-category="Football"><div class="category-icon">⚽</div><h3>ফুটবল</h3><p>Football</p></div>
+      <div class="category-card" data-category="Cricket Bat"><div class="category-icon">🏏</div><h3>ক্রিকেট ব্যাট</h3><p>Cricket Bat</p></div>
+      <div class="category-card" data-category="Gloves"><div class="category-icon">🧤</div><h3>গ্লাভস</h3><p>Sports Gloves</p></div>
+      <div class="category-card" data-category="Custom Printing"><div class="category-icon">🎨</div><h3>কাস্টম প্রিন্টিং</h3><p>Custom Printing</p></div>
+    </div>
+  </div>
+</section>
 
-        <input
-          id="searchInput"
-          class="search-box"
-          type="search"
-          placeholder="পণ্য খুঁজুন..."
-          aria-label="পণ্য খুঁজুন"
-        >
+<section class="section" id="products">
+  <div class="container">
+    <div class="section-title">
+      <h2>আমাদের পণ্য</h2>
+      <p>ডেমো হিসেবে ৬টি পণ্য রাখা হয়েছে—পরে আরও পণ্য যোগ করা যাবে।</p>
+    </div>
+    <div class="product-tools"><span id="productCount" class="product-count">৬টি পণ্য দেখানো হচ্ছে</span></div>
+    <div class="product-grid" id="productGrid">
 
-        <a href="#products" class="btn btn-primary">Shop Now</a>
-      </nav>
+      <article class="product-card" data-category="Football Jersey" data-name="ফুটবল জার্সি">
+        <img class="product-image" src="football-jersey.jpg" alt="ফুটবল জার্সি">
+        <div class="product-body"><div class="product-category">ফুটবল জার্সি</div><h3 class="product-title">প্রিমিয়াম ফুটবল জার্সি</h3><div class="product-price">৳ ৫০০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="প্রিমিয়াম ফুটবল জার্সি" data-price="500">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="Cricket Jersey" data-name="ক্রিকেট জার্সি">
+        <img class="product-image" src="cricket-jersey.jpg" alt="ক্রিকেট জার্সি">
+        <div class="product-body"><div class="product-category">ক্রিকেট জার্সি</div><h3 class="product-title">প্রিমিয়াম ক্রিকেট জার্সি</h3><div class="product-price">৳ ৭৫০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="প্রিমিয়াম ক্রিকেট জার্সি" data-price="750">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="T-Shirt" data-name="টি-শার্ট">
+        <img class="product-image" src="t-shirt.jpg" alt="টি-শার্ট">
+        <div class="product-body"><div class="product-category">টি-শার্ট</div><h3 class="product-title">স্পোর্টস টি-শার্ট</h3><div class="product-price">৳ ৬৫০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="স্পোর্টস টি-শার্ট" data-price="650">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="Shorts" data-name="শর্টস">
+        <img class="product-image" src="shorts.jpg" alt="শর্টস">
+        <div class="product-body"><div class="product-category">শর্টস</div><h3 class="product-title">স্পোর্টস শর্টস</h3><div class="product-price">৳ ৪৫০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="স্পোর্টস শর্টস" data-price="450">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="Football" data-name="ফুটবল">
+        <img class="product-image" src="football.jpg" alt="ফুটবল">
+        <div class="product-body"><div class="product-category">ফুটবল</div><h3 class="product-title">প্রফেশনাল ফুটবল</h3><div class="product-price">৳ ৯৫০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="প্রফেশনাল ফুটবল" data-price="950">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="Cricket Bat" data-name="ক্রিকেট ব্যাট">
+        <img class="product-image" src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট">
+        <div class="product-body"><div class="product-category">ক্রিকেট ব্যাট</div><h3 class="product-title">ক্রিকেট ব্যাট</h3><div class="product-price">৳ ১,২০০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="ক্রিকেট ব্যাট" data-price="1200">Buy Now</button></div></div>
+      </article>
 
     </div>
-  </header>
+  </div>
+</section>
 
-
-  <!-- =========================
-       HERO
-  ========================== -->
-  <section class="hero">
-    <div class="container hero-content">
-
-      <span class="hero-badge">Mehedi Xpress • Sports & Fashion</span>
-
-      <h1>আপনার পছন্দের পণ্য, এখন আরও সহজে</h1>
-
-      <p>
-        ফুটবল ও ক্রিকেট জার্সি, টি-শার্ট, স্পোর্টস পণ্য
-        এবং কাস্টম প্রিন্টিং—সবকিছু এক জায়গায়।
-      </p>
-
-      <div class="hero-buttons">
-        <a href="#products" class="btn btn-primary">Shop Now</a>
-
-        <a
-          href="https://wa.me/8801612961523"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-success"
-        >
-          WhatsApp Order
-        </a>
-      </div>
-
+<section class="section features">
+  <div class="container">
+    <div class="section-title"><h2>কেন Mehedi Xpress?</h2><p>সহজ অর্ডার, পরিষ্কার তথ্য ও নির্ভরযোগ্য যোগাযোগ</p></div>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="feature-icon">💵</div><h3>Cash on Delivery</h3><p>ডেলিভারি চার্জ আগে পরিশোধ করে বাকি টাকা পণ্য হাতে পাওয়ার সময় পরিশোধ করুন।</p></div>
+      <div class="feature-card"><div class="feature-icon">🚚</div><h3>Home Delivery</h3><p>আপনার দেওয়া ঠিকানায় পণ্য পৌঁছে দেওয়ার ব্যবস্থা।</p></div>
+      <div class="feature-card"><div class="feature-icon">📱</div><h3>bKash & Nagad</h3><p>bKash ও Nagad payment-এর তথ্য অর্ডার ফর্মে দেওয়া যাবে।</p></div>
+      <div class="feature-card"><div class="feature-icon">⚡</div><h3>Fast Delivery</h3><p>অর্ডার প্রক্রিয়াকরণের পর দ্রুত ডেলিভারির চেষ্টা করা হবে।</p></div>
+      <div class="feature-card"><div class="feature-icon">⭐</div><h3>Best Quality</h3><p>ভালো মানের পণ্য ও সঠিক তথ্য দেওয়াই আমাদের লক্ষ্য।</p></div>
+      <div class="feature-card"><div class="feature-icon">💬</div><h3>Customer Support</h3><p>WhatsApp বা মোবাইল নম্বরে সরাসরি যোগাযোগ করতে পারবেন।</p></div>
     </div>
-  </section>
+  </div>
+</section>
 
+<section class="section" id="about">
+  <div class="container">
+    <div class="section-title"><h2>আমাদের সম্পর্কে</h2><p>Mehedi Xpress</p></div>
+    <div class="about-box">
+      <p><strong>Mehedi Xpress</strong> একটি Sports ও Fashion ভিত্তিক অনলাইন শপ, যেখানে বিভিন্ন ধরনের ক্রীড়া ও পোশাকের পণ্য সহজে অর্ডার করার সুযোগ থাকবে।</p>
+      <p>ফুটবল জার্সি, ক্রিকেট জার্সি, টি-শার্ট, শর্টস, ফুটবল, ক্রিকেট ব্যাট, গ্লাভস এবং কাস্টম প্রিন্টিংসহ বিভিন্ন পণ্য ধীরে ধীরে catalog-এ যুক্ত করা হবে।</p>
+      <p>আমাদের লক্ষ্য হলো সহজ অর্ডার, পরিষ্কার তথ্য, নির্ভরযোগ্য customer support এবং সুন্দর online shopping experience তৈরি করা।</p>
+    </div>
+  </div>
+</section>
 
-  <!-- =========================
-       CATEGORIES
-  ========================== -->
-  <section class="section" id="categories">
+<section class="section">
+  <div class="container">
+    <div class="section-title"><h2>Customer Reviews</h2><p>ডেমো রিভিউ — বাস্তব রিভিউ পাওয়ার পর পরিবর্তন করবেন</p></div>
+    <div class="review-grid">
+      <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>“জার্সির কোয়ালিটি ভালো এবং ডেলিভারি সময়মতো পেয়েছি।”</p><strong>— Demo Customer</strong></div>
+      <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>“পণ্য ছবির মতো পেলে খুব ভালো shopping experience হবে।”</p><strong>— Demo Customer</strong></div>
+      <div class="review-card"><div class="stars">⭐⭐⭐⭐⭐</div><p>“দ্রুত response এবং সহজ order process আশা করছি।”</p><strong>— Demo Customer</strong></div>
+    </div>
+  </div>
+</section>
 
-    <div class="container">
+<section class="section contact" id="contact">
+  <div class="container">
+    <div class="section-title"><h2>যোগাযোগ করুন</h2><p>অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন</p></div>
+    <div class="contact-grid">
+      <div class="contact-card"><h3>📱 মোবাইল</h3><p><a href="tel:01612961523">01612961523</a></p></div>
+      <div class="contact-card"><h3>💬 WhatsApp</h3><p><a href="https://wa.me/8801612961523" target="_blank" rel="noopener">01612961523</a></p></div>
+      <div class="contact-card"><h3>📘 Facebook</h3><p><a href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">Facebook Page</a></p></div>
+      <div class="contact-card"><h3>🎵 TikTok</h3><p><a href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7" target="_blank" rel="noopener">@mehedi.xpress</a></p></div>
+      <div class="contact-card"><h3>📍 ঠিকানা</h3><p>দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাংগরা বাজার থানা, মুরাদনগর, কুমিল্লা</p></div>
+      <div class="contact-card"><h3>✉️ Email</h3><p><a href="mailto:mehedixpress522@gmail.com">mehedixpress522@gmail.com</a></p></div>
+    </div>
+  </div>
+</section>
 
-      <div class="section-title">
-        <h2>আমাদের ক্যাটাগরি</h2>
-        <p>আপনার প্রয়োজন অনুযায়ী ক্যাটাগরি বেছে নিন</p>
-      </div>
+<footer>
+  <div class="container">
+    <p>© 2026 Mehedi Xpress</p>
+    <p>সকল অধিকার সংরক্ষিত।</p>
+    <p>কুমিল্লার ভিতরে ডেলিভারি ৳80 | কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি)</p>
+    <p>১ কেজির বেশি হলে প্রতি অতিরিক্ত কেজিতে ৳30 যোগ হবে।</p>
+  </div>
+</footer>
 
-      <div class="category-grid">
+<a href="#top" class="back-top" aria-label="উপরে যান">↑</a>
 
-        <div class="category-card" data-category="Football Jersey">
-          <div class="category-icon">⚽</div>
-          <h3>ফুটবল জার্সি</h3>
-          <p>Football Jersey</p>
-        </div>
-
-        <div class="category-card" data-category="Cricket Jersey">
-          <div class="category-icon">🏏</div>
-          <h3>ক্রিকেট জার্সি</h3>
-          <p>Cricket Jersey</p>
-        </div>
-
-        <div class="category-card" data-category="T-Shirt">
-          <div class="category-icon">👕</div>
-          <h3>টি-শার্ট</h3>
-          <p>T-Shirt</p>
-        </div>
-
-        <div class="category-card" data-category="Shorts">
-          <div class="category-icon">🩳</div>
-          <h3>শর্টস</h3>
-          <p>Sports Shorts</p>
-        </div>
-
-        <div class="category-card" data-category="Football">
-          <div class="category-icon">⚽</div>
-          <h3>ফুটবল</h3>
-          <p>Football</p>
-        </div>
-
-        <div class="category-card" data-category="Cricket Bat">
-          <div class="category-icon">🏏</div>
-          <h3>ক্রিকেট ব্যাট</h3>
-          <p>Cricket Bat</p>
-        </div>
-
-        <div class="category-card" data-category="Gloves">
-          <div class="category-icon">🧤</div>
-          <h3>গ্লাভস</h3>
-          <p>Sports Gloves</p>
-        </div>
-
-        <div class="category-card" data-category="Custom Printing">
-          <div class="category-icon">🎨</div>
-          <h3>কাস্টম প্রিন্টিং</h3>
-          <p>Custom Printing</p>
-        </div>
-
-      </div>
-
+<!-- ORDER FORM MODAL -->
+<div class="modal" id="orderModal" aria-hidden="true">
+  <div class="order-box">
+    <div class="order-head">
+      <h2>অর্ডার করুন</h2>
+      <button type="button" class="close-btn" id="closeOrder" aria-label="বন্ধ করুন">×</button>
     </div>
 
-  </section>
-
-
-  <!-- =========================
-       FEATURED PRODUCTS
-       এখন demo data।
-       পরে Admin Panel + Database থেকে
-       automatically আসবে।
-  ========================== -->
-  <section class="section" id="products">
-
-    <div class="container">
-
-      <div class="section-title">
-        <h2>Featured Products</h2>
-        <p>জনপ্রিয় কিছু পণ্য দিয়ে শুরু করছি</p>
+    <div class="order-body" id="orderBody">
+      <div class="selected-product">
+        <strong>নির্বাচিত পণ্য:</strong>
+        <span id="selectedProduct">—</span><br>
+        <strong>একক মূল্য:</strong> ৳ <span id="selectedPrice">0</span>
       </div>
 
-      <div class="product-tools">
-        <span id="productCount" class="product-count">
-          6টি ডেমো পণ্য দেখানো হচ্ছে
-        </span>
-      </div>
-
-      <div class="product-grid" id="productGrid">
-
-        <!-- 01 -->
-        <article class="product-card" data-category="Football Jersey" data-name="ফুটবল জার্সি">
-          <img
-            class="product-image"
-            src="football-jersey.jpg"
-            alt="ফুটবল জার্সি"
-          >
-
-          <div class="product-body">
-            <div class="product-category">ফুটবল জার্সি</div>
-            <h3 class="product-title">প্রিমিয়াম ফুটবল জার্সি</h3>
-            <div class="product-price">৳ ৫০০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+      <form id="orderForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="customerName">আপনার নাম <span>*</span></label>
+            <input id="customerName" name="customerName" type="text" required placeholder="পূর্ণ নাম">
           </div>
-        </article>
 
-
-        <!-- 02 -->
-        <article class="product-card" data-category="Cricket Jersey" data-name="ক্রিকেট জার্সি">
-          <img
-            class="product-image"
-            src="cricket-jersey.jpg"
-            alt="ক্রিকেট জার্সি"
-          >
-
-          <div class="product-body">
-            <div class="product-category">ক্রিকেট জার্সি</div>
-            <h3 class="product-title">প্রিমিয়াম ক্রিকেট জার্সি</h3>
-            <div class="product-price">৳ ৭৫০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+          <div class="form-group">
+            <label for="customerPhone">মোবাইল নম্বর <span>*</span></label>
+            <input id="customerPhone" name="customerPhone" type="tel" required placeholder="01XXXXXXXXX">
           </div>
-        </article>
 
-
-        <!-- 03 -->
-        <article class="product-card" data-category="T-Shirt" data-name="টি-শার্ট">
-          <img
-            class="product-image"
-            src="t-shirt.jpg"
-            alt="টি-শার্ট"
-          >
-
-          <div class="product-body">
-            <div class="product-category">টি-শার্ট</div>
-            <h3 class="product-title">স্পোর্টস টি-শার্ট</h3>
-            <div class="product-price">৳ ৬৫০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+          <div class="form-group">
+            <label for="district">জেলা <span>*</span></label>
+            <select id="district" name="district" required>
+              <option value="">জেলা নির্বাচন করুন</option>
+              <option>কুমিল্লা</option><option>ঢাকা</option><option>চট্টগ্রাম</option><option>ফেনী</option>
+              <option>নোয়াখালী</option><option>ব্রাহ্মণবাড়িয়া</option><option>চাঁদপুর</option><option>লক্ষ্মীপুর</option>
+              <option>সিলেট</option><option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option><option>রংপুর</option><option>ময়মনসিংহ</option>
+            </select>
           </div>
-        </article>
 
-
-        <!-- 04 -->
-        <article class="product-card" data-category="Shorts" data-name="শর্টস">
-          <img
-            class="product-image"
-            src="shorts.jpg"
-            alt="শর্টস"
-          >
-
-          <div class="product-body">
-            <div class="product-category">শর্টস</div>
-            <h3 class="product-title">স্পোর্টস শর্টস</h3>
-            <div class="product-price">৳ ৪৫০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+          <div class="form-group">
+            <label for="thana">থানা/উপজেলা <span>*</span></label>
+            <input id="thana" name="thana" type="text" required placeholder="থানা/উপজেলার নাম">
           </div>
-        </article>
 
-
-        <!-- 05 -->
-        <article class="product-card" data-category="Football" data-name="ফুটবল">
-          <img
-            class="product-image"
-            src="football.jpg"
-            alt="ফুটবল"
-          >
-
-          <div class="product-body">
-            <div class="product-category">ফুটবল</div>
-            <h3 class="product-title">প্রফেশনাল ফুটবল</h3>
-            <div class="product-price">৳ ৯৫০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+          <div class="form-group">
+            <label for="union">ইউনিয়ন/এলাকা <span>*</span></label>
+            <input id="union" name="union" type="text" required placeholder="ইউনিয়ন/এলাকার নাম">
           </div>
-        </article>
 
-
-        <!-- 06 -->
-        <article class="product-card" data-category="Cricket Bat" data-name="ক্রিকেট ব্যাট">
-          <img
-            class="product-image"
-            src="cricket-bat.jpg"
-            alt="ক্রিকেট ব্যাট"
-          >
-
-          <div class="product-body">
-            <div class="product-category">ক্রিকেট ব্যাট</div>
-            <h3 class="product-title">ক্রিকেট ব্যাট</h3>
-            <div class="product-price">৳ ১,২০০</div>
-
-            <div class="product-actions">
-              <a href="#order" class="btn btn-dark buy-btn">Buy Now</a>
-            </div>
+          <div class="form-group">
+            <label for="quantity">পরিমাণ <span>*</span></label>
+            <input id="quantity" name="quantity" type="number" min="1" value="1" required>
           </div>
-        </article>
 
+          <div class="form-group full">
+            <label for="address">বিস্তারিত ঠিকানা <span>*</span></label>
+            <textarea id="address" name="address" required placeholder="বাড়ি/রোড/বাজার/ল্যান্ডমার্ক লিখুন"></textarea>
+          </div>
+        </div>
+
+        <div class="delivery-note">
+          <strong>ডেলিভারি চার্জ:</strong>
+          কুমিল্লার ভিতরে ৳80, কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি)।
+          ১ কেজির বেশি হলে প্রতি অতিরিক্ত কেজিতে ৳30 যোগ হবে।
+        </div>
+
+        <div class="payment-box">
+          <h3>পেমেন্ট পদ্ধতি</h3>
+          <div class="payment-options">
+            <label class="payment-option"><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
+            <label class="payment-option"><input type="radio" name="payment" value="bkash"> bKash</label>
+            <label class="payment-option"><input type="radio" name="payment" value="nagad"> Nagad</label>
+          </div>
+          <p id="paymentInfo" style="margin-top:10px;color:#555;font-size:14px;">
+            COD: ডেলিভারি চার্জ আগে পরিশোধ করতে হবে; পণ্যের বাকি টাকা ডেলিভারির সময়।
+          </p>
+        </div>
+
+        <div class="order-summary">
+          <div class="summary-row"><span>পণ্যের মূল্য</span><strong>৳ <span id="subtotal">0</span></strong></div>
+          <div class="summary-row"><span>ডেলিভারি</span><strong>৳ <span id="deliveryFee">80</span></strong></div>
+          <div class="summary-row total"><span>মোট</span><strong>৳ <span id="grandTotal">80</span></strong></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-dark">অর্ডার WhatsApp-এ পাঠান</button>
+          <button type="button" class="btn btn-outline" id="cancelOrder">বাতিল</button>
+        </div>
+      </form>
+
+      <div class="success-box" id="successBox">
+        <div class="success-icon">✅</div>
+        <h2>অর্ডার প্রস্তুত!</h2>
+        <p>WhatsApp খুলে অর্ডারের তথ্য পাঠিয়ে দিন।</p>
       </div>
-
     </div>
-
-  </section>
-
-
-  <!-- =========================
-       WHY CHOOSE US
-  ========================== -->
-  <section class="section features">
-
-    <div class="container">
-
-      <div class="section-title">
-        <h2>কেন Mehedi Xpress?</h2>
-        <p>আপনার কেনাকাটাকে সহজ ও নির্ভরযোগ্য করার চেষ্টা করছি</p>
-      </div>
-
-      <div class="feature-grid">
-
-        <div class="feature-card">
-          <div class="feature-icon">💵</div>
-          <h3>Cash on Delivery</h3>
-          <p>ডেলিভারি চার্জ আগে পরিশোধ করে পণ্য হাতে পেয়ে বাকি টাকা পরিশোধ করুন।</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🚚</div>
-          <h3>Home Delivery</h3>
-          <p>আপনার দেওয়া ঠিকানায় পণ্য পৌঁছে দেওয়ার ব্যবস্থা।</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📱</div>
-          <h3>bKash & Nagad</h3>
-          <p>বর্তমানে manual payment verification-এর মাধ্যমে bKash ও Nagad গ্রহণ করা হবে।</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">⚡</div>
-          <h3>Fast Delivery</h3>
-          <p>অর্ডার প্রক্রিয়াকরণ শেষে দ্রুত ডেলিভারির চেষ্টা করা হবে।</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">⭐</div>
-          <h3>Best Quality</h3>
-          <p>ভালো মানের পণ্য ও সঠিক তথ্য দেওয়াই আমাদের লক্ষ্য।</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">💬</div>
-          <h3>Customer Support</h3>
-          <p>প্রয়োজনে WhatsApp বা মোবাইল নম্বরে যোগাযোগ করুন।</p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       ABOUT US
-  ========================== -->
-  <section class="section" id="about">
-
-    <div class="container">
-
-      <div class="section-title">
-        <h2>আমাদের সম্পর্কে</h2>
-        <p>Mehedi Xpress</p>
-      </div>
-
-      <div class="about-box">
-
-        <p>
-          <strong>Mehedi Xpress</strong> একটি Sports ও Fashion ভিত্তিক
-          অনলাইন শপ, যেখানে বিভিন্ন ধরনের ক্রীড়া ও পোশাকের পণ্য
-          সহজে অর্ডার করার সুযোগ থাকবে।
-        </p>
-
-        <p>
-          ফুটবল জার্সি, ক্রিকেট জার্সি, টি-শার্ট, শর্টস, ফুটবল,
-          ক্রিকেট ব্যাট, গ্লাভস এবং কাস্টম প্রিন্টিংসহ বিভিন্ন
-          পণ্য ধীরে ধীরে আমাদের catalog-এ যুক্ত করা হবে।
-        </p>
-
-        <p>
-          আমাদের লক্ষ্য হলো সহজ অর্ডার, পরিষ্কার তথ্য, নির্ভরযোগ্য
-          customer support এবং সুন্দর online shopping experience তৈরি করা।
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       CUSTOMER REVIEWS
-       এগুলো demo review।
-       বাস্তব customer review পাওয়ার পর
-       এগুলো পরিবর্তন করতে হবে।
-  ========================== -->
-  <section class="section">
-
-    <div class="container">
-
-      <div class="section-title">
-        <h2>Customer Reviews</h2>
-        <p>আমাদের গ্রাহকদের মতামত</p>
-      </div>
-
-      <div class="review-grid">
-
-        <div class="review-card">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <p>
-            “জার্সির কোয়ালিটি ভালো এবং ডেলিভারি সময়মতো পেয়েছি।”
-          </p>
-          <strong>— Demo Customer</strong>
-        </div>
-
-        <div class="review-card">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <p>
-            “পণ্য ছবির মতো পেলে খুব ভালো shopping experience হবে।”
-          </p>
-          <strong>— Demo Customer</strong>
-        </div>
-
-        <div class="review-card">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <p>
-            “দ্রুত response এবং সহজ order process আশা করছি।”
-          </p>
-          <strong>— Demo Customer</strong>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       CONTACT
-  ========================== -->
-  <section class="section contact" id="contact">
-
-    <div class="container">
-
-      <div class="section-title">
-        <h2>যোগাযোগ করুন</h2>
-        <p>অর্ডার বা যেকোনো তথ্যের জন্য আমাদের সাথে যোগাযোগ করুন</p>
-      </div>
-
-      <div class="contact-grid">
-
-        <div class="contact-card">
-          <h3>📱 মোবাইল</h3>
-          <p>
-            <a href="tel:01612961523">01612961523</a>
-          </p>
-        </div>
-
-        <div class="contact-card">
-          <h3>💬 WhatsApp</h3>
-          <p>
-            <a
-              href="https://wa.me/8801612961523"
-              target="_blank"
-              rel="noopener"
-            >
-              01612961523
-            </a>
-          </p>
-        </div>
-
-        <div class="contact-card">
-          <h3>📘 Facebook</h3>
-          <p>
-            <a
-              href="https://www.facebook.com/share/1U5HD22xSw/"
-              target="_blank"
-              rel="noopener"
-            >
-              Facebook Page
-            </a>
-          </p>
-        </div>
-
-        <div class="contact-card">
-          <h3>🎵 TikTok</h3>
-          <p>
-            <a
-              href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7"
-              target="_blank"
-              rel="noopener"
-            >
-              @mehedi.xpress
-            </a>
-          </p>
-        </div>
-
-        <div class="contact-card">
-          <h3>📍 ঠিকানা</h3>
-          <p>
-            দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে,
-            বাংগরা বাজার থানা, মুরাদনগর, কুমিল্লা
-          </p>
-        </div>
-
-        <div class="contact-card">
-          <h3>✉️ Email</h3>
-          <p>
-            <a href="mailto:mehedixpress522@gmail.com">
-              mehedixpress522@gmail.com
-            </a>
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================
-       FOOTER
-  ========================== -->
-  <footer>
-
-    <div class="container">
-
-      <p>
-        © 2026 Mehedi Xpress
-      </p>
-
-      <p>
-        সকল অধিকার সংরক্ষিত।
-      </p>
-
-      <p>
-        Delivery: কুমিল্লা জেলার ভিতরে ৳80 |
-        কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি)
-      </p>
-
-      <p>
-        অতিরিক্ত প্রতি কেজিতে ৳30 যোগ হবে।
-      </p>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =========================
-       BACK TO TOP
-  ========================== -->
-  <a href="#top" class="back-top" aria-label="উপরে যান">
-    ↑
-  </a>
-
-
-  <!-- =========================
-       BASIC SEARCH
-       এটা frontend demo।
-       পরে Admin + Database যুক্ত হলে
-       real dynamic search হবে।
-  ========================== -->
-  <script>
-    const searchInput = document.getElementById("searchInput");
-    const productCards = document.querySelectorAll(".product-card");
-    const productCount = document.getElementById("productCount");
-
-    searchInput.addEventListener("input", function () {
-      const keyword = this.value.trim().toLowerCase();
-      let visible = 0;
-
-      productCards.forEach(function (card) {
-        const name = card.dataset.name.toLowerCase();
-        const category = card.dataset.category.toLowerCase();
-
-        const matched =
-          name.includes(keyword) ||
-          category.includes(keyword);
-
-        card.style.display = matched ? "" : "none";
-
-        if (matched) {
-          visible++;
-        }
-      });
-
-      productCount.textContent =
-        visible + "টি পণ্য পাওয়া গেছে";
+  </div>
+</div>
+
+<script>
+  const WHATSAPP = "8801612961523";
+  const searchInput = document.getElementById("searchInput");
+  const productCards = document.querySelectorAll(".product-card");
+  const productCount = document.getElementById("productCount");
+
+  searchInput.addEventListener("input", function(){
+    const keyword = this.value.trim().toLowerCase();
+    let visible = 0;
+    productCards.forEach(card=>{
+      const matched = card.dataset.name.toLowerCase().includes(keyword) ||
+                      card.dataset.category.toLowerCase().includes(keyword);
+      card.style.display = matched ? "" : "none";
+      if(matched) visible++;
     });
+    productCount.textContent = visible + "টি পণ্য পাওয়া গেছে";
+  });
 
-
-    const categoryCards =
-      document.querySelectorAll(".category-card");
-
-    categoryCards.forEach(function (categoryCard) {
-      categoryCard.addEventListener("click", function () {
-
-        const selectedCategory =
-          this.dataset.category.toLowerCase();
-
-        productCards.forEach(function (productCard) {
-
-          const productCategory =
-            productCard.dataset.category.toLowerCase();
-
-          productCard.style.display =
-            productCategory === selectedCategory
-              ? ""
-              : "none";
-        });
-
-        productCount.textContent =
-          "এই ক্যাটাগরির পণ্য দেখানো হচ্ছে";
-
-        document.getElementById("products")
-          .scrollIntoView({
-            behavior: "smooth"
-          });
+  document.querySelectorAll(".category-card").forEach(card=>{
+    card.addEventListener("click",function(){
+      const selected = this.dataset.category.toLowerCase();
+      productCards.forEach(product=>{
+        product.style.display = product.dataset.category.toLowerCase() === selected ? "" : "none";
       });
+      productCount.textContent = "এই ক্যাটাগরির পণ্য দেখানো হচ্ছে";
+      document.getElementById("products").scrollIntoView({behavior:"smooth"});
     });
-  </script>
+  });
+
+  const modal = document.getElementById("orderModal");
+  const orderForm = document.getElementById("orderForm");
+  const quantity = document.getElementById("quantity");
+  const district = document.getElementById("district");
+  let currentProduct = {name:"", price:0};
+
+  document.querySelectorAll(".buy-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      currentProduct.name = btn.dataset.name;
+      currentProduct.price = Number(btn.dataset.price);
+      document.getElementById("selectedProduct").textContent = currentProduct.name;
+      document.getElementById("selectedPrice").textContent = currentProduct.price.toLocaleString("bn-BD");
+      quantity.value = 1;
+      updateSummary();
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow="hidden";
+    });
+  });
+
+  function closeModal(){
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  document.getElementById("closeOrder").addEventListener("click",closeModal);
+  document.getElementById("cancelOrder").addEventListener("click",closeModal);
+  modal.addEventListener("click",e=>{if(e.target===modal) closeModal();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape") closeModal();});
+
+  function getDeliveryFee(){
+    return district.value === "কুমিল্লা" ? 80 : 150;
+  }
+
+  function updateSummary(){
+    const qty = Math.max(1, Number(quantity.value)||1);
+    const subtotal = currentProduct.price * qty;
+    const fee = getDeliveryFee();
+    document.getElementById("subtotal").textContent = subtotal.toLocaleString("bn-BD");
+    document.getElementById("deliveryFee").textContent = fee.toLocaleString("bn-BD");
+    document.getElementById("grandTotal").textContent = (subtotal + fee).toLocaleString("bn-BD");
+  }
+
+  quantity.addEventListener("input",updateSummary);
+  district.addEventListener("change",updateSummary);
+
+  document.querySelectorAll('input[name="payment"]').forEach(radio=>{
+    radio.addEventListener("change",()=>{
+      const info = document.getElementById("paymentInfo");
+      if(radio.value==="bkash"){
+        info.textContent="bKash Personal: 01820-693313 — বর্তমানে manual verification ব্যবহার করা হবে।";
+      }else if(radio.value==="nagad"){
+        info.textContent="Nagad Personal: 01820-693313 — বর্তমানে manual verification ব্যবহার করা হবে।";
+      }else{
+        info.textContent="COD: ডেলিভারি চার্জ আগে পরিশোধ করতে হবে; পণ্যের বাকি টাকা ডেলিভারির সময়।";
+      }
+    });
+  });
+
+  orderForm.addEventListener("submit",e=>{
+    e.preventDefault();
+
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+    const districtName = district.value;
+    const thana = document.getElementById("thana").value.trim();
+    const unionName = document.getElementById("union").value.trim();
+    const address = document.getElementById("address").value.trim();
+    const qty = Number(quantity.value)||1;
+    const payment = document.querySelector('input[name="payment"]:checked').value;
+    const fee = getDeliveryFee();
+    const total = currentProduct.price * qty + fee;
+
+    const paymentText = payment==="bkash" ? "bKash (01820-693313)" :
+                        payment==="nagad" ? "Nagad (01820-693313)" :
+                        "Cash on Delivery";
+
+    const message =
+`🛍️ *Mehedi Xpress - নতুন অর্ডার*
+
+📦 পণ্য: ${currentProduct.name}
+🔢 পরিমাণ: ${qty}
+💰 পণ্যের মূল্য: ৳${(currentProduct.price*qty).toLocaleString("en-US")}
+🚚 ডেলিভারি: ৳${fee}
+💳 মোট: ৳${total.toLocaleString("en-US")}
+
+👤 নাম: ${name}
+📱 মোবাইল: ${phone}
+📍 জেলা: ${districtName}
+🏢 থানা/উপজেলা: ${thana}
+🏘️ ইউনিয়ন/এলাকা: ${unionName}
+🏠 ঠিকানা: ${address}
+
+💳 পেমেন্ট: ${paymentText}
+
+ধন্যবাদ — Mehedi Xpress`;
+
+    document.getElementById("successBox").classList.add("show");
+    window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(message),"_blank");
+
+    setTimeout(()=>{
+      document.getElementById("successBox").classList.remove("show");
+      closeModal();
+      orderForm.reset();
+      quantity.value=1;
+      updateSummary();
+    },1200);
+  });
+</script>
 
 </body>
 </html>
