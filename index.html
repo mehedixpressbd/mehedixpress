@@ -165,6 +165,45 @@
       font-size:17px;font-weight:800;cursor:pointer
     }
 
+    /* PREMIUM COLOR + 3D INTERACTIONS */
+    :root{--navy:#07143f;--navy2:#0d1f5f;--red:#e63946;--blue:#2563eb;--green:#25d366;--gold:#ffd166}
+    body{background:linear-gradient(180deg,#f8fbff 0%,#f5f6fa 100%)}
+    header{background:linear-gradient(135deg,#050b24,#0d1f5f 65%,#111);border-bottom:2px solid rgba(230,57,70,.65)}
+    nav a{padding:9px 11px;border-radius:8px;transition:transform .2s,background .2s,color .2s}
+    nav a:hover{background:rgba(255,255,255,.1);color:#fff;transform:translateY(-2px)}
+    nav a.nav-home{background:var(--red);box-shadow:0 6px 16px rgba(230,57,70,.28)}
+    nav a.nav-home:hover{background:#ff4d5a}
+    .hero{background:linear-gradient(135deg,rgba(4,12,48,.82),rgba(12,32,96,.78)),url("hero-banner.jpg") center/cover no-repeat,#0b163f;border-bottom:4px solid var(--red)}
+    .hero-badge{background:rgba(255,255,255,.08);backdrop-filter:blur(5px)}
+    .hero h1{text-shadow:0 8px 25px rgba(0,0,0,.35)}
+    .section-heading{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:30px;position:relative}
+    .section-heading>span{font-size:28px;filter:drop-shadow(0 5px 7px rgba(0,0,0,.12))}
+    .section-heading .section-title{margin:0;color:var(--navy);font-weight:900}
+    .section-heading em{color:var(--red);font-style:normal}
+    .section-heading:after{content:"★";position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);color:var(--red);font-size:12px}
+    .category-container{perspective:1200px}
+    .category{position:relative;min-height:215px;border:2px solid #e4e8f5;background:linear-gradient(145deg,#fff,#f5f8ff);box-shadow:0 10px 25px rgba(7,20,63,.10);transform-style:preserve-3d}
+    .category:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.06),transparent 45%,rgba(230,57,70,.08));pointer-events:none}
+    .category:hover{transform:translateY(-8px) rotateX(3deg) rotateY(-3deg);box-shadow:0 18px 34px rgba(7,20,63,.18)}
+    .category.active{outline:none;border-color:var(--red);box-shadow:0 0 0 4px rgba(230,57,70,.12),0 18px 34px rgba(7,20,63,.18);transform:translateY(-5px) scale(1.015)}
+    .category img{height:155px;object-fit:cover;transition:transform .35s;transform:translateZ(18px)}
+    .category:hover img,.category.active img{transform:translateZ(28px) scale(1.04)}
+    .category h3{position:relative;padding:12px 10px 15px;color:var(--navy);z-index:2}
+    .category-icon{position:absolute;top:10px;left:10px;width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--red),#ff6b75);color:#fff;font-size:22px;box-shadow:0 8px 16px rgba(230,57,70,.3);z-index:3;transform:translateZ(45px);font-style:normal}
+    .product-container{perspective:1200px}
+    .product{transform-style:preserve-3d;border:1px solid #e6eaf4;box-shadow:0 10px 25px rgba(7,20,63,.08)}
+    .product:hover{transform:translateY(-7px) rotateX(2deg);box-shadow:0 18px 35px rgba(7,20,63,.15)}
+    .product img{transition:transform .35s}.product:hover img{transform:scale(1.035)}
+    .product .btn{background:linear-gradient(135deg,var(--navy),var(--navy2));box-shadow:0 7px 14px rgba(7,20,63,.18)}
+    .whatsapp-btn{background:linear-gradient(135deg,#12b957,#25d366)!important}
+    .facebook-btn{background:linear-gradient(135deg,#145dbf,#1877f2)!important}
+    .feature,.about-box,.delivery-box,.contact-box{box-shadow:0 10px 25px rgba(7,20,63,.07)}
+    .feature{transition:transform .25s,box-shadow .25s}.feature:hover{transform:translateY(-5px) rotateX(2deg);box-shadow:0 16px 30px rgba(7,20,63,.12)}
+    .order-box{border-top:5px solid var(--red);box-shadow:0 22px 55px rgba(0,0,0,.3)}
+    .btn,.category,.product,.feature{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+    .click-pop{animation:clickPop .38s ease}
+    @keyframes clickPop{0%{transform:scale(.97)}55%{transform:scale(1.035)}100%{transform:scale(1)}}
+
     /* MOBILE */
     @media(max-width:980px){
       .category-container,.product-container{grid-template-columns:repeat(2,1fr)}
@@ -198,7 +237,7 @@
     </a>
 
     <nav>
-      <a href="#top">হোম</a>
+      <a href="#top" id="homeNav" class="nav-home">🏠 হোম</a>
       <a href="#categories">ক্যাটাগরি</a>
       <a href="#products">পণ্য</a>
       <a href="#about">আমাদের সম্পর্কে</a>
@@ -223,45 +262,45 @@
 
 <section class="section" id="categories">
   <div class="container">
-    <h2 class="section-title">আমাদের ক্যাটাগরি</h2>
+    <div class="section-heading"><span>🛍️</span><h2 class="section-title">আমাদের <em>ক্যাটাগরি</em></h2></div>
 
     <div class="category-container">
-      <button class="category" type="button" data-category="Football Jersey">
+      <button class="category" type="button" data-category="Football Jersey"><span class="category-icon">⚽</span>
         <img src="football-jersey.jpg" alt="ফুটবল জার্সি">
         <h3>ফুটবল জার্সি</h3>
       </button>
 
-      <button class="category" type="button" data-category="Cricket Jersey">
+      <button class="category" type="button" data-category="Cricket Jersey"><span class="category-icon">🏏</span>
         <img src="cricket-jersey.jpg" alt="ক্রিকেট জার্সি">
         <h3>ক্রিকেট জার্সি</h3>
       </button>
 
-      <button class="category" type="button" data-category="T-Shirt">
+      <button class="category" type="button" data-category="T-Shirt"><span class="category-icon">👕</span>
         <img src="t-shirt.jpg" alt="টি-শার্ট">
         <h3>টি-শার্ট</h3>
       </button>
 
-      <button class="category" type="button" data-category="Shorts">
+      <button class="category" type="button" data-category="Shorts"><span class="category-icon">🩳</span>
         <img src="shorts.jpg" alt="শর্টস">
         <h3>শর্টস</h3>
       </button>
 
-      <button class="category" type="button" data-category="Football">
+      <button class="category" type="button" data-category="Football"><span class="category-icon">⚽</span>
         <img src="football.jpg" alt="ফুটবল">
         <h3>ফুটবল</h3>
       </button>
 
-      <button class="category" type="button" data-category="Cricket Bat">
+      <button class="category" type="button" data-category="Cricket Bat"><span class="category-icon">🏏</span>
         <img src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট">
         <h3>ক্রিকেট ব্যাট</h3>
       </button>
 
-      <button class="category" type="button" data-category="Gloves">
+      <button class="category" type="button" data-category="Gloves"><span class="category-icon">🧤</span>
         <img src="gloves.jpg" alt="গ্লাভস">
         <h3>গ্লাভস</h3>
       </button>
 
-      <button class="category" type="button" data-category="Custom Printing">
+      <button class="category" type="button" data-category="Custom Printing"><span class="category-icon">🎨</span>
         <img src="custom-printing.jpg" alt="কাস্টম প্রিন্টিং">
         <h3>কাস্টম প্রিন্টিং</h3>
       </button>
@@ -271,7 +310,7 @@
 
 <section class="section" id="products">
   <div class="container">
-    <h2 class="section-title">আমাদের পণ্য</h2>
+    <div class="section-heading"><span>🛒</span><h2 class="section-title">আমাদের <em>পণ্য</em></h2></div>
 
     <div class="product-toolbar">
       <span id="productCount" class="muted">৮টি পণ্য দেখানো হচ্ছে</span>
@@ -596,16 +635,40 @@
     });
   }
 
+  function showAllProducts(scrollToProducts = false) {
+    categoryCards.forEach(card => card.classList.remove("active"));
+    productCards.forEach(product => product.style.display = "");
+    searchInput.value = "";
+    productCount.textContent = productCards.length + "টি পণ্য দেখানো হচ্ছে";
+    if (scrollToProducts) {
+      document.getElementById("products").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+  }
+
   categoryCards.forEach(card => {
     card.addEventListener("click", function () {
+      categoryCards.forEach(c => c.classList.remove("active"));
+      this.classList.add("active");
+      this.classList.remove("click-pop");
+      void this.offsetWidth;
+      this.classList.add("click-pop");
+      searchInput.value = "";
       filterProducts(this.dataset.category);
     });
   });
 
   showAllBtn.addEventListener("click", function () {
-    categoryCards.forEach(card => card.classList.remove("active"));
-    productCards.forEach(product => product.style.display = "");
-    productCount.textContent = productCards.length + "টি পণ্য দেখানো হচ্ছে";
+    showAllProducts(true);
+  });
+
+  const homeNav = document.getElementById("homeNav");
+  homeNav.addEventListener("click", function(event){
+    event.preventDefault();
+    showAllProducts(false);
+    window.scrollTo({top:0, behavior:"smooth"});
+    this.classList.remove("click-pop");
+    void this.offsetWidth;
+    this.classList.add("click-pop");
   });
 
   searchInput.addEventListener("input", function () {
@@ -914,6 +977,7 @@ Mehedi Xpress`;
   });
 
   function goToTop() {
+    showAllProducts(false);
     window.scrollTo({top:0, behavior:"smooth"});
   }
 
@@ -926,6 +990,17 @@ Mehedi Xpress`;
 
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") closeOrderForm();
+  });
+
+  /* =========================
+     SMALL 3D CLICK FEEDBACK
+  ========================== */
+  document.addEventListener("click", function(event){
+    const target = event.target.closest(".btn, .category");
+    if(!target || target.id === "homeNav" || target.classList.contains("category")) return;
+    target.classList.remove("click-pop");
+    void target.offsetWidth;
+    target.classList.add("click-pop");
   });
 
   /* =========================
