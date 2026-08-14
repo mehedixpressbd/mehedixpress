@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 
   <title>Mehedi Xpress | Sports & Fashion Store</title>
   <meta name="description" content="Mehedi Xpress - Sports ও Fashion পণ্যের অনলাইন শপ। সহজে অর্ডার করুন এবং ঘরে বসে পণ্য গ্রহণ করুন।">
@@ -102,12 +103,12 @@
 
 <header id="top">
   <div class="container header-inner">
-    <a href="#top" class="logo">
+    <a href="#home" class="logo" id="logoHome">
       <img src="logo.jpeg" alt="Mehedi Xpress Logo">
       <span>Mehedi Xpress</span>
     </a>
     <nav>
-      <a href="#top">হোম</a>
+      <a href="#home" id="homeLink">হোম</a>
       <a href="#categories">ক্যাটাগরি</a>
       <a href="#products">পণ্য</a>
       <a href="#about">আমাদের সম্পর্কে</a>
@@ -118,7 +119,7 @@
   </div>
 </header>
 
-<section class="hero">
+<section class="hero" id="home">
   <div class="container hero-content">
     <span class="hero-badge">Mehedi Xpress • Sports & Fashion</span>
     <h1>আপনার পছন্দের স্পোর্টস ও ফ্যাশন পণ্য, এখন আরও সহজে</h1>
@@ -257,274 +258,11 @@
 </footer>
 
 <div class="quick-contact" aria-label="দ্রুত যোগাযোগ">
-  <a class="quick-whatsapp" href="https://wa.me/8801612961523" target="_blank" rel="noopener">💬 WhatsApp</a>
-  <a class="quick-messenger" href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">💬 Messenger</a>
+  <a class="quick-whatsapp" href="https://wa.me/8801612961523" target="_blank" rel="noopener">💬 WhatsApp-এ মেসেজ</a>
+  <a class="quick-messenger" href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">💬 Facebook Messenger</a>
 </div>
 
 <a href="#top" class="back-top" aria-label="উপরে যান">↑</a>
-
-<!-- ORDER FORM MODAL -->
-<div class="modal" id="orderModal" aria-hidden="true">
-  <div class="order-box">
-    <div class="order-head">
-      <h2>অর্ডার করুন</h2>
-      <button type="button" class="close-btn" id="closeOrder" aria-label="বন্ধ করুন">×</button>
-    </div>
-
-    <div class="order-body" id="orderBody">
-      <div class="selected-product">
-        <strong>নির্বাচিত পণ্য:</strong>
-        <span id="selectedProduct">—</span><br>
-        <strong>একক মূল্য:</strong> ৳ <span id="selectedPrice">0</span>
-      </div>
-
-      <form id="orderForm">
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="customerName">আপনার নাম <span>*</span></label>
-            <input id="customerName" name="customerName" type="text" required placeholder="পূর্ণ নাম">
-          </div>
-
-          <div class="form-group">
-            <label for="customerPhone">মোবাইল নম্বর <span>*</span></label>
-            <input id="customerPhone" name="customerPhone" type="tel" required placeholder="01XXXXXXXXX">
-          </div>
-
-          <div class="form-group">
-            <label for="district">জেলা <span>*</span></label>
-            <select id="district" name="district" required>
-              <option value="">জেলা নির্বাচন করুন</option>
-              <option>কুমিল্লা</option><option>ঢাকা</option><option>চট্টগ্রাম</option><option>ফেনী</option>
-              <option>নোয়াখালী</option><option>ব্রাহ্মণবাড়িয়া</option><option>চাঁদপুর</option><option>লক্ষ্মীপুর</option>
-              <option>সিলেট</option><option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option><option>রংপুর</option><option>ময়মনসিংহ</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="thana">থানা/উপজেলা <span>*</span></label>
-            <input id="thana" name="thana" type="text" required placeholder="থানা/উপজেলার নাম">
-          </div>
-
-          <div class="form-group">
-            <label for="union">ইউনিয়ন/এলাকা <span>*</span></label>
-            <input id="union" name="union" type="text" required placeholder="ইউনিয়ন/এলাকার নাম">
-          </div>
-
-          <div class="form-group">
-            <label for="quantity">পরিমাণ <span>*</span></label>
-            <input id="quantity" name="quantity" type="number" min="1" value="1" required>
-          </div>
-
-          <div class="form-group full">
-            <label for="address">বিস্তারিত ঠিকানা <span>*</span></label>
-            <textarea id="address" name="address" required placeholder="বাড়ি/রোড/বাজার/ল্যান্ডমার্ক লিখুন"></textarea>
-          </div>
-        </div>
-
-        <div class="delivery-note">
-          <strong>ডেলিভারি চার্জ:</strong>
-          কুমিল্লার ভিতরে ৳80, কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি)।
-          ১ কেজির বেশি হলে প্রতি অতিরিক্ত কেজিতে ৳30 যোগ হবে।
-        </div>
-
-        <div class="payment-box">
-          <h3>পেমেন্ট পদ্ধতি</h3>
-          <div class="payment-options">
-            <label class="payment-option"><input type="radio" name="payment" value="cod" checked> Cash on Delivery</label>
-            <label class="payment-option"><input type="radio" name="payment" value="bkash"> bKash</label>
-            <label class="payment-option"><input type="radio" name="payment" value="nagad"> Nagad</label>
-          </div>
-          <p id="paymentInfo" style="margin-top:10px;color:#555;font-size:14px;">
-            COD: ডেলিভারি চার্জ আগে পরিশোধ করতে হবে; পণ্যের বাকি টাকা ডেলিভারির সময়।
-          </p>
-        </div>
-
-        <div class="order-summary">
-          <div class="summary-row"><span>পণ্যের মূল্য</span><strong>৳ <span id="subtotal">0</span></strong></div>
-          <div class="summary-row"><span>ডেলিভারি</span><strong>৳ <span id="deliveryFee">80</span></strong></div>
-          <div class="summary-row total"><span>মোট</span><strong>৳ <span id="grandTotal">80</span></strong></div>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-dark">অর্ডার WhatsApp-এ পাঠান</button>
-          <button type="button" class="btn btn-outline" id="cancelOrder">বাতিল</button>
-        </div>
-      </form>
-
-      <div class="success-box" id="successBox">
-        <div class="success-icon">✅</div>
-        <h2>অর্ডার প্রস্তুত!</h2>
-        <p>WhatsApp খুলে অর্ডারের তথ্য পাঠিয়ে দিন।</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  const WHATSAPP = "8801612961523";
-  const searchInput = document.getElementById("searchInput");
-  const productCards = document.querySelectorAll(".product-card");
-  const productCount = document.getElementById("productCount");
-
-  searchInput.addEventListener("input", function(){
-    const keyword = this.value.trim().toLowerCase();
-    let visible = 0;
-    productCards.forEach(card=>{
-      const matched = card.dataset.name.toLowerCase().includes(keyword) ||
-                      card.dataset.category.toLowerCase().includes(keyword);
-      card.style.display = matched ? "" : "none";
-      if(matched) visible++;
-    });
-    productCount.textContent = visible + "টি পণ্য পাওয়া গেছে";
-  });
-
-  document.querySelectorAll(".category-card").forEach(card=>{
-    card.addEventListener("click",function(){
-      const selected = this.dataset.category.toLowerCase();
-      productCards.forEach(product=>{
-        product.style.display = product.dataset.category.toLowerCase() === selected ? "" : "none";
-      });
-      productCount.textContent = "এই ক্যাটাগরির পণ্য দেখানো হচ্ছে";
-      document.getElementById("products").scrollIntoView({behavior:"smooth"});
-    });
-  });
-
-  const modal = document.getElementById("orderModal");
-  const orderForm = document.getElementById("orderForm");
-  const quantity = document.getElementById("quantity");
-  const district = document.getElementById("district");
-  let currentProduct = {name:"", price:0};
-
-  document.querySelectorAll(".buy-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      currentProduct.name = btn.dataset.name;
-      currentProduct.price = Number(btn.dataset.price);
-      document.getElementById("selectedProduct").textContent = currentProduct.name;
-      document.getElementById("selectedPrice").textContent = currentProduct.price.toLocaleString("bn-BD");
-      quantity.value = 1;
-      updateSummary();
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden","false");
-      document.body.style.overflow="hidden";
-    });
-  });
-
-  function closeModal(){
-    modal.classList.remove("show");
-    modal.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
-  }
-
-  document.getElementById("closeOrder").addEventListener("click",closeModal);
-  document.getElementById("cancelOrder").addEventListener("click",closeModal);
-  modal.addEventListener("click",e=>{if(e.target===modal) closeModal();});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape") closeModal();});
-
-  function getDeliveryFee(){
-    return district.value === "কুমিল্লা" ? 80 : 150;
-  }
-
-  function updateSummary(){
-    const qty = Math.max(1, Number(quantity.value)||1);
-    const subtotal = currentProduct.price * qty;
-    const fee = getDeliveryFee();
-    document.getElementById("subtotal").textContent = subtotal.toLocaleString("bn-BD");
-    document.getElementById("deliveryFee").textContent = fee.toLocaleString("bn-BD");
-    document.getElementById("grandTotal").textContent = (subtotal + fee).toLocaleString("bn-BD");
-  }
-
-  quantity.addEventListener("input",updateSummary);
-  district.addEventListener("change",updateSummary);
-
-  document.querySelectorAll('input[name="payment"]').forEach(radio=>{
-    radio.addEventListener("change",()=>{
-      const info = document.getElementById("paymentInfo");
-      if(radio.value==="bkash"){
-        info.textContent="bKash Personal: 01820-693313 — বর্তমানে manual verification ব্যবহার করা হবে।";
-      }else if(radio.value==="nagad"){
-        info.textContent="Nagad Personal: 01820-693313 — বর্তমানে manual verification ব্যবহার করা হবে।";
-      }else{
-        info.textContent="COD: ডেলিভারি চার্জ আগে পরিশোধ করতে হবে; পণ্যের বাকি টাকা ডেলিভারির সময়।";
-      }
-    });
-  });
-
-  orderForm.addEventListener("submit",e=>{
-    e.preventDefault();
-
-    const name = document.getElementById("customerName").value.trim();
-    const phone = document.getElementById("customerPhone").value.trim();
-    const districtName = district.value;
-    const thana = document.getElementById("thana").value.trim();
-    const unionName = document.getElementById("union").value.trim();
-    const address = document.getElementById("address").value.trim();
-    const qty = Number(quantity.value)||1;
-    const payment = document.querySelector('input[name="payment"]:checked').value;
-    const fee = getDeliveryFee();
-    const total = currentProduct.price * qty + fee;
-
-    const paymentText = payment==="bkash" ? "bKash (01820-693313)" :
-                        payment==="nagad" ? "Nagad (01820-693313)" :
-                        "Cash on Delivery";
-
-    const message =
-`🛍️ *Mehedi Xpress - নতুন অর্ডার*
-
-📦 পণ্য: ${currentProduct.name}
-🔢 পরিমাণ: ${qty}
-💰 পণ্যের মূল্য: ৳${(currentProduct.price*qty).toLocaleString("en-US")}
-🚚 ডেলিভারি: ৳${fee}
-💳 মোট: ৳${total.toLocaleString("en-US")}
-
-👤 নাম: ${name}
-📱 মোবাইল: ${phone}
-📍 জেলা: ${districtName}
-🏢 থানা/উপজেলা: ${thana}
-🏘️ ইউনিয়ন/এলাকা: ${unionName}
-🏠 ঠিকানা: ${address}
-
-💳 পেমেন্ট: ${paymentText}
-
-ধন্যবাদ — Mehedi Xpress`;
-
-    document.getElementById("successBox").classList.add("show");
-    window.open("https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(message),"_blank");
-
-    setTimeout(()=>{
-      document.getElementById("successBox").classList.remove("show");
-      closeModal();
-      orderForm.reset();
-      quantity.value=1;
-      updateSummary();
-    },1200);
-  });
-</script>
-
-
-<style>
-/* ===== ORDER MODAL ===== */
-.order-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;overflow:auto;padding:25px 12px}
-.order-modal.show{display:flex;align-items:center;justify-content:center}
-.order-box{width:min(680px,100%);background:#fff;border-radius:16px;padding:24px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.order-close{position:absolute;right:14px;top:10px;border:0;background:#eee;width:38px;height:38px;border-radius:50%;font-size:24px;cursor:pointer}
-.order-box h2{margin:0 45px 6px 0}
-.order-sub{color:#666;margin-bottom:18px}
-.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.order-field{display:flex;flex-direction:column;gap:6px}
-.order-field.full{grid-column:1/-1}
-.order-field label{font-weight:700;font-size:14px}
-.order-field input,.order-field select,.order-field textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;outline:none;background:#fff}
-.order-field textarea{min-height:80px;resize:vertical}
-.order-summary{background:#f6f7f9;border-radius:10px;padding:14px;margin:16px 0}
-.order-row{display:flex;justify-content:space-between;gap:15px;margin:6px 0}
-.order-total{font-size:20px;font-weight:800;border-top:1px solid #ddd;padding-top:10px;margin-top:10px}
-.payment-box{border:1px solid #ddd;border-radius:10px;padding:12px;margin:12px 0}
-.payment-box label{display:block;margin:7px 0}
-.order-submit{width:100%;padding:14px;border:0;border-radius:9px;background:#128c7e;color:#fff;font-weight:800;font-size:16px;cursor:pointer}
-.order-submit:disabled{opacity:.6;cursor:not-allowed}
-.order-message{display:none;padding:12px;border-radius:8px;margin-top:12px;background:#e8f7f3;color:#075e54}
-@media(max-width:600px){.order-grid{grid-template-columns:1fr}.order-field.full{grid-column:auto}.order-box{padding:18px}}
-</style>
 
 <!-- ===== WORKING ORDER FORM ===== -->
 <div id="orderModal" class="order-modal" aria-hidden="true">
