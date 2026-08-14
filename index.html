@@ -59,6 +59,11 @@
     .contact-card h3{margin-bottom:8px}.contact-card p,.contact-card a{color:#ddd;text-decoration:none;word-break:break-word}
 
     footer{background:#000;color:#fff;text-align:center;padding:28px 0}footer p{margin:4px 0;font-size:14px;color:#ccc}
+
+    .quick-contact{position:fixed;left:16px;bottom:18px;z-index:950;display:flex;flex-direction:column;gap:9px}
+    .quick-contact a{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:999px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+    .quick-whatsapp{background:#128c7e}.quick-messenger{background:#1877f2}
+
     .back-top{position:fixed;right:18px;bottom:18px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:#111;color:#fff;border-radius:50%;text-decoration:none;box-shadow:var(--shadow);z-index:900}
 
     /* ORDER MODAL */
@@ -148,9 +153,9 @@
   <div class="container">
     <div class="section-title">
       <h2>আমাদের পণ্য</h2>
-      <p>ডেমো হিসেবে ৬টি পণ্য রাখা হয়েছে—পরে আরও পণ্য যোগ করা যাবে।</p>
+      <p>ডেমো হিসেবে ৭টি পণ্য রাখা হয়েছে—পরে আরও পণ্য যোগ করা যাবে।</p>
     </div>
-    <div class="product-tools"><span id="productCount" class="product-count">৬টি পণ্য দেখানো হচ্ছে</span></div>
+    <div class="product-tools"><span id="productCount" class="product-count">৭টি পণ্য দেখানো হচ্ছে</span></div>
     <div class="product-grid" id="productGrid">
 
       <article class="product-card" data-category="Football Jersey" data-name="ফুটবল জার্সি">
@@ -181,6 +186,11 @@
       <article class="product-card" data-category="Cricket Bat" data-name="ক্রিকেট ব্যাট">
         <img class="product-image" src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট">
         <div class="product-body"><div class="product-category">ক্রিকেট ব্যাট</div><h3 class="product-title">ক্রিকেট ব্যাট</h3><div class="product-price">৳ ১,২০০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="ক্রিকেট ব্যাট" data-price="1200">Buy Now</button></div></div>
+      </article>
+
+      <article class="product-card" data-category="Gloves" data-name="গ্লাভস">
+        <img class="product-image" src="gloves.jpg" alt="স্পোর্টস গ্লাভস">
+        <div class="product-body"><div class="product-category">গ্লাভস</div><h3 class="product-title">প্রিমিয়াম স্পোর্টস গ্লাভস</h3><div class="product-price">৳ ৫৫০</div><div class="product-actions"><button class="btn btn-dark buy-btn" data-name="প্রিমিয়াম স্পোর্টস গ্লাভস" data-price="550">Buy Now</button></div></div>
       </article>
 
     </div>
@@ -229,7 +239,7 @@
     <div class="contact-grid">
       <div class="contact-card"><h3>📱 মোবাইল</h3><p><a href="tel:01612961523">01612961523</a></p></div>
       <div class="contact-card"><h3>💬 WhatsApp</h3><p><a href="https://wa.me/8801612961523" target="_blank" rel="noopener">01612961523</a></p></div>
-      <div class="contact-card"><h3>📘 Facebook</h3><p><a href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">Facebook Page</a></p></div>
+      <div class="contact-card"><h3>💬 Messenger</h3><p><a href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">Facebook Page-এ মেসেজ করুন</a></p></div>
       <div class="contact-card"><h3>🎵 TikTok</h3><p><a href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7" target="_blank" rel="noopener">@mehedi.xpress</a></p></div>
       <div class="contact-card"><h3>📍 ঠিকানা</h3><p>দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাংগরা বাজার থানা, মুরাদনগর, কুমিল্লা</p></div>
       <div class="contact-card"><h3>✉️ Email</h3><p><a href="mailto:mehedixpress522@gmail.com">mehedixpress522@gmail.com</a></p></div>
@@ -245,6 +255,11 @@
     <p>১ কেজির বেশি হলে প্রতি অতিরিক্ত কেজিতে ৳30 যোগ হবে।</p>
   </div>
 </footer>
+
+<div class="quick-contact" aria-label="দ্রুত যোগাযোগ">
+  <a class="quick-whatsapp" href="https://wa.me/8801612961523" target="_blank" rel="noopener">💬 WhatsApp</a>
+  <a class="quick-messenger" href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">💬 Messenger</a>
+</div>
 
 <a href="#top" class="back-top" aria-label="উপরে যান">↑</a>
 
