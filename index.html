@@ -174,14 +174,14 @@ footer h3{color:white;margin-bottom:8px}
       <p>একটি ক্যাটাগরিতে ক্লিক করলে সেই ক্যাটাগরির পণ্য দেখাবে। আবার “সব পণ্য” চাপলে সব পণ্য ফিরে আসবে।</p>
     </div>
     <div class="category-grid">
-      <div class="category-card" data-category="Football Jersey"><img class="category-img" src="football-jersey.jpg" alt="ফুটবল জার্সি"><div class="category-overlay"><div class="category-icon">⚽</div><h3>ফুটবল জার্সি</h3><p>Football Jersey</p></div></div>
-      <div class="category-card" data-category="Cricket Jersey"><img class="category-img" src="cricket-jersey.jpg" alt="ক্রিকেট জার্সি"><div class="category-overlay"><div class="category-icon">🏏</div><h3>ক্রিকেট জার্সি</h3><p>Cricket Jersey</p></div></div>
-      <div class="category-card" data-category="T-Shirt"><img class="category-img" src="t-shirt.jpg" alt="টি-শার্ট"><div class="category-overlay"><div class="category-icon">👕</div><h3>টি-শার্ট</h3><p>T-Shirt</p></div></div>
-      <div class="category-card" data-category="Shorts"><img class="category-img" src="shorts.jpg" alt="শর্টস"><div class="category-overlay"><div class="category-icon">🩳</div><h3>শর্টস</h3><p>Sports Shorts</p></div></div>
-      <div class="category-card" data-category="Football"><img class="category-img" src="football.jpg" alt="ফুটবল"><div class="category-overlay"><div class="category-icon">⚽</div><h3>ফুটবল</h3><p>Football</p></div></div>
-      <div class="category-card" data-category="Cricket Bat"><img class="category-img" src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট"><div class="category-overlay"><div class="category-icon">🏏</div><h3>ক্রিকেট ব্যাট</h3><p>Cricket Bat</p></div></div>
-      <div class="category-card" data-category="Gloves"><img class="category-img" src="gloves.jpg" alt="গ্লাভস"><div class="category-overlay"><div class="category-icon">🧤</div><h3>গ্লাভস</h3><p>Sports Gloves</p></div></div>
-      <div class="category-card" data-category="Custom Printing"><img class="category-img" src="custom-printing.jpg" alt="কাস্টম প্রিন্টিং"><div class="category-overlay"><div class="category-icon">🎨</div><h3>কাস্টম প্রিন্টিং</h3><p>Custom Printing</p></div></div>
+      <div class="category-card" data-category="Football Jersey" data-keywords="football jersey soccer jersey sports jersey জার্সি ফুটবল"><img class="category-img" src="football-jersey.jpg" alt="ফুটবল জার্সি"><div class="category-overlay"><div class="category-icon">⚽</div><h3>ফুটবল জার্সি</h3><p>Football Jersey</p></div></div>
+      <div class="category-card" data-category="Cricket Jersey" data-keywords="cricket jersey sports jersey ক্রিকেট জার্সি"><img class="category-img" src="cricket-jersey.jpg" alt="ক্রিকেট জার্সি"><div class="category-overlay"><div class="category-icon">🏏</div><h3>ক্রিকেট জার্সি</h3><p>Cricket Jersey</p></div></div>
+      <div class="category-card" data-category="T-Shirt" data-keywords="tshirt t shirt sports shirt টি শার্ট"><img class="category-img" src="t-shirt.jpg" alt="টি-শার্ট"><div class="category-overlay"><div class="category-icon">👕</div><h3>টি-শার্ট</h3><p>T-Shirt</p></div></div>
+      <div class="category-card" data-category="Shorts" data-keywords="short sports shorts শর্টস"><img class="category-img" src="shorts.jpg" alt="শর্টস"><div class="category-overlay"><div class="category-icon">🩳</div><h3>শর্টস</h3><p>Sports Shorts</p></div></div>
+      <div class="category-card" data-category="Football" data-keywords="football soccer ball ফুটবল বল"><img class="category-img" src="football.jpg" alt="ফুটবল"><div class="category-overlay"><div class="category-icon">⚽</div><h3>ফুটবল</h3><p>Football</p></div></div>
+      <div class="category-card" data-category="Cricket Bat" data-keywords="cricket bat bat willow ব্যাট ক্রিকেট ব্যাট"><img class="category-img" src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট"><div class="category-overlay"><div class="category-icon">🏏</div><h3>ক্রিকেট ব্যাট</h3><p>Cricket Bat</p></div></div>
+      <div class="category-card" data-category="Gloves" data-keywords="gloves sports gloves goalkeeper gloves গ্লাভস"><img class="category-img" src="gloves.jpg" alt="গ্লাভস"><div class="category-overlay"><div class="category-icon">🧤</div><h3>গ্লাভস</h3><p>Sports Gloves</p></div></div>
+      <div class="category-card" data-category="Custom Printing" data-keywords="custom print printing jersey name number design কাস্টম প্রিন্টিং"><img class="category-img" src="custom-printing.jpg" alt="কাস্টম প্রিন্টিং"><div class="category-overlay"><div class="category-icon">🎨</div><h3>কাস্টম প্রিন্টিং</h3><p>Custom Printing</p></div></div>
     </div>
     <div style="text-align:center;margin-top:22px"><button class="btn btn-ghost" id="showAllBtn">↻ সব পণ্য দেখুন</button></div>
   </div>
@@ -345,166 +345,94 @@ footer h3{color:white;margin-bottom:8px}
 <div class="toast" id="toast"></div>
 
 <script>
-const WHATSAPP = "8801612961523";
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput");
+  const cards = Array.from(document.querySelectorAll(".product-card"));
+  const count = document.getElementById("productCount");
+  const categoryCards = document.querySelectorAll(".category-card");
 
-const products = [...document.querySelectorAll(".product-card")];
-const categories = [...document.querySelectorAll(".category-card")];
-const searchInput = document.getElementById("searchInput");
-const productCount = document.getElementById("productCount");
-const orderModal = document.getElementById("orderModal");
-const qty = document.getElementById("qty");
-let selectedProductName = "";
-let selectedProductPrice = 0;
+  const normalize = value => String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
 
-function toast(message){
-  const t=document.getElementById("toast");
-  t.textContent=message;t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"),2200);
-}
-function showProducts(filter="", scroll=false){
-  let visible=0;
-  const q=filter.trim().toLowerCase();
-  products.forEach(card=>{
-    const name=card.dataset.name.toLowerCase();
-    const cat=card.dataset.category.toLowerCase();
-    const match=!q || name.includes(q) || cat.includes(q);
-    card.style.display=match ? "" : "none";
-    if(match) visible++;
+  function searchable(card) {
+    return normalize([
+      card.dataset.name,
+      card.dataset.category,
+      card.dataset.keywords,
+      card.querySelector(".product-title")?.textContent,
+      card.querySelector(".product-category")?.textContent
+    ].join(" "));
+  }
+
+  function showAll() {
+    cards.forEach(card => card.style.display = "");
+    if (count) count.textContent = cards.length + "টি পণ্য দেখানো হচ্ছে";
+  }
+
+  function searchProducts(value) {
+    const q = normalize(value);
+    if (!q) return showAll();
+
+    const terms = q.split(" ").filter(Boolean);
+    let visible = 0;
+
+    cards.forEach(card => {
+      const text = searchable(card);
+      const match = terms.every(term => text.includes(term));
+      card.style.display = match ? "" : "none";
+      if (match) visible++;
+    });
+
+    if (count) count.textContent = visible + "টি পণ্য পাওয়া গেছে";
+  }
+
+  searchInput?.addEventListener("input", e => searchProducts(e.target.value));
+
+  searchInput?.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      e.target.value = "";
+      showAll();
+    }
   });
-  productCount.textContent=visible+"টি পণ্য দেখানো হচ্ছে";
-  if(scroll) document.getElementById("products").scrollIntoView({behavior:"smooth"});
-}
-searchInput.addEventListener("input",()=>showProducts(searchInput.value));
-document.getElementById("clearSearch").addEventListener("click",()=>{searchInput.value="";showProducts("")});
-document.getElementById("showAllBtn").addEventListener("click",()=>{searchInput.value="";showProducts("");document.getElementById("products").scrollIntoView({behavior:"smooth"})});
 
-categories.forEach(card=>{
-  card.addEventListener("click",()=>{
-    searchInput.value="";
-    showProducts(card.dataset.category,true);
-    toast(card.querySelector("h3").textContent+" — পণ্য দেখানো হচ্ছে");
+  categoryCards.forEach(category => {
+    category.addEventListener("click", function () {
+      const selected = normalize(this.dataset.category);
+
+      if (searchInput) searchInput.value = "";
+
+      let visible = 0;
+      cards.forEach(card => {
+        const match = normalize(card.dataset.category) === selected;
+        card.style.display = match ? "" : "none";
+        if (match) visible++;
+      });
+
+      if (count) {
+        count.textContent = visible + "টি " +
+          (this.querySelector("h3")?.textContent || "পণ্য") +
+          " পাওয়া গেছে";
+      }
+
+      document.getElementById("products")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
   });
-});
 
-function openOrder(name,price){
-  selectedProductName=name; selectedProductPrice=Number(price)||0;
-  document.getElementById("selectedProduct").textContent=name;
-  document.getElementById("selectedPrice").textContent="৳ "+selectedProductPrice.toLocaleString("bn-BD");
-  qty.value=1; updateTotal();
-  orderModal.classList.add("open");orderModal.setAttribute("aria-hidden","false");
-}
-function closeOrder(){orderModal.classList.remove("open");orderModal.setAttribute("aria-hidden","true")}
-document.querySelectorAll(".buy-btn").forEach(btn=>btn.addEventListener("click",()=>openOrder(btn.dataset.product,btn.dataset.price)));
-document.getElementById("closeModal").addEventListener("click",closeOrder);
-document.getElementById("cancelOrder").addEventListener("click",closeOrder);
-orderModal.addEventListener("click",e=>{if(e.target===orderModal)closeOrder()});
-qty.addEventListener("input",updateTotal);
-
-const divisions={
-  "ঢাকা":["ঢাকা","গাজীপুর","নারায়ণগঞ্জ","নরসিংদী","মানিকগঞ্জ","মুন্সিগঞ্জ","মাদারীপুর","রাজবাড়ী","শরীয়তপুর","ফরিদপুর","গোপালগঞ্জ","টাঙ্গাইল","কিশোরগঞ্জ"],
-  "চট্টগ্রাম":["কুমিল্লা","চট্টগ্রাম","কক্সবাজার","ব্রাহ্মণবাড়িয়া","চাঁদপুর","ফেনী","নোয়াখালী","লক্ষ্মীপুর","খাগড়াছড়ি","রাঙ্গামাটি","বান্দরবান"],
-  "রাজশাহী":["রাজশাহী","বগুড়া","জয়পুরহাট","নওগাঁ","নাটোর","চাঁপাইনবাবগঞ্জ","পাবনা","সিরাজগঞ্জ"],
-  "খুলনা":["খুলনা","বাগেরহাট","চুয়াডাঙ্গা","যশোর","ঝিনাইদহ","কুষ্টিয়া","মাগুরা","মেহেরপুর","নড়াইল","সাতক্ষীরা"],
-  "বরিশাল":["বরিশাল","ভোলা","ঝালকাঠি","পটুয়াখালী","পিরোজপুর","বরগুনা"],
-  "সিলেট":["সিলেট","হবিগঞ্জ","মৌলভীবাজার","সুনামগঞ্জ"],
-  "রংপুর":["রংপুর","দিনাজপুর","গাইবান্ধা","কুড়িগ্রাম","লালমনিরহাট","নীলফামারী","পঞ্চগড়","ঠাকুরগাঁও"],
-  "ময়মনসিংহ":["ময়মনসিংহ","জামালপুর","নেত্রকোণা","শেরপুর"]
-};
-const upazilas={
- "কুমিল্লা":["আদর্শ সদর","সদর দক্ষিণ","চৌদ্দগ্রাম","দাউদকান্দি","দেবিদ্বার","বরুড়া","বুড়িচং","ব্রাহ্মণপাড়া","চান্দিনা","চৌদ্দগ্রাম","লাকসাম","লালমাই","মুরাদনগর","নাঙ্গলকোট","মনোহরগঞ্জ","তিতাস","হোমনা","মেঘনা","কুমিল্লা সদর"],
- "ঢাকা":["সাভার","কেরানীগঞ্জ","দোহার","ধামরাই","নবাবগঞ্জ"],
- "চট্টগ্রাম":["আনোয়ারা","বাঁশখালী","বোয়ালখালী","চন্দনাইশ","ফটিকছড়ি","হাটহাজারী","লোহাগাড়া","মীরসরাই","পটিয়া","রাঙ্গুনিয়া","রাউজান","সন্দ্বীপ","সাতকানিয়া","সীতাকুণ্ড"]
-};
-const unions={
- "মুরাদনগর":["মুরাদনগর","বাঙ্গরা (পূর্ব)","বাঙ্গরা (পশ্চিম)","দারোরা","ধামঘর","জাহাপুর","কামাল্লা","কৃষ্ণপুর","কোরবানপুর","রামচন্দ্রপুর উত্তর","রামচন্দ্রপুর দক্ষিণ","শ্রীকাইল"],
- "আদর্শ সদর":["দূর্গাপুর উত্তর","দূর্গাপুর দক্ষিণ","কালীরবাজার","জগন্নাথপুর","আমড়াতলী","পাঁচথুবী"],
- "সদর দক্ষিণ":["বারপাড়া","গলিয়ারা","জোড়কানন","চৌয়ারা","বিজয়পুর"],
- "চৌদ্দগ্রাম":["কনকাপৈত","কালিকাপুর","ঘোলপাশা","গুনবতী","জগন্নাথদিঘী","মুন্সীরহাট"],
- "সাভার":["বিরুলিয়া","তেঁতুলঝোড়া","ভাকুর্তা","শিমুলিয়া","ইয়ারপুর"]
-};
-function fillSelect(select,items,placeholder){
-  select.innerHTML="<option value=''>"+placeholder+"</option>";
-  items.forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=x;select.appendChild(o)});
-}
-document.getElementById("division").addEventListener("change",function(){
-  fillSelect(document.getElementById("district"),divisions[this.value]||[],"জেলা নির্বাচন করুন");
-  fillSelect(document.getElementById("upazila"),[],"আগে জেলা নির্বাচন করুন");
-  fillSelect(document.getElementById("union"),[],"আগে উপজেলা নির্বাচন করুন");
-});
-document.getElementById("district").addEventListener("change",function(){
-  fillSelect(document.getElementById("upazila"),upazilas[this.value]||[],"উপজেলা / থানা নির্বাচন করুন");
-  fillSelect(document.getElementById("union"),[],"আগে উপজেলা নির্বাচন করুন");
-});
-document.getElementById("upazila").addEventListener("change",function(){
-  fillSelect(document.getElementById("union"),unions[this.value]||["ইউনিয়ন/এলাকা লিখুন"],"ইউনিয়ন নির্বাচন করুন");
-});
-
-function updateTotal(){
-  const q=Math.max(1,Number(qty.value)||1);
-  const productTotal=selectedProductPrice*q;
-  const district=document.getElementById("district").value;
-  const delivery=district==="কুমিল্লা"?80:150;
-  document.getElementById("totalBox").textContent="মোট: ৳ "+(productTotal+delivery).toLocaleString("bn-BD")+" (ডেলিভারি ৳ "+delivery+")";
-}
-document.getElementById("district").addEventListener("change",updateTotal);
-
-document.getElementById("orderForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const name=document.getElementById("customerName").value.trim();
-  const phone=document.getElementById("customerPhone").value.trim();
-  const division=document.getElementById("division").value;
-  const district=document.getElementById("district").value;
-  const upazila=document.getElementById("upazila").value;
-  const union=document.getElementById("union").value;
-  const address=document.getElementById("address").value.trim();
-  const payment=document.getElementById("payment").value;
-  const trx=document.getElementById("trx").value.trim()||"প্রযোজ্য নয়";
-  const note=document.getElementById("note").value.trim()||"নেই";
-  const q=Math.max(1,Number(qty.value)||1);
-  const delivery=district==="কুমিল্লা"?80:150;
-  const total=(selectedProductPrice*q)+delivery;
-  const message=
-`আসসালামু আলাইকুম, Mehedi Xpress-এ একটি নতুন অর্ডার করতে চাই।
-
-🛍️ পণ্য: ${selectedProductName}
-💰 একক মূল্য: ৳${selectedProductPrice}
-🔢 পরিমাণ: ${q}
-🚚 ডেলিভারি: ৳${delivery}
-💵 মোট: ৳${total}
-
-👤 নাম: ${name}
-📱 মোবাইল: ${phone}
-📍 বিভাগ: ${division}
-📍 জেলা: ${district}
-📍 উপজেলা/থানা: ${upazila}
-📍 ইউনিয়ন: ${union}
-🏠 ঠিকানা: ${address}
-
-💳 পেমেন্ট: ${payment}
-🧾 Transaction ID: ${trx}
-📝 নির্দেশনা: ${note}`;
-
-  window.open("https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(message),"_blank","noopener");
-  toast("Order details WhatsApp-এ প্রস্তুত করা হয়েছে");
-  closeOrder();
-});
-
-document.getElementById("backTop").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));
-
-const sections=[...document.querySelectorAll("section[id]")];
-const navLinks=[...document.querySelectorAll(".nav-link")];
-window.addEventListener("scroll",()=>{
-  let current="home";
-  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-130)current=s.id});
-  navLinks.forEach(a=>a.classList.toggle("active",a.getAttribute("href")==="#"+current));
-});
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener("click",e=>{
-    const target=document.querySelector(a.getAttribute("href"));
-    if(target){e.preventDefault();target.scrollIntoView({behavior:"smooth"});}
+  document.querySelectorAll('a[href="#top"]').forEach(home => {
+    home.addEventListener("click", function () {
+      if (searchInput) searchInput.value = "";
+      showAll();
+      window.scrollTo({top: 0, behavior: "smooth"});
+    });
   });
+
+  showAll();
 });
-showProducts("");
 </script>
 </body>
 </html>
