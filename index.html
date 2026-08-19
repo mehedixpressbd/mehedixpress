@@ -3,413 +3,3068 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mehedi Xpress | Professional Sports & Fashion Store</title>
+
+<title>Mehedi Xpress | Sports & Fashion Store</title>
 <meta name="description" content="Mehedi Xpress — Sports, Fashion ও Custom Printing-এর অনলাইন শপ।">
+<meta name="theme-color" content="#f85606">
+
 <style>
 :root{
-  --bg:#07111f;--panel:#0d1b2f;--panel2:#10233d;--card:#ffffff;--text:#172033;
-  --muted:#64748b;--line:#e6ebf2;--accent:#00b8a9;--accent2:#2563eb;
-  --white:#fff;--danger:#ef4444;--shadow:0 18px 50px rgba(2,8,23,.12);--radius:20px;
+  --orange:#f85606;
+  --orange2:#ff7a00;
+  --dark:#111827;
+  --dark2:#1f2937;
+  --text:#172033;
+  --muted:#64748b;
+  --bg:#f5f5f5;
+  --white:#fff;
+  --line:#e5e7eb;
+  --green:#16a085;
+  --red:#ef4444;
+  --shadow:0 5px 22px rgba(0,0,0,.08);
+  --shadow2:0 14px 40px rgba(0,0,0,.13);
+  --radius:14px;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f5f7fb;color:var(--text);line-height:1.6}
-button,input,select,textarea{font:inherit}
-button,a{ -webkit-tap-highlight-color:transparent}
-img{max-width:100%;display:block}
-.container{width:min(1180px,92%);margin:auto}
-section{scroll-margin-top:88px}
-header{position:sticky;top:0;z-index:1000;background:rgba(7,17,31,.96);backdrop-filter:blur(16px);color:#fff;box-shadow:0 8px 30px rgba(0,0,0,.18)}
-.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-weight:900;font-size:22px;white-space:nowrap}
-.logo img{width:48px;height:48px;object-fit:cover;border-radius:12px;background:#fff}
-nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-nav a{color:#fff;text-decoration:none;padding:9px 11px;border-radius:10px;font-size:14px;font-weight:800}
-nav a:hover,nav a.active{background:rgba(255,255,255,.12)}
-.search{display:flex;background:#fff;border-radius:11px;overflow:hidden;margin-left:5px}
-.search input{width:190px;border:0;outline:0;padding:10px 12px;color:#172033}
-.search button{border:0;background:var(--accent2);color:#fff;padding:0 14px;cursor:pointer;font-weight:900}
-.hero{min-height:590px;display:flex;align-items:center;color:#fff;text-align:center;background:
-linear-gradient(115deg,rgba(3,9,20,.92),rgba(6,52,72,.70)),
-url("hero-banner.jpg") center/cover no-repeat}
-.hero-inner{max-width:850px;margin:auto;padding:80px 0}
-.badge{display:inline-block;padding:8px 15px;border:1px solid rgba(255,255,255,.25);border-radius:999px;margin-bottom:18px;background:rgba(255,255,255,.06)}
-h1{font-size:clamp(38px,7vw,68px);line-height:1.08;margin-bottom:18px}
-.hero p{font-size:18px;color:#e7eef8;margin-bottom:28px}
-.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:12px 20px;font-weight:900;text-decoration:none;cursor:pointer;transition:.2s}
-.btn:hover{transform:translateY(-2px)}
-.btn-light{background:#fff;color:#0b1220}.btn-accent{background:linear-gradient(135deg,var(--accent),#00d4c2);color:#05211f}
-.section{padding:74px 0}.section-title{text-align:center;margin-bottom:36px}.section-title h2{font-size:34px;margin-bottom:6px}.section-title p{color:var(--muted)}
-.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.category-card{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:14px;cursor:pointer;box-shadow:var(--shadow);transition:.25s;text-align:center}
-.category-card:hover,.category-card.selected{transform:translateY(-5px);border-color:#79cfc8;box-shadow:0 20px 50px rgba(0,184,169,.15)}
-.cat-image{height:135px;border-radius:15px;overflow:hidden;background:linear-gradient(135deg,#eef7ff,#ecfffb);position:relative}
-.cat-image img{width:100%;height:100%;object-fit:cover}
-.cat-icon{position:absolute;right:10px;bottom:8px;width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:rgba(255,255,255,.9);font-size:27px;box-shadow:0 8px 20px rgba(0,0,0,.16)}
-.category-card strong{display:block;margin-top:12px;font-size:17px}.category-card small{color:var(--muted)}
-.product-tools{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.count{color:var(--muted);font-weight:700}
-.show-all{border:0;background:#0b1220;color:#fff;border-radius:10px;padding:10px 16px;font-weight:900;cursor:pointer}
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.product-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.25s}
-.product-card:hover{transform:translateY(-5px)}
-.product-card.hidden{display:none!important}
-.product-image{height:235px;background:#eef2f7;overflow:hidden}
-.product-image img{width:100%;height:100%;object-fit:cover}
-.product-body{padding:18px}.pill{font-size:12px;color:var(--accent2);font-weight:900}
-.product-body h3{font-size:18px;margin:5px 0}.price{font-size:21px;font-weight:900;margin-bottom:13px}
-.buy-btn{width:100%;border:0;border-radius:11px;padding:12px;background:linear-gradient(135deg,#2563eb,#00a99b);color:#fff;font-weight:900;cursor:pointer}
-.empty{display:none;text-align:center;padding:35px;border:1px dashed #cbd5e1;border-radius:16px;color:var(--muted);background:#fff}
-.feature-grid,.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.feature,.contact-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:25px;text-align:center;box-shadow:var(--shadow)}
-.feature-icon,.social-icon{font-size:35px;margin-bottom:8px}.contact{background:#07111f;color:#fff}.contact .section-title p{color:#b9c6d8}
-.contact-card{background:rgba(255,255,255,.045);border-color:#22324a;color:#fff;box-shadow:none}
-.contact-card a{color:#dff9f5;text-decoration:none;word-break:break-word}
-.social-icon{width:62px;height:62px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.08)}
-footer{background:#030812;color:#b7c2d0;text-align:center;padding:28px}
-.modal{position:fixed;inset:0;background:rgba(2,6,23,.78);display:none;align-items:center;justify-content:center;padding:16px;z-index:3000}
-.modal.open{display:flex}.modal-box{width:min(680px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:22px;padding:24px;box-shadow:0 30px 100px rgba(0,0,0,.45)}
-.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
-.close{width:40px;height:40px;border:0;border-radius:50%;background:#eef2f7;cursor:pointer;font-size:23px}
-.summary{background:#f4f8fb;border:1px solid #e5edf3;border-radius:13px;padding:14px;margin-bottom:16px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label{font-weight:800;font-size:14px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d6dee9;border-radius:10px;outline:none;margin-top:5px;background:#fff}
-input:focus,select:focus,textarea:focus{border-color:#55bfb6;box-shadow:0 0 0 3px rgba(0,184,169,.10)}
-textarea{min-height:84px;resize:vertical}.full{grid-column:1/-1}
-.notice{margin-top:12px;padding:12px;background:#fff8e7;border-radius:10px;color:#765b15;font-size:13px}
-.submit{width:100%;margin-top:14px;border:0;border-radius:11px;padding:13px;background:#128c7e;color:#fff;font-weight:900;cursor:pointer}
-.delivery-box{margin-top:10px;font-size:13px;color:#475569}
-@media(max-width:980px){.category-grid,.product-grid{grid-template-columns:repeat(2,1fr)}.feature-grid,.contact-grid{grid-template-columns:repeat(2,1fr)}.nav{justify-content:center;flex-wrap:wrap;padding:10px 0}}
-@media(max-width:600px){.category-grid,.product-grid,.feature-grid,.contact-grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.search input{width:145px}.hero{min-height:530px}.hero-inner{padding:60px 0}.section{padding:55px 0}}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+a{
+  text-decoration:none;
+}
+
+.container{
+  width:min(1200px,94%);
+  margin:auto;
+}
+
+section{
+  scroll-margin-top:120px;
+}
+
+/* ================= HEADER ================= */
+
+.top-strip{
+  background:#111827;
+  color:#fff;
+  font-size:13px;
+}
+
+.top-strip-inner{
+  min-height:34px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.main-header{
+  position:sticky;
+  top:0;
+  z-index:2000;
+  background:var(--orange);
+  color:#fff;
+  box-shadow:0 3px 15px rgba(0,0,0,.18);
+}
+
+.header-main{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.logo{
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:max-content;
+}
+
+.logo img{
+  width:46px;
+  height:46px;
+  border-radius:10px;
+  object-fit:cover;
+  background:#fff;
+  border:2px solid rgba(255,255,255,.7);
+}
+
+.logo-text{
+  font-size:21px;
+  font-weight:900;
+  line-height:1;
+}
+
+.logo-text small{
+  display:block;
+  font-size:9px;
+  letter-spacing:1.5px;
+  margin-top:5px;
+  opacity:.85;
+}
+
+.search-wrap{
+  flex:1;
+  max-width:650px;
+  display:flex;
+  background:#fff;
+  border-radius:5px;
+  overflow:hidden;
+  height:46px;
+  box-shadow:0 2px 7px rgba(0,0,0,.12);
+}
+
+.search-wrap input{
+  flex:1;
+  border:0;
+  outline:0;
+  padding:0 16px;
+  color:#222;
+  font-size:14px;
+}
+
+.search-wrap button{
+  width:58px;
+  border:0;
+  background:#ffe1d2;
+  color:var(--orange);
+  cursor:pointer;
+  font-size:20px;
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.header-action{
+  color:#fff;
+  border:0;
+  background:transparent;
+  padding:7px;
+  text-align:center;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.header-action span{
+  display:block;
+  font-size:21px;
+  line-height:20px;
+}
+
+.header-action small{
+  font-size:11px;
+}
+
+.nav-bar{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+
+.nav-inner{
+  min-height:45px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  overflow-x:auto;
+}
+
+.nav-inner::-webkit-scrollbar{
+  height:0;
+}
+
+.nav-link{
+  color:#374151;
+  padding:11px 15px;
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  border-bottom:3px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active{
+  color:var(--orange);
+  border-color:var(--orange);
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  min-height:475px;
+  display:flex;
+  align-items:center;
+  color:#fff;
+  background:
+    linear-gradient(110deg,rgba(10,18,30,.9),rgba(248,86,6,.45)),
+    url("hero-banner.jpg") center/cover no-repeat;
+}
+
+.hero-inner{
+  padding:75px 0;
+  max-width:750px;
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:50px;
+  padding:7px 15px;
+  margin-bottom:18px;
+  font-size:13px;
+  font-weight:800;
+  backdrop-filter:blur(10px);
+}
+
+.hero h1{
+  font-size:clamp(38px,6vw,68px);
+  line-height:1.05;
+  margin-bottom:18px;
+  font-weight:950;
+}
+
+.hero p{
+  font-size:18px;
+  color:#f3f4f6;
+  margin-bottom:28px;
+  max-width:650px;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  border:0;
+  border-radius:6px;
+  padding:13px 22px;
+  font-weight:900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:.22s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btn-orange{
+  background:var(--orange);
+  color:#fff;
+}
+
+.btn-white{
+  background:#fff;
+  color:#111827;
+}
+
+/* ================= QUICK BENEFITS ================= */
+
+.quick-benefits{
+  background:#fff;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.quick-item{
+  padding:20px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  border-right:1px solid var(--line);
+}
+
+.quick-item:last-child{
+  border-right:0;
+}
+
+.quick-icon{
+  font-size:28px;
+}
+
+.quick-item strong{
+  display:block;
+  font-size:14px;
+}
+
+.quick-item span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+  padding:55px 0;
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  gap:20px;
+  margin-bottom:22px;
+}
+
+.section-title h2{
+  font-size:28px;
+  margin-bottom:4px;
+}
+
+.section-title p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.section-line{
+  width:42px;
+  height:3px;
+  background:var(--orange);
+  margin-top:8px;
+  border-radius:10px;
+}
+
+/* ================= CATEGORIES ================= */
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:13px;
+}
+
+.category-card{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:17px 8px 14px;
+  cursor:pointer;
+  box-shadow:0 2px 9px rgba(0,0,0,.04);
+  transition:.22s;
+  text-align:center;
+  color:var(--text);
+}
+
+.category-card:hover,
+.category-card.selected{
+  transform:translateY(-4px);
+  border-color:#ff9c70;
+  box-shadow:var(--shadow);
+}
+
+.cat-icon{
+  width:60px;
+  height:60px;
+  margin:0 auto 10px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#fff1eb;
+  font-size:31px;
+}
+
+.category-card strong{
+  display:block;
+  font-size:13px;
+}
+
+.category-card small{
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* ================= PRODUCTS ================= */
+
+.products-section{
+  background:#f5f5f5;
+}
+
+.product-tools{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.result-text{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.show-all{
+  border:0;
+  background:#111827;
+  color:#fff;
+  padding:9px 15px;
+  border-radius:5px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:800;
+}
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.product-card{
+  background:#fff;
+  border-radius:9px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  border:1px solid #eee;
+  transition:.25s;
+  position:relative;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+  box-shadow:var(--shadow2);
+}
+
+.product-card.hidden{
+  display:none!important;
+}
+
+.product-image{
+  height:245px;
+  background:#f1f5f9;
+  overflow:hidden;
+  position:relative;
+}
+
+.product-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.35s;
+}
+
+.product-card:hover .product-image img{
+  transform:scale(1.04);
+}
+
+.product-tag{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:var(--orange);
+  color:#fff;
+  padding:4px 8px;
+  border-radius:4px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.product-body{
+  padding:14px;
+}
+
+.product-category{
+  color:var(--orange);
+  font-size:11px;
+  font-weight:900;
+}
+
+.product-body h3{
+  font-size:16px;
+  margin:4px 0 8px;
+  min-height:48px;
+}
+
+.product-price{
+  font-size:20px;
+  font-weight:950;
+  color:#111827;
+  margin-bottom:12px;
+}
+
+.buy-btn{
+  width:100%;
+  border:0;
+  border-radius:5px;
+  padding:11px;
+  background:var(--orange);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.buy-btn:hover{
+  background:#e94d00;
+}
+
+.empty{
+  display:none;
+  text-align:center;
+  padding:45px 20px;
+  background:#fff;
+  border-radius:10px;
+  color:var(--muted);
+  border:1px dashed #cbd5e1;
+}
+
+/* ================= FEATURE ================= */
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.feature{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:25px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.feature-icon{
+  font-size:35px;
+  margin-bottom:8px;
+}
+
+.feature h3{
+  font-size:17px;
+  margin-bottom:5px;
+}
+
+.feature p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* ================= ABOUT ================= */
+
+.about-box{
+  background:#fff;
+  border-radius:12px;
+  padding:35px;
+  text-align:center;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+
+.about-box p{
+  max-width:800px;
+  margin:auto;
+  color:#475569;
+}
+
+/* ================= CONTACT ================= */
+
+.contact-section{
+  background:#111827;
+  color:#fff;
+}
+
+.contact-section .section-title p{
+  color:#9ca3af;
+}
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.contact-card{
+  background:#1f2937;
+  border:1px solid #374151;
+  border-radius:10px;
+  padding:23px;
+  text-align:center;
+  transition:.2s;
+}
+
+.contact-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--orange);
+}
+
+.contact-icon{
+  width:55px;
+  height:55px;
+  margin:0 auto 10px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(248,86,6,.13);
+  font-size:26px;
+}
+
+.contact-card h3{
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.contact-card a,
+.contact-card p{
+  color:#d1d5db;
+  font-size:13px;
+  word-break:break-word;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  background:#090d14;
+  color:#9ca3af;
+  text-align:center;
+  padding:25px 15px;
+  font-size:12px;
+}
+
+footer strong{
+  color:#fff;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.open{
+  display:flex;
+  animation:fadeIn .2s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+.modal-box{
+  width:min(700px,100%);
+  max-height:94vh;
+  overflow-y:auto;
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  animation:modalUp .25s ease;
+}
+
+@keyframes modalUp{
+  from{
+    opacity:0;
+    transform:translateY(20px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.modal-header{
+  padding:18px 20px;
+  background:var(--orange);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.modal-header h2{
+  font-size:20px;
+}
+
+.close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  cursor:pointer;
+  font-size:23px;
+}
+
+.modal-content{
+  padding:20px;
+}
+
+.order-summary{
+  background:#fff7f2;
+  border:1px solid #ffd4c0;
+  border-radius:8px;
+  padding:14px;
+  margin-bottom:18px;
+}
+
+.order-summary strong{
+  color:#111827;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+.form-group{
+  display:block;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  margin-top:5px;
+  border:1px solid #d5dce5;
+  border-radius:6px;
+  padding:11px 12px;
+  outline:none;
+  background:#fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--orange);
+  box-shadow:0 0 0 3px rgba(248,86,6,.1);
+}
+
+textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+.delivery-info{
+  margin-top:15px;
+  padding:12px;
+  background:#f1f5f9;
+  border-radius:7px;
+  font-size:13px;
+  color:#475569;
+}
+
+.notice{
+  margin-top:10px;
+  padding:11px;
+  background:#fff8e1;
+  color:#725c20;
+  border-radius:7px;
+  font-size:12px;
+}
+
+.submit-order{
+  width:100%;
+  margin-top:15px;
+  border:0;
+  background:#128c7e;
+  color:#fff;
+  border-radius:6px;
+  padding:13px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.submit-order:hover{
+  background:#0d776b;
+}
+
+/* ================= FLOATING CONTACT ================= */
+
+.floating-contact{
+  position:fixed;
+  right:17px;
+  bottom:18px;
+  z-index:1500;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+
+.float-btn{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:22px;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+  transition:.2s;
+}
+
+.float-btn:hover{
+  transform:scale(1.08);
+}
+
+.float-wa{background:#25d366}
+.float-phone{background:#2563eb}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:1050px){
+
+  .category-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+@media(max-width:850px){
+
+  .top-strip{
+    display:none;
+  }
+
+  .header-main{
+    flex-wrap:wrap;
+    padding:10px 0;
+    min-height:auto;
+  }
+
+  .logo{
+    flex:1;
+  }
+
+  .search-wrap{
+    order:3;
+    flex-basis:100%;
+    max-width:none;
+  }
+
+  .header-actions{
+    display:none;
+  }
+
+  .quick-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .quick-item:nth-child(2){
+    border-right:0;
+  }
+
+  .quick-item{
+    border-bottom:1px solid var(--line);
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .feature-grid,
+  .contact-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+@media(max-width:600px){
+
+  .container{
+    width:92%;
+  }
+
+  .logo-text{
+    font-size:18px;
+  }
+
+  .logo img{
+    width:40px;
+    height:40px;
+  }
+
+  .hero{
+    min-height:500px;
+  }
+
+  .hero-inner{
+    padding:60px 0;
+  }
+
+  .hero h1{
+    font-size:40px;
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  .hero-buttons .btn{
+    width:100%;
+  }
+
+  .nav-inner{
+    min-height:42px;
+  }
+
+  .nav-link{
+    padding:10px 12px;
+    font-size:12px;
+  }
+
+  .quick-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .quick-item{
+    padding:14px 7px;
+  }
+
+  .quick-icon{
+    font-size:23px;
+  }
+
+  .quick-item strong{
+    font-size:11px;
+  }
+
+  .quick-item span{
+    font-size:9px;
+  }
+
+  .section{
+    padding:42px 0;
+  }
+
+  .section-head{
+    align-items:start;
+  }
+
+  .section-title h2{
+    font-size:24px;
+  }
+
+  .category-grid{
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+  }
+
+  .category-card{
+    padding:11px 3px;
+  }
+
+  .cat-icon{
+    width:48px;
+    height:48px;
+    font-size:24px;
+  }
+
+  .category-card strong{
+    font-size:10px;
+  }
+
+  .category-card small{
+    display:none;
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+
+  .product-image{
+    height:190px;
+  }
+
+  .product-body{
+    padding:11px;
+  }
+
+  .product-body h3{
+    font-size:13px;
+    min-height:42px;
+  }
+
+  .product-price{
+    font-size:17px;
+  }
+
+  .buy-btn{
+    font-size:12px;
+    padding:10px;
+  }
+
+  .feature-grid,
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full{
+    grid-column:auto;
+  }
+
+  .modal-content{
+    padding:15px;
+  }
+
+  .floating-contact{
+    right:12px;
+    bottom:12px;
+  }
+
+}
+
+/* ছোট স্ক্রিনে landscape product spacing */
+
+@media(max-width:390px){
+
+  .category-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .product-image{
+    height:165px;
+  }
+
+  .product-body h3{
+    font-size:12px;
+  }
+
+}
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="container nav">
-    <a class="logo" href="#home" id="homeLogo">
-      <img src="logo.jpeg" alt="Mehedi Xpress">
-      <span>Mehedi Xpress</span>
-    </a>
-    <nav>
-      <a href="#home" data-nav="home">হোম</a>
-      <a href="#categories" data-nav="categories">ক্যাটাগরি</a>
-      <a href="#products" data-nav="products">সকল পণ্য</a>
-      <a href="#about" data-nav="about">আমাদের সম্পর্কে</a>
-      <a href="#contact" data-nav="contact">যোগাযোগ</a>
-      <form class="search" id="searchForm">
-        <input id="searchInput" type="search" placeholder="পণ্য সার্চ করুন..." aria-label="পণ্য সার্চ">
-        <button type="submit" aria-label="Search">🔎</button>
-      </form>
-    </nav>
+<!-- TOP INFO -->
+<div class="top-strip">
+  <div class="container top-strip-inner">
+    <span>Mehedi Xpress — Sports, Fashion & Custom Printing</span>
+    <span>📞 01612961523</span>
   </div>
+</div>
+
+<!-- HEADER -->
+<header class="main-header">
+
+  <div class="container header-main">
+
+    <a href="#home" class="logo" id="homeLogo">
+      <img src="logo.jpeg" alt="Mehedi Xpress Logo">
+      <div class="logo-text">
+        Mehedi Xpress
+        <small>SPORTS & FASHION</small>
+      </div>
+    </a>
+
+    <form class="search-wrap" id="searchForm">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="পণ্য সার্চ করুন..."
+        autocomplete="off"
+        aria-label="পণ্য সার্চ"
+      >
+      <button type="submit">🔎</button>
+    </form>
+
+    <div class="header-actions">
+
+      <a href="#contact" class="header-action">
+        <span>📞</span>
+        <small>যোগাযোগ</small>
+      </a>
+
+      <a
+        href="https://wa.me/8801612961523"
+        target="_blank"
+        rel="noopener"
+        class="header-action"
+      >
+        <span>💬</span>
+        <small>WhatsApp</small>
+      </a>
+
+    </div>
+
+  </div>
+
 </header>
 
+<!-- NAVIGATION -->
+<div class="nav-bar">
+  <div class="container nav-inner">
+
+    <a href="#home" class="nav-link active" data-nav="home">
+      🏠 হোম
+    </a>
+
+    <a href="#categories" class="nav-link" data-nav="categories">
+      🗂️ ক্যাটাগরি
+    </a>
+
+    <a href="#products" class="nav-link" data-nav="products">
+      🛍️ সকল পণ্য
+    </a>
+
+    <a href="#about" class="nav-link" data-nav="about">
+      ℹ️ আমাদের সম্পর্কে
+    </a>
+
+    <a href="#contact" class="nav-link" data-nav="contact">
+      📞 যোগাযোগ
+    </a>
+
+  </div>
+</div>
+
 <main>
+
+<!-- HERO -->
 <section class="hero" id="home">
+
   <div class="container hero-inner">
-    <span class="badge">Mehedi Xpress • Sports & Fashion</span>
-    <h1>আপনার পছন্দের পণ্য, আরও সহজে</h1>
-    <p>জার্সি, টি-শার্ট, স্পোর্টস পণ্য ও কাস্টম প্রিন্টিং—সব এক জায়গায়।</p>
-    <div class="actions">
-      <a class="btn btn-light" href="#products" id="heroProducts">সকল পণ্য দেখুন</a>
-      <a class="btn btn-accent" href="https://wa.me/8801612961523" target="_blank" rel="noopener">WhatsApp Order</a>
+
+    <span class="hero-badge">
+      ✨ Mehedi Xpress • Sports & Fashion
+    </span>
+
+    <h1>
+      আপনার পছন্দের পণ্য,
+      আরও সহজে
+    </h1>
+
+    <p>
+      জার্সি, টি-শার্ট, স্পোর্টস পণ্য ও কাস্টম প্রিন্টিং—
+      সব এক জায়গায়।
+    </p>
+
+    <div class="hero-buttons">
+
+      <a href="#products" class="btn btn-orange" id="heroProducts">
+        🛍️ সকল পণ্য দেখুন
+      </a>
+
+      <a
+        href="https://wa.me/8801612961523"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-white"
+      >
+        💬 WhatsApp Order
+      </a>
+
     </div>
+
   </div>
+
 </section>
 
+<!-- QUICK BENEFITS -->
+<section class="quick-benefits">
+
+  <div class="container quick-grid">
+
+    <div class="quick-item">
+      <div class="quick-icon">🚚</div>
+      <div>
+        <strong>Home Delivery</strong>
+        <span>সারা দেশে ডেলিভারি</span>
+      </div>
+    </div>
+
+    <div class="quick-item">
+      <div class="quick-icon">💰</div>
+      <div>
+        <strong>সহজ অর্ডার</strong>
+        <span>WhatsApp Order</span>
+      </div>
+    </div>
+
+    <div class="quick-item">
+      <div class="quick-icon">🎨</div>
+      <div>
+        <strong>Custom Printing</strong>
+        <span>আপনার ডিজাইন অনুযায়ী</span>
+      </div>
+    </div>
+
+    <div class="quick-item">
+      <div class="quick-icon">💬</div>
+      <div>
+        <strong>Customer Support</strong>
+        <span>সরাসরি যোগাযোগ</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- CATEGORIES -->
 <section class="section" id="categories">
+
   <div class="container">
-    <div class="section-title">
-      <h2>আমাদের ক্যাটাগরি</h2>
-      <p>এক ক্লিকে আপনার পছন্দের ক্যাটাগরি দেখুন</p>
+
+    <div class="section-head">
+      <div class="section-title">
+        <h2>ক্যাটাগরি</h2>
+        <p>আপনার পছন্দের ক্যাটাগরি বেছে নিন</p>
+        <div class="section-line"></div>
+      </div>
     </div>
+
     <div class="category-grid">
-      <button class="category-card" type="button" data-category="Football Jersey"><div class="cat-image"><img src="football-jersey.jpg" alt="ফুটবল জার্সি" onerror="this.style.display='none'"><span class="cat-icon">⚽</span></div><strong>ফুটবল জার্সি</strong><small>Football Jersey</small></button>
-      <button class="category-card" type="button" data-category="Cricket Jersey"><div class="cat-image"><img src="cricket-jersey.jpg" alt="ক্রিকেট জার্সি" onerror="this.style.display='none'"><span class="cat-icon">🏏</span></div><strong>ক্রিকেট জার্সি</strong><small>Cricket Jersey</small></button>
-      <button class="category-card" type="button" data-category="T-Shirt"><div class="cat-image"><img src="t-shirt.jpg" alt="টি-শার্ট" onerror="this.style.display='none'"><span class="cat-icon">👕</span></div><strong>টি-শার্ট</strong><small>T-Shirt</small></button>
-      <button class="category-card" type="button" data-category="Shorts"><div class="cat-image"><img src="shorts.jpg" alt="শর্টস" onerror="this.style.display='none'"><span class="cat-icon">🩳</span></div><strong>শর্টস</strong><small>Shorts</small></button>
-      <button class="category-card" type="button" data-category="Football"><div class="cat-image"><img src="football.jpg" alt="ফুটবল" onerror="this.style.display='none'"><span class="cat-icon">⚽</span></div><strong>ফুটবল</strong><small>Football</small></button>
-      <button class="category-card" type="button" data-category="Cricket Bat"><div class="cat-image"><img src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট" onerror="this.style.display='none'"><span class="cat-icon">🏏</span></div><strong>ক্রিকেট ব্যাট</strong><small>Cricket Bat</small></button>
-      <button class="category-card" type="button" data-category="Gloves"><div class="cat-image"><img src="gloves.jpg" alt="গ্লাভস" onerror="this.style.display='none'"><span class="cat-icon">🧤</span></div><strong>গ্লাভস</strong><small>Gloves</small></button>
-      <button class="category-card" type="button" data-category="Custom Printing"><div class="cat-image"><img src="custom-printing.jpg" alt="কাস্টম প্রিন্টিং" onerror="this.style.display='none'"><span class="cat-icon">🎨</span></div><strong>কাস্টম প্রিন্টিং</strong><small>Custom Printing</small></button>
+
+      <button class="category-card" type="button" data-category="Football Jersey">
+        <div class="cat-icon">⚽</div>
+        <strong>ফুটবল জার্সি</strong>
+        <small>Football Jersey</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Cricket Jersey">
+        <div class="cat-icon">🏏</div>
+        <strong>ক্রিকেট জার্সি</strong>
+        <small>Cricket Jersey</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="T-Shirt">
+        <div class="cat-icon">👕</div>
+        <strong>টি-শার্ট</strong>
+        <small>T-Shirt</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Shorts">
+        <div class="cat-icon">🩳</div>
+        <strong>শর্টস</strong>
+        <small>Shorts</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Football">
+        <div class="cat-icon">⚽</div>
+        <strong>ফুটবল</strong>
+        <small>Football</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Cricket Bat">
+        <div class="cat-icon">🏏</div>
+        <strong>ক্রিকেট ব্যাট</strong>
+        <small>Cricket Bat</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Gloves">
+        <div class="cat-icon">🧤</div>
+        <strong>গ্লাভস</strong>
+        <small>Gloves</small>
+      </button>
+
+      <button class="category-card" type="button" data-category="Custom Printing">
+        <div class="cat-icon">🎨</div>
+        <strong>কাস্টম প্রিন্টিং</strong>
+        <small>Custom Printing</small>
+      </button>
+
     </div>
+
   </div>
+
 </section>
 
-<section class="section" id="products">
+<!-- PRODUCTS -->
+<section class="section products-section" id="products">
+
   <div class="container">
-    <div class="section-title">
-      <h2>সকল পণ্য</h2>
-      <p id="productSubtitle">আমাদের বর্তমান পণ্যসমূহ</p>
+
+    <div class="section-head">
+
+      <div class="section-title">
+        <h2>সকল পণ্য</h2>
+        <p id="productSubtitle">
+          আমাদের বর্তমান পণ্যসমূহ
+        </p>
+        <div class="section-line"></div>
+      </div>
+
     </div>
+
     <div class="product-tools">
-      <span class="count" id="productCount">৮টি পণ্য</span>
-      <button class="show-all" id="showAllBtn" type="button">সব পণ্য দেখুন</button>
+
+      <span class="result-text" id="productCount">
+        ৮টি পণ্য
+      </span>
+
+      <button
+        class="show-all"
+        id="showAllBtn"
+        type="button"
+      >
+        সব পণ্য দেখুন
+      </button>
+
     </div>
+
     <div class="product-grid" id="productGrid">
-      <article class="product-card" data-category="Football Jersey" data-name="প্রিমিয়াম ফুটবল জার্সি ফুটবল জার্সি"><div class="product-image"><img src="football-jersey.jpg" alt="প্রিমিয়াম ফুটবল জার্সি" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">ফুটবল জার্সি</span><h3>প্রিমিয়াম ফুটবল জার্সি</h3><div class="price">৳ 500</div><button class="buy-btn" type="button" data-product="Football Jersey">Buy Now</button></div></article>
-      <article class="product-card" data-category="Cricket Jersey" data-name="প্রিমিয়াম ক্রিকেট জার্সি ক্রিকেট জার্সি"><div class="product-image"><img src="cricket-jersey.jpg" alt="প্রিমিয়াম ক্রিকেট জার্সি" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">ক্রিকেট জার্সি</span><h3>প্রিমিয়াম ক্রিকেট জার্সি</h3><div class="price">৳ 750</div><button class="buy-btn" type="button" data-product="Cricket Jersey">Buy Now</button></div></article>
-      <article class="product-card" data-category="T-Shirt" data-name="স্পোর্টস টি-শার্ট টি-শার্ট"><div class="product-image"><img src="t-shirt.jpg" alt="স্পোর্টস টি-শার্ট" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">টি-শার্ট</span><h3>স্পোর্টস টি-শার্ট</h3><div class="price">৳ 650</div><button class="buy-btn" type="button" data-product="T-Shirt">Buy Now</button></div></article>
-      <article class="product-card" data-category="Shorts" data-name="স্পোর্টস শর্টস শর্টস"><div class="product-image"><img src="shorts.jpg" alt="স্পোর্টস শর্টস" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">শর্টস</span><h3>স্পোর্টস শর্টস</h3><div class="price">৳ 450</div><button class="buy-btn" type="button" data-product="Shorts">Buy Now</button></div></article>
-      <article class="product-card" data-category="Football" data-name="প্রফেশনাল ফুটবল ফুটবল"><div class="product-image"><img src="football.jpg" alt="প্রফেশনাল ফুটবল" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">ফুটবল</span><h3>প্রফেশনাল ফুটবল</h3><div class="price">৳ 950</div><button class="buy-btn" type="button" data-product="Football">Buy Now</button></div></article>
-      <article class="product-card" data-category="Cricket Bat" data-name="ক্রিকেট ব্যাট ক্রিকেট ব্যাট"><div class="product-image"><img src="cricket-bat.jpg" alt="ক্রিকেট ব্যাট" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">ক্রিকেট ব্যাট</span><h3>ক্রিকেট ব্যাট</h3><div class="price">৳ 1,200</div><button class="buy-btn" type="button" data-product="Cricket Bat">Buy Now</button></div></article>
-      <article class="product-card" data-category="Gloves" data-name="স্পোর্টস গ্লাভস গ্লাভস"><div class="product-image"><img src="gloves.jpg" alt="স্পোর্টস গ্লাভস" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">গ্লাভস</span><h3>স্পোর্টস গ্লাভস</h3><div class="price">৳ 550</div><button class="buy-btn" type="button" data-product="Gloves">Buy Now</button></div></article>
-      <article class="product-card" data-category="Custom Printing" data-name="কাস্টম জার্সি টি-শার্ট প্রিন্টিং কাস্টম প্রিন্টিং"><div class="product-image"><img src="custom-printing.jpg" alt="কাস্টম প্রিন্টিং" onerror="this.src='hero-banner.jpg'"></div><div class="product-body"><span class="pill">কাস্টম প্রিন্টিং</span><h3>কাস্টম জার্সি/টি-শার্ট প্রিন্টিং</h3><div class="price">৳ 800</div><button class="buy-btn" type="button" data-product="Custom Printing">Buy Now</button></div></article>
+
+      <!-- PRODUCT 1 -->
+      <article
+        class="product-card"
+        data-category="Football Jersey"
+        data-name="প্রিমিয়াম ফুটবল জার্সি ফুটবল জার্সি"
+      >
+
+        <div class="product-image">
+          <span class="product-tag">জনপ্রিয়</span>
+          <img
+            src="football-jersey.jpg"
+            alt="প্রিমিয়াম ফুটবল জার্সি"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">ফুটবল জার্সি</span>
+          <h3>প্রিমিয়াম ফুটবল জার্সি</h3>
+          <div class="product-price">৳ 500</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Football Jersey"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 2 -->
+      <article
+        class="product-card"
+        data-category="Cricket Jersey"
+        data-name="প্রিমিয়াম ক্রিকেট জার্সি ক্রিকেট জার্সি"
+      >
+
+        <div class="product-image">
+          <span class="product-tag">জনপ্রিয়</span>
+          <img
+            src="cricket-jersey.jpg"
+            alt="প্রিমিয়াম ক্রিকেট জার্সি"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">ক্রিকেট জার্সি</span>
+          <h3>প্রিমিয়াম ক্রিকেট জার্সি</h3>
+          <div class="product-price">৳ 750</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Cricket Jersey"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 3 -->
+      <article
+        class="product-card"
+        data-category="T-Shirt"
+        data-name="স্পোর্টস টি-শার্ট টি-শার্ট"
+      >
+
+        <div class="product-image">
+          <img
+            src="t-shirt.jpg"
+            alt="স্পোর্টস টি-শার্ট"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">টি-শার্ট</span>
+          <h3>স্পোর্টস টি-শার্ট</h3>
+          <div class="product-price">৳ 650</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="T-Shirt"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 4 -->
+      <article
+        class="product-card"
+        data-category="Shorts"
+        data-name="স্পোর্টস শর্টস শর্টস"
+      >
+
+        <div class="product-image">
+          <img
+            src="shorts.jpg"
+            alt="স্পোর্টস শর্টস"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">শর্টস</span>
+          <h3>স্পোর্টস শর্টস</h3>
+          <div class="product-price">৳ 450</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Shorts"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 5 -->
+      <article
+        class="product-card"
+        data-category="Football"
+        data-name="প্রফেশনাল ফুটবল ফুটবল"
+      >
+
+        <div class="product-image">
+          <img
+            src="football.jpg"
+            alt="প্রফেশনাল ফুটবল"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">ফুটবল</span>
+          <h3>প্রফেশনাল ফুটবল</h3>
+          <div class="product-price">৳ 950</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Football"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 6 -->
+      <article
+        class="product-card"
+        data-category="Cricket Bat"
+        data-name="ক্রিকেট ব্যাট ক্রিকেট ব্যাট"
+      >
+
+        <div class="product-image">
+          <img
+            src="cricket-bat.jpg"
+            alt="ক্রিকেট ব্যাট"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">ক্রিকেট ব্যাট</span>
+          <h3>ক্রিকেট ব্যাট</h3>
+          <div class="product-price">৳ 1,200</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Cricket Bat"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 7 -->
+      <article
+        class="product-card"
+        data-category="Gloves"
+        data-name="স্পোর্টস গ্লাভস গ্লাভস"
+      >
+
+        <div class="product-image">
+          <img
+            src="gloves.jpg"
+            alt="স্পোর্টস গ্লাভস"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">গ্লাভস</span>
+          <h3>স্পোর্টস গ্লাভস</h3>
+          <div class="product-price">৳ 550</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Gloves"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
+      <!-- PRODUCT 8 -->
+      <article
+        class="product-card"
+        data-category="Custom Printing"
+        data-name="কাস্টম জার্সি টি-শার্ট প্রিন্টিং কাস্টম প্রিন্টিং"
+      >
+
+        <div class="product-image">
+          <span class="product-tag">Custom</span>
+          <img
+            src="custom-printing.jpg"
+            alt="কাস্টম প্রিন্টিং"
+            onerror="this.src='hero-banner.jpg'"
+          >
+        </div>
+
+        <div class="product-body">
+          <span class="product-category">কাস্টম প্রিন্টিং</span>
+          <h3>কাস্টম জার্সি/টি-শার্ট প্রিন্টিং</h3>
+          <div class="product-price">৳ 800</div>
+
+          <button
+            class="buy-btn"
+            type="button"
+            data-product="Custom Printing"
+          >
+            🛒 Buy Now
+          </button>
+        </div>
+
+      </article>
+
     </div>
-    <div class="empty" id="emptyState">কোনো পণ্য পাওয়া যায়নি। অন্য নাম বা ক্যাটাগরি দিয়ে আবার সার্চ করুন।</div>
+
+    <div class="empty" id="emptyState">
+      <div style="font-size:42px;margin-bottom:10px;">🔍</div>
+      <strong>কোনো পণ্য পাওয়া যায়নি</strong>
+      <p>অন্য নাম বা ক্যাটাগরি দিয়ে আবার চেষ্টা করুন।</p>
+    </div>
+
   </div>
+
 </section>
 
+<!-- FEATURES -->
 <section class="section">
+
   <div class="container">
-    <div class="section-title"><h2>কেন Mehedi Xpress?</h2><p>সহজ অর্ডার, পরিষ্কার তথ্য এবং দ্রুত যোগাযোগ</p></div>
+
+    <div class="section-head">
+      <div class="section-title">
+        <h2>কেন Mehedi Xpress?</h2>
+        <p>সহজ অর্ডার ও দ্রুত যোগাযোগ</p>
+        <div class="section-line"></div>
+      </div>
+    </div>
+
     <div class="feature-grid">
-      <div class="feature"><div class="feature-icon">🚚</div><h3>Home Delivery</h3><p>আপনার দেওয়া ঠিকানায় পণ্য পৌঁছে দেওয়ার ব্যবস্থা।</p></div>
-      <div class="feature"><div class="feature-icon">💳</div><h3>bKash & Nagad</h3><p>বর্তমানে manual payment verification-এর মাধ্যমে পেমেন্ট গ্রহণ।</p></div>
-      <div class="feature"><div class="feature-icon">💬</div><h3>Customer Support</h3><p>WhatsApp, Facebook ও মোবাইলে সরাসরি যোগাযোগ।</p></div>
+
+      <div class="feature">
+        <div class="feature-icon">🚚</div>
+        <h3>Home Delivery</h3>
+        <p>
+          আপনার দেওয়া ঠিকানায় পণ্য পৌঁছে দেওয়ার ব্যবস্থা।
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">💳</div>
+        <h3>bKash & Nagad</h3>
+        <p>
+          বর্তমানে manual payment verification-এর মাধ্যমে পেমেন্ট গ্রহণ।
+        </p>
+      </div>
+
+      <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>Customer Support</h3>
+        <p>
+          WhatsApp, Facebook ও মোবাইলে সরাসরি যোগাযোগ।
+        </p>
+      </div>
+
     </div>
+
   </div>
+
 </section>
 
+<!-- ABOUT -->
 <section class="section" id="about">
+
   <div class="container">
-    <div class="section-title"><h2>আমাদের সম্পর্কে</h2><p>Mehedi Xpress</p></div>
-    <div style="max-width:850px;margin:auto;text-align:center">
-      <p>Mehedi Xpress একটি Sports ও Fashion ভিত্তিক অনলাইন শপ। জার্সি, টি-শার্ট, স্পোর্টস পণ্য এবং Custom Printing ধীরে ধীরে আমাদের catalog-এ যুক্ত করা হবে।</p>
+
+    <div class="section-head">
+      <div class="section-title">
+        <h2>আমাদের সম্পর্কে</h2>
+        <p>Mehedi Xpress</p>
+        <div class="section-line"></div>
+      </div>
     </div>
+
+    <div class="about-box">
+
+      <p>
+        Mehedi Xpress একটি Sports ও Fashion ভিত্তিক অনলাইন শপ।
+        জার্সি, টি-শার্ট, স্পোর্টস পণ্য এবং Custom Printing
+        ধীরে ধীরে আমাদের catalog-এ যুক্ত করা হবে।
+      </p>
+
+    </div>
+
   </div>
+
 </section>
 
-<section class="section contact" id="contact">
+<!-- CONTACT -->
+<section class="section contact-section" id="contact">
+
   <div class="container">
-    <div class="section-title"><h2>যোগাযোগ করুন</h2><p>অর্ডার বা তথ্যের জন্য সরাসরি যোগাযোগ করুন</p></div>
-    <div class="contact-grid">
-      <div class="contact-card"><div class="social-icon">📱</div><h3>মোবাইল</h3><a href="tel:01612961523">01612961523</a></div>
-      <div class="contact-card"><div class="social-icon">💬</div><h3>WhatsApp</h3><a href="https://wa.me/8801612961523" target="_blank" rel="noopener">WhatsApp Chat</a></div>
-      <div class="contact-card"><div class="social-icon">💙</div><h3>Facebook</h3><a href="https://www.facebook.com/share/1U5HD22xSw/" target="_blank" rel="noopener">Facebook Page</a></div>
-      <div class="contact-card"><div class="social-icon">♪</div><h3>TikTok</h3><a href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7" target="_blank" rel="noopener">@mehedi.xpress</a></div>
-      <div class="contact-card"><div class="social-icon">📍</div><h3>ঠিকানা</h3><p>দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাংগরা বাজার থানা, মুরাদনগর, কুমিল্লা</p></div>
-      <div class="contact-card"><div class="social-icon">✉️</div><h3>Email</h3><a href="mailto:mehedixpress522@gmail.com">mehedixpress522@gmail.com</a></div>
+
+    <div class="section-head">
+
+      <div class="section-title">
+        <h2>যোগাযোগ করুন</h2>
+        <p>অর্ডার বা তথ্যের জন্য সরাসরি যোগাযোগ করুন</p>
+        <div class="section-line"></div>
+      </div>
+
     </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-card">
+        <div class="contact-icon">📱</div>
+        <h3>মোবাইল</h3>
+        <a href="tel:01612961523">01612961523</a>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <h3>WhatsApp</h3>
+        <a
+          href="https://wa.me/8801612961523"
+          target="_blank"
+          rel="noopener"
+        >
+          WhatsApp Chat
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">💙</div>
+        <h3>Facebook</h3>
+        <a
+          href="https://www.facebook.com/share/1U5HD22xSw/"
+          target="_blank"
+          rel="noopener"
+        >
+          Facebook Page
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">♪</div>
+        <h3>TikTok</h3>
+        <a
+          href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7"
+          target="_blank"
+          rel="noopener"
+        >
+          @mehedi.xpress
+        </a>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <h3>ঠিকানা</h3>
+        <p>
+          দক্ষিণ বাংগরা বাজার বাসস্ট্যান্ডের উত্তর পাশে,
+          বাংগরা বাজার থানা, মুরাদনগর, কুমিল্লা
+        </p>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <h3>Email</h3>
+        <a href="mailto:mehedixpress522@gmail.com">
+          mehedixpress522@gmail.com
+        </a>
+      </div>
+
+    </div>
+
   </div>
+
 </section>
+
 </main>
 
+<!-- FOOTER -->
 <footer>
-  <p>© 2026 Mehedi Xpress — সকল অধিকার সংরক্ষিত।</p>
-  <p>Delivery: কুমিল্লার ভিতরে ৳80 | কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি) | অতিরিক্ত প্রতি কেজিতে ৳30</p>
+
+  <p>
+    © 2026 <strong>Mehedi Xpress</strong> — সকল অধিকার সংরক্ষিত।
+  </p>
+
+  <p>
+    Delivery: কুমিল্লার ভিতরে ৳80 |
+    কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি) |
+    অতিরিক্ত প্রতি কেজিতে ৳30
+  </p>
+
 </footer>
 
-<div class="modal" id="orderModal" aria-hidden="true">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="orderTitle">
-    <div class="modal-head"><h2 id="orderTitle">অর্ডার করুন</h2><button class="close" id="closeModal" type="button">×</button></div>
-    <div class="summary" id="orderSummary">পণ্য নির্বাচন করুন</div>
-    <form id="orderForm">
-      <div class="form-grid">
-        <div><label>আপনার নাম<input name="name" required></label></div>
-        <div><label>মোবাইল নম্বর<input name="phone" inputmode="tel" required></label></div>
-        <div><label>বিভাগ<select name="division" id="division" required><option value="">বিভাগ নির্বাচন করুন</option><option>চট্টগ্রাম</option><option>ঢাকা</option><option>সিলেট</option><option>রাজশাহী</option><option>খুলনা</option><option>বরিশাল</option><option>রংপুর</option><option>ময়মনসিংহ</option></select></label></div>
-        <div><label>জেলা<select name="district" id="district" required><option value="">আগে বিভাগ নির্বাচন করুন</option></select></label></div>
-        <div><label>উপজেলা/থানা<select name="upazila" id="upazila" required><option value="">আগে জেলা নির্বাচন করুন</option></select></label></div>
-        <div><label>ইউনিয়ন<input name="union" placeholder="ইউনিয়ন (যদি প্রযোজ্য)"></label></div>
-        <div class="full"><label>সম্পূর্ণ ঠিকানা<textarea name="address" required placeholder="বাড়ি/রোড/এলাকা"></textarea></label></div>
-        <div><label>পরিমাণ<input name="quantity" id="quantity" type="number" min="1" value="1" required></label></div>
-        <div><label>পেমেন্ট মেথড<select name="payment" required><option value="">নির্বাচন করুন</option><option>Cash on Delivery</option><option>bKash</option><option>Nagad</option></select></label></div>
+<!-- FLOATING CONTACT -->
+<div class="floating-contact">
+
+  <a
+    class="float-btn float-wa"
+    href="https://wa.me/8801612961523"
+    target="_blank"
+    rel="noopener"
+    aria-label="WhatsApp"
+  >
+    💬
+  </a>
+
+  <a
+    class="float-btn float-phone"
+    href="tel:01612961523"
+    aria-label="Phone"
+  >
+    📞
+  </a>
+
+</div>
+
+<!-- ORDER MODAL -->
+<div
+  class="modal"
+  id="orderModal"
+  aria-hidden="true"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-header">
+
+      <h2>🛒 অর্ডার করুন</h2>
+
+      <button
+        class="close"
+        id="closeModal"
+        type="button"
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-content">
+
+      <div class="order-summary" id="orderSummary">
+        পণ্য নির্বাচন করুন
       </div>
-      <div class="delivery-box" id="deliveryInfo">ডেলিভারি চার্জ: জেলা অনুযায়ী হিসাব হবে।</div>
-      <p class="notice">কুমিল্লার ভিতরে ৳80, কুমিল্লার বাইরে ৳150 (প্রথম ১ কেজি)। ১ কেজির বেশি হলে প্রতি অতিরিক্ত কেজিতে ৳30 যোগ হবে। COD-তে ডেলিভারি চার্জ আগে পেমেন্ট করতে হবে।</p>
-      <button class="submit" type="submit">WhatsApp-এ অর্ডার কনফার্ম করুন</button>
-    </form>
+
+      <form id="orderForm">
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>
+              আপনার নাম
+              <input name="name" required>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>
+              মোবাইল নম্বর
+              <input
+                name="phone"
+                inputmode="tel"
+                required
+              >
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label>
+              বিভাগ
+
+              <select
+                name="division"
+                id="division"
+                required
+              >
+                <option value="">
+                  বিভাগ নির্বাচন করুন
+                </option>
+
+                <option>চট্টগ্রাম</option>
+                <option>ঢাকা</option>
+                <option>সিলেট</option>
+                <option>রাজশাহী</option>
+                <option>খুলনা</option>
+                <option>বরিশাল</option>
+                <option>রংপুর</option>
+                <option>ময়মনসিংহ</option>
+
+              </select>
+
+            </label>
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              জেলা
+
+              <select
+                name="district"
+                id="district"
+                required
+              >
+                <option value="">
+                  আগে বিভাগ নির্বাচন করুন
+                </option>
+              </select>
+
+            </label>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              উপজেলা/থানা
+
+              <select
+                name="upazila"
+                id="upazila"
+                required
+              >
+                <option value="">
+                  আগে জেলা নির্বাচন করুন
+                </option>
+              </select>
+
+            </label>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              ইউনিয়ন
+
+              <input
+                name="union"
+                placeholder="ইউনিয়ন (যদি প্রযোজ্য)"
+              >
+
+            </label>
+
+          </div>
+
+          <div class="form-group full">
+
+            <label>
+              সম্পূর্ণ ঠিকানা
+
+              <textarea
+                name="address"
+                required
+                placeholder="বাড়ি/রোড/এলাকা"
+              ></textarea>
+
+            </label>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              পরিমাণ
+
+              <input
+                name="quantity"
+                id="quantity"
+                type="number"
+                min="1"
+                value="1"
+                required
+              >
+
+            </label>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              পেমেন্ট মেথড
+
+              <select name="payment" required>
+
+                <option value="">
+                  নির্বাচন করুন
+                </option>
+
+                <option>Cash on Delivery</option>
+                <option>bKash</option>
+                <option>Nagad</option>
+
+              </select>
+
+            </label>
+
+          </div>
+
+        </div>
+
+        <div
+          class="delivery-info"
+          id="deliveryInfo"
+        >
+          ডেলিভারি চার্জ: জেলা নির্বাচন করলে হিসাব দেখাবে।
+        </div>
+
+        <div class="notice">
+          কুমিল্লার ভিতরে ৳80, কুমিল্লার বাইরে ৳150
+          (প্রথম ১ কেজি)। ১ কেজির বেশি হলে প্রতি
+          অতিরিক্ত কেজিতে ৳30 যোগ হবে।
+          COD-তে ডেলিভারি চার্জ আগে পেমেন্ট করতে হবে।
+        </div>
+
+        <button
+          class="submit-order"
+          type="submit"
+        >
+          💬 WhatsApp-এ অর্ডার কনফার্ম করুন
+        </button>
+
+      </form>
+
+    </div>
+
   </div>
+
 </div>
 
 <script>
 (function(){
+
 "use strict";
 
+/* ================= PRODUCT DATA ================= */
+
 const PRODUCTS = [
- {category:"Football Jersey",categoryBn:"ফুটবল জার্সি",name:"প্রিমিয়াম ফুটবল জার্সি",price:500},
- {category:"Cricket Jersey",categoryBn:"ক্রিকেট জার্সি",name:"প্রিমিয়াম ক্রিকেট জার্সি",price:750},
- {category:"T-Shirt",categoryBn:"টি-শার্ট",name:"স্পোর্টস টি-শার্ট",price:650},
- {category:"Shorts",categoryBn:"শর্টস",name:"স্পোর্টস শর্টস",price:450},
- {category:"Football",categoryBn:"ফুটবল",name:"প্রফেশনাল ফুটবল",price:950},
- {category:"Cricket Bat",categoryBn:"ক্রিকেট ব্যাট",name:"ক্রিকেট ব্যাট",price:1200},
- {category:"Gloves",categoryBn:"গ্লাভস",name:"স্পোর্টস গ্লাভস",price:550},
- {category:"Custom Printing",categoryBn:"কাস্টম প্রিন্টিং",name:"কাস্টম জার্সি/টি-শার্ট প্রিন্টিং",price:800}
+
+  {
+    category:"Football Jersey",
+    categoryBn:"ফুটবল জার্সি",
+    name:"প্রিমিয়াম ফুটবল জার্সি",
+    price:500
+  },
+
+  {
+    category:"Cricket Jersey",
+    categoryBn:"ক্রিকেট জার্সি",
+    name:"প্রিমিয়াম ক্রিকেট জার্সি",
+    price:750
+  },
+
+  {
+    category:"T-Shirt",
+    categoryBn:"টি-শার্ট",
+    name:"স্পোর্টস টি-শার্ট",
+    price:650
+  },
+
+  {
+    category:"Shorts",
+    categoryBn:"শর্টস",
+    name:"স্পোর্টস শর্টস",
+    price:450
+  },
+
+  {
+    category:"Football",
+    categoryBn:"ফুটবল",
+    name:"প্রফেশনাল ফুটবল",
+    price:950
+  },
+
+  {
+    category:"Cricket Bat",
+    categoryBn:"ক্রিকেট ব্যাট",
+    name:"ক্রিকেট ব্যাট",
+    price:1200
+  },
+
+  {
+    category:"Gloves",
+    categoryBn:"গ্লাভস",
+    name:"স্পোর্টস গ্লাভস",
+    price:550
+  },
+
+  {
+    category:"Custom Printing",
+    categoryBn:"কাস্টম প্রিন্টিং",
+    name:"কাস্টম জার্সি/টি-শার্ট প্রিন্টিং",
+    price:800
+  }
+
 ];
 
-const $ = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
+/* ================= HELPERS ================= */
+
+const $ = selector =>
+  document.querySelector(selector);
+
+const $$ = selector =>
+  Array.from(document.querySelectorAll(selector));
+
 const cards = $$(".product-card");
+
 const count = $("#productCount");
 const subtitle = $("#productSubtitle");
-const empty = $("#emptyState");
+const emptyState = $("#emptyState");
+
 const searchInput = $("#searchInput");
+const searchForm = $("#searchForm");
+
 const modal = $("#orderModal");
+const closeModalButton = $("#closeModal");
+
 const form = $("#orderForm");
-const qty = $("#quantity");
+const quantity = $("#quantity");
+
 const summary = $("#orderSummary");
+
 const division = $("#division");
 const district = $("#district");
 const upazila = $("#upazila");
+
 const deliveryInfo = $("#deliveryInfo");
+
 let selectedProduct = null;
 
+
+/* ================= LOCATION DATA ================= */
+
 const locationData = {
- "চট্টগ্রাম":{
-   "কুমিল্লা":["আদর্শ সদর","সদর দক্ষিণ","দাউদকান্দি","চান্দিনা","চৌদ্দগ্রাম","বুড়িচং","ব্রাহ্মণপাড়া","বরুড়া","লাকসাম","মনোহরগঞ্জ","মুরাদনগর","দেবিদ্বার","হোমনা","তিতাস","মেঘনা","নাঙ্গলকোট","লালমাই"],
-   "চট্টগ্রাম":["পটিয়া","হাটহাজারী","রাউজান","রাঙ্গুনিয়া","সীতাকুণ্ড"],
-   "নোয়াখালী":["বেগমগঞ্জ","সেনবাগ","চাটখিল","কোম্পানীগঞ্জ"],
-   "ফেনী":["ফেনী সদর","ছাগলনাইয়া","দাগনভূঞা","পরশুরাম"],
-   "ব্রাহ্মণবাড়িয়া":["ব্রাহ্মণবাড়িয়া সদর","আশুগঞ্জ","সরাইল","নাসিরনগর"],
-   "চাঁদপুর":["চাঁদপুর সদর","হাজীগঞ্জ","ফরিদগঞ্জ","কচুয়া"],
-   "লক্ষ্মীপুর":["লক্ষ্মীপুর সদর","রায়পুর","রামগঞ্জ"],
- },
- "ঢাকা":{
-   "ঢাকা":["সাভার","ধামরাই","কেরানীগঞ্জ","দোহার","নবাবগঞ্জ"],
-   "গাজীপুর":["গাজীপুর সদর","কালিয়াকৈর","কাপাসিয়া","শ্রীপুর"],
-   "নারায়ণগঞ্জ":["নারায়ণগঞ্জ সদর","রূপগঞ্জ","আড়াইহাজার","সোনারগাঁ"],
-   "মুন্সীগঞ্জ":["মুন্সীগঞ্জ সদর","শ্রীনগর","সিরাজদিখান"],
- },
- "সিলেট":{"সিলেট":["সিলেট সদর","বালাগঞ্জ","বিয়ানীবাজার","গোলাপগঞ্জ"],"মৌলভীবাজার":["মৌলভীবাজার সদর","শ্রীমঙ্গল","কুলাউড়া"]},
- "রাজশাহী":{"রাজশাহী":["পবা","চারঘাট","বাঘা","দুর্গাপুর"],"বগুড়া":["বগুড়া সদর","শিবগঞ্জ","শেরপুর"]},
- "খুলনা":{"খুলনা":["খুলনা সদর","দাকোপ","ডুমুরিয়া","তেরখাদা"],"যশোর":["যশোর সদর","ঝিকরগাছা","অভয়নগর"]},
- "বরিশাল":{"বরিশাল":["বরিশাল সদর","বাকেরগঞ্জ","বানারীপাড়া","গৌরনদী"],"ভোলা":["ভোলা সদর","বোরহানউদ্দিন","দৌলতখান"]},
- "রংপুর":{"রংপুর":["রংপুর সদর","গঙ্গাচড়া","পীরগাছা","মিঠাপুকুর"],"দিনাজপুর":["দিনাজপুর সদর","বিরামপুর","পার্বতীপুর"]},
- "ময়মনসিংহ":{"ময়মনসিংহ":["ময়মনসিংহ সদর","ত্রিশাল","ভালুকা","ফুলবাড়িয়া"],"জামালপুর":["জামালপুর সদর","মেলান্দহ","সরিষাবাড়ী"]}
+
+  "চট্টগ্রাম":{
+    "কুমিল্লা":[
+      "আদর্শ সদর",
+      "সদর দক্ষিণ",
+      "দাউদকান্দি",
+      "চান্দিনা",
+      "চৌদ্দগ্রাম",
+      "বুড়িচং",
+      "ব্রাহ্মণপাড়া",
+      "বরুড়া",
+      "লাকসাম",
+      "মনোহরগঞ্জ",
+      "মুরাদনগর",
+      "দেবিদ্বার",
+      "হোমনা",
+      "তিতাস",
+      "মেঘনা",
+      "নাঙ্গলকোট",
+      "লালমাই"
+    ],
+
+    "চট্টগ্রাম":[
+      "পটিয়া",
+      "হাটহাজারী",
+      "রাউজান",
+      "রাঙ্গুনিয়া",
+      "সীতাকুণ্ড"
+    ],
+
+    "নোয়াখালী":[
+      "বেগমগঞ্জ",
+      "সেনবাগ",
+      "চাটখিল",
+      "কোম্পানীগঞ্জ"
+    ],
+
+    "ফেনী":[
+      "ফেনী সদর",
+      "ছাগলনাইয়া",
+      "দাগনভূঞা",
+      "পরশুরাম"
+    ],
+
+    "ব্রাহ্মণবাড়িয়া":[
+      "ব্রাহ্মণবাড়িয়া সদর",
+      "আশুগঞ্জ",
+      "সরাইল",
+      "নাসিরনগর"
+    ],
+
+    "চাঁদপুর":[
+      "চাঁদপুর সদর",
+      "হাজীগঞ্জ",
+      "ফরিদগঞ্জ",
+      "কচুয়া"
+    ],
+
+    "লক্ষ্মীপুর":[
+      "লক্ষ্মীপুর সদর",
+      "রায়পুর",
+      "রামগঞ্জ"
+    ]
+  },
+
+  "ঢাকা":{
+
+    "ঢাকা":[
+      "সাভার",
+      "ধামরাই",
+      "কেরানীগঞ্জ",
+      "দোহার",
+      "নবাবগঞ্জ"
+    ],
+
+    "গাজীপুর":[
+      "গাজীপুর সদর",
+      "কালিয়াকৈর",
+      "কাপাসিয়া",
+      "শ্রীপুর"
+    ],
+
+    "নারায়ণগঞ্জ":[
+      "নারায়ণগঞ্জ সদর",
+      "রূপগঞ্জ",
+      "আড়াইহাজার",
+      "সোনারগাঁ"
+    ],
+
+    "মুন্সীগঞ্জ":[
+      "মুন্সীগঞ্জ সদর",
+      "শ্রীনগর",
+      "সিরাজদিখান"
+    ]
+
+  },
+
+  "সিলেট":{
+
+    "সিলেট":[
+      "সিলেট সদর",
+      "বালাগঞ্জ",
+      "বিয়ানীবাজার",
+      "গোলাপগঞ্জ"
+    ],
+
+    "মৌলভীবাজার":[
+      "মৌলভীবাজার সদর",
+      "শ্রীমঙ্গল",
+      "কুলাউড়া"
+    ]
+
+  },
+
+  "রাজশাহী":{
+
+    "রাজশাহী":[
+      "পবা",
+      "চারঘাট",
+      "বাঘা",
+      "দুর্গাপুর"
+    ],
+
+    "বগুড়া":[
+      "বগুড়া সদর",
+      "শিবগঞ্জ",
+      "শেরপুর"
+    ]
+
+  },
+
+  "খুলনা":{
+
+    "খুলনা":[
+      "খুলনা সদর",
+      "দাকোপ",
+      "ডুমুরিয়া",
+      "তেরখাদা"
+    ],
+
+    "যশোর":[
+      "যশোর সদর",
+      "ঝিকরগাছা",
+      "অভয়নগর"
+    ]
+
+  },
+
+  "বরিশাল":{
+
+    "বরিশাল":[
+      "বরিশাল সদর",
+      "বাকেরগঞ্জ",
+      "বানারীপাড়া",
+      "গৌরনদী"
+    ],
+
+    "ভোলা":[
+      "ভোলা সদর",
+      "বোরহানউদ্দিন",
+      "দৌলতখান"
+    ]
+
+  },
+
+  "রংপুর":{
+
+    "রংপুর":[
+      "রংপুর সদর",
+      "গঙ্গাচড়া",
+      "পীরগাছা",
+      "মিঠাপুকুর"
+    ],
+
+    "দিনাজপুর":[
+      "দিনাজপুর সদর",
+      "বিরামপুর",
+      "পার্বতীপুর"
+    ]
+
+  },
+
+  "ময়মনসিংহ":{
+
+    "ময়মনসিংহ":[
+      "ময়মনসিংহ সদর",
+      "ত্রিশাল",
+      "ভালুকা",
+      "ফুলবাড়িয়া"
+    ],
+
+    "জামালপুর":[
+      "জামালপুর সদর",
+      "মেলান্দহ",
+      "সরিষাবাড়ী"
+    ]
+
+  }
+
 };
 
-function resetCards(){
-  cards.forEach(c=>c.classList.remove("hidden"));
-  $$(".category-card").forEach(c=>c.classList.remove("selected"));
-  count.textContent = PRODUCTS.length+"টি পণ্য";
-  subtitle.textContent = "আমাদের বর্তমান পণ্যসমূহ";
-  empty.style.display = "none";
-}
-function showList(list, title){
-  const allowed = new Set(list.map(p=>p.category));
-  let visible=0;
+
+/* ================= RESET ================= */
+
+function resetProducts(){
+
   cards.forEach(card=>{
-    const show = allowed.has(card.dataset.category) && list.some(p=>p.name === card.querySelector("h3").textContent);
-    card.classList.toggle("hidden", !show);
-    if(show) visible++;
+    card.classList.remove("hidden");
   });
-  count.textContent = visible+"টি পণ্য";
-  subtitle.textContent = title;
-  empty.style.display = visible ? "none" : "block";
-}
-function showAllAndScroll(){
-  resetCards();
-  $("#products").scrollIntoView({behavior:"smooth",block:"start"});
-}
-function searchProducts(q){
-  q=q.trim().toLowerCase();
-  if(!q){resetCards();return;}
-  const list=PRODUCTS.filter(p=>(p.name+" "+p.category+" "+p.categoryBn).toLowerCase().includes(q));
-  showList(list, "“"+q+"” — সার্চ ফলাফল");
-  $("#products").scrollIntoView({behavior:"smooth",block:"start"});
+
+  $$(".category-card").forEach(card=>{
+    card.classList.remove("selected");
+  });
+
+  count.textContent =
+    PRODUCTS.length + "টি পণ্য";
+
+  subtitle.textContent =
+    "আমাদের বর্তমান পণ্যসমূহ";
+
+  emptyState.style.display = "none";
+
 }
 
-$("#showAllBtn").addEventListener("click",showAllAndScroll);
-$("#heroProducts").addEventListener("click",()=>setTimeout(resetCards,20));
-$("#searchForm").addEventListener("submit",e=>{e.preventDefault();searchProducts(searchInput.value)});
-searchInput.addEventListener("input",()=>searchProducts(searchInput.value));
+
+/* ================= FILTER ================= */
+
+function filterProducts(filterFunction,title){
+
+  let visible = 0;
+
+  cards.forEach(card=>{
+
+    const productName =
+      card.querySelector("h3").textContent;
+
+    const product =
+      PRODUCTS.find(item =>
+        item.name === productName
+      );
+
+    const show =
+      product && filterFunction(product);
+
+    card.classList.toggle(
+      "hidden",
+      !show
+    );
+
+    if(show){
+      visible++;
+    }
+
+  });
+
+  count.textContent =
+    visible + "টি পণ্য";
+
+  subtitle.textContent =
+    title;
+
+  emptyState.style.display =
+    visible ? "none" : "block";
+
+}
+
+
+/* ================= SEARCH ================= */
+
+function searchProducts(value){
+
+  const query =
+    value.trim().toLowerCase();
+
+  if(!query){
+
+    resetProducts();
+    return;
+
+  }
+
+  filterProducts(
+
+    product => {
+
+      const text = (
+        product.name +
+        " " +
+        product.category +
+        " " +
+        product.categoryBn
+      ).toLowerCase();
+
+      return text.includes(query);
+
+    },
+
+    "“" + value.trim() + "” — সার্চ ফলাফল"
+
+  );
+
+}
+
+
+/* ================= SEARCH EVENTS ================= */
+
+searchForm.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    searchProducts(
+      searchInput.value
+    );
+
+    document
+      .querySelector("#products")
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  }
+);
+
+
+searchInput.addEventListener(
+  "input",
+  function(){
+
+    searchProducts(
+      searchInput.value
+    );
+
+  }
+);
+
+
+/* ================= CATEGORY ================= */
 
 $$(".category-card").forEach(card=>{
-  card.addEventListener("click",()=>{
-    $$(".category-card").forEach(c=>c.classList.remove("selected"));
-    card.classList.add("selected");
-    const list=PRODUCTS.filter(p=>p.category===card.dataset.category);
-    showList(list, card.querySelector("strong").textContent+" — পণ্য");
-    $("#products").scrollIntoView({behavior:"smooth",block:"start"});
-  });
+
+  card.addEventListener(
+    "click",
+    function(){
+
+      searchInput.value = "";
+
+      $$(".category-card").forEach(item=>{
+        item.classList.remove("selected");
+      });
+
+      card.classList.add("selected");
+
+      const category =
+        card.dataset.category;
+
+      filterProducts(
+
+        product =>
+          product.category === category,
+
+        card.querySelector("strong")
+          .textContent + " — পণ্য"
+
+      );
+
+      document
+        .querySelector("#products")
+        .scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+
+    }
+  );
+
 });
 
-$$("[data-nav='home'],#homeLogo").forEach(el=>el.addEventListener("click",()=>{
-  searchInput.value="";
-  setTimeout(()=>{resetCards();window.scrollTo({top:0,behavior:"smooth"});},30);
-}));
-$$("[data-nav='products']").forEach(el=>el.addEventListener("click",()=>setTimeout(resetCards,30)));
+
+/* ================= HOME ================= */
+
+$$("[data-nav='home'], #homeLogo")
+.forEach(element=>{
+
+  element.addEventListener(
+    "click",
+    function(){
+
+      searchInput.value = "";
+
+      setTimeout(
+        resetProducts,
+        30
+      );
+
+    }
+  );
+
+});
+
+
+/* ================= ALL PRODUCTS ================= */
+
+$$("[data-nav='products']")
+.forEach(element=>{
+
+  element.addEventListener(
+    "click",
+    function(){
+
+      searchInput.value = "";
+
+      setTimeout(
+        resetProducts,
+        30
+      );
+
+    }
+  );
+
+});
+
+
+$("#showAllBtn").addEventListener(
+  "click",
+  function(){
+
+    searchInput.value = "";
+
+    resetProducts();
+
+    document
+      .querySelector("#products")
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  }
+);
+
+
+$("#heroProducts").addEventListener(
+  "click",
+  function(){
+
+    searchInput.value = "";
+
+    setTimeout(
+      resetProducts,
+      20
+    );
+
+  }
+);
+
+
+/* ================= ORDER ================= */
+
+function updateOrderSummary(){
+
+  if(!selectedProduct){
+    return;
+  }
+
+  const qty =
+    Math.max(
+      1,
+      Number(quantity.value) || 1
+    );
+
+  quantity.value = qty;
+
+  const productTotal =
+    selectedProduct.price * qty;
+
+  summary.innerHTML =
+
+    "<strong>" +
+    selectedProduct.name +
+    "</strong>" +
+
+    "<br>একক মূল্য: ৳ " +
+    selectedProduct.price.toLocaleString("en-US") +
+
+    "<br>পরিমাণ: " +
+    qty +
+    "টি" +
+
+    "<br><strong>মোট পণ্যের মূল্য: ৳ " +
+    productTotal.toLocaleString("en-US") +
+    "</strong>";
+
+  updateDelivery();
+
+}
+
 
 function openOrder(product){
-  selectedProduct=product;
-  qty.value=1;
-  summary.innerHTML="<strong>"+product.name+"</strong><br>একক মূল্য: ৳ "+product.price.toLocaleString("en-US")+"<br>মোট পণ্যের মূল্য: ৳ "+product.price.toLocaleString("en-US");
+
+  selectedProduct = product;
+
+  quantity.value = 1;
+
+  updateOrderSummary();
+
   modal.classList.add("open");
-  modal.setAttribute("aria-hidden","false");
-  setTimeout(()=>form.elements.name.focus(),100);
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  setTimeout(
+    ()=>{
+      form.elements.name.focus();
+    },
+    120
+  );
+
 }
-$$(".buy-btn").forEach(btn=>btn.addEventListener("click",()=>{
-  const product=PRODUCTS.find(p=>p.category===btn.dataset.product);
-  if(product) openOrder(product);
-}));
-function closeModal(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true")}
-$("#closeModal").addEventListener("click",closeModal);
-modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape" && modal.classList.contains("open"))closeModal()});
 
-qty.addEventListener("input",()=>{
-  if(!selectedProduct)return;
-  let n=Math.max(1,Number(qty.value)||1);
-  qty.value=n;
-  const total=selectedProduct.price*n;
-  summary.innerHTML="<strong>"+selectedProduct.name+"</strong><br>একক মূল্য: ৳ "+selectedProduct.price.toLocaleString("en-US")+"<br>পরিমাণ: "+n+"টি<br><strong>মোট পণ্যের মূল্য: ৳ "+total.toLocaleString("en-US")+"</strong>";
+
+$$(".buy-btn").forEach(button=>{
+
+  button.addEventListener(
+    "click",
+    function(){
+
+      const product =
+        PRODUCTS.find(
+          item =>
+            item.category ===
+            button.dataset.product
+        );
+
+      if(product){
+        openOrder(product);
+      }
+
+    }
+  );
+
 });
 
-division.addEventListener("change",()=>{
-  district.innerHTML='<option value="">জেলা নির্বাচন করুন</option>';
-  upazila.innerHTML='<option value="">আগে জেলা নির্বাচন করুন</option>';
-  const data=locationData[division.value]||{};
-  Object.keys(data).forEach(d=>district.insertAdjacentHTML("beforeend",'<option value="'+d+'">'+d+'</option>'));
-  updateDelivery();
-});
-district.addEventListener("change",()=>{
-  upazila.innerHTML='<option value="">উপজেলা/থানা নির্বাচন করুন</option>';
-  const list=(locationData[division.value]||{})[district.value]||[];
-  list.forEach(u=>upazila.insertAdjacentHTML("beforeend",'<option value="'+u+'">'+u+'</option>'));
-  updateDelivery();
-});
+
+/* ================= CLOSE MODAL ================= */
+
+function closeModal(){
+
+  modal.classList.remove("open");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+closeModalButton.addEventListener(
+  "click",
+  closeModal
+);
+
+
+modal.addEventListener(
+  "click",
+  function(event){
+
+    if(event.target === modal){
+      closeModal();
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape" &&
+      modal.classList.contains("open")
+    ){
+
+      closeModal();
+
+    }
+
+  }
+);
+
+
+/* ================= QUANTITY ================= */
+
+quantity.addEventListener(
+  "input",
+  updateOrderSummary
+);
+
+
+/* ================= LOCATION ================= */
+
+division.addEventListener(
+  "change",
+  function(){
+
+    district.innerHTML =
+      '<option value="">জেলা নির্বাচন করুন</option>';
+
+    upazila.innerHTML =
+      '<option value="">আগে জেলা নির্বাচন করুন</option>';
+
+    const data =
+      locationData[
+        division.value
+      ] || {};
+
+    Object.keys(data).forEach(
+      districtName=>{
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          districtName;
+
+        option.textContent =
+          districtName;
+
+        district.appendChild(option);
+
+      }
+    );
+
+    updateDelivery();
+
+  }
+);
+
+
+district.addEventListener(
+  "change",
+  function(){
+
+    upazila.innerHTML =
+      '<option value="">উপজেলা/থানা নির্বাচন করুন</option>';
+
+    const list =
+      (
+        locationData[
+          division.value
+        ] || {}
+      )[
+        district.value
+      ] || [];
+
+    list.forEach(
+      upazilaName=>{
+
+        const option =
+          document.createElement("option");
+
+        option.value =
+          upazilaName;
+
+        option.textContent =
+          upazilaName;
+
+        upazila.appendChild(option);
+
+      }
+    );
+
+    updateDelivery();
+
+  }
+);
+
+
+/* ================= DELIVERY ================= */
+
+function calculateDelivery(){
+
+  const qty =
+    Math.max(
+      1,
+      Number(quantity.value) || 1
+    );
+
+  if(!district.value){
+    return 0;
+  }
+
+  let charge =
+    district.value === "কুমিল্লা"
+      ? 80
+      : 150;
+
+  if(qty > 1){
+    charge +=
+      (qty - 1) * 30;
+  }
+
+  return charge;
+
+}
+
+
 function updateDelivery(){
-  const kg=Math.max(1,Number(qty.value)||1);
-  let charge = district.value==="কুমিল্লা" ? 80 : (district.value ? 150 : 0);
-  if(kg>1 && charge) charge += (kg-1)*30;
-  deliveryInfo.textContent = charge ? "আনুমানিক ডেলিভারি চার্জ: ৳ "+charge.toLocaleString("en-US")+" | মোট আনুমানিক: ৳ "+((selectedProduct?selectedProduct.price*kg:0)+charge).toLocaleString("en-US") : "ডেলিভারি চার্জ: জেলা নির্বাচন করলে হিসাব দেখাবে।";
-}
-qty.addEventListener("input",updateDelivery);
 
-form.addEventListener("submit",e=>{
-  e.preventDefault();
-  if(!selectedProduct)return;
-  const fd=new FormData(form);
-  const n=Math.max(1,Number(fd.get("quantity"))||1);
-  const productTotal=selectedProduct.price*n;
-  const delivery=(fd.get("district")==="কুমিল্লা"?80:150)+(n>1?(n-1)*30:0);
-  const text=[
-    "🛒 *Mehedi Xpress Order*",
-    "------------------------",
-    "পণ্য: "+selectedProduct.name,
-    "পরিমাণ: "+n+"টি",
-    "পণ্যের মূল্য: ৳ "+productTotal.toLocaleString("en-US"),
-    "ডেলিভারি: ৳ "+delivery.toLocaleString("en-US"),
-    "মোট: ৳ "+(productTotal+delivery).toLocaleString("en-US"),
-    "নাম: "+fd.get("name"),
-    "মোবাইল: "+fd.get("phone"),
-    "বিভাগ: "+fd.get("division"),
-    "জেলা: "+fd.get("district"),
-    "উপজেলা/থানা: "+fd.get("upazila"),
-    "ইউনিয়ন: "+(fd.get("union")||"প্রযোজ্য নয়"),
-    "ঠিকানা: "+fd.get("address"),
-    "পেমেন্ট: "+fd.get("payment"),
-    "নোট: COD হলে ডেলিভারি চার্জ আগে পেমেন্ট করতে হবে।"
-  ].join("\n");
-  window.open("https://wa.me/8801612961523?text="+encodeURIComponent(text),"_blank","noopener");
+  if(!selectedProduct){
+    return;
+  }
+
+  const qty =
+    Math.max(
+      1,
+      Number(quantity.value) || 1
+    );
+
+  if(!district.value){
+
+    deliveryInfo.textContent =
+      "ডেলিভারি চার্জ: জেলা নির্বাচন করলে হিসাব দেখাবে।";
+
+    return;
+
+  }
+
+  const delivery =
+    calculateDelivery();
+
+  const productTotal =
+    selectedProduct.price * qty;
+
+  const total =
+    productTotal + delivery;
+
+  deliveryInfo.textContent =
+    "ডেলিভারি চার্জ: ৳ " +
+    delivery.toLocaleString("en-US") +
+    " | মোট আনুমানিক: ৳ " +
+    total.toLocaleString("en-US");
+
+}
+
+
+/* ================= ORDER SUBMIT ================= */
+
+form.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    if(!selectedProduct){
+      return;
+    }
+
+    const data =
+      new FormData(form);
+
+    const qty =
+      Math.max(
+        1,
+        Number(data.get("quantity")) || 1
+      );
+
+    const productTotal =
+      selectedProduct.price * qty;
+
+    const delivery =
+      calculateDelivery();
+
+    const grandTotal =
+      productTotal + delivery;
+
+    const text = [
+
+      "🛒 *Mehedi Xpress Order*",
+
+      "------------------------",
+
+      "পণ্য: " +
+      selectedProduct.name,
+
+      "পরিমাণ: " +
+      qty +
+      "টি",
+
+      "পণ্যের মূল্য: ৳ " +
+      productTotal.toLocaleString("en-US"),
+
+      "ডেলিভারি: ৳ " +
+      delivery.toLocaleString("en-US"),
+
+      "মোট: ৳ " +
+      grandTotal.toLocaleString("en-US"),
+
+      "নাম: " +
+      data.get("name"),
+
+      "মোবাইল: " +
+      data.get("phone"),
+
+      "বিভাগ: " +
+      data.get("division"),
+
+      "জেলা: " +
+      data.get("district"),
+
+      "উপজেলা/থানা: " +
+      data.get("upazila"),
+
+      "ইউনিয়ন: " +
+      (
+        data.get("union") ||
+        "প্রযোজ্য নয়"
+      ),
+
+      "ঠিকানা: " +
+      data.get("address"),
+
+      "পেমেন্ট: " +
+      data.get("payment"),
+
+      "নোট: COD হলে ডেলিভারি চার্জ আগে পেমেন্ট করতে হবে।"
+
+    ].join("\n");
+
+
+    const whatsappURL =
+      "https://wa.me/8801612961523?text=" +
+      encodeURIComponent(text);
+
+
+    window.open(
+      whatsappURL,
+      "_blank",
+      "noopener"
+    );
+
+  }
+);
+
+
+/* ================= NAV ACTIVE STATE ================= */
+
+const navLinks =
+  $$(".nav-link");
+
+const sections =
+  ["home","categories","products","about","contact"]
+  .map(id=>document.getElementById(id));
+
+const observer =
+  new IntersectionObserver(
+    entries=>{
+
+      entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+          navLinks.forEach(link=>{
+            link.classList.remove("active");
+          });
+
+          const active =
+            document.querySelector(
+              '[data-nav="' +
+              entry.target.id +
+              '"]'
+            );
+
+          if(active){
+            active.classList.add("active");
+          }
+
+        }
+
+      });
+
+    },
+    {
+      rootMargin:"-30% 0px -60% 0px",
+      threshold:0
+    }
+  );
+
+
+sections.forEach(section=>{
+  if(section){
+    observer.observe(section);
+  }
 });
 
-window.addEventListener("pageshow",()=>{searchInput.value="";resetCards()});
-resetCards();
+
+/* ================= INITIAL STATE ================= */
+
+window.addEventListener(
+  "pageshow",
+  function(){
+
+    searchInput.value = "";
+
+    resetProducts();
+
+  }
+);
+
+resetProducts();
+
 })();
 </script>
+
 </body>
 </html>
