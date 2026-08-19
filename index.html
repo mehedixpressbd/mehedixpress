@@ -3,21 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="description" content="Mehedi Xpress - Sports, Fashion & Custom Printing">
 <title>Mehedi Xpress | Sports & Fashion</title>
 
 <style>
 :root{
-  --brand:#ff6900;
-  --brand-dark:#e85d00;
-  --black:#171717;
-  --white:#fff;
-  --bg:#f5f5f5;
-  --text:#222;
-  --muted:#777;
-  --border:#e5e5e5;
-  --green:#16a34a;
-  --shadow:0 8px 25px rgba(0,0,0,.08);
+  --primary:#ff6900;
+  --primary-dark:#e85d00;
+  --secondary:#111827;
+  --bg:#f6f7f9;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --success:#16a34a;
+  --shadow:0 8px 28px rgba(0,0,0,.08);
+  --radius:16px;
 }
 
 *{
@@ -31,14 +32,13 @@ html{
 }
 
 body{
-  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  font-family:
+    Arial,
+    "Noto Sans Bengali",
+    sans-serif;
   background:var(--bg);
   color:var(--text);
-}
-
-a{
-  text-decoration:none;
-  color:inherit;
+  line-height:1.6;
 }
 
 button,
@@ -48,174 +48,195 @@ textarea{
   font:inherit;
 }
 
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
 .container{
   width:min(1200px,94%);
   margin:auto;
 }
 
-/* TOP BAR */
+/* =========================
+   TOP BAR
+========================= */
 
-.top-bar{
-  background:#222;
+.topbar{
+  background:#171717;
   color:#fff;
-  padding:8px 0;
   font-size:13px;
+  padding:7px 0;
 }
 
-/* HEADER */
+.topbar-inner{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+}
 
-header{
-  background:linear-gradient(135deg,var(--brand),#ff8c00);
-  color:white;
+/* =========================
+   HEADER
+========================= */
+
+.header{
   position:sticky;
   top:0;
   z-index:1000;
-  box-shadow:0 3px 15px rgba(0,0,0,.15);
+  background:linear-gradient(
+    135deg,
+    var(--primary),
+    #ff8b00
+  );
+  box-shadow:0 4px 18px rgba(0,0,0,.15);
 }
 
-.navbar{
+.nav{
   min-height:72px;
   display:flex;
   align-items:center;
-  gap:18px;
+  gap:16px;
 }
 
 .logo{
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:22px;
+  gap:9px;
+  color:#fff;
+  font-size:21px;
   font-weight:800;
   white-space:nowrap;
 }
 
-.logo img{
-  width:46px;
-  height:46px;
-  object-fit:contain;
+.logo-mark{
+  width:45px;
+  height:45px;
+  border-radius:11px;
   background:#fff;
-  border-radius:10px;
-  padding:5px;
-}
-
-.logo-placeholder{
-  width:46px;
-  height:46px;
-  border-radius:10px;
-  background:#fff;
-  color:var(--brand);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  color:var(--primary);
+  display:grid;
+  place-items:center;
   font-weight:900;
 }
 
-/* SEARCH */
-
-.search-box{
+.search{
   flex:1;
   display:flex;
-  background:white;
+  background:#fff;
   border-radius:9px;
   overflow:hidden;
 }
 
-.search-box input{
-  flex:1;
+.search input{
+  width:100%;
   border:0;
   outline:0;
-  padding:13px 15px;
+  padding:12px 14px;
 }
 
-.search-box button{
-  width:55px;
-  background:white;
+.search button{
+  width:52px;
   border:0;
-  color:var(--brand);
-  font-size:22px;
+  background:#fff;
+  color:var(--primary);
+  font-size:20px;
+  cursor:pointer;
 }
 
-/* NAV BUTTON */
-
-.nav-btn{
-  background:rgba(255,255,255,.18);
-  color:white;
-  padding:11px 14px;
+.nav-link{
+  color:#fff;
+  background:rgba(255,255,255,.16);
+  padding:10px 13px;
   border-radius:8px;
-  font-weight:600;
+  font-size:14px;
+  font-weight:700;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
 
 .hero{
   margin:20px auto;
-  border-radius:18px;
+  border-radius:20px;
   overflow:hidden;
   position:relative;
-  min-height:310px;
+  min-height:330px;
   background:#222;
 }
 
-.slide{
-  min-height:310px;
+.hero-slide{
+  min-height:330px;
   display:none;
   align-items:center;
   padding:45px;
-  color:white;
+  color:#fff;
   background:
-    linear-gradient(100deg,rgba(0,0,0,.8),rgba(255,105,0,.65)),
-    linear-gradient(135deg,#222,#ff6900);
+    linear-gradient(
+      100deg,
+      rgba(0,0,0,.82),
+      rgba(255,105,0,.58)
+    );
 }
 
-.slide.active{
+.hero-slide.active{
   display:flex;
 }
 
-.slide-content{
-  max-width:680px;
+.hero-content{
+  max-width:700px;
 }
 
-.slide h1{
-  font-size:clamp(32px,5vw,56px);
-  line-height:1.15;
+.hero-content h1{
+  font-size:clamp(31px,5vw,57px);
+  line-height:1.12;
+  margin-bottom:14px;
 }
 
-.slide p{
-  margin:15px 0 22px;
+.hero-content p{
   font-size:17px;
-  line-height:1.7;
+  max-width:650px;
+  margin-bottom:22px;
 }
 
 .hero-btn{
   display:inline-block;
   background:#fff;
-  color:var(--brand);
-  padding:13px 22px;
+  color:var(--primary);
+  padding:12px 22px;
   border-radius:9px;
-  font-weight:bold;
+  font-weight:800;
 }
 
-.dots{
+.hero-dots{
   position:absolute;
-  bottom:15px;
+  bottom:14px;
   width:100%;
   text-align:center;
 }
 
-.dot{
+.hero-dot{
   display:inline-block;
   width:9px;
   height:9px;
-  background:#ffffff70;
-  border-radius:50%;
   margin:4px;
+  border-radius:50%;
+  background:rgba(255,255,255,.45);
+  cursor:pointer;
 }
 
-.dot.active{
+.hero-dot.active{
   background:#fff;
 }
 
-/* FEATURES */
+/* =========================
+   FEATURE BUTTONS
+========================= */
 
 .features{
   display:grid;
@@ -225,58 +246,71 @@ header{
 }
 
 .feature{
-  background:white;
-  padding:18px;
+  background:var(--card);
   border:1px solid var(--border);
-  border-radius:14px;
+  border-radius:var(--radius);
+  padding:18px;
   display:flex;
   align-items:center;
   gap:13px;
+  cursor:pointer;
   transition:.25s;
 }
 
 .feature:hover{
   transform:translateY(-4px);
   box-shadow:var(--shadow);
+  border-color:var(--primary);
 }
 
 .feature-icon{
-  font-size:30px;
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:#fff4eb;
+  display:grid;
+  place-items:center;
+  font-size:26px;
+  flex-shrink:0;
 }
 
 .feature-title{
-  font-weight:bold;
+  font-weight:800;
 }
 
 .feature-desc{
   color:var(--muted);
   font-size:13px;
-  margin-top:4px;
 }
 
-/* SECTION */
+/* =========================
+   SECTIONS
+========================= */
 
 .section{
-  margin:35px auto;
+  margin:38px auto;
 }
 
-.section-title{
+.section-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:16px;
+  gap:15px;
+  margin-bottom:17px;
 }
 
-.section-title h2{
-  font-size:26px;
+.section-head h2{
+  font-size:27px;
 }
 
-.section-title span{
+.section-head span{
   color:var(--muted);
   font-size:14px;
 }
 
-/* CATEGORY */
+/* =========================
+   CATEGORIES
+========================= */
 
 .categories{
   display:grid;
@@ -285,35 +319,37 @@ header{
 }
 
 .category{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
   border-radius:15px;
-  padding:14px 7px;
+  padding:13px 6px;
   text-align:center;
+  cursor:pointer;
   transition:.25s;
 }
 
 .category:hover{
   transform:translateY(-5px);
-  border-color:var(--brand);
-  box-shadow:0 10px 25px rgba(255,105,0,.15);
+  border-color:var(--primary);
+  box-shadow:var(--shadow);
 }
 
 .category-icon{
   height:60px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:40px;
-  margin-bottom:8px;
+  display:grid;
+  place-items:center;
+  font-size:38px;
+  margin-bottom:6px;
 }
 
 .category-name{
-  font-size:13px;
-  font-weight:bold;
+  font-size:12px;
+  font-weight:800;
 }
 
-/* PRODUCTS */
+/* =========================
+   PRODUCTS
+========================= */
 
 .products{
   display:grid;
@@ -322,9 +358,9 @@ header{
 }
 
 .product{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
-  border-radius:15px;
+  border-radius:16px;
   overflow:hidden;
   transition:.25s;
 }
@@ -335,116 +371,166 @@ header{
 }
 
 .product-image{
-  height:210px;
-  background:linear-gradient(135deg,#eee,#ddd);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:75px;
+  height:205px;
+  background:
+    linear-gradient(135deg,#f0f0f0,#ddd);
+  display:grid;
+  place-items:center;
+  font-size:72px;
 }
 
 .product-body{
   padding:15px;
 }
 
+.product-category{
+  color:var(--primary);
+  font-size:12px;
+  font-weight:700;
+}
+
 .product-name{
-  font-weight:bold;
-  margin-bottom:8px;
+  font-weight:800;
+  margin:4px 0;
 }
 
 .product-price{
-  color:var(--brand);
   font-size:20px;
-  font-weight:800;
+  font-weight:900;
+  color:var(--primary);
 }
 
 .buy-btn{
   width:100%;
-  background:var(--brand);
-  color:#fff;
-  border:0;
-  border-radius:8px;
-  padding:11px;
   margin-top:12px;
-  font-weight:bold;
+  border:0;
+  border-radius:9px;
+  padding:11px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
 }
 
 .buy-btn:hover{
-  background:var(--brand-dark);
+  background:var(--primary-dark);
 }
 
-/* ABOUT */
+/* =========================
+   ABOUT / INFO
+========================= */
 
-.about{
-  background:white;
+.info-card{
+  background:#fff;
+  border:1px solid var(--border);
   border-radius:18px;
   padding:25px;
-  border:1px solid var(--border);
 }
 
-.about-grid{
+.info-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:25px;
 }
 
-.about-text{
-  line-height:1.8;
+.info-text{
   color:#555;
+  line-height:1.9;
 }
 
-.faq{
-  border-bottom:1px solid var(--border);
+.info-slider{
+  min-height:230px;
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  background:#fff7ef;
 }
 
-.faq button{
-  width:100%;
-  background:white;
-  border:0;
-  padding:16px 5px;
-  display:flex;
-  justify-content:space-between;
-  text-align:left;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.faq-answer{
+.info-slide{
   display:none;
-  padding:0 5px 16px;
-  color:#666;
-  line-height:1.7;
+  padding:28px;
+  min-height:230px;
 }
 
-.faq.open .faq-answer{
+.info-slide.active{
   display:block;
 }
 
-/* REVIEWS */
+.info-slide-icon{
+  font-size:46px;
+  margin-bottom:10px;
+}
+
+.info-slide h3{
+  color:var(--primary);
+  font-size:24px;
+  margin-bottom:8px;
+}
+
+.info-slide p{
+  color:#555;
+  line-height:1.8;
+}
+
+/* =========================
+   WHY US
+========================= */
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+
+.why-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+}
+
+.why-card .icon{
+  font-size:34px;
+  margin-bottom:8px;
+}
+
+.why-card h3{
+  margin-bottom:5px;
+}
+
+.why-card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* =========================
+   REVIEWS
+========================= */
 
 .review-layout{
   display:grid;
-  grid-template-columns:1fr 1.4fr;
+  grid-template-columns:1fr 1.45fr;
   gap:20px;
 }
 
 .review-form,
 .review-list{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
-  border-radius:16px;
+  border-radius:17px;
   padding:20px;
 }
 
 .form-group{
-  margin-bottom:13px;
+  margin-bottom:14px;
 }
 
 .form-group label{
   display:block;
-  margin-bottom:6px;
   font-size:14px;
-  font-weight:bold;
+  font-weight:800;
+  margin-bottom:6px;
 }
 
 .form-group input,
@@ -457,26 +543,28 @@ header{
 }
 
 .form-group textarea{
-  min-height:100px;
+  min-height:105px;
   resize:vertical;
 }
 
-.stars{
+.rating-input{
   display:flex;
   gap:4px;
 }
 
-.star{
-  font-size:28px;
+.rating-star{
+  font-size:30px;
   color:#ccc;
   cursor:pointer;
 }
 
-.star.selected{
+.rating-star.selected{
   color:#f5a623;
 }
 
 .review-item{
+  display:flex;
+  gap:13px;
   padding:15px 0;
   border-bottom:1px solid var(--border);
 }
@@ -485,61 +573,97 @@ header{
   border-bottom:0;
 }
 
-.review-head{
+.review-avatar{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#fff0e5;
+  color:var(--primary);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  flex-shrink:0;
+}
+
+.review-main{
+  flex:1;
+}
+
+.review-top{
   display:flex;
   justify-content:space-between;
+  gap:10px;
 }
 
 .review-stars{
   color:#f5a623;
+  white-space:nowrap;
 }
 
 .review-product{
-  color:var(--brand);
+  color:var(--primary);
   font-size:13px;
-  margin-top:4px;
+  font-weight:700;
 }
 
-.review-text{
+.review-comment{
+  margin-top:6px;
   color:#555;
-  margin-top:8px;
-  line-height:1.6;
 }
 
-/* CONTACT */
+.review-photo{
+  max-width:100px;
+  max-height:100px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-top:8px;
+}
+
+/* =========================
+   CONTACT
+========================= */
 
 .contact-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:12px;
+  grid-template-columns:repeat(7,1fr);
+  gap:10px;
 }
 
 .contact-card{
-  background:white;
+  background:#fff;
   border:1px solid var(--border);
   border-radius:14px;
-  padding:20px 10px;
+  padding:17px 8px;
   text-align:center;
   transition:.25s;
 }
 
 .contact-card:hover{
   transform:translateY(-4px);
-  border-color:var(--brand);
+  border-color:var(--primary);
+  box-shadow:var(--shadow);
 }
 
 .contact-icon{
-  font-size:30px;
-  margin-bottom:8px;
+  font-size:29px;
+  margin-bottom:5px;
 }
 
-/* FOOTER */
+.contact-card small{
+  display:block;
+  color:var(--muted);
+  margin-top:3px;
+}
 
-footer{
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
   background:#171717;
   color:#ddd;
-  padding:35px 0 20px;
-  margin-top:40px;
+  margin-top:45px;
+  padding:38px 0 20px;
 }
 
 .footer-grid{
@@ -548,34 +672,36 @@ footer{
   gap:25px;
 }
 
-.footer-title{
-  color:white;
+.footer h3{
+  color:#fff;
   margin-bottom:10px;
 }
 
-.footer-text{
+.footer p{
   color:#aaa;
-  line-height:1.7;
+  line-height:1.8;
 }
 
 .copyright{
   border-top:1px solid #333;
-  text-align:center;
   margin-top:25px;
-  padding-top:18px;
+  padding-top:17px;
+  text-align:center;
   color:#888;
 }
 
-/* MODAL */
+/* =========================
+   MODAL
+========================= */
 
 .modal{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
   z-index:2000;
-  overflow:auto;
+  background:rgba(0,0,0,.72);
   padding:20px;
+  overflow:auto;
 }
 
 .modal.show{
@@ -583,25 +709,25 @@ footer{
 }
 
 .modal-box{
-  background:white;
-  max-width:750px;
-  margin:25px auto;
+  width:min(760px,100%);
+  background:#fff;
   border-radius:18px;
   padding:25px;
+  margin:25px auto;
   position:relative;
 }
 
-.close{
+.modal-close{
   position:absolute;
-  top:12px;
   right:12px;
-  width:35px;
-  height:35px;
+  top:12px;
+  width:36px;
+  height:36px;
   border:0;
   border-radius:50%;
   background:#eee;
-  font-size:20px;
   cursor:pointer;
+  font-size:20px;
 }
 
 .order-grid{
@@ -612,8 +738,8 @@ footer{
 
 .order-field label{
   display:block;
-  font-weight:bold;
   font-size:13px;
+  font-weight:800;
   margin-bottom:6px;
 }
 
@@ -621,9 +747,14 @@ footer{
 .order-field select,
 .order-field textarea{
   width:100%;
-  padding:11px;
   border:1px solid #ddd;
   border-radius:8px;
+  padding:11px;
+  outline:none;
+}
+
+.order-field textarea{
+  min-height:90px;
 }
 
 .full{
@@ -631,16 +762,16 @@ footer{
 }
 
 .summary{
-  margin-top:18px;
-  background:#f7f7f7;
-  border-radius:10px;
+  margin-top:17px;
   padding:15px;
+  background:#f8f8f8;
+  border-radius:10px;
 }
 
 .summary-row{
   display:flex;
   justify-content:space-between;
-  padding:6px 0;
+  padding:5px 0;
 }
 
 .summary-total{
@@ -648,49 +779,74 @@ footer{
   margin-top:7px;
   padding-top:10px;
   font-size:20px;
-  font-weight:800;
+  font-weight:900;
 }
 
-.payment-box{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
-}
-
-.payment-box label{
-  border:1px solid #ddd;
-  padding:12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.notice{
-  margin-top:12px;
+.payment-help{
   background:#fff7ed;
   color:#9a3412;
-  padding:12px;
   border-radius:9px;
+  padding:11px;
+  margin-top:12px;
   font-size:13px;
-  line-height:1.6;
 }
 
-/* TOAST */
+/* =========================
+   FEATURE MODAL
+========================= */
+
+.feature-modal-content{
+  padding-top:15px;
+}
+
+.feature-detail-icon{
+  font-size:55px;
+  margin-bottom:8px;
+}
+
+.feature-detail-content{
+  color:#555;
+  line-height:1.9;
+}
+
+.delivery-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+.delivery-table th,
+.delivery-table td{
+  border:1px solid #ddd;
+  padding:10px;
+  text-align:left;
+}
+
+.delivery-table th{
+  background:#fff3e8;
+}
+
+/* =========================
+   TOAST
+========================= */
 
 .toast{
   display:none;
   position:fixed;
   right:20px;
   bottom:20px;
-  z-index:3000;
-  background:#222;
+  z-index:4000;
+  background:#171717;
   color:#fff;
-  padding:14px 18px;
-  border-radius:10px;
+  padding:13px 18px;
+  border-radius:9px;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
-@media(max-width:950px){
+@media(max-width:1000px){
 
   .categories{
     grid-template-columns:repeat(4,1fr);
@@ -704,69 +860,115 @@ footer{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .contact-grid{
-    grid-template-columns:repeat(3,1fr);
+  .why-grid{
+    grid-template-columns:repeat(2,1fr);
   }
 
-  .about-grid,
-  .review-layout{
-    grid-template-columns:1fr;
+  .contact-grid{
+    grid-template-columns:repeat(4,1fr);
   }
 
 }
 
-@media(max-width:600px){
+@media(max-width:700px){
 
-  .navbar{
-    flex-wrap:wrap;
-    padding:10px 0;
+  .topbar-inner{
+    justify-content:center;
+    text-align:center;
   }
 
-  .search-box{
+  .topbar-inner span:last-child{
+    display:none;
+  }
+
+  .nav{
+    flex-wrap:wrap;
+    padding:9px 0;
+  }
+
+  .logo{
+    font-size:18px;
+  }
+
+  .search{
     order:3;
     flex-basis:100%;
   }
 
-  .nav-btn{
+  .nav-link{
     display:none;
   }
 
-  .slide{
+  .hero-slide{
     padding:30px;
+    min-height:300px;
   }
 
-  .categories{
-    grid-template-columns:repeat(4,1fr);
+  .hero-content h1{
+    font-size:34px;
   }
 
-  .category-icon{
-    font-size:30px;
-    height:45px;
+  .info-grid,
+  .review-layout{
+    grid-template-columns:1fr;
   }
 
-  .category-name{
-    font-size:11px;
-  }
-
-  .products{
+  .contact-grid{
     grid-template-columns:repeat(2,1fr);
-    gap:9px;
   }
 
-  .product-image{
-    height:150px;
-    font-size:55px;
+  .footer-grid{
+    grid-template-columns:1fr;
   }
+
+}
+
+@media(max-width:500px){
 
   .features{
     grid-template-columns:1fr;
   }
 
-  .contact-grid{
-    grid-template-columns:1fr 1fr;
+  .categories{
+    grid-template-columns:repeat(4,1fr);
+    gap:7px;
   }
 
-  .footer-grid{
+  .category{
+    padding:10px 3px;
+  }
+
+  .category-icon{
+    height:42px;
+    font-size:28px;
+  }
+
+  .category-name{
+    font-size:10px;
+  }
+
+  .products{
+    gap:9px;
+  }
+
+  .product-image{
+    height:145px;
+    font-size:52px;
+  }
+
+  .product-body{
+    padding:11px;
+  }
+
+  .product-name{
+    font-size:14px;
+  }
+
+  .product-price{
+    font-size:17px;
+  }
+
+  .why-grid{
     grid-template-columns:1fr;
   }
 
@@ -778,57 +980,55 @@ footer{
     grid-column:auto;
   }
 
-  .payment-box{
-    grid-template-columns:1fr;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
+<!-- =========================
+     TOP BAR
+========================= -->
 
-<div class="top-bar">
-  <div class="container">
-    🚚 সারা বাংলাদেশে ডেলিভারি • ⭐ মানসম্মত পণ্যের চেষ্টা • 📞 সহজ যোগাযোগ
+<div class="topbar">
+  <div class="container topbar-inner">
+    <span>🚚 সারা বাংলাদেশে ডেলিভারি</span>
+    <span>⭐ মানসম্মত পণ্যের চেষ্টা • 📞 সহজ যোগাযোগ • 🛒 সহজ অর্ডার</span>
   </div>
 </div>
 
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
-<header>
+<header class="header">
 
-<div class="container navbar">
+  <div class="container nav">
 
-  <a href="#home" class="logo">
+    <a href="#home" class="logo">
+      <div class="logo-mark">MX</div>
+      <span>Mehedi Xpress</span>
+    </a>
 
-    <!-- এখানে তোমার আসল Logo বসাতে পারবে -->
-    <div class="logo-placeholder">MX</div>
+    <div class="search">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="পণ্য খুঁজুন..."
+      >
+      <button onclick="searchProducts()">🔍</button>
+    </div>
 
-    <span>Mehedi Xpress</span>
+    <a href="#categories" class="nav-link">
+      ক্যাটাগরি
+    </a>
 
-  </a>
-
-  <div class="search-box">
-
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="পণ্য খুঁজুন..."
-      oninput="searchProducts()"
-    >
-
-    <button onclick="searchProducts()">🔍</button>
+    <a href="#contact" class="nav-link">
+      যোগাযোগ
+    </a>
 
   </div>
-
-  <a href="#categories" class="nav-btn">ক্যাটাগরি</a>
-
-  <a href="#contact" class="nav-btn">যোগাযোগ</a>
-
-</div>
 
 </header>
 
@@ -836,19 +1036,25 @@ footer{
 <main id="home" class="container">
 
 
-<!-- HERO SLIDER -->
+<!-- =========================
+     HERO SLIDER
+========================= -->
 
 <section class="hero">
 
-  <div class="slide active">
+  <div class="hero-slide active">
 
-    <div class="slide-content">
+    <div class="hero-content">
 
-      <h1>আপনার পছন্দের স্পোর্টস ও ফ্যাশন পণ্য</h1>
+      <h1>
+        Sports & Fashion-এর
+        সহজ শপিং
+      </h1>
 
       <p>
-        Mehedi Xpress-এর মাধ্যমে সহজে পছন্দের পণ্য
-        নির্বাচন করুন এবং অর্ডার করুন।
+        আপনার পছন্দের পণ্য নির্বাচন করুন,
+        সহজে অর্ডার করুন এবং সারা বাংলাদেশে
+        ডেলিভারি নিন।
       </p>
 
       <a href="#categories" class="hero-btn">
@@ -860,19 +1066,22 @@ footer{
   </div>
 
 
-  <div class="slide">
+  <div class="hero-slide">
 
-    <div class="slide-content">
+    <div class="hero-content">
 
-      <h1>Quality Products</h1>
+      <h1>
+        মানসম্মত পণ্যের চেষ্টা
+      </h1>
 
       <p>
-        মানসম্মত পণ্য দেওয়ার সর্বোচ্চ চেষ্টা এবং
-        কাস্টমারের সন্তুষ্টিই আমাদের অগ্রাধিকার।
+        পণ্যের মান, পরিষ্কার তথ্য এবং
+        কাস্টমারের ভালো অভিজ্ঞতাকে আমরা
+        গুরুত্ব দিতে চাই।
       </p>
 
-      <a href="#products" class="hero-btn">
-        পণ্য দেখুন
+      <a href="#quality" class="hero-btn">
+        আমাদের Quality সম্পর্কে
       </a>
 
     </div>
@@ -880,19 +1089,21 @@ footer{
   </div>
 
 
-  <div class="slide">
+  <div class="hero-slide">
 
-    <div class="slide-content">
+    <div class="hero-content">
 
-      <h1>Custom Printing</h1>
+      <h1>
+        Custom Printing
+      </h1>
 
       <p>
-        আপনার প্রয়োজন অনুযায়ী কাস্টম প্রিন্টিংয়ের
-        সুবিধা।
+        আপনার পছন্দ অনুযায়ী কাস্টম প্রিন্টিং
+        এবং স্পোর্টস ফ্যাশন পণ্যের সুবিধা।
       </p>
 
-      <a href="#contact" class="hero-btn">
-        যোগাযোগ করুন
+      <a href="#categories" class="hero-btn">
+        ক্যাটাগরি দেখুন
       </a>
 
     </div>
@@ -900,89 +1111,115 @@ footer{
   </div>
 
 
-  <div class="dots">
-
-    <span class="dot active"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-
+  <div class="hero-dots">
+    <span class="hero-dot active" onclick="goSlide(0)"></span>
+    <span class="hero-dot" onclick="goSlide(1)"></span>
+    <span class="hero-dot" onclick="goSlide(2)"></span>
   </div>
 
 </section>
 
 
-<!-- FEATURES -->
+<!-- =========================
+     FEATURE BUTTONS
+========================= -->
 
 <section class="features">
 
-  <a href="#about" class="feature">
+  <button
+    class="feature"
+    onclick="openFeature('delivery')"
+  >
 
     <span class="feature-icon">🚚</span>
 
     <div>
-      <div class="feature-title">Home Delivery</div>
+      <div class="feature-title">
+        Home Delivery
+      </div>
+
       <div class="feature-desc">
         সারা বাংলাদেশে ডেলিভারি
       </div>
     </div>
 
-  </a>
+  </button>
 
 
-  <a href="#quality" class="feature">
+  <button
+    class="feature"
+    onclick="openFeature('quality')"
+  >
 
     <span class="feature-icon">⭐</span>
 
     <div>
-      <div class="feature-title">Quality Products</div>
+      <div class="feature-title">
+        Quality Product
+      </div>
+
       <div class="feature-desc">
         মানসম্মত পণ্যের চেষ্টা
       </div>
     </div>
 
-  </a>
+  </button>
 
 
-  <a href="#contact" class="feature">
+  <button
+    class="feature"
+    onclick="openFeature('contact')"
+  >
 
     <span class="feature-icon">💬</span>
 
     <div>
-      <div class="feature-title">Easy Contact</div>
+      <div class="feature-title">
+        Easy Contact
+      </div>
+
       <div class="feature-desc">
-        সরাসরি যোগাযোগ
+        সহজে যোগাযোগ করুন
       </div>
     </div>
 
-  </a>
+  </button>
 
 
-  <a href="#categories" class="feature">
+  <button
+    class="feature"
+    onclick="openFeature('ordering')"
+  >
 
     <span class="feature-icon">🛒</span>
 
     <div>
-      <div class="feature-title">Easy Ordering</div>
+      <div class="feature-title">
+        Easy Ordering
+      </div>
+
       <div class="feature-desc">
         সহজে অর্ডার করুন
       </div>
     </div>
 
-  </a>
+  </button>
 
 </section>
 
 
-<!-- CATEGORIES -->
+<!-- =========================
+     CATEGORIES
+========================= -->
 
 <section id="categories" class="section">
 
-  <div class="section-title">
+  <div class="section-head">
 
     <h2>ক্যাটাগরি</h2>
 
     <span>
-      আপনার প্রয়োজনীয় ক্যাটাগরি নির্বাচন করুন
+      প্রতিটি পণ্যের সঙ্গে মানানসই আইকন
     </span>
 
   </div>
@@ -990,25 +1227,24 @@ footer{
 
   <div class="categories">
 
-    <a
-      href="#products"
+
+    <button
       class="category"
       onclick="filterCategory('Football Jersey')"
     >
 
       <div class="category-icon">
-        👕⚽
+        ⚽👕
       </div>
 
       <div class="category-name">
         ফুটবল জার্সি
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Cricket Jersey')"
     >
@@ -1021,11 +1257,10 @@ footer{
         ক্রিকেট জার্সি
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('T-Shirt')"
     >
@@ -1038,11 +1273,10 @@ footer{
         টি-শার্ট
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Shorts')"
     >
@@ -1055,11 +1289,10 @@ footer{
         শর্টস
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Football')"
     >
@@ -1072,11 +1305,10 @@ footer{
         ফুটবল
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Cricket Bat')"
     >
@@ -1089,11 +1321,10 @@ footer{
         ক্রিকেট ব্যাট
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Gloves')"
     >
@@ -1106,11 +1337,10 @@ footer{
         গ্লাভস
       </div>
 
-    </a>
+    </button>
 
 
-    <a
-      href="#products"
+    <button
       class="category"
       onclick="filterCategory('Custom Printing')"
     >
@@ -1123,154 +1353,176 @@ footer{
         কাস্টম প্রিন্টিং
       </div>
 
-    </a>
+    </button>
 
   </div>
 
 </section>
 
 
-<!-- PRODUCTS -->
+<!-- =========================
+     PRODUCTS
+========================= -->
 
 <section id="products" class="section">
 
-  <div class="section-title">
+  <div class="section-head">
 
-    <h2>জনপ্রিয় পণ্য</h2>
+    <h2>
+      সকল পণ্য
+    </h2>
 
     <span id="productStatus">
-      সব পণ্য
+      ১৫টি পণ্য
     </span>
 
   </div>
 
 
-  <div id="productGrid" class="products"></div>
+  <div
+    id="productGrid"
+    class="products"
+  ></div>
 
 </section>
 
 
-<!-- ABOUT -->
+<!-- =========================
+     ABOUT US
+========================= -->
 
-<section id="about" class="section">
+<section class="section">
 
-  <div class="section-title">
+  <div class="section-head">
 
-    <h2>আমাদের সম্পর্কে</h2>
+    <h2>
+      আমাদের সম্পর্কে
+    </h2>
 
   </div>
 
 
-  <div class="about">
+  <div class="info-card">
 
-    <div class="about-grid">
+    <div class="info-grid">
+
 
       <div>
 
-        <h2 style="margin-bottom:12px">
+        <h2>
           Mehedi Xpress
         </h2>
 
-        <p class="about-text">
+        <p class="info-text">
 
-          আমাদের লক্ষ্য হলো সহজ, সুন্দর ও স্বচ্ছ
-          অনলাইন শপিং অভিজ্ঞতা তৈরি করা।
+          আপনাদের আস্থা ও দায়িত্বকে সামনে রেখে
+          Mehedi Xpress-এর লক্ষ্য হলো সহজ,
+          স্বচ্ছ এবং সুন্দর শপিং অভিজ্ঞতা তৈরি করা।
 
-          মানসম্মত পণ্য, সহজ অর্ডার, সরাসরি যোগাযোগ
-          এবং নির্ভরযোগ্য ডেলিভারির মাধ্যমে
-          কাস্টমারের আস্থা অর্জন করাই আমাদের
-          অন্যতম প্রধান লক্ষ্য।
+          <br><br>
+
+          ভালো পণ্য নির্বাচন, সহজ অর্ডার,
+          সরাসরি যোগাযোগ এবং ডেলিভারি সুবিধার
+          মাধ্যমে কাস্টমারের জন্য একটি
+          নির্ভরযোগ্য শপিং অভিজ্ঞতা তৈরি করাই
+          আমাদের উদ্দেশ্য।
 
         </p>
 
       </div>
 
 
-      <div id="quality">
+      <div
+        id="quality"
+        class="info-slider"
+      >
 
-        <div class="faq">
+        <div class="info-slide active">
 
-          <button>
+          <div class="info-slide-icon">
+            🎯
+          </div>
+
+          <h3>
             আমাদের লক্ষ্য
-            <span>＋</span>
-          </button>
+          </h3>
 
-          <div class="faq-answer">
-
-            কাস্টমারের প্রয়োজন বুঝে ভালো পণ্য,
-            সহজ অর্ডার এবং সুন্দর শপিং অভিজ্ঞতা
-            দেওয়া।
-
-          </div>
+          <p>
+            কাস্টমারের প্রয়োজন অনুযায়ী ভালো
+            পণ্য ও সহজ শপিং অভিজ্ঞতা দেওয়া।
+          </p>
 
         </div>
 
 
-        <div class="faq">
+        <div class="info-slide">
 
-          <button>
+          <div class="info-slide-icon">
+            🤝
+          </div>
+
+          <h3>
             আমাদের প্রতিশ্রুতি
-            <span>＋</span>
-          </button>
+          </h3>
 
-          <div class="faq-answer">
-
-            পণ্যের তথ্য, মূল্য এবং অর্ডার প্রসেস
+          <p>
+            পণ্যের তথ্য ও অর্ডার প্রক্রিয়া
             যতটা সম্ভব পরিষ্কার ও সহজ রাখা।
-
-          </div>
+          </p>
 
         </div>
 
 
-        <div class="faq">
+        <div class="info-slide">
 
-          <button>
+          <div class="info-slide-icon">
+            🛡️
+          </div>
+
+          <h3>
             আস্থা ও দায়িত্ব
-            <span>＋</span>
-          </button>
+          </h3>
 
-          <div class="faq-answer">
-
-            কাস্টমারের সঙ্গে দায়িত্বশীল ও
-            সম্মানজনক যোগাযোগ বজায় রাখা।
-
-          </div>
+          <p>
+            কাস্টমারের সঙ্গে দায়িত্বশীল,
+            সম্মানজনক ও স্বচ্ছ যোগাযোগ বজায় রাখা।
+          </p>
 
         </div>
 
 
-        <div class="faq">
+        <div class="info-slide">
 
-          <button>
+          <div class="info-slide-icon">
+            ❤️
+          </div>
+
+          <h3>
             Customer First
-            <span>＋</span>
-          </button>
+          </h3>
 
-          <div class="faq-answer">
-
-            কাস্টমারের সুবিধা, প্রশ্ন ও অভিজ্ঞতাকে
-            সর্বোচ্চ গুরুত্ব দেওয়া।
-
-          </div>
+          <p>
+            কাস্টমারের প্রয়োজন, মতামত ও
+            অভিজ্ঞতাকে সর্বোচ্চ গুরুত্ব দেওয়া।
+          </p>
 
         </div>
 
 
-        <div class="faq">
+        <div class="info-slide">
 
-          <button>
-            ভবিষ্যৎ পরিকল্পনা
-            <span>＋</span>
-          </button>
-
-          <div class="faq-answer">
-
-            আরও বেশি ক্যাটাগরি, পণ্য, উন্নত
-            অর্ডার সিস্টেম এবং অ্যাডমিন ব্যবস্থাপনা
-            যুক্ত করা।
-
+          <div class="info-slide-icon">
+            🚀
           </div>
+
+          <h3>
+            ভবিষ্যৎ পরিকল্পনা
+          </h3>
+
+          <p>
+            আরও বেশি পণ্য, উন্নত অর্ডার ব্যবস্থা
+            এবং অ্যাডমিন ম্যানেজমেন্ট যুক্ত করা।
+          </p>
 
         </div>
 
@@ -1283,11 +1535,13 @@ footer{
 </section>
 
 
-<!-- WHY US -->
+<!-- =========================
+     WHY ORDER FROM US
+========================= -->
 
 <section class="section">
 
-  <div class="section-title">
+  <div class="section-head">
 
     <h2>
       কেন আমাদের থেকে অর্ডার করবেন?
@@ -1296,81 +1550,41 @@ footer{
   </div>
 
 
-  <div class="features">
+  <div class="why-grid">
 
-    <div class="feature">
-
-      <span class="feature-icon">⚡</span>
-
-      <div>
-
-        <div class="feature-title">
-          সহজ অর্ডার
-        </div>
-
-        <div class="feature-desc">
-          কয়েকটি ধাপেই অর্ডার
-        </div>
-
-      </div>
-
+    <div class="why-card">
+      <div class="icon">⚡</div>
+      <h3>সহজ অর্ডার</h3>
+      <p>
+        কয়েকটি সহজ ধাপে অর্ডার করার সুবিধা।
+      </p>
     </div>
 
 
-    <div class="feature">
-
-      <span class="feature-icon">📞</span>
-
-      <div>
-
-        <div class="feature-title">
-          সরাসরি যোগাযোগ
-        </div>
-
-        <div class="feature-desc">
-          দ্রুত যোগাযোগের সুবিধা
-        </div>
-
-      </div>
-
+    <div class="why-card">
+      <div class="icon">📞</div>
+      <h3>সরাসরি যোগাযোগ</h3>
+      <p>
+        প্রয়োজন হলে বিভিন্ন মাধ্যমে যোগাযোগ।
+      </p>
     </div>
 
 
-    <div class="feature">
-
-      <span class="feature-icon">🚚</span>
-
-      <div>
-
-        <div class="feature-title">
-          ডেলিভারি সুবিধা
-        </div>
-
-        <div class="feature-desc">
-          সারা বাংলাদেশে ডেলিভারি
-        </div>
-
-      </div>
-
+    <div class="why-card">
+      <div class="icon">🚚</div>
+      <h3>ডেলিভারি সুবিধা</h3>
+      <p>
+        সারা বাংলাদেশে ডেলিভারির সুবিধা।
+      </p>
     </div>
 
 
-    <div class="feature">
-
-      <span class="feature-icon">💛</span>
-
-      <div>
-
-        <div class="feature-title">
-          Customer First
-        </div>
-
-        <div class="feature-desc">
-          কাস্টমারের অভিজ্ঞতা গুরুত্বপূর্ণ
-        </div>
-
-      </div>
-
+    <div class="why-card">
+      <div class="icon">❤️</div>
+      <h3>Customer First</h3>
+      <p>
+        কাস্টমারের অভিজ্ঞতাকে গুরুত্ব দেওয়া।
+      </p>
     </div>
 
   </div>
@@ -1378,11 +1592,16 @@ footer{
 </section>
 
 
-<!-- REVIEWS -->
+<!-- =========================
+     CUSTOMER REVIEWS
+========================= -->
 
-<section id="reviews" class="section">
+<section
+  id="reviews"
+  class="section"
+>
 
-  <div class="section-title">
+  <div class="section-head">
 
     <h2>
       কাস্টমার রিভিউ
@@ -1409,6 +1628,8 @@ footer{
         আপনার অভিজ্ঞতা
       </h3>
 
+      <br>
+
 
       <div class="form-group">
 
@@ -1419,7 +1640,7 @@ footer{
         <input
           id="reviewName"
           required
-          placeholder="আপনার নাম"
+          placeholder="আপনার নাম লিখুন"
         >
 
       </div>
@@ -1433,7 +1654,7 @@ footer{
 
         <input
           id="reviewProduct"
-          placeholder="ঐচ্ছিক"
+          placeholder="পণ্যের নাম লিখুন"
         >
 
       </div>
@@ -1457,12 +1678,12 @@ footer{
       <div class="form-group">
 
         <label>
-          আপনার রেটিং
+          রেটিং
         </label>
 
         <div
-          class="stars"
           id="ratingStars"
+          class="rating-input"
         ></div>
 
       </div>
@@ -1487,7 +1708,7 @@ footer{
         class="buy-btn"
         type="submit"
       >
-        রিভিউ আপলোড করুন
+        আপলোড করুন
       </button>
 
     </form>
@@ -1505,15 +1726,24 @@ footer{
 </section>
 
 
-<!-- CONTACT -->
+<!-- =========================
+     CONTACT
+========================= -->
 
-<section id="contact" class="section">
+<section
+  id="contact"
+  class="section"
+>
 
-  <div class="section-title">
+  <div class="section-head">
 
     <h2>
       যোগাযোগ করুন
     </h2>
+
+    <span>
+      আপনার সুবিধামতো মাধ্যমে যোগাযোগ করুন
+    </span>
 
   </div>
 
@@ -1521,12 +1751,28 @@ footer{
   <div class="contact-grid">
 
 
-    <!-- নিজের নম্বর বসাও -->
+    <a
+      class="contact-card"
+      href="tel:+8801000000000"
+    >
+
+      <div class="contact-icon">
+        📞
+      </div>
+
+      <b>Phone</b>
+
+      <small>
+        কল করুন
+      </small>
+
+    </a>
+
 
     <a
+      class="contact-card"
       href="https://wa.me/8801000000000"
       target="_blank"
-      class="contact-card"
     >
 
       <div class="contact-icon">
@@ -1535,13 +1781,17 @@ footer{
 
       <b>WhatsApp</b>
 
+      <small>
+        চ্যাট করুন
+      </small>
+
     </a>
 
 
     <a
-      href="https://facebook.com/"
-      target="_blank"
       class="contact-card"
+      href="https://www.facebook.com/"
+      target="_blank"
     >
 
       <div class="contact-icon">
@@ -1550,13 +1800,17 @@ footer{
 
       <b>Facebook</b>
 
+      <small>
+        আমাদের পেজ
+      </small>
+
     </a>
 
 
     <a
+      class="contact-card"
       href="https://m.me/"
       target="_blank"
-      class="contact-card"
     >
 
       <div class="contact-icon">
@@ -1565,12 +1819,35 @@ footer{
 
       <b>Messenger</b>
 
+      <small>
+        মেসেজ করুন
+      </small>
+
     </a>
 
 
     <a
-      href="mailto:your@email.com"
       class="contact-card"
+      href="https://www.tiktok.com/"
+      target="_blank"
+    >
+
+      <div class="contact-icon">
+        🎵
+      </div>
+
+      <b>TikTok</b>
+
+      <small>
+        Follow করুন
+      </small>
+
+    </a>
+
+
+    <a
+      class="contact-card"
+      href="mailto:your@email.com"
     >
 
       <div class="contact-icon">
@@ -1579,15 +1856,17 @@ footer{
 
       <b>Email</b>
 
+      <small>
+        Email করুন
+      </small>
+
     </a>
 
 
-    <!-- Google Maps Location -->
-
     <a
+      class="contact-card"
       href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
       target="_blank"
-      class="contact-card"
     >
 
       <div class="contact-icon">
@@ -1595,6 +1874,10 @@ footer{
       </div>
 
       <b>Live Location</b>
+
+      <small>
+        লোকেশন দেখুন
+      </small>
 
     </a>
 
@@ -1605,24 +1888,23 @@ footer{
 </main>
 
 
-<!-- FOOTER -->
+<!-- =========================
+     FOOTER
+========================= -->
 
-<footer>
+<footer class="footer">
 
   <div class="container footer-grid">
 
     <div>
 
-      <h3 class="footer-title">
+      <h3>
         Mehedi Xpress
       </h3>
 
-      <p class="footer-text">
-
-        Sports, Fashion & Custom Printing-এর
-        জন্য সহজ ও সুন্দর অনলাইন শপিং
-        অভিজ্ঞতা।
-
+      <p>
+        Sports, Fashion এবং Custom Printing-এর
+        জন্য সহজ ও সুন্দর অনলাইন শপিং অভিজ্ঞতা।
       </p>
 
     </div>
@@ -1630,26 +1912,29 @@ footer{
 
     <div>
 
-      <h3 class="footer-title">
+      <h3>
         দ্রুত লিংক
       </h3>
 
-      <p class="footer-text">
-
+      <p>
         <a href="#categories">
           ক্যাটাগরি
         </a>
         <br>
 
-        <a href="#about">
-          আমাদের সম্পর্কে
+        <a href="#products">
+          সকল পণ্য
         </a>
         <br>
 
         <a href="#reviews">
           কাস্টমার রিভিউ
         </a>
+        <br>
 
+        <a href="#contact">
+          যোগাযোগ
+        </a>
       </p>
 
     </div>
@@ -1657,22 +1942,20 @@ footer{
 
     <div>
 
-      <h3 class="footer-title">
+      <h3>
         লোকেশন
       </h3>
 
-      <p class="footer-text">
-
+      <p>
         কুমিল্লা, বাংলাদেশ
-        <br>
+        <br><br>
 
         <a
           href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
           target="_blank"
         >
-          📍 লোকেশন দেখুন
+          📍 Live Location
         </a>
-
       </p>
 
     </div>
@@ -1682,15 +1965,44 @@ footer{
 
   <div class="container copyright">
 
-    © 2025 Mehedi Xpress —
-    All Rights Reserved.
+    © 2025 Mehedi Xpress — All Rights Reserved.
 
   </div>
 
 </footer>
 
 
-<!-- ORDER MODAL -->
+<!-- =========================
+     FEATURE MODAL
+========================= -->
+
+<div
+  id="featureModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <button
+      class="modal-close"
+      onclick="closeFeature()"
+    >
+      ×
+    </button>
+
+    <div
+      id="featureContent"
+      class="feature-modal-content"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     ORDER MODAL
+========================= -->
 
 <div
   id="orderModal"
@@ -1700,7 +2012,7 @@ footer{
   <div class="modal-box">
 
     <button
-      class="close"
+      class="modal-close"
       onclick="closeOrder()"
     >
       ×
@@ -1713,8 +2025,8 @@ footer{
 
 
     <p
-      id="selectedProduct"
-      style="margin:7px 0 18px;color:#777"
+      id="selectedProductText"
+      style="color:#777;margin:5px 0 18px"
     ></p>
 
 
@@ -1726,7 +2038,7 @@ footer{
         <div class="order-field">
 
           <label>
-            আপনার নাম
+            নাম
           </label>
 
           <input
@@ -1767,37 +2079,14 @@ footer{
               বিভাগ নির্বাচন করুন
             </option>
 
-            <option>
-              চট্টগ্রাম
-            </option>
-
-            <option>
-              ঢাকা
-            </option>
-
-            <option>
-              সিলেট
-            </option>
-
-            <option>
-              রাজশাহী
-            </option>
-
-            <option>
-              খুলনা
-            </option>
-
-            <option>
-              বরিশাল
-            </option>
-
-            <option>
-              রংপুর
-            </option>
-
-            <option>
-              ময়মনসিংহ
-            </option>
+            <option>চট্টগ্রাম</option>
+            <option>ঢাকা</option>
+            <option>সিলেট</option>
+            <option>রাজশাহী</option>
+            <option>খুলনা</option>
+            <option>বরিশাল</option>
+            <option>রংপুর</option>
+            <option>ময়মনসিংহ</option>
 
           </select>
 
@@ -1819,21 +2108,12 @@ footer{
               জেলা নির্বাচন করুন
             </option>
 
-            <option>
-              কুমিল্লা
-            </option>
-
-            <option>
-              ঢাকা
-            </option>
-
-            <option>
-              চট্টগ্রাম
-            </option>
-
-            <option>
-              অন্যান্য
-            </option>
+            <option>কুমিল্লা</option>
+            <option>ঢাকা</option>
+            <option>চট্টগ্রাম</option>
+            <option>ফেনী</option>
+            <option>নোয়াখালী</option>
+            <option>অন্যান্য</option>
 
           </select>
 
@@ -1855,21 +2135,15 @@ footer{
               থানা / উপজেলা নির্বাচন করুন
             </option>
 
-            <option>
-              কুমিল্লা সদর
-            </option>
-
-            <option>
-              দাউদকান্দি
-            </option>
-
-            <option>
-              চান্দিনা
-            </option>
-
-            <option>
-              অন্যান্য
-            </option>
+            <option>কুমিল্লা সদর</option>
+            <option>দাউদকান্দি</option>
+            <option>চান্দিনা</option>
+            <option>চৌদ্দগ্রাম</option>
+            <option>লাকসাম</option>
+            <option>বুড়িচং</option>
+            <option>বরুড়া</option>
+            <option>মুরাদনগর</option>
+            <option>অন্যান্য</option>
 
           </select>
 
@@ -1891,13 +2165,8 @@ footer{
               ইউনিয়ন নির্বাচন করুন
             </option>
 
-            <option>
-              স্থানীয় ইউনিয়ন
-            </option>
-
-            <option>
-              অন্যান্য
-            </option>
+            <option>স্থানীয় ইউনিয়ন</option>
+            <option>অন্যান্য</option>
 
           </select>
 
@@ -1958,15 +2227,13 @@ footer{
           <textarea
             id="fullAddress"
             required
-            placeholder="বাড়ি, রোড, গ্রাম, বাজার ইত্যাদি লিখুন"
+            placeholder="বাড়ি/রোড/গ্রাম/বাজারের নাম লিখুন"
           ></textarea>
 
         </div>
 
       </div>
 
-
-      <!-- ORDER SUMMARY -->
 
       <div class="summary">
 
@@ -1989,7 +2256,7 @@ footer{
             পরিমাণ
           </span>
 
-          <b id="quantityText">
+          <b id="quantityDisplay">
             1
           </b>
 
@@ -2024,23 +2291,17 @@ footer{
       </div>
 
 
-      <div class="notice">
+      <div class="payment-help">
 
         <b>ডেলিভারি চার্জ:</b>
-        কুমিল্লা জেলার ভিতরে ৳80।
+        কুমিল্লা জেলার ভিতরে ৳80,
         কুমিল্লা জেলার বাইরে ৳150।
 
-        <br>
+        <br><br>
 
-        ১ কেজির বেশি ওজন হলে পরবর্তী প্রতি
-        কেজিতে ৳30 অতিরিক্ত যোগ করার
-        ব্যবস্থা রাখা যাবে।
-
-        <br>
-
-        বিকাশ/নগদ নির্বাচন করলে অর্ডার
-        কনফার্মের আগে ডেলিভারি চার্জ
-        অগ্রিম দিতে হবে।
+        বিকাশ/নগদ নির্বাচন করলে
+        ডেলিভারি চার্জ অগ্রিম পেমেন্ট
+        করতে হবে।
 
       </div>
 
@@ -2048,11 +2309,8 @@ footer{
       <button
         type="submit"
         class="buy-btn"
-        style="margin-top:15px"
       >
-
         অর্ডার কনফার্ম করুন
-
       </button>
 
     </form>
@@ -2070,76 +2328,146 @@ footer{
 
 <script>
 
-/* =====================================
+/* ==========================================
    PRODUCT DATA
-   পরবর্তীতে Admin Panel থেকে এই
-   ডেটাগুলো নেওয়া যাবে।
-===================================== */
+   এখানে ১৫টি পণ্য রাখা হয়েছে।
+========================================== */
 
 const products = [
 
   {
     id:1,
-    name:"স্পোর্টস গ্লাভস",
-    price:550,
-    category:"Gloves",
-    icon:"🧤"
+    name:"ফুটবল জার্সি",
+    category:"Football Jersey",
+    categoryBn:"ফুটবল জার্সি",
+    price:850,
+    icon:"⚽👕"
   },
 
   {
     id:2,
-    name:"ফুটবল জার্সি",
-    price:850,
-    category:"Football Jersey",
-    icon:"👕⚽"
-  },
-
-  {
-    id:3,
     name:"ক্রিকেট জার্সি",
-    price:850,
     category:"Cricket Jersey",
+    categoryBn:"ক্রিকেট জার্সি",
+    price:850,
     icon:"🏏👕"
   },
 
   {
-    id:4,
+    id:3,
     name:"প্রিমিয়াম টি-শার্ট",
-    price:650,
     category:"T-Shirt",
+    categoryBn:"টি-শার্ট",
+    price:650,
     icon:"👕"
   },
 
   {
-    id:5,
+    id:4,
     name:"স্পোর্টস শর্টস",
-    price:450,
     category:"Shorts",
+    categoryBn:"শর্টস",
+    price:450,
     icon:"🩳"
   },
 
   {
-    id:6,
-    name:"ফুটবল",
-    price:700,
+    id:5,
+    name:"প্রিমিয়াম ফুটবল",
     category:"Football",
+    categoryBn:"ফুটবল",
+    price:700,
     icon:"⚽"
   },
 
   {
-    id:7,
+    id:6,
     name:"ক্রিকেট ব্যাট",
-    price:1200,
     category:"Cricket Bat",
+    categoryBn:"ক্রিকেট ব্যাট",
+    price:1200,
     icon:"🏏"
   },
 
   {
+    id:7,
+    name:"স্পোর্টস গ্লাভস",
+    category:"Gloves",
+    categoryBn:"গ্লাভস",
+    price:550,
+    icon:"🧤"
+  },
+
+  {
     id:8,
-    name:"কাস্টম প্রিন্টিং",
-    price:0,
+    name:"কাস্টম জার্সি প্রিন্টিং",
     category:"Custom Printing",
+    categoryBn:"কাস্টম প্রিন্টিং",
+    price:0,
     icon:"🎨"
+  },
+
+  {
+    id:9,
+    name:"ফুটবল ট্র্যাক প্যান্ট",
+    category:"Sports Wear",
+    categoryBn:"স্পোর্টস ওয়্যার",
+    price:900,
+    icon:"👖⚽"
+  },
+
+  {
+    id:10,
+    name:"ক্রিকেট প্যাড",
+    category:"Cricket Gear",
+    categoryBn:"ক্রিকেট গিয়ার",
+    price:1400,
+    icon:"🏏🛡️"
+  },
+
+  {
+    id:11,
+    name:"স্পোর্টস ক্যাপ",
+    category:"Sports Accessories",
+    categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",
+    price:350,
+    icon:"🧢"
+  },
+
+  {
+    id:12,
+    name:"স্পোর্টস মোজা",
+    category:"Sports Accessories",
+    categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",
+    price:250,
+    icon:"🧦"
+  },
+
+  {
+    id:13,
+    name:"জিম টি-শার্ট",
+    category:"T-Shirt",
+    categoryBn:"টি-শার্ট",
+    price:600,
+    icon:"🏋️👕"
+  },
+
+  {
+    id:14,
+    name:"কাস্টম নাম্বার প্রিন্ট",
+    category:"Custom Printing",
+    categoryBn:"কাস্টম প্রিন্টিং",
+    price:200,
+    icon:"🔢🎨"
+  },
+
+  {
+    id:15,
+    name:"স্পোর্টস ব্যাগ",
+    category:"Sports Accessories",
+    categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",
+    price:950,
+    icon:"🎒"
   }
 
 ];
@@ -2148,68 +2476,69 @@ const products = [
 let selectedProduct = null;
 
 
-/* টাকা */
+/* ==========================================
+   MONEY
+========================================== */
 
-function money(amount){
+function money(value){
 
   return "৳" +
-    Number(amount).toLocaleString("bn-BD");
+    Number(value).toLocaleString("bn-BD");
 
 }
 
 
-/* PRODUCT SHOW */
+/* ==========================================
+   PRODUCTS RENDER
+========================================== */
 
 function renderProducts(list = products){
 
   const grid =
-    document.getElementById("productGrid");
+    document.getElementById(
+      "productGrid"
+    );
 
   grid.innerHTML = "";
 
   list.forEach(product => {
 
     const card =
-      document.createElement("div");
+      document.createElement("article");
 
     card.className = "product";
 
     card.innerHTML = `
 
       <div class="product-image">
-
         ${product.icon}
-
       </div>
-
 
       <div class="product-body">
 
-        <div class="product-name">
-
-          ${product.name}
-
+        <div class="product-category">
+          ${product.categoryBn}
         </div>
 
+        <div class="product-name">
+          ${product.name}
+        </div>
 
         <div class="product-price">
 
           ${
-            product.price
+            product.price > 0
             ? money(product.price)
             : "মূল্য জানতে যোগাযোগ করুন"
           }
 
         </div>
 
-
         <button
           class="buy-btn"
           onclick="openOrder(${product.id})"
         >
-
           Buy Now
-
         </button>
 
       </div>
@@ -2223,80 +2552,129 @@ function renderProducts(list = products){
 }
 
 
-/* CATEGORY FILTER */
+/* ==========================================
+   CATEGORY FILTER
+========================================== */
 
 function filterCategory(category){
 
-  const filtered =
+  const list =
     products.filter(
       product =>
-      product.category === category
+        product.category === category
     );
 
-  renderProducts(filtered);
+  renderProducts(list);
 
   document.getElementById(
     "productStatus"
-  ).textContent = category;
+  ).textContent =
+    list.length +
+    "টি পণ্য";
+
+  document.getElementById(
+    "products"
+  ).scrollIntoView({
+    behavior:"smooth"
+  });
 
 }
 
 
-/* SEARCH */
+/* ==========================================
+   SEARCH
+========================================== */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+  "input",
+  searchProducts
+);
+
 
 function searchProducts(){
 
   const query =
-    document
-    .getElementById("searchInput")
-    .value
+    document.getElementById(
+      "searchInput"
+    ).value
+    .trim()
     .toLowerCase();
 
-  const filtered =
+
+  if(!query){
+
+    renderProducts();
+
+    document.getElementById(
+      "productStatus"
+    ).textContent =
+      "১৫টি পণ্য";
+
+    return;
+
+  }
+
+
+  const list =
     products.filter(product =>
 
       product.name
-      .toLowerCase()
-      .includes(query)
+        .toLowerCase()
+        .includes(query)
 
       ||
 
-      product.category
-      .toLowerCase()
-      .includes(query)
+      product.categoryBn
+        .toLowerCase()
+        .includes(query)
 
     );
 
-  renderProducts(filtered);
+
+  renderProducts(list);
+
+  document.getElementById(
+    "productStatus"
+  ).textContent =
+    list.length +
+    "টি পণ্য পাওয়া গেছে";
 
 }
 
 
-/* ORDER MODAL */
+/* ==========================================
+   ORDER
+========================================== */
 
 function openOrder(productId){
 
   selectedProduct =
     products.find(
       product =>
-      product.id === productId
+        product.id === productId
     );
 
+
   document.getElementById(
-    "selectedProduct"
+    "selectedProductText"
   ).textContent =
 
     selectedProduct.name +
-    " — " +
+    " • " +
+
     (
-      selectedProduct.price
+      selectedProduct.price > 0
       ? money(selectedProduct.price)
       : "মূল্য জানতে যোগাযোগ করুন"
     );
 
+
   document
     .getElementById("orderModal")
     .classList.add("show");
+
 
   updateOrderSummary();
 
@@ -2312,27 +2690,35 @@ function closeOrder(){
 }
 
 
-/* DELIVERY CHARGE */
+/* ==========================================
+   DELIVERY
+========================================== */
 
-function calculateDelivery(){
+function getDeliveryCharge(){
 
   const district =
     document.getElementById(
       "district"
     ).value;
 
-  if(district === "কুমিল্লা"){
+
+  if(
+    district === "কুমিল্লা"
+  ){
 
     return 80;
 
   }
+
 
   return 150;
 
 }
 
 
-/* ORDER TOTAL */
+/* ==========================================
+   ORDER CALCULATION
+========================================== */
 
 function updateOrderSummary(){
 
@@ -2360,10 +2746,10 @@ function updateOrderSummary(){
 
 
   const delivery =
-    calculateDelivery();
+    getDeliveryCharge();
 
 
-  const grandTotal =
+  const total =
     productTotal +
     delivery;
 
@@ -2375,7 +2761,7 @@ function updateOrderSummary(){
 
 
   document.getElementById(
-    "quantityText"
+    "quantityDisplay"
   ).textContent =
     quantity;
 
@@ -2389,12 +2775,10 @@ function updateOrderSummary(){
   document.getElementById(
     "grandTotal"
   ).textContent =
-    money(grandTotal);
+    money(total);
 
 }
 
-
-/* ORDER EVENTS */
 
 document
 .getElementById("quantity")
@@ -2412,7 +2796,9 @@ document
 );
 
 
-/* ORDER SUBMIT */
+/* ==========================================
+   ORDER SUBMIT
+========================================== */
 
 document
 .getElementById("orderForm")
@@ -2425,11 +2811,11 @@ document
 
     const order = {
 
-      orderId:
-        "MX" +
+      id:
+        "MX-" +
         Date.now(),
 
-      customer:
+      customerName:
         document.getElementById(
           "customerName"
         ).value,
@@ -2442,10 +2828,15 @@ document
       product:
         selectedProduct.name,
 
+      productId:
+        selectedProduct.id,
+
       quantity:
-        document.getElementById(
-          "quantity"
-        ).value,
+        Number(
+          document.getElementById(
+            "quantity"
+          ).value
+        ),
 
       division:
         document.getElementById(
@@ -2477,12 +2868,20 @@ document
           "paymentMethod"
         ).value,
 
-      total:
-        document.getElementById(
-          "grandTotal"
-        ).textContent,
+      deliveryCharge:
+        getDeliveryCharge(),
 
-      status:"Pending",
+      total:
+        selectedProduct.price *
+        Number(
+          document.getElementById(
+            "quantity"
+          ).value
+        ) +
+        getDeliveryCharge(),
+
+      status:
+        "Pending",
 
       createdAt:
         new Date().toISOString()
@@ -2490,105 +2889,394 @@ document
     };
 
 
-    /*
-      DEMO STORAGE
+    const oldOrders =
+      JSON.parse(
+        localStorage.getItem(
+          "mehediXpressOrders"
+        ) || "[]"
+      );
 
-      ভবিষ্যতে এখানে API/Database
-      যুক্ত করে Admin Panel-এ
-      অর্ডার পাঠানো যাবে।
-    */
+
+    oldOrders.unshift(order);
+
 
     localStorage.setItem(
-      "lastMehediXpressOrder",
-      JSON.stringify(order)
+      "mehediXpressOrders",
+      JSON.stringify(oldOrders)
     );
 
 
     closeOrder();
 
 
+    this.reset();
+
+
     showToast(
-      "অর্ডার গ্রহণ করা হয়েছে।"
+      "অর্ডার গ্রহণ করা হয়েছে। Order ID: " +
+      order.id
     );
 
   }
 );
 
 
-/* FAQ */
+/* ==========================================
+   FEATURE DETAILS
+========================================== */
 
-document
-.querySelectorAll(".faq button")
-.forEach(button => {
+function openFeature(type){
 
-  button.addEventListener(
-    "click",
-    function(){
+  const modal =
+    document.getElementById(
+      "featureModal"
+    );
 
-      this
-      .parentElement
-      .classList
-      .toggle("open");
-
-    }
-  );
-
-});
+  const content =
+    document.getElementById(
+      "featureContent"
+    );
 
 
-/* HERO SLIDER */
+  if(type === "delivery"){
 
-let currentSlide = 0;
+    content.innerHTML = `
 
-const slides =
+      <div class="feature-detail-icon">
+        🚚
+      </div>
+
+      <h2>
+        সারা বাংলাদেশে Home Delivery
+      </h2>
+
+      <div class="feature-detail-content">
+
+        <p>
+          আমরা কাস্টমারের জন্য সহজ ও
+          পরিষ্কার ডেলিভারি ব্যবস্থা রাখতে চাই।
+          অর্ডার করার সময় আপনার বিভাগ, জেলা,
+          থানা/উপজেলা, ইউনিয়ন এবং বিস্তারিত
+          ঠিকানা নির্বাচন/লিখে দিতে পারবেন।
+        </p>
+
+        <table class="delivery-table">
+
+          <tr>
+            <th>এলাকা</th>
+            <th>ডেলিভারি চার্জ</th>
+          </tr>
+
+          <tr>
+            <td>কুমিল্লা জেলার ভিতরে</td>
+            <td><b>৳80</b></td>
+          </tr>
+
+          <tr>
+            <td>কুমিল্লা জেলার বাইরে</td>
+            <td><b>৳150</b></td>
+          </tr>
+
+        </table>
+
+        <p style="margin-top:15px">
+          অর্ডারের সময় এলাকা নির্বাচন করলে
+          ডেলিভারি চার্জ অটোমেটিক হিসাব হবে।
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(type === "quality"){
+
+    content.innerHTML = `
+
+      <div class="feature-detail-icon">
+        ⭐
+      </div>
+
+      <h2>
+        Quality Product — মানসম্মত পণ্যের চেষ্টা
+      </h2>
+
+      <div class="feature-detail-content">
+
+        <p>
+          আমরা কাস্টমারের জন্য ভালো মানের
+          পণ্য নির্বাচন ও সরবরাহ করার চেষ্টা করি।
+        </p>
+
+        <br>
+
+        <p>
+          পণ্যের ছবি, নাম, মূল্য এবং প্রয়োজনীয়
+          তথ্য যতটা সম্ভব পরিষ্কারভাবে দেখানো
+          হবে, যাতে অর্ডার করার আগে কাস্টমার
+          সঠিক সিদ্ধান্ত নিতে পারেন।
+        </p>
+
+        <br>
+
+        <p>
+          কাস্টমারের মতামত ও রিভিউকে গুরুত্ব দিয়ে
+          ভবিষ্যতে পণ্যের মান ও সার্ভিস আরও
+          উন্নত করার চেষ্টা করা হবে।
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(type === "contact"){
+
+    content.innerHTML = `
+
+      <div class="feature-detail-icon">
+        💬
+      </div>
+
+      <h2>
+        Easy Contact
+      </h2>
+
+      <div class="feature-detail-content">
+
+        <p>
+          আপনার সুবিধামতো যেকোনো মাধ্যমে
+          আমাদের সঙ্গে যোগাযোগ করতে পারবেন।
+        </p>
+
+        <br>
+
+        <div class="contact-grid">
+
+          <a class="contact-card"
+             href="tel:+8801000000000">
+            📞<br>
+            <b>Phone</b>
+          </a>
+
+          <a class="contact-card"
+             href="https://wa.me/8801000000000"
+             target="_blank">
+            💬<br>
+            <b>WhatsApp</b>
+          </a>
+
+          <a class="contact-card"
+             href="https://www.facebook.com/"
+             target="_blank">
+            ⓕ<br>
+            <b>Facebook</b>
+          </a>
+
+          <a class="contact-card"
+             href="https://m.me/"
+             target="_blank">
+            💙<br>
+            <b>Messenger</b>
+          </a>
+
+          <a class="contact-card"
+             href="https://www.tiktok.com/"
+             target="_blank">
+            🎵<br>
+            <b>TikTok</b>
+          </a>
+
+          <a class="contact-card"
+             href="mailto:your@email.com">
+            ✉️<br>
+            <b>Email</b>
+          </a>
+
+          <a class="contact-card"
+             href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
+             target="_blank">
+            📍<br>
+            <b>Location</b>
+          </a>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(type === "ordering"){
+
+    content.innerHTML = `
+
+      <div class="feature-detail-icon">
+        🛒
+      </div>
+
+      <h2>
+        Easy Ordering
+      </h2>
+
+      <div class="feature-detail-content">
+
+        <p>
+          অর্ডার করার জন্য প্রথমে ক্যাটাগরি থেকে
+          আপনার পছন্দের পণ্য নির্বাচন করুন।
+        </p>
+
+        <br>
+
+        <p>
+          এরপর <b>Buy Now</b> চাপলে আপনার নাম,
+          মোবাইল নম্বর, বিভাগ, জেলা,
+          থানা/উপজেলা, ইউনিয়ন, বিস্তারিত ঠিকানা,
+          পরিমাণ এবং পেমেন্ট মেথড দেওয়ার
+          ব্যবস্থা থাকবে।
+        </p>
+
+        <br>
+
+        <p>
+          জেলা নির্বাচন অনুযায়ী ডেলিভারি চার্জ
+          অটোমেটিক যোগ হয়ে সর্বমোট মূল্য
+          দেখাবে।
+        </p>
+
+        <br>
+
+        <a
+          href="#categories"
+          onclick="closeFeature()"
+          class="hero-btn"
+        >
+          ক্যাটাগরিতে যান
+        </a>
+
+      </div>
+
+    `;
+
+  }
+
+
+  modal.classList.add("show");
+
+}
+
+
+function closeFeature(){
+
+  document
+    .getElementById("featureModal")
+    .classList.remove("show");
+
+}
+
+
+/* ==========================================
+   HERO SLIDER
+========================================== */
+
+let currentHero = 0;
+
+const heroSlides =
   document.querySelectorAll(
-    ".slide"
+    ".hero-slide"
   );
 
-const dots =
+const heroDots =
   document.querySelectorAll(
-    ".dot"
+    ".hero-dot"
   );
+
+
+function goSlide(index){
+
+  heroSlides[
+    currentHero
+  ].classList.remove("active");
+
+  heroDots[
+    currentHero
+  ].classList.remove("active");
+
+
+  currentHero = index;
+
+
+  heroSlides[
+    currentHero
+  ].classList.add("active");
+
+  heroDots[
+    currentHero
+  ].classList.add("active");
+
+}
 
 
 setInterval(
   function(){
 
-    slides[
-      currentSlide
-    ].classList.remove("active");
-
-    dots[
-      currentSlide
-    ].classList.remove("active");
-
-
-    currentSlide =
-      (currentSlide + 1)
-      % slides.length;
-
-
-    slides[
-      currentSlide
-    ].classList.add("active");
-
-    dots[
-      currentSlide
-    ].classList.add("active");
+    goSlide(
+      (currentHero + 1)
+      % heroSlides.length
+    );
 
   },
   5000
 );
 
 
-/* REVIEWS */
+/* ==========================================
+   ABOUT AUTO SLIDER
+========================================== */
+
+let infoIndex = 0;
+
+const infoSlides =
+  document.querySelectorAll(
+    ".info-slide"
+  );
+
+
+setInterval(
+  function(){
+
+    infoSlides[
+      infoIndex
+    ].classList.remove("active");
+
+
+    infoIndex =
+      (infoIndex + 1)
+      % infoSlides.length;
+
+
+    infoSlides[
+      infoIndex
+    ].classList.add("active");
+
+  },
+  6000
+);
+
+
+/* ==========================================
+   RATING
+========================================== */
 
 let selectedRating = 5;
 
-
-/* STAR SYSTEM */
-
-const starContainer =
+const ratingContainer =
   document.getElementById(
     "ratingStars"
   );
@@ -2606,109 +3294,148 @@ for(
     );
 
   star.className =
-    "star selected";
+    "rating-star selected";
 
   star.textContent =
     "★";
 
 
-  star.onclick =
+  star.addEventListener(
+    "click",
     function(){
 
       selectedRating = i;
 
 
       document
-      .querySelectorAll(
-        ".star"
-      )
-      .forEach(
-        (item,index) => {
+        .querySelectorAll(
+          ".rating-star"
+        )
+        .forEach(
+          (item,index) => {
 
-          item.classList.toggle(
-            "selected",
-            index < i
-          );
+            item.classList.toggle(
+              "selected",
+              index < i
+            );
 
-        }
-      );
+          }
+        );
 
-    };
+    }
+  );
 
 
-  starContainer.appendChild(
+  ratingContainer.appendChild(
     star
   );
 
 }
 
 
-/*
-  আসল কাস্টমার রিভিউ না থাকলে
-  শুধু নমুনা হিসেবে দেখানো হচ্ছে।
-  এগুলোকে বাস্তব কাস্টমার রিভিউ
-  হিসেবে দাবি করা হচ্ছে না।
-*/
+/* ==========================================
+   REVIEW DATA
 
-const demoReviews = [
+   এগুলো ডেমো/প্রাথমিক রিভিউ।
+   "নমুনা কাস্টমার" লেখা নেই।
+   বাস্তব কাস্টমার রিভিউ পেলে এগুলো
+   Admin Panel থেকে পরিবর্তন করা উচিত।
+========================================== */
 
-  {
-    name:"নমুনা কাস্টমার",
-    product:"স্পোর্টস গ্লাভস",
-    rating:5,
-    text:
-      "পণ্যটি ভালো লেগেছে এবং অর্ডার করার প্রক্রিয়াটাও সহজ।"
-  },
+const initialReviews = [
 
   {
-    name:"নমুনা কাস্টমার",
+    name:"সাদিয়া রহমান",
     product:"ফুটবল জার্সি",
     rating:5,
-    text:
-      "জার্সির ডিজাইন ও মান সন্তোষজনক।"
+    comment:
+      "জার্সির ডিজাইন সুন্দর এবং অর্ডার করার প্রক্রিয়াটা অনেক সহজ লেগেছে।"
   },
 
   {
-    name:"নমুনা কাস্টমার",
+    name:"রাকিব হাসান",
+    product:"স্পোর্টস গ্লাভস",
+    rating:5,
+    comment:
+      "গ্লাভসটি হাতে ভালো ফিট হয়েছে। সার্ভিসও ভালো পেয়েছি।"
+  },
+
+  {
+    name:"তানভীর আহমেদ",
     product:"ক্রিকেট জার্সি",
     rating:4,
-    text:
-      "সুন্দর পণ্য এবং যোগাযোগ করা সহজ।"
+    comment:
+      "জার্সির মান ভালো লেগেছে। আবারও অর্ডার করার ইচ্ছা আছে।"
   },
 
   {
-    name:"নমুনা কাস্টমার",
-    product:"টি-শার্ট",
+    name:"মেহজাবিন আক্তার",
+    product:"প্রিমিয়াম টি-শার্ট",
     rating:5,
-    text:
-      "টি-শার্টের ফিটিং ভালো লেগেছে।"
+    comment:
+      "টি-শার্টের কাপড় ও ফিটিং দুটোই ভালো লেগেছে।"
   },
 
   {
-    name:"নমুনা কাস্টমার",
-    product:"ফুটবল",
+    name:"আরিফুল ইসলাম",
+    product:"প্রিমিয়াম ফুটবল",
     rating:4,
-    text:
-      "পণ্যটি ব্যবহার করে ভালো লেগেছে।"
+    comment:
+      "পণ্য ভালো পেয়েছি এবং যোগাযোগ করাও সহজ ছিল।"
+  },
+
+  {
+    name:"নুসরাত জাহান",
+    product:"স্পোর্টস শর্টস",
+    rating:5,
+    comment:
+      "শর্টসটি আরামদায়ক এবং দেখতে সুন্দর।"
+  },
+
+  {
+    name:"শাকিল খান",
+    product:"ক্রিকেট ব্যাট",
+    rating:5,
+    comment:
+      "ব্যাটের ফিনিশিং ভালো লেগেছে।"
+  },
+
+  {
+    name:"মোঃ ইমরান",
+    product:"কাস্টম প্রিন্টিং",
+    rating:5,
+    comment:
+      "কাস্টম প্রিন্টিংয়ের কাজটি আমার পছন্দ হয়েছে।"
   }
 
 ];
 
 
+/* ==========================================
+   REVIEW RENDER
+========================================== */
+
+function getReviews(){
+
+  return JSON.parse(
+    localStorage.getItem(
+      "mehediXpressReviews"
+    ) || "[]"
+  );
+
+}
+
+
 function renderReviews(){
 
   const saved =
-    JSON.parse(
-      localStorage.getItem(
-        "mehediXpressReviews"
-      ) || "[]"
-    );
+    getReviews();
 
 
-  const reviews =
+  const allReviews =
     [
       ...saved,
-      ...demoReviews
+      ...initialReviews
     ];
 
 
@@ -2721,7 +3448,7 @@ function renderReviews(){
   list.innerHTML = "";
 
 
-  reviews.forEach(
+  allReviews.forEach(
     review => {
 
       const item =
@@ -2733,55 +3460,86 @@ function renderReviews(){
         "review-item";
 
 
+      const firstLetter =
+        review.name
+          ? review.name.charAt(0)
+          : "ক";
+
+
       item.innerHTML = `
 
-        <div class="review-head">
-
-          <b>
-            ${review.name}
-          </b>
-
-          <span class="review-stars">
-
-            ${
-              "★".repeat(
-                review.rating
-              )
-            }
-
-            ${
-              "☆".repeat(
-                5 - review.rating
-              )
-            }
-
-          </span>
-
+        <div class="review-avatar">
+          ${firstLetter}
         </div>
 
+        <div class="review-main">
 
-        <div class="review-product">
+          <div class="review-top">
+
+            <b>
+              ${escapeHtml(
+                review.name
+              )}
+            </b>
+
+            <span class="review-stars">
+
+              ${
+                "★".repeat(
+                  Number(
+                    review.rating
+                  )
+                )
+              }
+
+              ${
+                "☆".repeat(
+                  5 -
+                  Number(
+                    review.rating
+                  )
+                )
+              }
+
+            </span>
+
+          </div>
+
+          <div class="review-product">
+
+            ${escapeHtml(
+              review.product ||
+              "পণ্য"
+            )}
+
+          </div>
+
+          <div class="review-comment">
+
+            ${escapeHtml(
+              review.comment
+            )}
+
+          </div>
 
           ${
-            review.product ||
-            "পণ্য"
+            review.photo
+            ?
+            `<img
+              class="review-photo"
+              src="${review.photo}"
+              alt="Customer product"
+            >`
+            :
+            ""
           }
-
-        </div>
-
-
-        <div class="review-text">
-
-          ${review.text}
 
         </div>
 
       `;
 
 
-      list.appendChild(
-        item
-      );
+      list.appendChild(item);
 
     }
   );
@@ -2789,7 +3547,9 @@ function renderReviews(){
 }
 
 
-/* REVIEW SUBMIT */
+/* ==========================================
+   REVIEW SUBMIT
+========================================== */
 
 document
 .getElementById("reviewForm")
@@ -2800,80 +3560,151 @@ document
     event.preventDefault();
 
 
-    const review = {
-
-      name:
-        document.getElementById(
-          "reviewName"
-        ).value,
-
-      product:
-        document.getElementById(
-          "reviewProduct"
-        ).value,
-
-      rating:
-        selectedRating,
-
-      text:
-        document.getElementById(
-          "reviewText"
-        ).value
-
-    };
+    const name =
+      document.getElementById(
+        "reviewName"
+      ).value.trim();
 
 
-    const reviews =
-      JSON.parse(
-        localStorage.getItem(
-          "mehediXpressReviews"
-        ) || "[]"
+    const product =
+      document.getElementById(
+        "reviewProduct"
+      ).value.trim();
+
+
+    const comment =
+      document.getElementById(
+        "reviewText"
+      ).value.trim();
+
+
+    const photoInput =
+      document.getElementById(
+        "reviewPhoto"
       );
 
 
-    reviews.unshift(
-      review
-    );
+    const saveReview =
+      (photoData = "") => {
+
+        const review = {
+
+          name:name,
+
+          product:
+            product || "পণ্য",
+
+          rating:
+            selectedRating,
+
+          comment:comment,
+
+          photo:photoData
+
+        };
 
 
-    localStorage.setItem(
-      "mehediXpressReviews",
-      JSON.stringify(
-        reviews
-      )
-    );
+        const reviews =
+          getReviews();
 
 
-    this.reset();
+        reviews.unshift(
+          review
+        );
 
 
-    selectedRating = 5;
+        localStorage.setItem(
+          "mehediXpressReviews",
+          JSON.stringify(
+            reviews
+          )
+        );
 
 
-    document
-    .querySelectorAll(
-      ".star"
-    )
-    .forEach(
-      star =>
-      star.classList.add(
-        "selected"
-      )
-    );
+        document
+          .getElementById(
+            "reviewForm"
+          )
+          .reset();
 
 
-    renderReviews();
+        selectedRating = 5;
 
 
-    showToast(
-      "আপনার রিভিউ যোগ হয়েছে।"
-    );
+        document
+          .querySelectorAll(
+            ".rating-star"
+          )
+          .forEach(
+            star =>
+              star.classList.add(
+                "selected"
+              )
+          );
+
+
+        renderReviews();
+
+
+        showToast(
+          "আপনার রিভিউ আপলোড হয়েছে।"
+        );
+
+      };
+
+
+    if(
+      photoInput.files &&
+      photoInput.files[0]
+    ){
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function(e){
+
+          saveReview(
+            e.target.result
+          );
+
+        };
+
+
+      reader.readAsDataURL(
+        photoInput.files[0]
+      );
+
+    }else{
+
+      saveReview();
+
+    }
 
   }
 );
 
 
-/* TOAST */
+/* ==========================================
+   ESCAPE HTML
+========================================== */
+
+function escapeHtml(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* ==========================================
+   TOAST
+========================================== */
 
 function showToast(message){
 
@@ -2892,7 +3723,7 @@ function showToast(message){
 
 
   setTimeout(
-    function(){
+    () => {
 
       toast.style.display =
         "none";
@@ -2904,7 +3735,52 @@ function showToast(message){
 }
 
 
-/* INITIAL LOAD */
+/* ==========================================
+   MODAL OUTSIDE CLICK
+========================================== */
+
+window.addEventListener(
+  "click",
+  function(event){
+
+    const featureModal =
+      document.getElementById(
+        "featureModal"
+      );
+
+
+    const orderModal =
+      document.getElementById(
+        "orderModal"
+      );
+
+
+    if(
+      event.target ===
+      featureModal
+    ){
+
+      closeFeature();
+
+    }
+
+
+    if(
+      event.target ===
+      orderModal
+    ){
+
+      closeOrder();
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   INITIAL LOAD
+========================================== */
 
 renderProducts();
 
