@@ -1865,7 +1865,7 @@ a{
 
     <a
       class="contact-card"
-      href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
+      href="https://www.google.com/maps/search/?api=1&query=দক্ষিণ%20বাঙ্গরা%20বাজার%20বাসস্ট্যান্ডের%20উত্তর%20পাশে%2C%20বাঙ্গরা%20বাজার%20থানা%2C%20মুরাদনগর%2C%20কুমিল্লা"
       target="_blank"
     >
 
@@ -1947,11 +1947,11 @@ a{
       </h3>
 
       <p>
-        কুমিল্লা, বাংলাদেশ
+        দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা
         <br><br>
 
         <a
-          href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
+          href="https://www.google.com/maps/search/?api=1&query=দক্ষিণ%20বাঙ্গরা%20বাজার%20বাসস্ট্যান্ডের%20উত্তর%20পাশে%2C%20বাঙ্গরা%20বাজার%20থানা%2C%20মুরাদনগর%2C%20কুমিল্লা"
           target="_blank"
         >
           📍 Live Location
@@ -2477,6 +2477,80 @@ let selectedProduct = null;
 
 
 /* ==========================================
+   BANGLADESH LOCATION DATA
+   8 divisions → districts → upazilas → unions
+========================================== */
+
+const BD_LOCATION_DATA_URL =
+  "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+
+function resetSelect(id, placeholder){
+  const el = document.getElementById(id);
+  el.innerHTML = `<option value="">${placeholder}</option>`;
+  el.disabled = true;
+  return el;
+}
+
+function fillSelect(id, items, placeholder){
+  const el = document.getElementById(id);
+  el.innerHTML = `<option value="">${placeholder}</option>`;
+  items.forEach(item => {
+    const option = document.createElement("option");
+    option.value = item.bn_name;
+    option.textContent = item.bn_name;
+    el.appendChild(option);
+  });
+  el.disabled = items.length === 0;
+}
+
+async function loadBangladeshLocations(){
+  const divisionEl = document.getElementById("division");
+  const districtEl = resetSelect("district", "জেলা নির্বাচন করুন");
+  const upazilaEl = resetSelect("upazila", "থানা / উপজেলা নির্বাচন করুন");
+  const unionEl = resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
+
+  try{
+    const response = await fetch(BD_LOCATION_DATA_URL, {cache:"force-cache"});
+    if(!response.ok) throw new Error("Location data request failed");
+    const data = await response.json();
+
+    window.bdLocationData = data;
+    fillSelect("division", data, "বিভাগ নির্বাচন করুন");
+
+    divisionEl.addEventListener("change", function(){
+      const division = data.find(d => d.bn_name === this.value);
+      fillSelect("district", division ? division.districts : [], "জেলা নির্বাচন করুন");
+      resetSelect("upazila", "থানা / উপজেলা নির্বাচন করুন");
+      resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
+      updateOrderSummary();
+    });
+
+    districtEl.addEventListener("change", function(){
+      const division = data.find(d => d.bn_name === divisionEl.value);
+      const district = division?.districts?.find(d => d.bn_name === this.value);
+      fillSelect("upazila", district ? district.upazilas : [], "থানা / উপজেলা নির্বাচন করুন");
+      resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
+      updateOrderSummary();
+    });
+
+    upazilaEl.addEventListener("change", function(){
+      const division = data.find(d => d.bn_name === divisionEl.value);
+      const district = division?.districts?.find(d => d.bn_name === districtEl.value);
+      const upazila = district?.upazilas?.find(u => u.bn_name === this.value);
+      fillSelect("union", upazila?.unions || [], "ইউনিয়ন নির্বাচন করুন");
+    });
+
+  }catch(error){
+    console.error("Bangladesh location data could not be loaded:", error);
+    divisionEl.innerHTML = `
+      <option value="">বিভাগের তথ্য লোড হয়নি — আবার চেষ্টা করুন</option>
+    `;
+    divisionEl.disabled = false;
+    showToast("লোকেশন ডাটা লোড করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।");
+  }
+}
+
+/* ==========================================
    MONEY
 ========================================== */
 
@@ -2500,6 +2574,17 @@ function renderProducts(list = products){
     );
 
   grid.innerHTML = "";
+
+  if(!list.length){
+    grid.innerHTML = `
+      <div class="no-results">
+        <div style="font-size:42px;margin-bottom:8px">🔎</div>
+        <h3>কোনো পণ্য পাওয়া যায়নি</h3>
+        <p>অন্য পণ্যের নাম বা ক্যাটাগরি দিয়ে আবার সার্চ করুন।</p>
+      </div>
+    `;
+    return;
+  }
 
   list.forEach(product => {
 
@@ -2585,64 +2670,59 @@ function filterCategory(category){
    SEARCH
 ========================================== */
 
-document
-.getElementById("searchInput")
-.addEventListener(
-  "input",
-  searchProducts
-);
+const searchInput = document.getElementById("searchInput");
 
-
-function searchProducts(){
-
-  const query =
-    document.getElementById(
-      "searchInput"
-    ).value
-    .trim()
-    .toLowerCase();
-
-
-  if(!query){
-
-    renderProducts();
-
-    document.getElementById(
-      "productStatus"
-    ).textContent =
-      "১৫টি পণ্য";
-
-    return;
-
+searchInput.addEventListener("input", searchProducts);
+searchInput.addEventListener("keydown", function(event){
+  if(event.key === "Enter"){
+    event.preventDefault();
+    searchProducts(true);
   }
+});
 
-
-  const list =
-    products.filter(product =>
-
-      product.name
-        .toLowerCase()
-        .includes(query)
-
-      ||
-
-      product.categoryBn
-        .toLowerCase()
-        .includes(query)
-
-    );
-
-
-  renderProducts(list);
-
-  document.getElementById(
-    "productStatus"
-  ).textContent =
-    list.length +
-    "টি পণ্য পাওয়া গেছে";
-
+function normalizeSearch(value){
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKC")
+    .replace(/[\u200c\u200d]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
+function searchProducts(shouldScroll = false){
+  const query = normalizeSearch(searchInput.value);
+
+  if(!query){
+    renderProducts(products);
+    document.getElementById("productStatus").textContent =
+      products.length + "টি পণ্য";
+    return;
+  }
+
+  const terms = query.split(" ").filter(Boolean);
+
+  const list = products.filter(product => {
+    const haystack = normalizeSearch([
+      product.name,
+      product.categoryBn,
+      product.category,
+      product.id
+    ].join(" "));
+
+    return terms.every(term => haystack.includes(term));
+  });
+
+  renderProducts(list);
+  document.getElementById("productStatus").textContent =
+    list.length + "টি পণ্য পাওয়া গেছে";
+
+  if(shouldScroll){
+    document.getElementById("products").scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+  }
+}
 
 /* ==========================================
    ORDER
@@ -3098,7 +3178,7 @@ function openFeature(type){
           </a>
 
           <a class="contact-card"
-             href="https://www.google.com/maps/search/?api=1&query=Comilla,Bangladesh"
+             href="https://www.google.com/maps/search/?api=1&query=দক্ষিণ%20বাঙ্গরা%20বাজার%20বাসস্ট্যান্ডের%20উত্তর%20পাশে%2C%20বাঙ্গরা%20বাজার%20থানা%2C%20মুরাদনগর%2C%20কুমিল্লা"
              target="_blank">
             📍<br>
             <b>Location</b>
