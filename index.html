@@ -2481,8 +2481,12 @@ let selectedProduct = null;
    8 divisions → districts → upazilas → unions
 ========================================== */
 
-const BD_LOCATION_DATA_URL =
-  "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
+const BD_LOCATION_DATA_URLS = [
+  // Primary: Bangla Division → District → Upazila → Union dataset
+  "https://raw.githubusercontent.com/sohan-99/bangladesh-location-data/main/locationBdDivisonsToUnionsBangla.json",
+  // Fallback: nested Bangladesh geography dataset
+  "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json"
+];
 
 function resetSelect(id, placeholder){
   const el = document.getElementById(id);
@@ -2494,32 +2498,109 @@ function resetSelect(id, placeholder){
 function fillSelect(id, items, placeholder){
   const el = document.getElementById(id);
   el.innerHTML = `<option value="">${placeholder}</option>`;
-  items.forEach(item => {
+  (items || []).forEach(item => {
+    const name = typeof item === "string" ? item : (item.bn_name || item.title || item.name || "");
+    if(!name) return;
     const option = document.createElement("option");
-    option.value = item.bn_name;
-    option.textContent = item.bn_name;
+    option.value = name.trim();
+    option.textContent = name.trim();
     el.appendChild(option);
   });
-  el.disabled = items.length === 0;
+  el.disabled = el.options.length <= 1;
+}
+
+function normalizeBanglaLocationData(raw){
+  // Format A: locationBdDivisonsToUnionsBangla.json
+  if(raw && Array.isArray(raw.divisions_bn)){
+    const districtsByDivision = raw.districts_bn || {};
+    const upazilasByDistrict = raw.upazilas_bn || {};
+    const unionsByUpazila = raw.unions_bn || {};
+
+    return raw.divisions_bn.map(div => ({
+      id: String(div.value),
+      bn_name: String(div.title || "").trim(),
+      districts: (districtsByDivision[String(div.value)] || []).map(dist => ({
+        id: String(dist.value),
+        bn_name: String(dist.title || "").trim(),
+        upazilas: (upazilasByDistrict[String(dist.value)] || [])
+          // City corporations are not উপজেলা/থানা selections.
+          .filter(up => !/সিটি\s*কর্পোরেশন/i.test(String(up.title || "")))
+          .map(up => ({
+            id: String(up.value),
+            bn_name: String(up.title || "").trim(),
+            unions: (unionsByUpazila[String(up.value)] || [])
+              // Keep union points only; exclude municipality/city-corporation entries.
+              .filter(u => !/(পৌরসভা|সিটি\s*কর্পোরেশন)/i.test(String(u.title || "")))
+              .map(u => ({
+                id: String(u.value),
+                bn_name: String(u.title || "").trim()
+              }))
+          }))
+      }))
+    }));
+  }
+
+  // Format B: nested divisions → districts → upazilas → unions
+  if(Array.isArray(raw)){
+    return raw.map(div => ({
+      id: div.name || div.bn_name,
+      bn_name: String(div.bn_name || div.name || "").trim(),
+      districts: (div.districts || []).map(dist => ({
+        id: dist.name || dist.bn_name,
+        bn_name: String(dist.bn_name || dist.name || "").trim(),
+        upazilas: (dist.upazilas || [])
+          .filter(up => !/সিটি\s*কর্পোরেশন/i.test(String(up.bn_name || up.name || "")))
+          .map(up => ({
+            id: up.name || up.bn_name,
+            bn_name: String(up.bn_name || up.name || "").trim(),
+            unions: (up.unions || [])
+              .filter(u => !/(পৌরসভা|সিটি\s*কর্পোরেশন)/i.test(String(u.bn_name || u.name || "")))
+              .map(u => ({
+                id: u.name || u.bn_name,
+                bn_name: String(u.bn_name || u.name || "").trim()
+              }))
+          }))
+      }))
+    }));
+  }
+
+  throw new Error("Unsupported Bangladesh location data format");
+}
+
+async function fetchLocationData(){
+  let lastError = null;
+  for(const url of BD_LOCATION_DATA_URLS){
+    try{
+      const response = await fetch(url, {
+        cache: "no-store",
+        headers: { "Accept": "application/json" }
+      });
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      return normalizeBanglaLocationData(await response.json());
+    }catch(error){
+      lastError = error;
+      console.warn("Location source failed:", url, error);
+    }
+  }
+  throw lastError || new Error("No location source available");
 }
 
 async function loadBangladeshLocations(){
-  const divisionEl = document.getElementById("division");
+  const divisionEl = resetSelect("division", "বিভাগ নির্বাচন করুন");
   const districtEl = resetSelect("district", "জেলা নির্বাচন করুন");
   const upazilaEl = resetSelect("upazila", "থানা / উপজেলা নির্বাচন করুন");
   const unionEl = resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
 
   try{
-    const response = await fetch(BD_LOCATION_DATA_URL, {cache:"force-cache"});
-    if(!response.ok) throw new Error("Location data request failed");
-    const data = await response.json();
-
+    const data = await fetchLocationData();
     window.bdLocationData = data;
+
+    // Exactly the full Bangladesh hierarchy: 8 divisions → districts → upazila/thana → unions.
     fillSelect("division", data, "বিভাগ নির্বাচন করুন");
 
     divisionEl.addEventListener("change", function(){
       const division = data.find(d => d.bn_name === this.value);
-      fillSelect("district", division ? division.districts : [], "জেলা নির্বাচন করুন");
+      fillSelect("district", division?.districts || [], "জেলা নির্বাচন করুন");
       resetSelect("upazila", "থানা / উপজেলা নির্বাচন করুন");
       resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
       updateOrderSummary();
@@ -2528,7 +2609,7 @@ async function loadBangladeshLocations(){
     districtEl.addEventListener("change", function(){
       const division = data.find(d => d.bn_name === divisionEl.value);
       const district = division?.districts?.find(d => d.bn_name === this.value);
-      fillSelect("upazila", district ? district.upazilas : [], "থানা / উপজেলা নির্বাচন করুন");
+      fillSelect("upazila", district?.upazilas || [], "থানা / উপজেলা নির্বাচন করুন");
       resetSelect("union", "ইউনিয়ন নির্বাচন করুন");
       updateOrderSummary();
     });
@@ -2538,13 +2619,14 @@ async function loadBangladeshLocations(){
       const district = division?.districts?.find(d => d.bn_name === districtEl.value);
       const upazila = district?.upazilas?.find(u => u.bn_name === this.value);
       fillSelect("union", upazila?.unions || [], "ইউনিয়ন নির্বাচন করুন");
+      updateOrderSummary();
     });
+
+    unionEl.addEventListener("change", updateOrderSummary);
 
   }catch(error){
     console.error("Bangladesh location data could not be loaded:", error);
-    divisionEl.innerHTML = `
-      <option value="">বিভাগের তথ্য লোড হয়নি — আবার চেষ্টা করুন</option>
-    `;
+    divisionEl.innerHTML = `<option value="">বিভাগের তথ্য লোড হয়নি — আবার চেষ্টা করুন</option>`;
     divisionEl.disabled = false;
     showToast("লোকেশন ডাটা লোড করতে সমস্যা হয়েছে। ইন্টারনেট সংযোগ পরীক্ষা করুন।");
   }
