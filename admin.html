@@ -1,1 +1,1235 @@
+```html
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mehedi Xpress — Admin Panel</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --dark:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --primary:#2563eb;
+      --primary-dark:#1d4ed8;
+      --success:#16a34a;
+      --warning:#d97706;
+      --danger:#dc2626;
+      --sidebar:#111827;
+    }
+
+    body{
+      font-family:Arial,"Noto Sans Bengali",sans-serif;
+      background:var(--bg);
+      color:var(--dark);
+    }
+
+    button,
+    input,
+    select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    /* =========================
+       LOGIN
+    ========================== */
+
+    #loginPage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:
+        radial-gradient(circle at top right,#dbeafe,transparent 35%),
+        radial-gradient(circle at bottom left,#e0e7ff,transparent 35%),
+        #f8fafc;
+    }
+
+    .login-card{
+      width:min(420px,100%);
+      background:#fff;
+      padding:38px;
+      border-radius:24px;
+      box-shadow:0 25px 70px rgba(15,23,42,.12);
+      border:1px solid var(--border);
+    }
+
+    .brand{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    .brand-logo{
+      width:68px;
+      height:68px;
+      margin:0 auto 14px;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      color:#fff;
+      font-size:22px;
+      font-weight:900;
+      box-shadow:0 12px 25px rgba(37,99,235,.25);
+    }
+
+    .brand h1{
+      font-size:25px;
+      margin-bottom:5px;
+    }
+
+    .brand p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .field{
+      margin-bottom:18px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      outline:none;
+      background:#fff;
+    }
+
+    .field input:focus,
+    .field select:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(37,99,235,.1);
+    }
+
+    .login-btn{
+      width:100%;
+      border:0;
+      padding:14px;
+      border-radius:11px;
+      background:var(--primary);
+      color:#fff;
+      font-weight:800;
+    }
+
+    .login-btn:hover{
+      background:var(--primary-dark);
+    }
+
+    .login-error{
+      display:none;
+      margin-top:12px;
+      padding:10px;
+      border-radius:9px;
+      background:#fee2e2;
+      color:#991b1b;
+      font-size:13px;
+      text-align:center;
+    }
+
+    /* =========================
+       ADMIN APP
+    ========================== */
+
+    #adminApp{
+      display:none;
+      min-height:100vh;
+    }
+
+    .layout{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:250px;
+      background:var(--sidebar);
+      color:#fff;
+      padding:22px 14px;
+      position:fixed;
+      left:0;
+      top:0;
+      bottom:0;
+      overflow-y:auto;
+    }
+
+    .sidebar-brand{
+      padding:10px 12px 25px;
+      border-bottom:1px solid rgba(255,255,255,.1);
+      margin-bottom:18px;
+    }
+
+    .sidebar-brand strong{
+      font-size:20px;
+    }
+
+    .sidebar-brand span{
+      display:block;
+      color:#9ca3af;
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .menu button{
+      width:100%;
+      text-align:left;
+      padding:12px 14px;
+      border:0;
+      border-radius:10px;
+      background:transparent;
+      color:#d1d5db;
+      transition:.2s;
+    }
+
+    .menu button:hover,
+    .menu button.active{
+      background:#1f2937;
+      color:#fff;
+    }
+
+    .logout-btn{
+      margin-top:25px;
+      color:#fca5a5 !important;
+    }
+
+    .main{
+      margin-left:250px;
+      width:calc(100% - 250px);
+      padding:25px;
+    }
+
+    .topbar{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:17px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:25px;
+    }
+
+    .topbar h2{
+      font-size:21px;
+    }
+
+    .admin-user{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    .panel{
+      display:none;
+    }
+
+    .panel.active{
+      display:block;
+    }
+
+    .section-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:18px;
+    }
+
+    .section-header h3{
+      font-size:20px;
+    }
+
+    .primary-btn{
+      border:0;
+      background:var(--primary);
+      color:#fff;
+      padding:11px 16px;
+      border-radius:9px;
+      font-weight:700;
+    }
+
+    .primary-btn:hover{
+      background:var(--primary-dark);
+    }
+
+    /* =========================
+       STATS
+    ========================== */
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:25px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+    }
+
+    .stat-icon{
+      font-size:27px;
+      margin-bottom:10px;
+    }
+
+    .stat strong{
+      display:block;
+      font-size:26px;
+      margin-bottom:4px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* =========================
+       CARD / TABLE
+    ========================== */
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:700px;
+    }
+
+    th,
+    td{
+      padding:13px 10px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      font-size:14px;
+    }
+
+    th{
+      color:#374151;
+      background:#f9fafb;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .badge-pending{
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .badge-confirmed{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .badge-processing{
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .badge-delivered{
+      background:#d1fae5;
+      color:#065f46;
+    }
+
+    .badge-cancelled{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+
+    .action-btn{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:7px 10px;
+      border-radius:7px;
+      font-size:12px;
+    }
+
+    .action-btn:hover{
+      background:#f3f4f6;
+    }
+
+    /* =========================
+       PRODUCT FORM
+    ========================== */
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+    }
+
+    .full{
+      grid-column:1/-1;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1000px){
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:760px){
+
+      .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+      }
+
+      .layout{
+        display:block;
+      }
+
+      .main{
+        width:100%;
+        margin-left:0;
+        padding:15px;
+      }
+
+      .menu{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .logout-btn{
+        margin-top:5px;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .topbar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================
+     LOGIN PAGE
+========================== -->
+
+<section id="loginPage">
+
+  <div class="login-card">
+
+    <div class="brand">
+      <div class="brand-logo">MX</div>
+      <h1>Mehedi Xpress</h1>
+      <p>Professional Admin Panel</p>
+    </div>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>Admin Username</label>
+        <input
+          id="username"
+          type="text"
+          autocomplete="username"
+          placeholder="Admin username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Password"
+          required
+        >
+      </div>
+
+      <button class="login-btn" type="submit">
+        Admin Login
+      </button>
+
+      <div id="loginError" class="login-error">
+        Username অথবা Password সঠিক নয়।
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ADMIN APP
+========================== -->
+
+<section id="adminApp">
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="sidebar-brand">
+        <strong>Mehedi Xpress</strong>
+        <span>Admin Dashboard</span>
+      </div>
+
+      <div class="menu">
+
+        <button
+          class="menu-btn active"
+          data-panel="dashboardPanel"
+        >
+          📊 Dashboard
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="productsPanel"
+        >
+          📦 Products
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="ordersPanel"
+        >
+          🛒 Orders
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="paymentsPanel"
+        >
+          💳 Payments
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="settingsPanel"
+        >
+          ⚙️ Settings
+        </button>
+
+        <button
+          id="logoutBtn"
+          class="menu-btn logout-btn"
+        >
+          🚪 Logout
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+      <div class="topbar">
+
+        <div>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+
+        <div class="admin-user">
+          👤 Admin: <strong>mehedixpress</strong>
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           DASHBOARD
+      ========================== -->
+
+      <section
+        id="dashboardPanel"
+        class="panel active"
+      >
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-icon">🛒</div>
+            <strong id="statOrders">0</strong>
+            <span>Total Orders</span>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">📦</div>
+            <strong id="statProducts">6</strong>
+            <span>Products</span>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">💰</div>
+            <strong id="statSales">৳0</strong>
+            <span>Total Sales</span>
+          </div>
+
+          <div class="stat">
+            <div class="stat-icon">⏳</div>
+            <strong id="statPending">0</strong>
+            <span>Pending Orders</span>
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="section-header">
+            <h3>Recent Orders</h3>
+
+            <button
+              class="primary-btn"
+              onclick="showPanel('ordersPanel')"
+            >
+              সব Orders দেখুন
+            </button>
+          </div>
+
+          <p style="color:#6b7280;">
+            Backend/database যুক্ত হলে এখানে বাস্তব customer orders
+            automatically দেখা যাবে।
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           PRODUCTS
+      ========================== -->
+
+      <section
+        id="productsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+
+          <h3>Product Management</h3>
+
+          <button
+            class="primary-btn"
+            onclick="openProductForm()"
+          >
+            + Add Product
+          </button>
+
+        </div>
+
+
+        <div
+          id="productFormCard"
+          class="card"
+          style="display:none;margin-bottom:20px;"
+        >
+
+          <form id="productForm">
+
+            <div class="form-grid">
+
+              <div class="field">
+                <label>Product Name</label>
+                <input
+                  id="productName"
+                  type="text"
+                  placeholder="যেমন: Premium Football Jersey"
+                  required
+                >
+              </div>
+
+              <div class="field">
+                <label>Category</label>
+
+                <select id="productCategory" required>
+
+                  <option value="">
+                    Category নির্বাচন করুন
+                  </option>
+
+                  <option value="Football Jersey">
+                    Football Jersey
+                  </option>
+
+                  <option value="Cricket Jersey">
+                    Cricket Jersey
+                  </option>
+
+                  <option value="T-Shirt">
+                    T-Shirt
+                  </option>
+
+                  <option value="Shorts">
+                    Shorts
+                  </option>
+
+                  <option value="Football">
+                    Football
+                  </option>
+
+                  <option value="Cricket Bat">
+                    Cricket Bat
+                  </option>
+
+                  <option value="Gloves">
+                    Gloves
+                  </option>
+
+                  <option value="Custom Printing">
+                    Custom Printing
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="field">
+                <label>Price (৳)</label>
+
+                <input
+                  id="productPrice"
+                  type="number"
+                  min="0"
+                  placeholder="500"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field">
+                <label>Stock Quantity</label>
+
+                <input
+                  id="productStock"
+                  type="number"
+                  min="0"
+                  placeholder="10"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field full">
+
+                <label>Product Image URL</label>
+
+                <input
+                  id="productImage"
+                  type="text"
+                  placeholder="football-jersey.jpg"
+                >
+
+              </div>
+
+            </div>
+
+
+            <button
+              class="primary-btn"
+              type="submit"
+            >
+              Save Product
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <div class="card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="productTable">
+
+              <tr>
+                <td>Premium Football Jersey</td>
+                <td>Football Jersey</td>
+                <td>৳500</td>
+                <td>Demo</td>
+                <td>
+                  <button class="action-btn">
+                    Edit
+                  </button>
+                </td>
+              </tr>
+
+              <tr>
+                <td>Premium Cricket Jersey</td>
+                <td>Cricket Jersey</td>
+                <td>৳750</td>
+                <td>Demo</td>
+                <td>
+                  <button class="action-btn">
+                    Edit
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           ORDERS
+      ========================== -->
+
+      <section
+        id="ordersPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+          <h3>Order Management</h3>
+        </div>
+
+        <div class="card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="orderTable">
+
+              <tr>
+                <td colspan="7">
+                  এখনো কোনো বাস্তব order database-এ নেই।
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           PAYMENTS
+      ========================== -->
+
+      <section
+        id="paymentsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+          <h3>Payment Management</h3>
+        </div>
+
+        <div class="card">
+
+          <p style="color:#6b7280;margin-bottom:15px;">
+            bKash এবং Nagad payment verification এখানে পরিচালনা করা হবে।
+          </p>
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Order ID</th>
+                <th>Method</th>
+                <th>Amount</th>
+                <th>Transaction ID</th>
+                <th>Status</th>
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td colspan="5">
+                  Backend যুক্ত হলে payment records এখানে আসবে।
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           SETTINGS
+      ========================== -->
+
+      <section
+        id="settingsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+          <h3>Admin Settings</h3>
+        </div>
+
+        <div class="card">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Admin Username</label>
+              <input
+                type="text"
+                value="mehedixpress"
+                disabled
+              >
+            </div>
+
+            <div class="field">
+              <label>Admin Email</label>
+              <input
+                type="email"
+                value="mehedixpress522@gmail.com"
+                disabled
+              >
+            </div>
+
+            <div class="field">
+              <label>bKash</label>
+              <input
+                type="text"
+                value="01820-693313"
+                disabled
+              >
+            </div>
+
+            <div class="field">
+              <label>Nagad</label>
+              <input
+                type="text"
+                value="01820-693313"
+                disabled
+              >
+            </div>
+
+          </div>
+
+          <p style="margin-top:10px;color:#6b7280;font-size:13px;">
+            নিরাপদ backend authentication যুক্ত করার পর
+            এই settings পরিবর্তনযোগ্য করা হবে।
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</section>
+
+
+<script>
+
+  /* =========================
+     DEMO ADMIN LOGIN
+     IMPORTANT:
+     এটা production security নয়।
+     Backend authentication পরের ধাপে হবে।
+  ========================== */
+
+  const ADMIN_USERNAME = "mehedixpress";
+
+  const loginPage =
+    document.getElementById("loginPage");
+
+  const adminApp =
+    document.getElementById("adminApp");
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const loginError =
+    document.getElementById("loginError");
+
+
+  loginForm.addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    const username =
+      document.getElementById("username").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+
+    /*
+      এখানে password ইচ্ছাকৃতভাবে
+      hard-code করা হচ্ছে না।
+      Production login backend-এ হবে।
+    */
+
+    if(username === ADMIN_USERNAME && password){
+
+      sessionStorage.setItem(
+        "mehediAdminLoggedIn",
+        "true"
+      );
+
+      loginPage.style.display = "none";
+      adminApp.style.display = "block";
+
+    }else{
+
+      loginError.style.display = "block";
+
+    }
+
+  });
+
+
+  /* =========================
+     SESSION CHECK
+  ========================== */
+
+  if(
+    sessionStorage.getItem(
+      "mehediAdminLoggedIn"
+    ) === "true"
+  ){
+
+    loginPage.style.display = "none";
+    adminApp.style.display = "block";
+
+  }
+
+
+  /* =========================
+     NAVIGATION
+  ========================== */
+
+  const menuButtons =
+    document.querySelectorAll(".menu-btn");
+
+  menuButtons.forEach(function(button){
+
+    button.addEventListener("click", function(){
+
+      const panelId =
+        this.dataset.panel;
+
+      if(!panelId) return;
+
+      showPanel(panelId);
+
+    });
+
+  });
+
+
+  function showPanel(panelId){
+
+    document
+      .querySelectorAll(".panel")
+      .forEach(function(panel){
+
+        panel.classList.remove("active");
+
+      });
+
+
+    document
+      .getElementById(panelId)
+      .classList.add("active");
+
+
+    menuButtons.forEach(function(button){
+
+      button.classList.toggle(
+        "active",
+        button.dataset.panel === panelId
+      );
+
+    });
+
+
+    const titles = {
+
+      dashboardPanel:"Dashboard",
+
+      productsPanel:"Product Management",
+
+      ordersPanel:"Order Management",
+
+      paymentsPanel:"Payment Management",
+
+      settingsPanel:"Admin Settings"
+
+    };
+
+
+    document.getElementById("pageTitle")
+      .textContent =
+      titles[panelId] || "Dashboard";
+
+  }
+
+
+  /* =========================
+     PRODUCT FORM
+  ========================== */
+
+  function openProductForm(){
+
+    const formCard =
+      document.getElementById(
+        "productFormCard"
+      );
+
+    formCard.style.display =
+      formCard.style.display === "none"
+      ? "block"
+      : "none";
+
+  }
+
+
+  document
+    .getElementById("productForm")
+    .addEventListener(
+      "submit",
+      function(event){
+
+        event.preventDefault();
+
+        alert(
+          "Product form প্রস্তুত হয়েছে। Backend/database যুক্ত হলে product সত্যিকারভাবে save হবে।"
+        );
+
+      }
+    );
+
+
+  /* =========================
+     LOGOUT
+  ========================== */
+
+  document
+    .getElementById("logoutBtn")
+    .addEventListener(
+      "click",
+      function(){
+
+        sessionStorage.removeItem(
+          "mehediAdminLoggedIn"
+        );
+
+        location.reload();
+
+      }
+    );
+
+</script>
+
+</body>
+</html>
+```
 
