@@ -44,9 +44,7 @@
       cursor:pointer;
     }
 
-    /* =========================
-       LOGIN
-    ========================== */
+    /* LOGIN */
 
     #loginPage{
       min-height:100vh;
@@ -151,9 +149,7 @@
       text-align:center;
     }
 
-    /* =========================
-       ADMIN APP
-    ========================== */
+    /* ADMIN APP */
 
     #adminApp{
       display:none;
@@ -249,9 +245,7 @@
       font-size:14px;
     }
 
-    /* =========================
-       SECTIONS
-    ========================== */
+    /* SECTIONS */
 
     .panel{
       display:none;
@@ -286,9 +280,7 @@
       background:var(--primary-dark);
     }
 
-    /* =========================
-       STATS
-    ========================== */
+    /* STATS */
 
     .stats{
       display:grid;
@@ -320,9 +312,7 @@
       font-size:13px;
     }
 
-    /* =========================
-       CARD / TABLE
-    ========================== */
+    /* CARD / TABLE */
 
     .card{
       background:#fff;
@@ -396,9 +386,7 @@
       background:#f3f4f6;
     }
 
-    /* =========================
-       PRODUCT FORM
-    ========================== */
+    /* PRODUCT FORM */
 
     .form-grid{
       display:grid;
@@ -410,14 +398,14 @@
       grid-column:1/-1;
     }
 
-    /* =========================
-       RESPONSIVE
-    ========================== */
+    /* RESPONSIVE */
 
     @media(max-width:1000px){
+
       .stats{
         grid-template-columns:repeat(2,1fr);
       }
+
     }
 
     @media(max-width:760px){
@@ -459,30 +447,35 @@
         align-items:flex-start;
         flex-direction:column;
       }
+
     }
   </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN PAGE
-========================== -->
+<!-- LOGIN PAGE -->
 
 <section id="loginPage">
 
   <div class="login-card">
 
     <div class="brand">
+
       <div class="brand-logo">MX</div>
+
       <h1>Mehedi Xpress</h1>
+
       <p>Professional Admin Panel</p>
+
     </div>
 
     <form id="loginForm">
 
       <div class="field">
+
         <label>Admin Username</label>
+
         <input
           id="username"
           type="text"
@@ -490,10 +483,13 @@
           placeholder="Admin username"
           required
         >
+
       </div>
 
       <div class="field">
+
         <label>Password</label>
+
         <input
           id="password"
           type="password"
@@ -501,13 +497,20 @@
           placeholder="Password"
           required
         >
+
       </div>
 
-      <button class="login-btn" type="submit">
+      <button
+        class="login-btn"
+        type="submit"
+      >
         Admin Login
       </button>
 
-      <div id="loginError" class="login-error">
+      <div
+        id="loginError"
+        class="login-error"
+      >
         Username অথবা Password সঠিক নয়।
       </div>
 
@@ -518,9 +521,7 @@
 </section>
 
 
-<!-- =========================
-     ADMIN APP
-========================== -->
+<!-- ADMIN APP -->
 
 <section id="adminApp">
 
@@ -531,8 +532,11 @@
     <aside class="sidebar">
 
       <div class="sidebar-brand">
+
         <strong>Mehedi Xpress</strong>
+
         <span>Admin Dashboard</span>
+
       </div>
 
       <div class="menu">
@@ -591,19 +595,24 @@
       <div class="topbar">
 
         <div>
-          <h2 id="pageTitle">Dashboard</h2>
+
+          <h2 id="pageTitle">
+            Dashboard
+          </h2>
+
         </div>
 
         <div class="admin-user">
-          👤 Admin: <strong>mehedixpress</strong>
+
+          👤 Admin:
+          <strong>mehedixpress</strong>
+
         </div>
 
       </div>
 
 
-      <!-- =========================
-           DASHBOARD
-      ========================== -->
+      <!-- DASHBOARD -->
 
       <section
         id="dashboardPanel"
@@ -613,27 +622,70 @@
         <div class="stats">
 
           <div class="stat">
-            <div class="stat-icon">🛒</div>
-            <strong id="statOrders">0</strong>
-            <span>Total Orders</span>
+
+            <div class="stat-icon">
+              🛒
+            </div>
+
+            <strong id="statOrders">
+              0
+            </strong>
+
+            <span>
+              Total Orders
+            </span>
+
           </div>
 
-          <div class="stat">
-            <div class="stat-icon">📦</div>
-            <strong id="statProducts">6</strong>
-            <span>Products</span>
-          </div>
 
           <div class="stat">
-            <div class="stat-icon">💰</div>
-            <strong id="statSales">৳0</strong>
-            <span>Total Sales</span>
+
+            <div class="stat-icon">
+              📦
+            </div>
+
+            <strong id="statProducts">
+              6
+            </strong>
+
+            <span>
+              Products
+            </span>
+
           </div>
 
+
           <div class="stat">
-            <div class="stat-icon">⏳</div>
-            <strong id="statPending">0</strong>
-            <span>Pending Orders</span>
+
+            <div class="stat-icon">
+              💰
+            </div>
+
+            <strong id="statSales">
+              ৳0
+            </strong>
+
+            <span>
+              Total Sales
+            </span>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-icon">
+              ⏳
+            </div>
+
+            <strong id="statPending">
+              0
+            </strong>
+
+            <span>
+              Pending Orders
+            </span>
+
           </div>
 
         </div>
@@ -642,7 +694,10 @@
         <div class="card">
 
           <div class="section-header">
-            <h3>Recent Orders</h3>
+
+            <h3>
+              Recent Orders
+            </h3>
 
             <button
               class="primary-btn"
@@ -650,11 +705,14 @@
             >
               সব Orders দেখুন
             </button>
+
           </div>
 
           <p style="color:#6b7280;">
+
             Backend/database যুক্ত হলে এখানে বাস্তব customer orders
             automatically দেখা যাবে।
+
           </p>
 
         </div>
@@ -662,9 +720,7 @@
       </section>
 
 
-      <!-- =========================
-           PRODUCTS
-      ========================== -->
+      <!-- PRODUCTS -->
 
       <section
         id="productsPanel"
@@ -673,7 +729,9 @@
 
         <div class="section-header">
 
-          <h3>Product Management</h3>
+          <h3>
+            Product Management
+          </h3>
 
           <button
             class="primary-btn"
@@ -696,19 +754,31 @@
             <div class="form-grid">
 
               <div class="field">
-                <label>Product Name</label>
+
+                <label>
+                  Product Name
+                </label>
+
                 <input
                   id="productName"
                   type="text"
                   placeholder="যেমন: Premium Football Jersey"
                   required
                 >
+
               </div>
 
-              <div class="field">
-                <label>Category</label>
 
-                <select id="productCategory" required>
+              <div class="field">
+
+                <label>
+                  Category
+                </label>
+
+                <select
+                  id="productCategory"
+                  required
+                >
 
                   <option value="">
                     Category নির্বাচন করুন
@@ -752,7 +822,10 @@
 
 
               <div class="field">
-                <label>Price (৳)</label>
+
+                <label>
+                  Price (৳)
+                </label>
 
                 <input
                   id="productPrice"
@@ -766,7 +839,10 @@
 
 
               <div class="field">
-                <label>Stock Quantity</label>
+
+                <label>
+                  Stock Quantity
+                </label>
 
                 <input
                   id="productStock"
@@ -781,7 +857,9 @@
 
               <div class="field full">
 
-                <label>Product Image URL</label>
+                <label>
+                  Product Image URL
+                </label>
 
                 <input
                   id="productImage"
@@ -813,39 +891,93 @@
             <thead>
 
               <tr>
-                <th>Product</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Action</th>
+
+                <th>
+                  Product
+                </th>
+
+                <th>
+                  Category
+                </th>
+
+                <th>
+                  Price
+                </th>
+
+                <th>
+                  Stock
+                </th>
+
+                <th>
+                  Action
+                </th>
+
               </tr>
 
             </thead>
 
+
             <tbody id="productTable">
 
               <tr>
-                <td>Premium Football Jersey</td>
-                <td>Football Jersey</td>
-                <td>৳500</td>
-                <td>Demo</td>
+
                 <td>
-                  <button class="action-btn">
+                  Premium Football Jersey
+                </td>
+
+                <td>
+                  Football Jersey
+                </td>
+
+                <td>
+                  ৳500
+                </td>
+
+                <td>
+                  Demo
+                </td>
+
+                <td>
+
+                  <button
+                    class="action-btn"
+                  >
                     Edit
                   </button>
+
                 </td>
+
               </tr>
 
+
               <tr>
-                <td>Premium Cricket Jersey</td>
-                <td>Cricket Jersey</td>
-                <td>৳750</td>
-                <td>Demo</td>
+
                 <td>
-                  <button class="action-btn">
+                  Premium Cricket Jersey
+                </td>
+
+                <td>
+                  Cricket Jersey
+                </td>
+
+                <td>
+                  ৳750
+                </td>
+
+                <td>
+                  Demo
+                </td>
+
+                <td>
+
+                  <button
+                    class="action-btn"
+                  >
                     Edit
                   </button>
+
                 </td>
+
               </tr>
 
             </tbody>
@@ -857,9 +989,7 @@
       </section>
 
 
-      <!-- =========================
-           ORDERS
-      ========================== -->
+      <!-- ORDERS -->
 
       <section
         id="ordersPanel"
@@ -867,8 +997,13 @@
       >
 
         <div class="section-header">
-          <h3>Order Management</h3>
+
+          <h3>
+            Order Management
+          </h3>
+
         </div>
+
 
         <div class="card">
 
@@ -877,23 +1012,50 @@
             <thead>
 
               <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Product</th>
-                <th>Total</th>
-                <th>Payment</th>
-                <th>Status</th>
-                <th>Action</th>
+
+                <th>
+                  Order ID
+                </th>
+
+                <th>
+                  Customer
+                </th>
+
+                <th>
+                  Product
+                </th>
+
+                <th>
+                  Total
+                </th>
+
+                <th>
+                  Payment
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Action
+                </th>
+
               </tr>
 
             </thead>
 
+
             <tbody id="orderTable">
 
               <tr>
+
                 <td colspan="7">
+
                   এখনো কোনো বাস্তব order database-এ নেই।
+
                 </td>
+
               </tr>
 
             </tbody>
@@ -905,9 +1067,7 @@
       </section>
 
 
-      <!-- =========================
-           PAYMENTS
-      ========================== -->
+      <!-- PAYMENTS -->
 
       <section
         id="paymentsPanel"
@@ -915,35 +1075,66 @@
       >
 
         <div class="section-header">
-          <h3>Payment Management</h3>
+
+          <h3>
+            Payment Management
+          </h3>
+
         </div>
+
 
         <div class="card">
 
-          <p style="color:#6b7280;margin-bottom:15px;">
+          <p
+            style="color:#6b7280;margin-bottom:15px;"
+          >
+
             bKash এবং Nagad payment verification এখানে পরিচালনা করা হবে।
+
           </p>
+
 
           <table>
 
             <thead>
 
               <tr>
-                <th>Order ID</th>
-                <th>Method</th>
-                <th>Amount</th>
-                <th>Transaction ID</th>
-                <th>Status</th>
+
+                <th>
+                  Order ID
+                </th>
+
+                <th>
+                  Method
+                </th>
+
+                <th>
+                  Amount
+                </th>
+
+                <th>
+                  Transaction ID
+                </th>
+
+                <th>
+                  Status
+                </th>
+
               </tr>
 
             </thead>
 
+
             <tbody>
 
               <tr>
+
                 <td colspan="5">
+
                   Backend যুক্ত হলে payment records এখানে আসবে।
+
                 </td>
+
               </tr>
 
             </tbody>
@@ -955,9 +1146,7 @@
       </section>
 
 
-      <!-- =========================
-           SETTINGS
-      ========================== -->
+      <!-- SETTINGS -->
 
       <section
         id="settingsPanel"
@@ -965,54 +1154,87 @@
       >
 
         <div class="section-header">
-          <h3>Admin Settings</h3>
+
+          <h3>
+            Admin Settings
+          </h3>
+
         </div>
+
 
         <div class="card">
 
           <div class="form-grid">
 
             <div class="field">
-              <label>Admin Username</label>
+
+              <label>
+                Admin Username
+              </label>
+
               <input
                 type="text"
                 value="mehedixpress"
                 disabled
               >
+
             </div>
 
+
             <div class="field">
-              <label>Admin Email</label>
+
+              <label>
+                Admin Email
+              </label>
+
               <input
                 type="email"
                 value="mehedixpress522@gmail.com"
                 disabled
               >
+
             </div>
 
+
             <div class="field">
-              <label>bKash</label>
+
+              <label>
+                bKash
+              </label>
+
               <input
                 type="text"
                 value="01820-693313"
                 disabled
               >
+
             </div>
 
+
             <div class="field">
-              <label>Nagad</label>
+
+              <label>
+                Nagad
+              </label>
+
               <input
                 type="text"
                 value="01820-693313"
                 disabled
               >
+
             </div>
 
           </div>
 
-          <p style="margin-top:10px;color:#6b7280;font-size:13px;">
+
+          <p
+            style="margin-top:10px;color:#6b7280;font-size:13px;"
+          >
+
             নিরাপদ backend authentication যুক্ত করার পর
             এই settings পরিবর্তনযোগ্য করা হবে।
+
           </p>
 
         </div>
@@ -1028,53 +1250,71 @@
 
 <script>
 
-  /* =========================
-     DEMO ADMIN LOGIN
-     IMPORTANT:
-     এটা production security নয়।
-     Backend authentication পরের ধাপে হবে।
-  ========================== */
+/* =========================
+   ADMIN LOGIN
+========================= */
 
-  const ADMIN_USERNAME = "mehedixpress";
+const ADMIN_USERNAME = "mehedixpress";
 
-  const loginPage =
-    document.getElementById("loginPage");
+/*
+  এখনকার জন্য পরীক্ষামূলক password।
+  পরে Firebase authentication দিয়ে
+  নিরাপদ login করা হবে।
+*/
 
-  const adminApp =
-    document.getElementById("adminApp");
-
-  const loginForm =
-    document.getElementById("loginForm");
-
-  const loginError =
-    document.getElementById("loginError");
+const ADMIN_PASSWORD = "123456";
 
 
-  loginForm.addEventListener("submit", function(event){
+const loginPage =
+  document.getElementById("loginPage");
+
+const adminApp =
+  document.getElementById("adminApp");
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const loginError =
+  document.getElementById("loginError");
+
+
+loginForm.addEventListener(
+  "submit",
+  function(event){
 
     event.preventDefault();
 
     const username =
-      document.getElementById("username").value.trim();
+      document
+        .getElementById("username")
+        .value
+        .trim();
 
     const password =
-      document.getElementById("password").value;
+      document
+        .getElementById("password")
+        .value;
 
 
     /*
-      এখানে password ইচ্ছাকৃতভাবে
-      hard-code করা হচ্ছে না।
-      Production login backend-এ হবে।
+      Username এবং Password দুটোই
+      সঠিক হতে হবে।
     */
 
-    if(username === ADMIN_USERNAME && password){
+    if(
+      username === ADMIN_USERNAME &&
+      password === ADMIN_PASSWORD
+    ){
 
       sessionStorage.setItem(
         "mehediAdminLoggedIn",
         "true"
       );
 
+      loginError.style.display = "none";
+
       loginPage.style.display = "none";
+
       adminApp.style.display = "block";
 
     }else{
@@ -1083,153 +1323,170 @@
 
     }
 
-  });
+  }
+);
 
 
-  /* =========================
-     SESSION CHECK
-  ========================== */
+/* =========================
+   SESSION CHECK
+========================= */
 
-  if(
-    sessionStorage.getItem(
-      "mehediAdminLoggedIn"
-    ) === "true"
-  ){
+if(
+  sessionStorage.getItem(
+    "mehediAdminLoggedIn"
+  ) === "true"
+){
 
-    loginPage.style.display = "none";
-    adminApp.style.display = "block";
+  loginPage.style.display = "none";
+
+  adminApp.style.display = "block";
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+const menuButtons =
+  document.querySelectorAll(".menu-btn");
+
+
+menuButtons.forEach(
+  function(button){
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        const panelId =
+          this.dataset.panel;
+
+        if(!panelId) return;
+
+        showPanel(panelId);
+
+      }
+    );
 
   }
+);
 
 
-  /* =========================
-     NAVIGATION
-  ========================== */
+function showPanel(panelId){
 
-  const menuButtons =
-    document.querySelectorAll(".menu-btn");
-
-  menuButtons.forEach(function(button){
-
-    button.addEventListener("click", function(){
-
-      const panelId =
-        this.dataset.panel;
-
-      if(!panelId) return;
-
-      showPanel(panelId);
-
-    });
-
-  });
-
-
-  function showPanel(panelId){
-
-    document
-      .querySelectorAll(".panel")
-      .forEach(function(panel){
+  document
+    .querySelectorAll(".panel")
+    .forEach(
+      function(panel){
 
         panel.classList.remove("active");
 
-      });
+      }
+    );
 
 
-    document
-      .getElementById(panelId)
-      .classList.add("active");
+  document
+    .getElementById(panelId)
+    .classList.add("active");
 
 
-    menuButtons.forEach(function(button){
+  menuButtons.forEach(
+    function(button){
 
       button.classList.toggle(
         "active",
         button.dataset.panel === panelId
       );
 
-    });
+    }
+  );
 
 
-    const titles = {
+  const titles = {
 
-      dashboardPanel:"Dashboard",
+    dashboardPanel:
+      "Dashboard",
 
-      productsPanel:"Product Management",
+    productsPanel:
+      "Product Management",
 
-      ordersPanel:"Order Management",
+    ordersPanel:
+      "Order Management",
 
-      paymentsPanel:"Payment Management",
+    paymentsPanel:
+      "Payment Management",
 
-      settingsPanel:"Admin Settings"
+    settingsPanel:
+      "Admin Settings"
 
-    };
-
-
-    document.getElementById("pageTitle")
-      .textContent =
-      titles[panelId] || "Dashboard";
-
-  }
+  };
 
 
-  /* =========================
-     PRODUCT FORM
-  ========================== */
+  document
+    .getElementById("pageTitle")
+    .textContent =
+    titles[panelId] || "Dashboard";
 
-  function openProductForm(){
+}
 
-    const formCard =
-      document.getElementById(
-        "productFormCard"
-      );
 
-    formCard.style.display =
-      formCard.style.display === "none"
+/* =========================
+   PRODUCT FORM
+========================= */
+
+function openProductForm(){
+
+  const formCard =
+    document.getElementById(
+      "productFormCard"
+    );
+
+  formCard.style.display =
+    formCard.style.display === "none"
       ? "block"
       : "none";
 
-  }
+}
 
 
-  document
-    .getElementById("productForm")
-    .addEventListener(
-      "submit",
-      function(event){
+document
+  .getElementById("productForm")
+  .addEventListener(
+    "submit",
+    function(event){
 
-        event.preventDefault();
+      event.preventDefault();
 
-        alert(
-          "Product form প্রস্তুত হয়েছে। Backend/database যুক্ত হলে product সত্যিকারভাবে save হবে।"
-        );
+      alert(
+        "Product form প্রস্তুত হয়েছে। পরবর্তী ধাপে আমরা Product Database যুক্ত করব।"
+      );
 
-      }
-    );
+    }
+  );
 
 
-  /* =========================
-     LOGOUT
-  ========================== */
+/* =========================
+   LOGOUT
+========================= */
 
-  document
-    .getElementById("logoutBtn")
-    .addEventListener(
-      "click",
-      function(){
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    function(){
 
-        sessionStorage.removeItem(
-          "mehediAdminLoggedIn"
-        );
+      sessionStorage.removeItem(
+        "mehediAdminLoggedIn"
+      );
 
-        location.reload();
+      location.reload();
 
-      }
-    );
+    }
+  );
 
 </script>
 
 </body>
 </html>
 ```
-
