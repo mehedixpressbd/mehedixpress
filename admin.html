@@ -1439,20 +1439,27 @@ function openProductForm(){
 }
 
 
-document
-  .getElementById("productForm")
-  .addEventListener(
-    "submit",
-    function(event){
-
-      event.preventDefault();
-
-      alert(
-        "Product form প্রস্তুত হয়েছে। পরবর্তী ধাপে আমরা Product Database যুক্ত করব।"
-      );
-
-    }
-  );
+document.getElementById("productForm").addEventListener("submit", function(event){
+  event.preventDefault();
+  const name=document.getElementById("productName").value.trim();
+  const category=document.getElementById("productCategory").value;
+  const price=Number(document.getElementById("productPrice").value||0);
+  const stock=Number(document.getElementById("productStock").value||0);
+  const image=document.getElementById("productImage").value.trim();
+  const list=getAdminProducts();
+  const editingId=this.dataset.editingId;
+  if(editingId){
+    const i=list.findIndex(p=>String(p.id)===String(editingId));
+    if(i>=0) list[i]={...list[i],name,category,categoryBn:category,price,stock,image};
+  }else{
+    list.unshift({id:"P-"+Date.now(),name,category,categoryBn:category,price,stock,image,icon:"📦"});
+  }
+  localStorage.setItem("mehediXpressProducts",JSON.stringify(list));
+  this.reset();
+  delete this.dataset.editingId;
+  document.getElementById("productFormCard").style.display="none";
+  renderAdminProducts();
+});
 
 
 /* =========================
@@ -1493,6 +1500,51 @@ document
     }
   );
 
+
+/* PRODUCT MANAGEMENT */
+const DEFAULT_PRODUCTS=[
+{id:1,name:"ফুটবল জার্সি",category:"Football Jersey",categoryBn:"ফুটবল জার্সি",price:850,stock:10,icon:"⚽👕"},
+{id:2,name:"ক্রিকেট জার্সি",category:"Cricket Jersey",categoryBn:"ক্রিকেট জার্সি",price:850,stock:10,icon:"🏏👕"},
+{id:3,name:"প্রিমিয়াম টি-শার্ট",category:"T-Shirt",categoryBn:"টি-শার্ট",price:650,stock:10,icon:"👕"},
+{id:4,name:"স্পোর্টস শর্টস",category:"Shorts",categoryBn:"শর্টস",price:450,stock:10,icon:"🩳"},
+{id:5,name:"প্রিমিয়াম ফুটবল",category:"Football",categoryBn:"ফুটবল",price:700,stock:10,icon:"⚽"},
+{id:6,name:"ক্রিকেট ব্যাট",category:"Cricket Bat",categoryBn:"ক্রিকেট ব্যাট",price:1200,stock:10,icon:"🏏"},
+{id:7,name:"স্পোর্টস গ্লাভস",category:"Gloves",categoryBn:"গ্লাভস",price:550,stock:10,icon:"🧤"},
+{id:8,name:"কাস্টম জার্সি প্রিন্টিং",category:"Custom Printing",categoryBn:"কাস্টম প্রিন্টিং",price:0,stock:10,icon:"🎨"},
+{id:9,name:"ফুটবল ট্র্যাক প্যান্ট",category:"Sports Wear",categoryBn:"স্পোর্টস ওয়্যার",price:900,stock:10,icon:"👖⚽"},
+{id:10,name:"ক্রিকেট প্যাড",category:"Cricket Gear",categoryBn:"ক্রিকেট গিয়ার",price:1400,stock:10,icon:"🏏🛡️"},
+{id:11,name:"স্পোর্টস ক্যাপ",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:350,stock:10,icon:"🧢"},
+{id:12,name:"স্পোর্টস মোজা",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:250,stock:10,icon:"🧦"},
+{id:13,name:"জিম টি-শার্ট",category:"T-Shirt",categoryBn:"টি-শার্ট",price:600,stock:10,icon:"🏋️👕"},
+{id:14,name:"কাস্টম নাম্বার প্রিন্ট",category:"Custom Printing",categoryBn:"কাস্টম প্রিন্টিং",price:200,stock:10,icon:"🔢🎨"},
+{id:15,name:"স্পোর্টস ব্যাগ",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:950,stock:10,icon:"🎒"}];
+
+function getAdminProducts(){
+ try{const x=JSON.parse(localStorage.getItem("mehediXpressProducts")||"null");if(Array.isArray(x))return x;}catch(e){}
+ localStorage.setItem("mehediXpressProducts",JSON.stringify(DEFAULT_PRODUCTS));return [...DEFAULT_PRODUCTS];
+}
+function renderAdminProducts(){
+ const list=getAdminProducts(), table=document.getElementById("productTable"), stat=document.getElementById("statProducts");
+ if(stat)stat.textContent=list.length;if(!table)return;
+ table.innerHTML=list.length?list.map(p=>`<tr><td>${escapeHtml(p.name)}</td><td>${escapeHtml(p.category)}</td><td>${money(p.price)}</td><td>${escapeHtml(p.stock??0)}</td><td><button class="action-btn" onclick="editProduct('${p.id}')">Edit</button> <button class="action-btn" onclick="deleteProduct('${p.id}')">Delete</button></td></tr>`).join(""):'<tr><td colspan="5">কোনো পণ্য নেই।</td></tr>';
+}
+function editProduct(id){
+ const p=getAdminProducts().find(x=>String(x.id)===String(id));if(!p)return;
+ document.getElementById("productFormCard").style.display="block";
+ document.getElementById("productName").value=p.name||"";
+ document.getElementById("productCategory").value=p.category||"";
+ document.getElementById("productPrice").value=p.price||0;
+ document.getElementById("productStock").value=p.stock??0;
+ document.getElementById("productImage").value=p.image||"";
+ document.getElementById("productForm").dataset.editingId=p.id;
+}
+function deleteProduct(id){
+ if(!confirm("এই পণ্যটি Delete করতে চান?"))return;
+ localStorage.setItem("mehediXpressProducts",JSON.stringify(getAdminProducts().filter(p=>String(p.id)!==String(id))));
+ renderAdminProducts();
+}
+
+renderAdminProducts();
 </script>
 
 </body>
