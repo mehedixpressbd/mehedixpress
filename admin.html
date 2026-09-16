@@ -1,46 +1,1671 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mehedi Xpress Admin</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f3f6fb;color:#172033}.login{min-height:100vh;display:grid;place-items:center}.loginbox,.card{background:#fff;border-radius:18px;box-shadow:0 8px 30px #0001;padding:22px}.loginbox{width:min(430px,92%)}input,select,textarea{width:100%;padding:12px;border:1px solid #d9e0ea;border-radius:10px}textarea{min-height:100px}.field{display:flex;flex-direction:column;gap:6px}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.full{grid-column:1/-1}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer}.primary{background:#2563eb;color:#fff}.danger{background:#fee2e2;color:#b91c1c}.layout{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{background:#111827;color:#fff;padding:20px}.brand{font-size:22px;font-weight:900;margin-bottom:25px}.menu button{width:100%;text-align:left;background:transparent;color:#dbeafe;border:0;padding:12px;border-radius:10px;margin:3px 0;cursor:pointer}.menu button.active,.menu button:hover{background:#2563eb}.main{padding:24px;overflow:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.panel{display:none}.panel.active{display:block}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.stat{background:#fff;border-radius:16px;padding:18px}.stat b{font-size:28px;display:block}.head{display:flex;justify-content:space-between;align-items:center;margin:25px 0 12px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:12px;border-bottom:1px solid #edf0f5;text-align:left;vertical-align:top}.pimg{width:58px;height:58px;object-fit:cover;border-radius:10px}.preview{display:flex;gap:8px;flex-wrap:wrap}.preview img{width:85px;height:85px;object-fit:cover;border-radius:10px}.hint{font-size:12px;color:#64748b}.status{padding:5px 9px;border-radius:999px;background:#e0e7ff}.actions{display:flex;gap:6px;flex-wrap:wrap}.notice{background:#fff7ed;padding:12px;border-radius:12px;margin-bottom:15px;color:#9a3412}
-@media(max-width:850px){.layout{grid-template-columns:1fr}.side{position:static}.menu{display:flex;overflow:auto}.menu button{white-space:nowrap}.stats{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.main{padding:14px}}
-</style></head><body>
-<section id="login" class="login"><form id="loginForm" class="loginbox"><h1>🔐 Mehedi Xpress Admin</h1><p>Firebase Admin Login</p><div class="field"><label>Email</label><input id="email" type="email" required></div><br><div class="field"><label>Password</label><input id="password" type="password" required></div><br><button class="btn primary" style="width:100%">Login</button><p id="loginMsg"></p></form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="orders">🛒 Orders</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
-<main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
-<section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="head"><h3>Recent Orders</h3></div><div class="tablewrap"><table><tbody id="recent"></tbody></table></div></section>
-<section id="products" class="panel"><div class="head"><h3>Product Management</h3><button class="btn primary" id="newProduct">+ Add Product</button></div><div id="productEditor" class="card" style="display:none"><form id="productForm" class="formgrid"><input id="editId" type="hidden"><div class="field"><label>Product Name</label><input id="pName" required></div><div class="field"><label>Category</label><select id="pCategory" required></select></div><div class="field"><label>Price (৳)</label><input id="pPrice" type="number" min="0" required></div><div class="field"><label>Stock</label><input id="pStock" type="number" min="0" required></div><div class="field full"><label>Product Details</label><textarea id="pDetails" placeholder="কাপড়, সাইজ, ফিচার, ব্যবহার ইত্যাদি"></textarea></div><div class="field full"><label>Product Images — সর্বোচ্চ 3টি (Front / Back / Detail)</label><input id="pImages" type="file" accept="image/*" multiple><span class="hint">ছবি অটোমেটিক ছোট করে Firestore-এ সেভ হবে। একসাথে ৩টির বেশি দেবেন না।</span><div id="preview" class="preview"></div></div><div class="field"><label><input id="pActive" type="checkbox" checked style="width:auto"> Website-এ Active</label></div><div class="full actions"><button class="btn primary">Save Product</button><button class="btn" type="button" id="cancelProduct">Cancel</button></div></form></div><div class="tablewrap"><table><thead><tr><th>Image</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody id="productRows"></tbody></table></div></section>
-<section id="categories" class="panel"><div class="head"><h3>Category Management</h3></div><div class="card"><form id="catForm" class="formgrid"><div class="field"><label>নতুন Category</label><input id="catName" required></div><div><br><button class="btn primary">Add Category</button></div></form><div id="catChips" style="margin-top:20px"></div></div></section>
-<section id="orders" class="panel"><div class="head"><h3>Order Management</h3></div><div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div></section>
-<section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
-<section id="settings" class="panel"><div class="head"><h3>Website Settings</h3></div><div class="card"><p>এই ভার্সনে Products, Categories, Orders ও Reviews লাইভ Firebase দিয়ে নিয়ন্ত্রণ হবে। Hero/banner/settings-এর আরও editable field পরের ধাপে একই Firestore system-এ যোগ করা যাবে।</p></div></section>
-</main></div>
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import{getFirestore,collection,onSnapshot,addDoc,setDoc,doc,deleteDoc,updateDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyATKk9r50AZYrdbVxzPxn0h8WBI-ESNZGQ",authDomain:"mehedi-xpress.firebaseapp.com",projectId:"mehedi-xpress",storageBucket:"mehedi-xpress.firebasestorage.app",messagingSenderId:"750136252870",appId:"1:750136252870:web:201f53d2dfeac82eb07ac7"};
-const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb);let products=[],orders=[],reviews=[],categories=["Football Jersey","Cricket Jersey","T-Shirt","Shorts","Football","Cricket Bat","Gloves","Custom Printing"],existingImages=[];
-const $=id=>document.getElementById(id),money=n=>"৳"+Number(n||0).toLocaleString("en-BD"),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-$("loginForm").onsubmit=async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,$("email").value,$("password").value);$("loginMsg").textContent=""}catch(x){$("loginMsg").textContent="Login হয়নি। Firebase Authentication-এ Email/Password account পরীক্ষা করুন।"}};
-onAuthStateChanged(auth,u=>{$("login").style.display=u?"none":"grid";$("app").style.display=u?"grid":"none";if(u)start()});$("logout").onclick=()=>signOut(auth);
-document.querySelectorAll(".menu button[data-p]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.p).classList.add("active");$("title").textContent=b.textContent.trim()});
-let started=false;function start(){if(started)return;started=true;
- onSnapshot(collection(db,"products"),s=>{products=s.docs.map(d=>({id:d.id,...d.data()}));renderProducts();stats()});
- onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));renderOrders();stats()});
- onSnapshot(collection(db,"reviews"),s=>{reviews=s.docs.map(d=>({id:d.id,...d.data()}));renderReviews()});
- onSnapshot(collection(db,"categories"),s=>{const x=s.docs.map(d=>d.data().name).filter(Boolean);if(x.length)categories=x;renderCats()});
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Mehedi Xpress — Admin Panel</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --dark:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --primary:#2563eb;
+      --primary-dark:#1d4ed8;
+      --success:#16a34a;
+      --warning:#d97706;
+      --danger:#dc2626;
+      --sidebar:#111827;
+    }
+
+    body{
+      font-family:Arial,"Noto Sans Bengali",sans-serif;
+      background:var(--bg);
+      color:var(--dark);
+    }
+
+    button,
+    input,
+    select{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    /* LOGIN */
+
+    #loginPage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:
+        radial-gradient(circle at top right,#dbeafe,transparent 35%),
+        radial-gradient(circle at bottom left,#e0e7ff,transparent 35%),
+        #f8fafc;
+    }
+
+    .login-card{
+      width:min(420px,100%);
+      background:#fff;
+      padding:38px;
+      border-radius:24px;
+      box-shadow:0 25px 70px rgba(15,23,42,.12);
+      border:1px solid var(--border);
+    }
+
+    .brand{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    .brand-logo{
+      width:68px;
+      height:68px;
+      margin:0 auto 14px;
+      border-radius:20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);
+      color:#fff;
+      font-size:22px;
+      font-weight:900;
+      box-shadow:0 12px 25px rgba(37,99,235,.25);
+    }
+
+    .brand h1{
+      font-size:25px;
+      margin-bottom:5px;
+    }
+
+    .brand p{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .field{
+      margin-bottom:18px;
+    }
+
+    .field label{
+      display:block;
+      margin-bottom:7px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      padding:13px 14px;
+      border:1px solid var(--border);
+      border-radius:10px;
+      outline:none;
+      background:#fff;
+    }
+
+    .field input:focus,
+    .field select:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 3px rgba(37,99,235,.1);
+    }
+
+    .login-btn{
+      width:100%;
+      border:0;
+      padding:14px;
+      border-radius:11px;
+      background:var(--primary);
+      color:#fff;
+      font-weight:800;
+    }
+
+    .login-btn:hover{
+      background:var(--primary-dark);
+    }
+
+    .login-error{
+      display:none;
+      margin-top:12px;
+      padding:10px;
+      border-radius:9px;
+      background:#fee2e2;
+      color:#991b1b;
+      font-size:13px;
+      text-align:center;
+    }
+
+    /* ADMIN APP */
+
+    #adminApp{
+      display:none;
+      min-height:100vh;
+    }
+
+    .layout{
+      display:flex;
+      min-height:100vh;
+    }
+
+    .sidebar{
+      width:250px;
+      background:var(--sidebar);
+      color:#fff;
+      padding:22px 14px;
+      position:fixed;
+      left:0;
+      top:0;
+      bottom:0;
+      overflow-y:auto;
+    }
+
+    .sidebar-brand{
+      padding:10px 12px 25px;
+      border-bottom:1px solid rgba(255,255,255,.1);
+      margin-bottom:18px;
+    }
+
+    .sidebar-brand strong{
+      font-size:20px;
+    }
+
+    .sidebar-brand span{
+      display:block;
+      color:#9ca3af;
+      font-size:12px;
+      margin-top:4px;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .menu button{
+      width:100%;
+      text-align:left;
+      padding:12px 14px;
+      border:0;
+      border-radius:10px;
+      background:transparent;
+      color:#d1d5db;
+      transition:.2s;
+    }
+
+    .menu button:hover,
+    .menu button.active{
+      background:#1f2937;
+      color:#fff;
+    }
+
+    .logout-btn{
+      margin-top:25px;
+      color:#fca5a5 !important;
+    }
+
+    .main{
+      margin-left:250px;
+      width:calc(100% - 250px);
+      padding:25px;
+    }
+
+    .topbar{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:17px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:25px;
+    }
+
+    .topbar h2{
+      font-size:21px;
+    }
+
+    .admin-user{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* SECTIONS */
+
+    .panel{
+      display:none;
+    }
+
+    .panel.active{
+      display:block;
+    }
+
+    .section-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom:18px;
+    }
+
+    .section-header h3{
+      font-size:20px;
+    }
+
+    .primary-btn{
+      border:0;
+      background:var(--primary);
+      color:#fff;
+      padding:11px 16px;
+      border-radius:9px;
+      font-weight:700;
+    }
+
+    .primary-btn:hover{
+      background:var(--primary-dark);
+    }
+
+    /* STATS */
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:25px;
+    }
+
+    .stat{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+    }
+
+    .stat-icon{
+      font-size:27px;
+      margin-bottom:10px;
+    }
+
+    .stat strong{
+      display:block;
+      font-size:26px;
+      margin-bottom:4px;
+    }
+
+    .stat span{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* CARD / TABLE */
+
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:700px;
+    }
+
+    th,
+    td{
+      padding:13px 10px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      font-size:14px;
+    }
+
+    th{
+      color:#374151;
+      background:#f9fafb;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .badge-pending{
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .badge-confirmed{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .badge-processing{
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .badge-delivered{
+      background:#d1fae5;
+      color:#065f46;
+    }
+
+    .badge-cancelled{
+      background:#fee2e2;
+      color:#991b1b;
+    }
+
+    .action-btn{
+      border:1px solid var(--border);
+      background:#fff;
+      padding:7px 10px;
+      border-radius:7px;
+      font-size:12px;
+    }
+
+    .action-btn:hover{
+      background:#f3f4f6;
+    }
+
+    /* PRODUCT FORM */
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+    }
+
+    .full{
+      grid-column:1/-1;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1000px){
+
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:760px){
+
+      .sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+      }
+
+      .layout{
+        display:block;
+      }
+
+      .main{
+        width:100%;
+        margin-left:0;
+        padding:15px;
+      }
+
+      .menu{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .logout-btn{
+        margin-top:5px;
+      }
+
+      .stats{
+        grid-template-columns:1fr;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .topbar{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- LOGIN PAGE -->
+
+<section id="loginPage">
+
+  <div class="login-card">
+
+    <div class="brand">
+
+      <div class="brand-logo">MX</div>
+
+      <h1>Mehedi Xpress</h1>
+
+      <p>Professional Admin Panel</p>
+
+    </div>
+
+    <form id="loginForm">
+
+      <div class="field">
+
+        <label>Admin Username</label>
+
+        <input
+          id="username"
+          type="text"
+          autocomplete="username"
+          placeholder="Admin username"
+          required
+        >
+
+      </div>
+
+      <div class="field">
+
+        <label>Password</label>
+
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Password"
+          required
+        >
+
+      </div>
+
+      <button
+        class="login-btn"
+        type="submit"
+      >
+        Admin Login
+      </button>
+
+      <div
+        id="loginError"
+        class="login-error"
+      >
+        Username অথবা Password সঠিক নয়।
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- ADMIN APP -->
+
+<section id="adminApp">
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="sidebar-brand">
+
+        <strong>Mehedi Xpress</strong>
+
+        <span>Admin Dashboard</span>
+
+      </div>
+
+      <div class="menu">
+
+        <button
+          class="menu-btn active"
+          data-panel="dashboardPanel"
+        >
+          📊 Dashboard
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="productsPanel"
+        >
+          📦 Products
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="ordersPanel"
+        >
+          🛒 Orders
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="paymentsPanel"
+        >
+          💳 Payments
+        </button>
+
+        <button
+          class="menu-btn"
+          data-panel="settingsPanel"
+        >
+          ⚙️ Settings
+        </button>
+
+        <button
+          id="logoutBtn"
+          class="menu-btn logout-btn"
+        >
+          🚪 Logout
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+      <div class="topbar">
+
+        <div>
+
+          <h2 id="pageTitle">
+            Dashboard
+          </h2>
+
+        </div>
+
+        <div class="admin-user">
+
+          👤 Admin:
+          <strong>mehedixpress</strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <section
+        id="dashboardPanel"
+        class="panel active"
+      >
+
+        <div class="stats">
+
+          <div class="stat">
+
+            <div class="stat-icon">
+              🛒
+            </div>
+
+            <strong id="statOrders">
+              0
+            </strong>
+
+            <span>
+              Total Orders
+            </span>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-icon">
+              📦
+            </div>
+
+            <strong id="statProducts">
+              6
+            </strong>
+
+            <span>
+              Products
+            </span>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-icon">
+              💰
+            </div>
+
+            <strong id="statSales">
+              ৳0
+            </strong>
+
+            <span>
+              Total Sales
+            </span>
+
+          </div>
+
+
+          <div class="stat">
+
+            <div class="stat-icon">
+              ⏳
+            </div>
+
+            <strong id="statPending">
+              0
+            </strong>
+
+            <span>
+              Pending Orders
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="section-header">
+
+            <h3>
+              Recent Orders
+            </h3>
+
+            <button
+              class="primary-btn"
+              onclick="showPanel('ordersPanel')"
+            >
+              সব Orders দেখুন
+            </button>
+
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table>
+              <thead><tr><th>Order ID</th><th>Customer</th><th>Product</th><th>Total</th><th>Status</th></tr></thead>
+              <tbody id="recentOrderTable"></tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- PRODUCTS -->
+
+      <section
+        id="productsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+
+          <h3>
+            Product Management
+          </h3>
+
+          <button
+            class="primary-btn"
+            onclick="openProductForm()"
+          >
+            + Add Product
+          </button>
+
+        </div>
+
+
+        <div
+          id="productFormCard"
+          class="card"
+          style="display:none;margin-bottom:20px;"
+        >
+
+          <form id="productForm">
+
+            <div class="form-grid">
+
+              <div class="field">
+
+                <label>
+                  Product Name
+                </label>
+
+                <input
+                  id="productName"
+                  type="text"
+                  placeholder="যেমন: Premium Football Jersey"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Category
+                </label>
+
+                <select
+                  id="productCategory"
+                  required
+                >
+
+                  <option value="">
+                    Category নির্বাচন করুন
+                  </option>
+
+                  <option value="Football Jersey">
+                    Football Jersey
+                  </option>
+
+                  <option value="Cricket Jersey">
+                    Cricket Jersey
+                  </option>
+
+                  <option value="T-Shirt">
+                    T-Shirt
+                  </option>
+
+                  <option value="Shorts">
+                    Shorts
+                  </option>
+
+                  <option value="Football">
+                    Football
+                  </option>
+
+                  <option value="Cricket Bat">
+                    Cricket Bat
+                  </option>
+
+                  <option value="Gloves">
+                    Gloves
+                  </option>
+
+                  <option value="Custom Printing">
+                    Custom Printing
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Price (৳)
+                </label>
+
+                <input
+                  id="productPrice"
+                  type="number"
+                  min="0"
+                  placeholder="500"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Stock Quantity
+                </label>
+
+                <input
+                  id="productStock"
+                  type="number"
+                  min="0"
+                  placeholder="10"
+                  required
+                >
+
+              </div>
+
+
+              <div class="field full">
+
+                <label>
+                  Product Image URL
+                </label>
+
+                <input
+                  id="productImage"
+                  type="text"
+                  placeholder="football-jersey.jpg"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="form-grid" style="margin-top:12px">
+  <div class="field full">
+    <label>Product Details</label>
+    <textarea id="productDetails" placeholder="পণ্যের কাপড়, সাইজ, ফিচার ও বিস্তারিত লিখুন" style="min-height:100px"></textarea>
+  </div>
+  <div class="field full">
+    <label>Product Images (সর্বোচ্চ 3টি — Front / Back / Detail)</label>
+    <input id="productFiles" type="file" accept="image/*" multiple>
+    <small>মোবাইল/কম্পিউটার থেকে সরাসরি ছবি বাছাই করুন। ছবিগুলো ছোট করে Firestore-এ রাখা হবে।</small>
+    <div id="productImagePreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+  </div>
+  <div class="field">
+    <label><input id="productActive" type="checkbox" checked style="width:auto"> Website-এ Active</label>
+  </div>
+</div>
+<button
+              class="primary-btn"
+              type="submit"
+            >
+              Save Product
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <div class="card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Product
+                </th>
+
+                <th>
+                  Category
+                </th>
+
+                <th>
+                  Price
+                </th>
+
+                <th>
+                  Stock
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="productTable">
+
+              <tr>
+
+                <td>
+                  Premium Football Jersey
+                </td>
+
+                <td>
+                  Football Jersey
+                </td>
+
+                <td>
+                  ৳500
+                </td>
+
+                <td>
+                  Demo
+                </td>
+
+                <td>
+
+                  <button
+                    class="action-btn"
+                  >
+                    Edit
+                  </button>
+
+                </td>
+
+              </tr>
+
+
+              <tr>
+
+                <td>
+                  Premium Cricket Jersey
+                </td>
+
+                <td>
+                  Cricket Jersey
+                </td>
+
+                <td>
+                  ৳750
+                </td>
+
+                <td>
+                  Demo
+                </td>
+
+                <td>
+
+                  <button
+                    class="action-btn"
+                  >
+                    Edit
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- ORDERS -->
+
+      <section
+        id="ordersPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+
+          <h3>
+            Order Management
+          </h3>
+
+        </div>
+
+
+        <div class="card">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Order ID
+                </th>
+
+                <th>
+                  Customer
+                </th>
+
+                <th>
+                  Product
+                </th>
+
+                <th>
+                  Total
+                </th>
+
+                <th>
+                  Payment
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Action
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="orderTable"></tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- PAYMENTS -->
+
+      <section
+        id="paymentsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+
+          <h3>
+            Payment Management
+          </h3>
+
+        </div>
+
+
+        <div class="card">
+
+          <p
+            style="color:#6b7280;margin-bottom:15px;"
+          >
+
+            bKash এবং Nagad payment verification এখানে পরিচালনা করা হবে।
+
+          </p>
+
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Order ID
+                </th>
+
+                <th>
+                  Method
+                </th>
+
+                <th>
+                  Amount
+                </th>
+
+                <th>
+                  Transaction ID
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <tr>
+
+                <td colspan="5">
+
+                  Backend যুক্ত হলে payment records এখানে আসবে।
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+
+      <!-- SETTINGS -->
+
+      <section
+        id="settingsPanel"
+        class="panel"
+      >
+
+        <div class="section-header">
+
+          <h3>
+            Admin Settings
+          </h3>
+
+        </div>
+
+
+        <div class="card">
+
+          <div class="form-grid">
+
+            <div class="field">
+
+              <label>
+                Admin Username
+              </label>
+
+              <input
+                type="text"
+                value="mehedixpress"
+                disabled
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Admin Email
+              </label>
+
+              <input
+                type="email"
+                value="mehedixpress522@gmail.com"
+                disabled
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                bKash
+              </label>
+
+              <input
+                type="text"
+                value="01820-693313"
+                disabled
+              >
+
+            </div>
+
+
+            <div class="field">
+
+              <label>
+                Nagad
+              </label>
+
+              <input
+                type="text"
+                value="01820-693313"
+                disabled
+              >
+
+            </div>
+
+          </div>
+
+
+          <p
+            style="margin-top:10px;color:#6b7280;font-size:13px;"
+          >
+
+            নিরাপদ backend authentication যুক্ত করার পর
+            এই settings পরিবর্তনযোগ্য করা হবে।
+
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</section>
+
+
+<script>
+
+/* =========================
+   ADMIN LOGIN
+========================= */
+
+const ADMIN_USERNAME = "mehedixpress";
+
+/*
+  এখনকার জন্য পরীক্ষামূলক password।
+  পরে Firebase authentication দিয়ে
+  নিরাপদ login করা হবে।
+*/
+
+const ADMIN_PASSWORD = "123456";
+
+
+const loginPage =
+  document.getElementById("loginPage");
+
+const adminApp =
+  document.getElementById("adminApp");
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const loginError =
+  document.getElementById("loginError");
+
+
+loginForm.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    const username =
+      document
+        .getElementById("username")
+        .value
+        .trim();
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    /*
+      Username এবং Password দুটোই
+      সঠিক হতে হবে।
+    */
+
+    if(
+      username === ADMIN_USERNAME &&
+      password === ADMIN_PASSWORD
+    ){
+
+      sessionStorage.setItem(
+        "mehediAdminLoggedIn",
+        "true"
+      );
+
+      loginError.style.display = "none";
+
+      loginPage.style.display = "none";
+
+      adminApp.style.display = "block";
+      renderAdminOrders();
+
+    }else{
+
+      loginError.style.display = "block";
+
+    }
+
+  }
+);
+
+
+/* =========================
+   SESSION CHECK
+========================= */
+
+if(
+  sessionStorage.getItem(
+    "mehediAdminLoggedIn"
+  ) === "true"
+){
+
+  loginPage.style.display = "none";
+
+  adminApp.style.display = "block";
+  renderAdminOrders();
+
 }
-function stats(){$("sProducts").textContent=products.length;$("sOrders").textContent=orders.length;$("sPending").textContent=orders.filter(o=>o.status==="Pending").length;$("sSales").textContent=money(orders.filter(o=>o.status==="Delivered").reduce((a,o)=>a+Number(o.total||0),0));$("recent").innerHTML=orders.slice(0,5).map(o=>`<tr><td>${esc(o.orderCode||o.id)}</td><td>${esc(o.customerName)}</td><td>${esc(o.product)}</td><td>${money(o.total)}</td></tr>`).join("")}
-function renderCats(){$("pCategory").innerHTML=categories.map(c=>`<option>${esc(c)}</option>`).join("");$("catChips").innerHTML=categories.map(c=>`<span class="status" style="display:inline-block;margin:5px">${esc(c)} <button onclick="deleteCategory('${c}')" style="border:0;background:none;cursor:pointer">×</button></span>`).join("")}
-$("catForm").onsubmit=async e=>{e.preventDefault();const n=$("catName").value.trim();if(!n)return;await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n});$("catName").value=""};window.deleteCategory=async n=>{if(confirm("Category মুছবেন?"))await deleteDoc(doc(db,"categories",encodeURIComponent(n)))};
-function renderProducts(){$("productRows").innerHTML=products.map(p=>`<tr><td><img class="pimg" src="${p.images?.[0]||p.image||""}"></td><td><b>${esc(p.name)}</b><br><small>${esc((p.details||"").slice(0,70))}</small></td><td>${esc(p.category)}</td><td>${money(p.price)}</td><td>${Number(p.stock||0)}</td><td class="actions"><button class="btn" onclick="editProduct('${p.id}')">Edit</button><button class="btn danger" onclick="removeProduct('${p.id}')">Delete</button></td></tr>`).join("")}
-$("newProduct").onclick=()=>{resetEditor();$("productEditor").style.display="block"};$("cancelProduct").onclick=()=>$("productEditor").style.display="none";
-function resetEditor(){$("productForm").reset();$("editId").value="";$("pActive").checked=true;existingImages=[];$("preview").innerHTML=""}
-window.editProduct=id=>{const p=products.find(x=>x.id===id);if(!p)return;$("editId").value=id;$("pName").value=p.name||"";$("pCategory").value=p.category||"";$("pPrice").value=p.price||0;$("pStock").value=p.stock||0;$("pDetails").value=p.details||"";$("pActive").checked=p.active!==false;existingImages=p.images||[];showPreview(existingImages);$("productEditor").style.display="block";window.scrollTo({top:0,behavior:"smooth"})};
-window.removeProduct=async id=>{if(confirm("Product মুছবেন?"))await deleteDoc(doc(db,"products",id))};
-function showPreview(imgs){$("preview").innerHTML=imgs.map(x=>`<img src="${x}">`).join("")}
-$("pImages").onchange=async()=>{const files=[...$("pImages").files].slice(0,3);if($("pImages").files.length>3)alert("সর্বোচ্চ ৩টি ছবি নেওয়া হবে।");existingImages=await Promise.all(files.map(compress));showPreview(existingImages)};
-function compress(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const max=760,scale=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);c.getContext("2d").drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL("image/jpeg",.58))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
-$("productForm").onsubmit=async e=>{e.preventDefault();const data={name:$("pName").value.trim(),category:$("pCategory").value,price:Number($("pPrice").value),stock:Number($("pStock").value),details:$("pDetails").value.trim(),images:existingImages,active:$("pActive").checked,updatedAt:serverTimestamp()};try{const id=$("editId").value;if(id)await updateDoc(doc(db,"products",id),data);else await addDoc(collection(db,"products"),{...data,createdAt:serverTimestamp()});resetEditor();$("productEditor").style.display="none";alert("Product Save হয়েছে। Website-এ অটোমেটিক দেখা যাবে।")}catch(x){console.error(x);alert("Save হয়নি। Firestore Rules/Auth পরীক্ষা করুন।")}};
-function renderOrders(){$("orderRows").innerHTML=orders.map(o=>`<tr><td>${esc(o.orderCode||o.id)}</td><td><b>${esc(o.customerName)}</b><br>${esc(o.phone)}<br><small>${esc(o.address)}</small></td><td>${esc(o.product)} × ${Number(o.quantity||1)}</td><td>${money(o.total)}</td><td><span class="status">${esc(o.status)}</span></td><td><select onchange="setStatus('${o.id}',this.value)">${["Pending","Confirmed","Processing","Shipped","Delivered","Cancelled"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("")}window.setStatus=(id,status)=>updateDoc(doc(db,"orders",id),{status});
-function renderReviews(){$("reviewRows").innerHTML=reviews.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(products.find(p=>p.id===r.productId)?.name||r.productId)}</td><td>${"★".repeat(Number(r.rating||0))}</td><td>${esc(r.comment)}</td><td><button class="btn danger" onclick="removeReview('${r.id}')">Delete</button></td></tr>`).join("")}window.removeReview=id=>confirm("Review মুছবেন?")&&deleteDoc(doc(db,"reviews",id));
-renderCats();
-</script></body></html>
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+const menuButtons =
+  document.querySelectorAll(".menu-btn");
+
+
+menuButtons.forEach(
+  function(button){
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        const panelId =
+          this.dataset.panel;
+
+        if(!panelId) return;
+
+        showPanel(panelId);
+
+      }
+    );
+
+  }
+);
+
+
+function showPanel(panelId){
+
+  document
+    .querySelectorAll(".panel")
+    .forEach(
+      function(panel){
+
+        panel.classList.remove("active");
+
+      }
+    );
+
+
+  document
+    .getElementById(panelId)
+    .classList.add("active");
+
+
+  menuButtons.forEach(
+    function(button){
+
+      button.classList.toggle(
+        "active",
+        button.dataset.panel === panelId
+      );
+
+    }
+  );
+
+
+  const titles = {
+
+    dashboardPanel:
+      "Dashboard",
+
+    productsPanel:
+      "Product Management",
+
+    ordersPanel:
+      "Order Management",
+
+    paymentsPanel:
+      "Payment Management",
+
+    settingsPanel:
+      "Admin Settings"
+
+  };
+
+
+  document
+    .getElementById("pageTitle")
+    .textContent =
+    titles[panelId] || "Dashboard";
+
+}
+
+
+/* =========================
+   PRODUCT FORM
+========================= */
+
+function openProductForm(){
+
+  const formCard =
+    document.getElementById(
+      "productFormCard"
+    );
+
+  formCard.style.display =
+    formCard.style.display === "none"
+      ? "block"
+      : "none";
+
+}
+
+
+/* Old local product submit disabled: Firebase handler is used below. */
+document.getElementById("productForm").addEventListener("submit", function oldLocalProductHandler(event){
+  event.preventDefault();
+  if(window.__firebaseProductMode) return;
+  const name=document.getElementById("productName").value.trim();
+  const category=document.getElementById("productCategory").value;
+  const price=Number(document.getElementById("productPrice").value||0);
+  const stock=Number(document.getElementById("productStock").value||0);
+  const image=document.getElementById("productImage").value.trim();
+  const list=getAdminProducts();
+  const editingId=this.dataset.editingId;
+  if(editingId){
+    const i=list.findIndex(p=>String(p.id)===String(editingId));
+    if(i>=0) list[i]={...list[i],name,category,categoryBn:category,price,stock,image};
+  }else{
+    list.unshift({id:"P-"+Date.now(),name,category,categoryBn:category,price,stock,image,icon:"📦"});
+  }
+  localStorage.setItem("mehediXpressProducts",JSON.stringify(list));
+  this.reset();
+  delete this.dataset.editingId;
+  document.getElementById("productFormCard").style.display="none";
+  renderAdminProducts();
+});
+
+
+/* =========================
+   LOCAL ORDER MANAGEMENT
+========================= */
+function getOrders(){ try{return JSON.parse(localStorage.getItem("mehediXpressOrders")||"[]");}catch(e){return [];} }
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function money(v){return "৳"+Number(v||0).toLocaleString("en-BD");}
+function addressOf(o){return [o.address,o.union,o.upazila,o.district,o.division].filter(Boolean).join(", ");}
+function renderAdminOrders(){
+ const orders=getOrders(), table=document.getElementById("orderTable"), recent=document.getElementById("recentOrderTable");
+ document.getElementById("statOrders").textContent=orders.length;
+ document.getElementById("statProducts").textContent="15";
+ document.getElementById("statSales").textContent=money(orders.reduce((a,o)=>a+Number(o.total||0),0));
+ document.getElementById("statPending").textContent=orders.filter(o=>(o.status||"Pending")==="Pending").length;
+ if(table) table.innerHTML=orders.length?orders.map(o=>`<tr><td>${esc(o.id)}</td><td><b>${esc(o.customerName)}</b><br><small>📞 ${esc(o.phone)}</small><br><small>📍 ${esc(addressOf(o))}</small></td><td>${esc(o.product)}<br><small>পরিমাণ: ${esc(o.quantity||1)}</small></td><td>${money(o.total)}</td><td>${esc(o.payment)}</td><td><select onchange="updateOrderStatus('${esc(o.id)}',this.value)">${["Pending","Confirmed","Processing","Shipped","Delivered","Cancelled"].map(x=>`<option ${((o.status||"Pending")===x)?"selected":""}>${x}</option>`).join("")}</select></td><td><button class="action-btn" onclick="deleteOrder('${esc(o.id)}')">Delete</button></td></tr>`).join(""):'<tr><td colspan="7">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+ if(recent) recent.innerHTML=orders.length?orders.slice(0,5).map(o=>`<tr><td>${esc(o.id)}</td><td>${esc(o.customerName)}<br><small>${esc(o.phone)}</small></td><td>${esc(o.product)}</td><td>${money(o.total)}</td><td>${esc(o.status||"Pending")}</td></tr>`).join(""):'<tr><td colspan="5">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+}
+function updateOrderStatus(id,status){localStorage.setItem("mehediXpressOrders",JSON.stringify(getOrders().map(o=>o.id===id?{...o,status}:o)));renderAdminOrders();}
+function deleteOrder(id){if(!confirm("এই অর্ডারটি Delete করতে চান?"))return;localStorage.setItem("mehediXpressOrders",JSON.stringify(getOrders().filter(o=>o.id!==id)));renderAdminOrders();}
+
+/* =========================
+   LOGOUT
+========================= */
+
+document
+  .getElementById("logoutBtn")
+  .addEventListener(
+    "click",
+    function(){
+
+      sessionStorage.removeItem(
+        "mehediAdminLoggedIn"
+      );
+
+      location.reload();
+
+    }
+  );
+
+
+/* PRODUCT MANAGEMENT */
+const DEFAULT_PRODUCTS=[
+{id:1,name:"ফুটবল জার্সি",category:"Football Jersey",categoryBn:"ফুটবল জার্সি",price:850,stock:10,icon:"⚽👕"},
+{id:2,name:"ক্রিকেট জার্সি",category:"Cricket Jersey",categoryBn:"ক্রিকেট জার্সি",price:850,stock:10,icon:"🏏👕"},
+{id:3,name:"প্রিমিয়াম টি-শার্ট",category:"T-Shirt",categoryBn:"টি-শার্ট",price:650,stock:10,icon:"👕"},
+{id:4,name:"স্পোর্টস শর্টস",category:"Shorts",categoryBn:"শর্টস",price:450,stock:10,icon:"🩳"},
+{id:5,name:"প্রিমিয়াম ফুটবল",category:"Football",categoryBn:"ফুটবল",price:700,stock:10,icon:"⚽"},
+{id:6,name:"ক্রিকেট ব্যাট",category:"Cricket Bat",categoryBn:"ক্রিকেট ব্যাট",price:1200,stock:10,icon:"🏏"},
+{id:7,name:"স্পোর্টস গ্লাভস",category:"Gloves",categoryBn:"গ্লাভস",price:550,stock:10,icon:"🧤"},
+{id:8,name:"কাস্টম জার্সি প্রিন্টিং",category:"Custom Printing",categoryBn:"কাস্টম প্রিন্টিং",price:0,stock:10,icon:"🎨"},
+{id:9,name:"ফুটবল ট্র্যাক প্যান্ট",category:"Sports Wear",categoryBn:"স্পোর্টস ওয়্যার",price:900,stock:10,icon:"👖⚽"},
+{id:10,name:"ক্রিকেট প্যাড",category:"Cricket Gear",categoryBn:"ক্রিকেট গিয়ার",price:1400,stock:10,icon:"🏏🛡️"},
+{id:11,name:"স্পোর্টস ক্যাপ",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:350,stock:10,icon:"🧢"},
+{id:12,name:"স্পোর্টস মোজা",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:250,stock:10,icon:"🧦"},
+{id:13,name:"জিম টি-শার্ট",category:"T-Shirt",categoryBn:"টি-শার্ট",price:600,stock:10,icon:"🏋️👕"},
+{id:14,name:"কাস্টম নাম্বার প্রিন্ট",category:"Custom Printing",categoryBn:"কাস্টম প্রিন্টিং",price:200,stock:10,icon:"🔢🎨"},
+{id:15,name:"স্পোর্টস ব্যাগ",category:"Sports Accessories",categoryBn:"স্পোর্টস অ্যাক্সেসরিজ",price:950,stock:10,icon:"🎒"}];
+
+function getAdminProducts(){
+ try{const x=JSON.parse(localStorage.getItem("mehediXpressProducts")||"null");if(Array.isArray(x))return x;}catch(e){}
+ localStorage.setItem("mehediXpressProducts",JSON.stringify(DEFAULT_PRODUCTS));return [...DEFAULT_PRODUCTS];
+}
+function renderAdminProducts(){
+ const list=getAdminProducts(), table=document.getElementById("productTable"), stat=document.getElementById("statProducts");
+ if(stat)stat.textContent=list.length;if(!table)return;
+ table.innerHTML=list.length?list.map(p=>`<tr><td>${escapeHtml(p.name)}</td><td>${escapeHtml(p.category)}</td><td>${money(p.price)}</td><td>${escapeHtml(p.stock??0)}</td><td><button class="action-btn" onclick="editProduct('${p.id}')">Edit</button> <button class="action-btn" onclick="deleteProduct('${p.id}')">Delete</button></td></tr>`).join(""):'<tr><td colspan="5">কোনো পণ্য নেই।</td></tr>';
+}
+function editProduct(id){
+ const p=getAdminProducts().find(x=>String(x.id)===String(id));if(!p)return;
+ document.getElementById("productFormCard").style.display="block";
+ document.getElementById("productName").value=p.name||"";
+ document.getElementById("productCategory").value=p.category||"";
+ document.getElementById("productPrice").value=p.price||0;
+ document.getElementById("productStock").value=p.stock??0;
+ document.getElementById("productImage").value=p.image||"";
+ document.getElementById("productForm").dataset.editingId=p.id;
+}
+function deleteProduct(id){
+ if(!confirm("এই পণ্যটি Delete করতে চান?"))return;
+ localStorage.setItem("mehediXpressProducts",JSON.stringify(getAdminProducts().filter(p=>String(p.id)!==String(id))));
+ renderAdminProducts();
+}
+
+renderAdminProducts();
+</script>
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import { getFirestore, collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyATKk9r50AZYrdbVxzPxn0h8WBI-ESNZGQ",authDomain:"mehedi-xpress.firebaseapp.com",projectId:"mehedi-xpress",storageBucket:"mehedi-xpress.firebasestorage.app",messagingSenderId:"750136252870",appId:"1:750136252870:web:201f53d2dfeac82eb07ac7"};
+const fbApp=initializeApp(firebaseConfig), auth=getAuth(fbApp), db=getFirestore(fbApp);
+window.__firebaseProductMode=true;
+let liveProducts=[], liveOrders=[], selectedImages=[];
+
+function compressImage(file){
+ return new Promise((resolve,reject)=>{
+  const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{
+   const max=760,scale=Math.min(1,max/Math.max(im.width,im.height));
+   const c=document.createElement("canvas");c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);
+   c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+   resolve(c.toDataURL("image/jpeg",.58));
+  };im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file);
+ });
+}
+const files=document.getElementById("productFiles");
+if(files) files.addEventListener("change",async()=>{
+ const chosen=[...files.files].slice(0,3);
+ if(files.files.length>3) alert("সর্বোচ্চ ৩টি ছবি নেওয়া হবে।");
+ selectedImages=await Promise.all(chosen.map(compressImage));
+ document.getElementById("productImagePreview").innerHTML=selectedImages.map(x=>`<img src="${x}" style="width:80px;height:80px;object-fit:cover;border-radius:8px">`).join("");
+});
+
+onSnapshot(collection(db,"products"),snap=>{
+ liveProducts=snap.docs.map(d=>({id:d.id,...d.data()}));
+ localStorage.setItem("mehediXpressProducts",JSON.stringify(liveProducts));
+ if(typeof renderAdminProducts==="function") renderAdminProducts();
+ if(document.getElementById("statProducts")) document.getElementById("statProducts").textContent=liveProducts.length;
+},console.error);
+
+onSnapshot(collection(db,"orders"),snap=>{
+ liveOrders=snap.docs.map(d=>({id:d.id,...d.data()}));
+ localStorage.setItem("mehediXpressOrders",JSON.stringify(liveOrders));
+ if(typeof renderAdminOrders==="function") renderAdminOrders();
+},console.error);
+
+// Override data getter used by old design.
+window.getAdminProducts=()=>liveProducts;
+
+const form=document.getElementById("productForm");
+form.addEventListener("submit",async event=>{
+ event.preventDefault(); event.stopImmediatePropagation();
+ if(!auth.currentUser){alert("আগে Firebase Admin Login করুন।");return;}
+ const name=document.getElementById("productName").value.trim();
+ const category=document.getElementById("productCategory").value;
+ const price=Number(document.getElementById("productPrice").value||0);
+ const stock=Number(document.getElementById("productStock").value||0);
+ const imageUrl=document.getElementById("productImage").value.trim();
+ const details=document.getElementById("productDetails")?.value.trim()||"";
+ const active=document.getElementById("productActive")?.checked!==false;
+ const editingId=form.dataset.editingId;
+ const previous=liveProducts.find(p=>String(p.id)===String(editingId));
+ const images=selectedImages.length?selectedImages:(previous?.images?.length?previous.images:(imageUrl?[imageUrl]:[]));
+ const data={name,category,categoryBn:category,price,stock,details,images,image:images[0]||imageUrl||"",active,updatedAt:serverTimestamp()};
+ try{
+  if(editingId) await updateDoc(doc(db,"products",editingId),data);
+  else await addDoc(collection(db,"products"),{...data,createdAt:serverTimestamp()});
+  form.reset(); delete form.dataset.editingId; selectedImages=[];
+  document.getElementById("productImagePreview").innerHTML="";
+  document.getElementById("productFormCard").style.display="none";
+  alert("Product Firebase-এ Save হয়েছে। Customer website-এ অটোমেটিক দেখা যাবে।");
+ }catch(e){console.error(e);alert("Product Save হয়নি। Firebase Authentication/Rules পরীক্ষা করুন।");}
+},{capture:true});
+
+// Override edit/delete actions while keeping old UI.
+window.editAdminProduct=id=>{
+ const p=liveProducts.find(x=>String(x.id)===String(id));if(!p)return;
+ document.getElementById("productName").value=p.name||"";
+ document.getElementById("productCategory").value=p.category||"";
+ document.getElementById("productPrice").value=p.price||0;
+ document.getElementById("productStock").value=p.stock||0;
+ document.getElementById("productImage").value=p.image&&!String(p.image).startsWith("data:")?p.image:"";
+ document.getElementById("productDetails").value=p.details||"";
+ document.getElementById("productActive").checked=p.active!==false;
+ selectedImages=p.images||[];
+ document.getElementById("productImagePreview").innerHTML=selectedImages.map(x=>`<img src="${x}" style="width:80px;height:80px;object-fit:cover;border-radius:8px">`).join("");
+ form.dataset.editingId=id;document.getElementById("productFormCard").style.display="block";
+};
+window.deleteAdminProduct=async id=>{
+ if(!auth.currentUser)return alert("Admin Login প্রয়োজন।");
+ if(confirm("Product মুছবেন?")) await deleteDoc(doc(db,"products",String(id)));
+};
+
+// Existing visual login can stay, but Firebase login requires email.
+// Expose helper so after Authentication account creation we can use email/password.
+window.firebaseAdminLogin=async(email,password)=>{
+ try{await signInWithEmailAndPassword(auth,email,password);return true}catch(e){console.error(e);return false}
+};
+onAuthStateChanged(auth,user=>{
+ const badge=document.querySelector(".admin-user");
+ if(badge && user) badge.innerHTML=`👤 Admin: <strong>${user.email}</strong>`;
+});
+const logout=document.getElementById("logoutBtn");
+if(logout) logout.addEventListener("click",()=>signOut(auth));
+</script>
+
+</body>
+</html>
