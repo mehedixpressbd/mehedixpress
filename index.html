@@ -157,6 +157,22 @@ a{
   font-weight:700;
 }
 
+.admin-link{
+  color:#fff;
+  background:#111827;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:800;
+  white-space:nowrap;
+  transition:.2s;
+}
+
+.admin-link:hover{
+  background:#000;
+  transform:translateY(-1px);
+}
+
 /* =========================
    HERO
 ========================= */
@@ -899,6 +915,12 @@ a{
     display:none;
   }
 
+  .admin-link{
+    margin-left:auto;
+    padding:9px 11px;
+    font-size:12px;
+  }
+
   .hero-slide{
     padding:30px;
     min-height:300px;
@@ -1026,6 +1048,10 @@ a{
 
     <a href="#contact" class="nav-link">
       যোগাযোগ
+    </a>
+
+    <a href="admin.html" class="admin-link" aria-label="Admin Login">
+      🔐 Admin Login
     </a>
 
   </div>
