@@ -3987,5 +3987,15 @@ renderReviews();
 
 </script>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyATKk9r50AZYrdbVxzPxn0h8WBI-ESNZGQ",authDomain:"mehedi-xpress.firebaseapp.com",projectId:"mehedi-xpress",storageBucket:"mehedi-xpress.firebasestorage.app",messagingSenderId:"750136252870",appId:"1:750136252870:web:201f53d2dfeac82eb07ac7"};
+const app=initializeApp(firebaseConfig), db=getFirestore(app);
+window.saveOrderToFirestore=async(order)=>{
+ const data={...order,productId:String(order.productId||""),quantity:Number(order.quantity||1),deliveryCharge:Number(order.deliveryCharge||0),total:Number(order.total||0),status:"Pending",createdAt:serverTimestamp()};
+ return (await addDoc(collection(db,"orders"),data)).id;
+};
+</script>
 </body>
 </html>
