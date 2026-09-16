@@ -4105,11 +4105,26 @@ renderReviews();
 </script>
 
 
+<script>
+window.addEventListener("mehediLiveProducts",function(event){
+ try{
+  const live=event.detail||[]; if(!live.length)return;
+  products.splice(0,products.length,...live);
+  localStorage.setItem("mehediXpressProducts",JSON.stringify(live));
+  renderProducts(products); renderBestSeller();
+ }catch(error){console.error("Product render sync error:",error);}
+});
+</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyATKk9r50AZYrdbVxzPxn0h8WBI-ESNZGQ",authDomain:"mehedi-xpress.firebaseapp.com",projectId:"mehedi-xpress",storageBucket:"mehedi-xpress.firebasestorage.app",messagingSenderId:"750136252870",appId:"1:750136252870:web:201f53d2dfeac82eb07ac7"};
 const app=initializeApp(firebaseConfig),db=getFirestore(app);
+onSnapshot(collection(db,"products"), snapshot=>{
+ const liveProducts=snapshot.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.active!==false);
+ if(liveProducts.length) window.dispatchEvent(new CustomEvent("mehediLiveProducts",{detail:liveProducts}));
+},err=>console.error("Live product sync error:",err));
+
 window.saveOrderToFirestore=async order=>{
  const data={...order,productId:String(order.productId),quantity:Number(order.quantity||1),deliveryCharge:Number(order.deliveryCharge||0),total:Number(order.total||0),status:"Pending",createdAt:serverTimestamp()};
  return (await addDoc(collection(db,"orders"),data)).id;
