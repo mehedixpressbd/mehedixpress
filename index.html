@@ -2,60 +2,63 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="description"
-        content="Mehedi Xpress - Sports, Fashion & Custom Print">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <title>Mehedi Xpress | Online Sports Store</title>
+  <meta
+    name="description"
+    content="Mehedi Xpress - Sports, Fashion & Custom Print"
+  >
 
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <meta
+    name="theme-color"
+    content="#063b82"
+  >
+
+  <title>Mehedi Xpress | Sports • Fashion • Custom Print</title>
+
+  <link
+    rel="stylesheet"
+    href="assets/css/styles.css"
+  >
 </head>
 
 <body>
 
-<!-- ================= TOP STRIP ================= -->
+
+<!-- =========================================================
+     TOP BAR
+========================================================= -->
 
 <div class="mx-topbar">
+
   <div class="mx-container mx-topbar-inner">
 
-    <div>
-      📞 <span id="phone">+8801612961523</span>
-    </div>
+    <div class="mx-top-info">
 
-    <div class="mx-top-links">
-
-      <span data-i18n="deliveryTop">
+      <span>
         🚚 সারাদেশে হোম ডেলিভারি
       </span>
 
-      <span data-i18n="paymentTop">
+      <i></i>
+
+      <span>
         💳 COD / bKash / Nagad
       </span>
 
-      <span data-i18n="secureTop">
+      <i></i>
+
+      <span>
         🛡 নিরাপদ অর্ডার
       </span>
 
-      <div class="mx-social-mini" aria-label="Social links">
+    </div>
 
-        <a
-          href="https://www.facebook.com/share/1U5HD22xSw/"
-          target="_blank"
-          rel="noopener"
-          aria-label="Facebook">
-          f
-        </a>
 
-        <a
-          href="https://www.tiktok.com/@mehedi.xpress?_r=1&_t=ZS-98sIIkshKb7"
-          target="_blank"
-          rel="noopener"
-          aria-label="TikTok">
-          ♪
-        </a>
-
-      </div>
+    <div class="mx-top-right">
 
       <div class="mx-lang-switch">
 
@@ -66,8 +69,6 @@
           বাংলা
         </button>
 
-        <span>|</span>
-
         <button
           type="button"
           data-lang="en"
@@ -77,44 +78,124 @@
 
       </div>
 
+
+      <a
+        id="phone"
+        class="mx-top-phone"
+        href="tel:+8801612961523">
+
+        ☎ +8801612961523
+
+      </a>
+
+
+      <div class="mx-social-mini">
+
+        <a
+          href="https://www.facebook.com/share/1U5HD22xSw/"
+          target="_blank"
+          rel="noopener"
+          aria-label="Facebook">
+          f
+        </a>
+
+        <a
+          href="https://www.tiktok.com/@mehedi.xpress"
+          target="_blank"
+          rel="noopener"
+          aria-label="TikTok">
+          ♪
+        </a>
+
+        <span class="mx-social-demo">
+          ▶
+        </span>
+
+        <span class="mx-social-demo">
+          ◎
+        </span>
+
+      </div>
+
     </div>
 
   </div>
+
 </div>
 
 
-<!-- ================= HEADER ================= -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header class="mx-header">
 
+
+  <!-- MAIN HEADER -->
+
   <div class="mx-container mx-header-main">
+
 
     <!-- LOGO -->
 
     <a
-      class="mx-logo mx-logo-image"
       href="#home"
+      class="mx-reference-logo"
       aria-label="Mehedi Xpress Home">
 
       <img
         src="assets/images/logo.png"
-        alt="Mehedi Xpress">
+        alt="Mehedi Xpress Logo"
+        onerror="this.style.display='none';this.parentElement.classList.add('logo-fallback');"
+      >
+
+
+      <div class="mx-logo-fallback-content">
+
+        <div class="mx-logo-mark">
+
+          <b>M</b>
+          <b>X</b>
+
+        </div>
+
+        <div>
+
+          <strong>
+            MEHEDI XPRESS
+          </strong>
+
+          <small>
+            SPORTS • FASHION • CUSTOM PRINT
+          </small>
+
+        </div>
+
+      </div>
 
     </a>
 
 
     <!-- SEARCH -->
 
-    <div class="mx-search">
+    <div class="mx-reference-search">
+
+      <span class="mx-search-icon">
+        🔍
+      </span>
 
       <input
         id="search"
         type="search"
-        placeholder="আপনি কী খুঁজছেন?"
-        data-i18n-placeholder="searchPlaceholder">
+        placeholder="পণ্য, জার্সি বা Product Code খুঁজুন..."
+      >
 
-      <button type="button">
-        🔍
+      <button
+        type="button"
+        aria-label="Search">
+
+        খুঁজুন
+
       </button>
 
     </div>
@@ -122,38 +203,87 @@
 
     <!-- HEADER ACTIONS -->
 
-    <div class="mx-header-actions">
+    <div class="mx-reference-actions">
+
+
+      <!-- WISHLIST -->
+
+      <a
+        href="#wishlist"
+        class="mx-ref-action mx-wishlist-link">
+
+        <div class="mx-ref-icon">
+
+          ♡
+
+          <span id="wishlistCount">
+            0
+          </span>
+
+        </div>
+
+        <span>
+
+          <small>
+            Wishlist
+          </small>
+
+          <b>
+            ইচ্ছের তালিকা
+          </b>
+
+        </span>
+
+      </a>
+
+
+      <!-- ACCOUNT -->
 
       <button
         id="account"
-        class="mx-action-btn"
+        class="mx-ref-action"
         type="button">
 
-        <span class="mx-action-icon">
-          👤
-        </span>
+        <div class="mx-ref-icon">
+          ♙
+        </div>
 
         <span>
-          <small>Account</small>
-          <b>Login</b>
+
+          <small>
+            Account
+          </small>
+
+          <b>
+            Login
+          </b>
+
         </span>
 
       </button>
 
 
+      <!-- CART -->
+
       <button
         id="cartBtn"
-        class="mx-action-btn mx-cart-btn"
+        class="mx-ref-action"
         type="button">
 
-        <span class="mx-action-icon">
+        <div class="mx-ref-icon">
+
           🛒
-        </span>
+
+          <span id="cartBadge">
+            0
+          </span>
+
+        </div>
 
         <span>
 
           <small>
-            Shopping
+            Shopping Cart
           </small>
 
           <b>
@@ -170,54 +300,117 @@
   </div>
 
 
-  <!-- ================= NAVIGATION ================= -->
+  <!-- =====================================================
+       NAVIGATION
+  ====================================================== -->
 
-  <nav class="mx-nav">
+  <nav class="mx-reference-nav">
 
-    <div class="mx-container mx-nav-inner">
+    <div class="mx-container mx-reference-nav-inner">
+
 
       <button
-        class="mx-all-category"
+        class="mx-ref-all-category"
         type="button">
 
-        ☰
-        <span data-i18n="allCategories">
+        <span class="mx-menu-icon">
+          ☰
+        </span>
+
+        <span>
           সব ক্যাটাগরি
         </span>
 
       </button>
 
 
-      <a
-        href="#products"
-        data-i18n="newProducts">
+      <a href="#home">
+
+        <span>
+          🏠
+        </span>
+
+        হোম
+
+      </a>
+
+
+      <a href="#products">
+
+        <span>
+          👕
+        </span>
+
         নতুন পণ্য
+
       </a>
 
-      <a
-        href="#products"
-        data-i18n="jersey">
+
+      <a href="#products">
+
+        <span>
+          ⚽
+        </span>
+
         জার্সি
+
       </a>
 
-      <a
-        href="#products"
-        data-i18n="tshirt">
+
+      <a href="#products">
+
+        <span>
+          👕
+        </span>
+
         টি-শার্ট
+
       </a>
 
-      <a
-        href="#products"
-        data-i18n="sports">
-        স্পোর্টস
-      </a>
 
       <a href="#custom-print">
-        Custom Print
+
+        <span>
+          🖨
+        </span>
+
+        কাস্টম প্রিন্ট
+
       </a>
 
+
       <a href="#delivery">
-        Delivery
+
+        <span>
+          🚚
+        </span>
+
+        ডেলিভারি
+
+      </a>
+
+
+      <a href="#contact">
+
+        <span>
+          💬
+        </span>
+
+        যোগাযোগ
+
+      </a>
+
+
+      <a
+        href="#products"
+        class="mx-offer-nav">
+
+        <strong>
+          %
+        </strong>
+
+        অফার
+
       </a>
 
     </div>
@@ -227,108 +420,196 @@
 </header>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      MAIN
-===================================================== -->
+========================================================= -->
 
 <main>
 
 
-<!-- ================= HERO / BANNER ================= -->
+<!-- =========================================================
+     HERO BANNER
+========================================================= -->
 
 <section
-  class="mx-hero mx-banner-slider mx-brand-hero"
+  class="mx-reference-hero mx-banner-slider"
   id="home">
+
 
   <div
     class="mx-banner-track"
     id="bannerTrack">
 
 
-    <!-- BANNER 1 -->
+    <!-- ===================================================
+         SLIDE 1
+    ==================================================== -->
 
     <article class="mx-banner-slide active">
 
-      <div class="mx-container mx-hero-grid">
+      <div class="mx-ref-hero-overlay"></div>
 
-        <div class="mx-hero-content">
 
-          <span class="mx-badge">
-            MEHEDI XPRESS COLLECTION
+      <div class="mx-container mx-ref-hero-grid">
+
+
+        <!-- HERO TEXT -->
+
+        <div class="mx-ref-hero-content">
+
+          <span class="mx-ref-mini-title">
+
+            MEHEDI XPRESS SPORTS COLLECTION
+
           </span>
 
+
           <h1>
+
             খেলাধুলার সামগ্রীর
-            <span>
+
+            <strong>
               এক বিশাল সমাহার
-            </span>
+            </strong>
+
           </h1>
 
-          <p>
+
+          <div class="mx-ref-red-strip">
+
             Football Jersey, Cricket Jersey,
             T-Shirt, Sports Equipment এবং
-            Custom Printing—সবকিছু এক জায়গায়।
-          </p>
-
-
-          <div class="mx-hero-buttons">
-
-            <a
-              href="#products"
-              class="mx-primary-btn">
-              এখনই শপ করুন →
-            </a>
-
-            <a
-              href="#custom-print"
-              class="mx-secondary-btn">
-              Custom Print
-            </a>
+            Custom Printing—সবকিছু এক জায়গায়!
 
           </div>
 
 
-          <div class="mx-trust-row">
+          <a
+            href="#products"
+            class="mx-ref-shop-btn">
 
-            <div>
-              <b>✓</b>
-              Quality Product
+            এখনই শপ করুন
+
+            <span>
+              →
+            </span>
+
+          </a>
+
+        </div>
+
+
+        <!-- HERO DEMO VISUAL -->
+
+        <div class="mx-ref-hero-demo">
+
+          <div class="mx-demo-stage">
+
+
+            <div class="mx-demo-player mx-demo-player-one">
+
+              <span class="mx-demo-emoji">
+                ⚽
+              </span>
+
+              <strong>
+                FOOTBALL
+              </strong>
+
             </div>
 
-            <div>
-              <b>✓</b>
+
+            <div class="mx-demo-player mx-demo-player-two">
+
+              <span class="mx-demo-emoji">
+                🏏
+              </span>
+
+              <strong>
+                CRICKET
+              </strong>
+
+            </div>
+
+
+            <div class="mx-demo-player mx-demo-player-three">
+
+              <span class="mx-demo-emoji">
+                👕
+              </span>
+
+              <strong>
+                JERSEY
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <small class="mx-demo-notice">
+
+            Banner Image এখানে বসবে
+
+          </small>
+
+        </div>
+
+
+        <!-- FEATURES -->
+
+        <div class="mx-ref-features">
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ♛
+            </span>
+
+            <b>
+              Premium Quality
+            </b>
+
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              🚚
+            </span>
+
+            <b>
               Nationwide Delivery
-            </div>
+            </b>
 
-            <div>
-              <b>✓</b>
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ✓
+            </span>
+
+            <b>
               Secure Order
-            </div>
+            </b>
 
           </div>
 
-        </div>
 
+          <div class="mx-ref-feature">
 
-        <div class="mx-hero-visual">
-
-          <div class="mx-hero-card">
-
-            <span class="mx-mini-label">
-              SPORTS COLLECTION
+            <span>
+              🎧
             </span>
 
-            <div class="mx-ball">
-              ⚽
-            </div>
-
-            <h3>
-              নতুন সিজনের স্পোর্টস কালেকশন
-            </h3>
-
-            <p>
-              Jersey • Football • Cricket
-            </p>
+            <b>
+              Customer Support
+            </b>
 
           </div>
 
@@ -339,72 +620,140 @@
     </article>
 
 
-    <!-- BANNER 2 -->
+
+    <!-- ===================================================
+         SLIDE 2
+    ==================================================== -->
 
     <article class="mx-banner-slide">
 
-      <div class="mx-container mx-hero-grid">
+      <div class="mx-ref-hero-overlay"></div>
 
-        <div class="mx-hero-content">
 
-          <span class="mx-badge">
-            CUSTOM JERSEY
+      <div class="mx-container mx-ref-hero-grid">
+
+
+        <div class="mx-ref-hero-content">
+
+          <span class="mx-ref-mini-title">
+
+            CUSTOM JERSEY COLLECTION
+
           </span>
 
+
           <h1>
+
             নিজের টিমের জন্য
-            <span>
-              কাস্টম জার্সি তৈরি করুন
-            </span>
+
+            <strong>
+              কাস্টম জার্সি
+            </strong>
+
           </h1>
 
-          <p>
-            Team, Tournament, Tour অথবা Event—
-            Name, Number, Logo ও Design অনুযায়ী
-            জার্সি তৈরি করুন।
-          </p>
 
+          <div class="mx-ref-red-strip">
 
-          <div class="mx-hero-buttons">
-
-            <a
-              href="#custom-print"
-              class="mx-primary-btn">
-              Custom Jersey →
-            </a>
-
-            <a
-              href="https://wa.me/8801612961523?text=আমি%20কাস্টম%20জার্সি%20তৈরি%20করতে%20চাই।"
-              target="_blank"
-              rel="noopener"
-              class="mx-secondary-btn">
-              WhatsApp
-            </a>
+            Team Name • Player Name • Number •
+            Logo • Full Custom Design
 
           </div>
+
+
+          <a
+            href="#custom-print"
+            class="mx-ref-shop-btn">
+
+            কাস্টম অর্ডার করুন
+
+            <span>
+              →
+            </span>
+
+          </a>
 
         </div>
 
 
-        <div class="mx-hero-visual">
+        <div class="mx-ref-hero-demo">
 
-          <div class="mx-hero-card">
+          <div class="mx-custom-shirt-demo">
 
-            <span class="mx-mini-label">
-              YOUR TEAM • YOUR DESIGN
+            <small>
+              YOUR
+            </small>
+
+            <strong>
+              DESIGN
+            </strong>
+
+            <small>
+              HERE
+            </small>
+
+          </div>
+
+          <small class="mx-demo-notice">
+
+            Custom Jersey Banner এখানে বসবে
+
+          </small>
+
+        </div>
+
+
+        <div class="mx-ref-features">
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              🎨
             </span>
 
-            <div class="mx-ball">
+            <b>
+              Custom Design
+            </b>
+
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
               👕
-            </div>
+            </span>
 
-            <h3>
-              Premium Custom Jersey
-            </h3>
+            <b>
+              Premium Fabric
+            </b>
 
-            <p>
-              Name • Number • Logo • Full Design
-            </p>
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ✓
+            </span>
+
+            <b>
+              Name & Number
+            </b>
+
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ☎
+            </span>
+
+            <b>
+              Easy Order
+            </b>
 
           </div>
 
@@ -415,68 +764,141 @@
     </article>
 
 
-    <!-- BANNER 3 -->
+
+    <!-- ===================================================
+         SLIDE 3
+    ==================================================== -->
 
     <article class="mx-banner-slide">
 
-      <div class="mx-container mx-hero-grid">
+      <div class="mx-ref-hero-overlay"></div>
 
-        <div class="mx-hero-content">
 
-          <span class="mx-badge">
-            CUSTOM PRINTING
+      <div class="mx-container mx-ref-hero-grid">
+
+
+        <div class="mx-ref-hero-content">
+
+          <span class="mx-ref-mini-title">
+
+            CUSTOM PRINTING SERVICE
+
           </span>
 
+
           <h1>
+
             আপনার ডিজাইন
-            <span>
+
+            <strong>
               আমাদের প্রিন্ট
-            </span>
+            </strong>
+
           </h1>
 
-          <p>
-            Custom Printing-এর মূল্য ও
-            অর্ডারের তথ্য সরাসরি
-            WhatsApp-এ জানুন।
-          </p>
 
+          <div class="mx-ref-red-strip">
 
-          <div class="mx-hero-buttons">
-
-            <a
-              href="https://wa.me/8801612961523?text=আমি%20কাস্টম%20প্রিন্টিংয়ের%20মূল্য%20জানতে%20চাই।"
-              target="_blank"
-              rel="noopener"
-              class="mx-primary-btn">
-
-              মূল্য জানতে WhatsApp →
-
-            </a>
+            T-Shirt • Mug • Cap • Jersey •
+            DTF • Sublimation • Logo Printing
 
           </div>
+
+
+          <a
+            href="#custom-print"
+            class="mx-ref-shop-btn">
+
+            বিস্তারিত দেখুন
+
+            <span>
+              →
+            </span>
+
+          </a>
 
         </div>
 
 
-        <div class="mx-hero-visual">
+        <div class="mx-ref-hero-demo">
 
-          <div class="mx-hero-card">
+          <div class="mx-print-demo-products">
 
-            <span class="mx-mini-label">
-              PRINT SERVICES
+            <span>
+              👕
             </span>
 
-            <div class="mx-ball">
+            <span>
+              ☕
+            </span>
+
+            <span>
+              🧢
+            </span>
+
+          </div>
+
+
+          <small class="mx-demo-notice">
+
+            Custom Printing Banner এখানে বসবে
+
+          </small>
+
+        </div>
+
+
+        <div class="mx-ref-features">
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ★
+            </span>
+
+            <b>
+              Quality Print
+            </b>
+
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
               🎨
-            </div>
+            </span>
 
-            <h3>
-              DTF • Sublimation • Name & Number
-            </h3>
+            <b>
+              Your Design
+            </b>
 
-            <p>
-              Custom Print Solution
-            </p>
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              ✓
+            </span>
+
+            <b>
+              Professional Finish
+            </b>
+
+          </div>
+
+
+          <div class="mx-ref-feature">
+
+            <span>
+              🎧
+            </span>
+
+            <b>
+              Order Support
+            </b>
 
           </div>
 
@@ -489,21 +911,29 @@
   </div>
 
 
-  <!-- SLIDER CONTROLS -->
+  <!-- HERO ARROWS -->
 
   <button
     class="mx-banner-arrow prev"
     id="bannerPrev"
-    type="button">
+    type="button"
+    aria-label="Previous banner">
+
     ‹
+
   </button>
+
 
   <button
     class="mx-banner-arrow next"
     id="bannerNext"
-    type="button">
+    type="button"
+    aria-label="Next banner">
+
     ›
+
   </button>
+
 
   <div
     class="mx-banner-dots"
@@ -513,142 +943,212 @@
 </section>
 
 
-<!-- ================= SERVICE BAR ================= -->
 
-<section class="mx-service-area">
+<!-- =========================================================
+     CATEGORY STRIP
+========================================================= -->
 
-  <div class="mx-container mx-service-grid">
-
-
-    <article
-      class="mx-service mx-tilt-card"
-      tabindex="0">
-
-      <div class="mx-service-icon">
-        🚚
-      </div>
-
-      <div>
-
-        <b>
-          সারাদেশে ডেলিভারি
-        </b>
-
-        <small>
-          দ্রুত ও নিরাপদ ডেলিভারি
-        </small>
-
-      </div>
-
-    </article>
-
-
-    <article
-      class="mx-service mx-tilt-card"
-      tabindex="0">
-
-      <div class="mx-service-icon">
-        💵
-      </div>
-
-      <div>
-
-        <b>
-          Cash on Delivery
-        </b>
-
-        <small>
-          সহজ অর্ডার ব্যবস্থা
-        </small>
-
-      </div>
-
-    </article>
-
-
-    <article
-      class="mx-service mx-tilt-card"
-      tabindex="0">
-
-      <div class="mx-service-icon">
-        🎨
-      </div>
-
-      <div>
-
-        <b>
-          Custom Printing
-        </b>
-
-        <small>
-          নিজের ডিজাইন তৈরি করুন
-        </small>
-
-      </div>
-
-    </article>
-
-
-    <article
-      class="mx-service mx-tilt-card"
-      tabindex="0">
-
-      <div class="mx-service-icon">
-        ☎️
-      </div>
-
-      <div>
-
-        <b>
-          Customer Support
-        </b>
-
-        <small>
-          অর্ডারে সহায়তা
-        </small>
-
-      </div>
-
-    </article>
-
-  </div>
-
-</section>
-
-
-<!-- ================= CATEGORY ================= -->
-
-<section class="mx-section">
+<section class="mx-reference-categories">
 
   <div class="mx-container">
-
-    <div class="mx-section-heading">
-
-      <div>
-
-        <span data-i18n="shopByCategory">
-          SHOP BY CATEGORY
-        </span>
-
-        <h2 data-i18n="popularCategories">
-          জনপ্রিয় ক্যাটাগরি
-        </h2>
-
-      </div>
-
-
-      <a href="#products">
-        সব পণ্য →
-      </a>
-
-    </div>
-
 
     <div
       id="cats"
       class="mx-category-grid">
 
-      <!-- Firebase categories -->
+      <!--
+        Firebase category cards will load here.
+        store.js will replace this demo content.
+      -->
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          👕
+        </span>
+
+        <strong>
+          Football Jersey
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🏏
+        </span>
+
+        <strong>
+          Cricket Jersey
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🧒
+        </span>
+
+        <strong>
+          Kids Jersey
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          👔
+        </span>
+
+        <strong>
+          T-Shirt & Polo
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🩳
+        </span>
+
+        <strong>
+          Shorts & Trouser
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          ⚽
+        </span>
+
+        <strong>
+          Football
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🏏
+        </span>
+
+        <strong>
+          Cricket Equipment
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🏸
+        </span>
+
+        <strong>
+          Badminton
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          🎽
+        </span>
+
+        <strong>
+          Custom Jersey
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
+
+
+      <button
+        class="mx-demo-category"
+        type="button">
+
+        <span class="mx-cat-demo-icon">
+          ☕
+        </span>
+
+        <strong>
+          Custom Printing
+        </strong>
+
+        <small>
+          →
+        </small>
+
+      </button>
 
     </div>
 
@@ -657,62 +1157,217 @@
 </section>
 
 
-<!-- ================= PROMO ================= -->
 
-<section class="mx-section mx-promo-section">
+<!-- =========================================================
+     3 PROMOTIONAL BANNERS
+========================================================= -->
 
-  <div class="mx-container">
+<section class="mx-reference-promos">
 
-    <div class="mx-promo-grid">
+  <div class="mx-container mx-reference-promo-grid">
 
 
-      <!-- PROMO 1 -->
+    <!-- JERSEY PROMO -->
 
-      <div class="mx-promo-card mx-promo-dark">
+    <article class="mx-ref-promo mx-ref-promo-jersey">
+
+      <div class="mx-ref-promo-visual">
 
         <span>
-          FOOTBALL COLLECTION
+          👕
         </span>
 
-        <h2>
-          আপনার পছন্দের
-          পণ্যগুলো
-        </h2>
+        <span>
+          👕
+        </span>
 
-        <p>
-          নতুন ডিজাইন ও বিভিন্ন সাইজে
-          জার্সি সংগ্রহ করুন।
-        </p>
+        <span>
+          ⚽
+        </span>
+
+      </div>
+
+
+      <div class="mx-ref-promo-content">
+
+        <small>
+          JERSEY COLLECTION
+        </small>
+
+        <h2>
+          ক্লাব ও
+          <br>
+          ন্যাশনাল জার্সি
+        </h2>
 
         <a href="#products">
-          SHOP NOW →
+          কালেকশন দেখুন →
         </a>
 
       </div>
 
+    </article>
 
-      <!-- PROMO 2 -->
 
-      <div class="mx-promo-card mx-promo-orange">
+    <!-- CRICKET PROMO -->
+
+    <article class="mx-ref-promo mx-ref-promo-cricket">
+
+      <div class="mx-ref-promo-visual">
 
         <span>
-          CUSTOM PRINT
+          🏏
         </span>
 
+        <span>
+          🧤
+        </span>
+
+        <span>
+          🏏
+        </span>
+
+      </div>
+
+
+      <div class="mx-ref-promo-content">
+
+        <small>
+          SPORTS EQUIPMENT
+        </small>
+
         <h2>
-          নিজের টিমের জন্য
-          কাস্টম জার্সি
+          ক্রিকেট
+          <br>
+          ইকুইপমেন্ট
         </h2>
 
-        <p>
-          Name • Number • Logo • Design
-        </p>
-
-        <a href="#custom-print">
-          ORDER NOW →
+        <a href="#products">
+          এখনই দেখুন →
         </a>
 
       </div>
+
+    </article>
+
+
+    <!-- PRINT PROMO -->
+
+    <article class="mx-ref-promo mx-ref-promo-print">
+
+      <div class="mx-ref-promo-visual">
+
+        <span>
+          👕
+        </span>
+
+        <span>
+          ☕
+        </span>
+
+        <span>
+          🧢
+        </span>
+
+      </div>
+
+
+      <div class="mx-ref-promo-content">
+
+        <small>
+          YOUR DESIGN
+        </small>
+
+        <h2>
+          কাস্টম
+          <br>
+          প্রিন্টিং সার্ভিস
+        </h2>
+
+        <a href="#custom-print">
+          বিস্তারিত দেখুন →
+        </a>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     TRUST / SERVICE STRIP
+========================================================= -->
+
+<section class="mx-reference-trust-strip">
+
+  <div class="mx-container mx-reference-trust-grid">
+
+
+    <div class="mx-trust-item">
+
+      <span>
+        💎
+      </span>
+
+      <b>
+        Quality Product
+      </b>
+
+    </div>
+
+
+    <div class="mx-trust-item">
+
+      <span>
+        🚚
+      </span>
+
+      <b>
+        Nationwide Delivery
+      </b>
+
+    </div>
+
+
+    <div class="mx-trust-item">
+
+      <span>
+        🛡
+      </span>
+
+      <b>
+        Secure Order
+      </b>
+
+    </div>
+
+
+    <div class="mx-trust-item">
+
+      <span>
+        💳
+      </span>
+
+      <b>
+        COD / bKash / Nagad
+      </b>
+
+    </div>
+
+
+    <div class="mx-trust-item">
+
+      <span>
+        🎧
+      </span>
+
+      <b>
+        Customer Support
+      </b>
 
     </div>
 
@@ -721,13 +1376,17 @@
 </section>
 
 
-<!-- ================= WISHLIST ================= -->
+
+<!-- =========================================================
+     WISHLIST
+========================================================= -->
 
 <section
   class="mx-section mx-wishlist-section"
   id="wishlist">
 
   <div class="mx-container">
+
 
     <div class="mx-section-heading">
 
@@ -742,8 +1401,10 @@
         </h2>
 
         <p class="mx-section-note">
-          আপনার পছন্দের পণ্যগুলো এখানে
-          সংরক্ষিত থাকবে।
+
+          আপনার পছন্দের পণ্যগুলো
+          এখানে সংরক্ষিত থাকবে।
+
         </p>
 
       </div>
@@ -756,8 +1417,10 @@
       class="mx-product-grid">
 
       <p class="muted">
+
         ❤️ পছন্দের পণ্য Heart বাটনে চাপ দিলে
         এখানে দেখা যাবে।
+
       </p>
 
     </div>
@@ -767,13 +1430,17 @@
 </section>
 
 
-<!-- ================= POPULAR PRODUCTS ================= -->
+
+<!-- =========================================================
+     POPULAR PRODUCTS
+========================================================= -->
 
 <section
   class="mx-section mx-popular-section"
   id="popular-products">
 
   <div class="mx-container">
+
 
     <div class="mx-section-heading">
 
@@ -788,11 +1455,18 @@
         </h2>
 
         <p class="mx-section-note">
-          বাস্তব rating/review ও বিক্রির তথ্য
-          অনুযায়ী জনপ্রিয় পণ্য এখানে দেখানো হবে।
+
+          Rating, review এবং বিক্রির তথ্য অনুযায়ী
+          জনপ্রিয় পণ্য এখানে দেখানো হবে।
+
         </p>
 
       </div>
+
+
+      <a href="#products">
+        সব পণ্য →
+      </a>
 
     </div>
 
@@ -820,7 +1494,7 @@
         </p>
 
         <strong>
-          পরীক্ষামূলক নমুনা
+          Product Loading...
         </strong>
 
       </article>
@@ -832,7 +1506,10 @@
 </section>
 
 
-<!-- ================= PRODUCTS ================= -->
+
+<!-- =========================================================
+     ALL PRODUCTS
+========================================================= -->
 
 <section
   class="mx-section mx-products-section"
@@ -840,7 +1517,9 @@
 
   <div class="mx-container">
 
+
     <div class="mx-section-heading">
+
 
       <div>
 
@@ -856,6 +1535,7 @@
 
 
       <div class="mx-product-filters">
+
 
         <select
           id="stock"
@@ -914,7 +1594,10 @@
 </section>
 
 
-<!-- ================= CUSTOM PRINT ================= -->
+
+<!-- =========================================================
+     CUSTOM PRINT
+========================================================= -->
 
 <section
   class="mx-custom-print"
@@ -922,21 +1605,30 @@
 
   <div class="mx-container mx-custom-grid">
 
-    <div>
+
+    <div class="mx-custom-content">
 
       <span class="mx-badge">
         CUSTOM PRINTING
       </span>
 
+
       <h2>
+
         আপনার ডিজাইন,
-        আমাদের প্রিন্ট
+        <strong>
+          আমাদের প্রিন্ট
+        </strong>
+
       </h2>
 
+
       <p>
+
         জার্সি, টি-শার্ট ও বিভিন্ন পণ্যে
         নিজের পছন্দের Name, Number,
         Logo অথবা Custom Design প্রিন্ট করুন।
+
       </p>
 
 
@@ -970,10 +1662,12 @@
 
 
       <a
-        class="mx-primary-btn"
-        href="#contact">
+        href="https://wa.me/8801612961523?text=আমি%20Mehedi%20Xpress%20থেকে%20Custom%20Printing%20সম্পর্কে%20জানতে%20চাই।"
+        target="_blank"
+        rel="noopener"
+        class="mx-primary-btn">
 
-        অর্ডারের জন্য যোগাযোগ করুন
+        WhatsApp-এ যোগাযোগ করুন →
 
       </a>
 
@@ -982,16 +1676,28 @@
 
     <div class="mx-print-box">
 
-      <div class="mx-shirt">
-        👕
+      <div class="mx-print-demo-products">
+
+        <span>
+          👕
+        </span>
+
+        <span>
+          ☕
+        </span>
+
+        <span>
+          🧢
+        </span>
+
       </div>
 
       <h3>
-        CUSTOM JERSEY
+        YOUR DESIGN HERE
       </h3>
 
       <p>
-        আপনার Team • আপনার Design
+        Custom Printing Preview
       </p>
 
     </div>
@@ -1001,24 +1707,28 @@
 </section>
 
 
-<!-- ================= DELIVERY ================= -->
+
+<!-- =========================================================
+     DELIVERY
+========================================================= -->
 
 <section
-  class="mx-section"
+  class="mx-section mx-delivery-section"
   id="delivery">
 
   <div class="mx-container">
+
 
     <div class="mx-section-heading">
 
       <div>
 
         <span>
-          DELIVERY
+          DELIVERY & PAYMENT
         </span>
 
         <h2>
-          ডেলিভারি চার্জ
+          ডেলিভারি তথ্য
         </h2>
 
       </div>
@@ -1031,7 +1741,7 @@
 
       <article class="mx-delivery-card">
 
-        <div>
+        <div class="mx-delivery-icon">
           📍
         </div>
 
@@ -1052,7 +1762,7 @@
 
       <article class="mx-delivery-card">
 
-        <div>
+        <div class="mx-delivery-icon">
           🇧🇩
         </div>
 
@@ -1073,7 +1783,7 @@
 
       <article class="mx-delivery-card">
 
-        <div>
+        <div class="mx-delivery-icon">
           💳
         </div>
 
@@ -1098,7 +1808,10 @@
 </section>
 
 
-<!-- ================= CONTACT ================= -->
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
 
 <section
   class="mx-contact"
@@ -1106,7 +1819,8 @@
 
   <div class="mx-container mx-contact-grid">
 
-    <div>
+
+    <div class="mx-contact-content">
 
       <span class="mx-badge">
         CONTACT US
@@ -1117,15 +1831,18 @@
       </h2>
 
       <p>
-        পণ্য, Custom Printing অথবা
-        অর্ডার সংক্রান্ত যেকোনো তথ্যের
-        জন্য আমাদের সাথে যোগাযোগ করুন।
+
+        পণ্য, Custom Jersey, Custom Printing অথবা
+        অর্ডার সংক্রান্ত যেকোনো তথ্যের জন্য
+        আমাদের সাথে যোগাযোগ করুন।
+
       </p>
 
     </div>
 
 
     <div class="mx-contact-card">
+
 
       <p>
         <b>
@@ -1136,6 +1853,7 @@
       <a href="tel:+8801612961523">
         +8801612961523
       </a>
+
 
       <a
         class="mx-contact-action"
@@ -1150,7 +1868,7 @@
 
       <p>
         <b>
-          ✉️ Email
+          ✉ Email
         </b>
       </p>
 
@@ -1161,24 +1879,26 @@
 
       <p>
         <b>
-          📍 Address
+          📍 ঠিকানা
         </b>
       </p>
 
+
       <span>
-        দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের
-        উত্তর পাশে, বাঙ্গরা বাজার থানা,
-        মুরাদনগর, কুমিল্লা
+
+        দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে,
+        বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা
+
       </span>
 
 
       <a
-        class="mx-contact-action"
+        class="mx-contact-action mx-map-action"
         href="https://maps.app.goo.gl/Vmhr4yf4wPqZwC8y8"
         target="_blank"
         rel="noopener">
 
-        🗺️ Google Maps-এ লোকেশন দেখুন
+        🗺 Google Maps-এ দেখুন
 
       </a>
 
@@ -1188,28 +1908,38 @@
 
 </section>
 
+
 </main>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      FOOTER
-===================================================== -->
+========================================================= -->
 
 <footer class="mx-footer">
 
   <div class="mx-container mx-footer-grid">
 
-    <div>
+
+    <div class="mx-footer-brand">
 
       <a
-        class="mx-footer-logo-image"
-        href="#home">
+        href="#home"
+        class="mx-footer-logo">
 
         <img
           src="assets/images/logo.png"
-          alt="Mehedi Xpress">
+          alt="Mehedi Xpress"
+          onerror="this.style.display='none'"
+        >
+
+        <strong>
+          MEHEDI XPRESS
+        </strong>
 
       </a>
+
 
       <p>
         Sports • Fashion • Custom Print
@@ -1234,6 +1964,10 @@
 
       <a href="#products">
         Products
+      </a>
+
+      <a href="#wishlist">
+        Wishlist
       </a>
 
       <a href="#custom-print">
@@ -1265,6 +1999,37 @@
         bKash / Nagad
       </p>
 
+      <p>
+        Nationwide Delivery
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Follow Us
+      </h4>
+
+      <a
+        href="https://www.facebook.com/share/1U5HD22xSw/"
+        target="_blank"
+        rel="noopener">
+
+        Facebook
+
+      </a>
+
+      <a
+        href="https://www.tiktok.com/@mehedi.xpress"
+        target="_blank"
+        rel="noopener">
+
+        TikTok
+
+      </a>
+
     </div>
 
   </div>
@@ -1277,8 +2042,7 @@
       <span id="footer"></span>
 
       <p>
-        © 2026 Mehedi Xpress.
-        All Rights Reserved.
+        © 2026 Mehedi Xpress. All Rights Reserved.
       </p>
 
     </div>
@@ -1288,15 +2052,17 @@
 </footer>
 
 
-<!-- =====================================================
-     SHOPPING CART DRAWER
-===================================================== -->
+
+<!-- =========================================================
+     CART DRAWER
+========================================================= -->
 
 <div
   id="cart"
   class="drawer">
 
   <div class="drawerbox">
+
 
     <div class="row between">
 
@@ -1306,7 +2072,8 @@
 
       <button
         class="btn light"
-        data-close="cart">
+        data-close="cart"
+        type="button">
 
         ✕
 
@@ -1316,6 +2083,7 @@
 
 
     <div id="cartItems"></div>
+
 
     <hr>
 
@@ -1328,6 +2096,7 @@
     <button
       id="checkout"
       class="btn primary"
+      type="button"
       style="width:100%">
 
       CHECKOUT
@@ -1339,15 +2108,17 @@
 </div>
 
 
-<!-- =====================================================
-     PRODUCT DETAILS MODAL
-===================================================== -->
+
+<!-- =========================================================
+     PRODUCT DETAIL MODAL
+========================================================= -->
 
 <div
   id="detail"
   class="modal">
 
   <div class="modalbox">
+
 
     <div class="row between">
 
@@ -1357,7 +2128,8 @@
 
       <button
         class="btn light"
-        data-close="detail">
+        data-close="detail"
+        type="button">
 
         ✕
 
@@ -1373,15 +2145,17 @@
 </div>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      ACCOUNT DRAWER
-===================================================== -->
+========================================================= -->
 
 <div
   id="accountModal"
   class="drawer mx-account-drawer">
 
   <div class="drawerbox mx-account-box">
+
 
     <div class="row between">
 
@@ -1391,7 +2165,8 @@
 
       <button
         class="btn light"
-        data-close="accountModal">
+        data-close="accountModal"
+        type="button">
 
         ✕
 
@@ -1407,15 +2182,17 @@
 </div>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      CHECKOUT MODAL
-===================================================== -->
+========================================================= -->
 
 <div
   id="checkoutModal"
   class="modal">
 
   <div class="modalbox">
+
 
     <div class="row between">
 
@@ -1425,7 +2202,8 @@
 
       <button
         class="btn light"
-        data-close="checkoutModal">
+        data-close="checkoutModal"
+        type="button">
 
         ✕
 
@@ -1435,6 +2213,7 @@
 
 
     <form id="checkoutForm">
+
 
       <div class="formgrid">
 
@@ -1451,7 +2230,9 @@
             class="field"
             name="name"
             required
-            placeholder="পূর্ণ নাম">
+            autocomplete="name"
+            placeholder="পূর্ণ নাম"
+          >
 
         </div>
 
@@ -1468,7 +2249,9 @@
             class="field"
             name="phone"
             required
-            placeholder="01XXXXXXXXX">
+            autocomplete="tel"
+            placeholder="01XXXXXXXXX"
+          >
 
         </div>
 
@@ -1555,12 +2338,13 @@
             name="area"
             id="checkoutArea"
             required
-            placeholder="ইউনিয়ন / এলাকার নাম">
+            placeholder="ইউনিয়ন / এলাকার নাম"
+          >
 
         </div>
 
 
-        <!-- ADDRESS -->
+        <!-- FULL ADDRESS -->
 
         <div class="full">
 
@@ -1573,7 +2357,7 @@
             name="address"
             rows="3"
             required
-            placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+            placeholder="গ্রাম/রোড, বাজার, পোস্ট অফিসসহ সম্পূর্ণ ঠিকানা"></textarea>
 
         </div>
 
@@ -1615,7 +2399,7 @@
           <div class="mx-payment-box">
 
             <b>
-              Advance Delivery Charge
+              Payment Information
             </b>
 
             <p>
@@ -1629,8 +2413,10 @@
             </p>
 
             <small>
-              Manual payment করলে
-              Transaction ID দিন।
+
+              Manual payment করলে Transaction ID দিন।
+              Send Money ব্যবহার করুন।
+
             </small>
 
           </div>
@@ -1649,7 +2435,8 @@
           <input
             class="field"
             name="trx"
-            placeholder="TrxID">
+            placeholder="TrxID"
+          >
 
         </div>
 
@@ -1678,14 +2465,16 @@
 </div>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      JAVASCRIPT
-===================================================== -->
+========================================================= -->
 
 <script
   type="module"
   src="assets/js/store.js">
 </script>
+
 
 </body>
 </html>
