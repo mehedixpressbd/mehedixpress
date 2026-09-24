@@ -1,0 +1,15 @@
+export const firebaseConfig = {
+  apiKey: "AIzaSyATKk9r50AZYrdbVxzPxn0h8WBI-ESNZGQ",
+  authDomain: "mehedi-xpress.firebaseapp.com",
+  projectId: "mehedi-xpress",
+  storageBucket: "mehedi-xpress.firebasestorage.app",
+  messagingSenderId: "750136252870",
+  appId: "1:750136252870:web:201f53d2dfeac82eb07ac7"
+};
+
+export const ADMIN_UID = "3Z0MLHObZOay8OFFnhreMvbg0e53";
+
+export const imageConfig = {
+  cloudName: "PASTE_CLOUDINARY_CLOUD_NAME",
+  uploadPreset: "PASTE_UNSIGNED_UPLOAD_PRESET"
+};

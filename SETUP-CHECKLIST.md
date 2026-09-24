@@ -1,0 +1,22 @@
+# Setup Checklist
+- [ ] firebase-config.example.js → firebase-config.js
+- [ ] Firebase config বসানো
+- [ ] ADMIN_UID বসানো
+- [ ] Email/Password Authentication enabled
+- [ ] Firestore rules publish
+- [ ] Cloudinary account + restricted unsigned preset
+- [ ] cloudName + uploadPreset বসানো
+- [ ] Admin login
+- [ ] Category add
+- [ ] Product + 1–5 image upload
+- [ ] অন্য device-এ image দেখা
+- [ ] Variant stock
+- [ ] Customer registration/login
+- [ ] Cart selected items
+- [ ] Checkout/order
+- [ ] Confirmed stock deduction
+- [ ] Cancel stock return
+- [ ] Delivered profit snapshot
+- [ ] POS sale
+- [ ] Purchase weighted-average cost
+- [ ] Expense + report + CSV
