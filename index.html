@@ -1,1 +1,525 @@
-<!doctype html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mehedi Xpress</title><link rel="stylesheet" href="assets/css/styles.css"></head><body><div class="top"><div class="wrap">খেলাধুলার সামগ্রীর এক বিশাল সমাহার <span id="phone" style="float:right"></span></div></div><header class="head"><div class="wrap"><div class="brand">MEHEDI <b>XPRESS</b></div><div class="search"><input class="field" id="search" placeholder="পণ্য/কোড খুঁজুন"></div><button class="btn light" id="account">Account</button><button class="btn dark" id="cartBtn">Cart <span id="count">0</span></button></div></header><section class="hero"><div class="wrap"><b>SPORTS • FASHION • CUSTOM PRINT</b><h1>আপনার খেলা,<br>আপনার স্টাইল।</h1><p>জার্সি, স্পোর্টস সামগ্রী, ফ্যাশন ও কাস্টম প্রিন্ট।</p><a href="#shop"><button class="btn primary">SHOP NOW</button></a></div></section><section class="section"><div class="wrap"><h2>ক্যাটাগরি</h2><div class="toolbar" id="cats"></div></div></section><section class="section" id="shop"><div class="wrap"><div class="row between"><h2>পণ্যসমূহ</h2><div class="toolbar"><select class="field" id="sort"><option value="new">নতুন</option><option value="low">কম দাম</option><option value="high">বেশি দাম</option></select><select class="field" id="stock"><option value="">সব</option><option value="in">স্টকে আছে</option><option value="out">স্টক শেষ</option></select></div></div><div class="grid" id="grid"></div></div></section><footer class="top"><div class="wrap"><h2>MEHEDI XPRESS</h2><div id="footer"></div></div></footer><div class="drawer" id="cart"><div class="drawerbox"><div class="row between"><h2>Cart</h2><button class="btn light" data-close="cart">✕</button></div><div id="cartItems"></div><h3 id="subtotal"></h3><button class="btn primary" id="checkout">CHECKOUT</button></div></div><div class="modal" id="detail"><div class="modalbox"><div class="row between"><h2>Product Details</h2><button class="btn light" data-close="detail">✕</button></div><div id="detailBody"></div></div></div><div class="modal" id="checkoutModal"><div class="modalbox"><div class="row between"><h2>Checkout</h2><button class="btn light" data-close="checkoutModal">✕</button></div><form id="checkoutForm" class="formgrid"><input class="field" name="name" placeholder="নাম" required><input class="field" name="phone" placeholder="মোবাইল" required><input class="field" name="district" placeholder="জেলা" required><input class="field" name="area" placeholder="উপজেলা/এলাকা" required><textarea class="field full" name="address" placeholder="পূর্ণ ঠিকানা" required></textarea><select class="field" name="payment"><option>Cash on Delivery</option><option>bKash Manual</option><option>Nagad Manual</option></select><input class="field" name="trx" placeholder="Transaction ID"><button class="btn primary full" id="place">PLACE ORDER</button></form></div></div><div class="modal" id="accountModal"><div class="modalbox"><div class="row between"><h2>Customer Account</h2><button class="btn light" data-close="accountModal">✕</button></div><div id="accountBody"></div></div></div><script type="module" src="assets/js/store.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Mehedi Xpress - Sports, Fashion & Custom Print"
+  >
+
+  <title>Mehedi Xpress | Sports • Fashion • Custom Print</title>
+
+  <link
+    rel="stylesheet"
+    href="assets/css/styles.css"
+  >
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div class="top">
+    <div class="wrap row between">
+
+      <div>
+        📞 <span id="phone"></span>
+      </div>
+
+      <div>
+        🚚 সারা বাংলাদেশে Cash on Delivery
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- HEADER -->
+  <header class="head">
+
+    <div class="wrap">
+
+      <div class="brand">
+        MEHEDI <b>XPRESS</b>
+      </div>
+
+      <div class="search">
+        <input
+          id="search"
+          class="field"
+          type="search"
+          placeholder="পণ্য/কোড খুঁজুন..."
+        >
+      </div>
+
+      <button
+        class="btn light"
+        id="account"
+        type="button">
+        👤 Account
+      </button>
+
+      <button
+        class="btn dark"
+        id="cartBtn"
+        type="button">
+        🛒 Cart
+        <span id="count">0</span>
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="wrap">
+
+      <b>
+        SPORTS • FASHION • CUSTOM PRINT
+      </b>
+
+      <h1>
+        আপনার খেলা,<br>
+        আপনার স্টাইল।
+      </h1>
+
+      <p>
+        জার্সি, স্পোর্টস সামগ্রী, ফ্যাশন
+        এবং কাস্টম প্রিন্টের বিশ্বস্ত ঠিকানা।
+      </p>
+
+      <button
+        class="btn primary"
+        onclick="
+          document
+          .getElementById('products')
+          .scrollIntoView()
+        ">
+        SHOP NOW
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- BENEFITS -->
+  <section class="section">
+
+    <div class="wrap">
+
+      <div class="grid">
+
+        <div class="panel">
+          <h3>🚚 দ্রুত ডেলিভারি</h3>
+          <p class="muted">
+            কুমিল্লা ও সারাদেশে
+            হোম ডেলিভারি সুবিধা।
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>💳 সহজ পেমেন্ট</h3>
+          <p class="muted">
+            Cash on Delivery,
+            bKash ও Nagad।
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>👕 Custom Print</h3>
+          <p class="muted">
+            Jersey Name, Number,
+            Logo ও Custom Design।
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>📞 Customer Support</h3>
+          <p class="muted">
+            অর্ডার ও পণ্য সংক্রান্ত
+            সহায়তা।
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CATEGORY -->
+  <section class="section">
+
+    <div class="wrap">
+
+      <div class="row between">
+
+        <div>
+          <h2>ক্যাটাগরি</h2>
+
+          <p class="muted">
+            আপনার প্রয়োজনীয় পণ্য
+            ক্যাটাগরি থেকে খুঁজুন।
+          </p>
+        </div>
+
+      </div>
+
+      <div
+        id="cats"
+        class="toolbar">
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PRODUCTS -->
+  <section
+    class="section"
+    id="products">
+
+    <div class="wrap">
+
+      <div class="row between">
+
+        <div>
+          <h2>আমাদের পণ্য</h2>
+
+          <p class="muted">
+            নতুন ও জনপ্রিয় পণ্যগুলো দেখুন।
+          </p>
+        </div>
+
+        <div class="toolbar">
+
+          <select
+            id="stock"
+            class="field">
+
+            <option value="">
+              সব Stock
+            </option>
+
+            <option value="in">
+              In Stock
+            </option>
+
+            <option value="out">
+              Stock Out
+            </option>
+
+          </select>
+
+
+          <select
+            id="sort"
+            class="field">
+
+            <option value="new">
+              নতুন আগে
+            </option>
+
+            <option value="low">
+              কম দাম আগে
+            </option>
+
+            <option value="high">
+              বেশি দাম আগে
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <br>
+
+      <div
+        id="grid"
+        class="grid">
+
+        <div class="panel">
+          পণ্য লোড হচ্ছে...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CUSTOM PRINT -->
+  <section class="section">
+
+    <div class="wrap">
+
+      <div class="panel">
+
+        <h2>
+          🎨 Custom Printing Service
+        </h2>
+
+        <p>
+          নিজের পছন্দ অনুযায়ী Jersey,
+          T-Shirt এবং বিভিন্ন পণ্যে
+          Custom Print করুন।
+        </p>
+
+        <p class="muted">
+          Jersey Name & Number •
+          Logo Print •
+          DTF •
+          Sublimation •
+          Custom Design
+        </p>
+
+        <button
+          class="btn primary"
+          type="button"
+          onclick="
+            document
+            .getElementById('contact')
+            .scrollIntoView()
+          ">
+          যোগাযোগ করুন
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- DELIVERY -->
+  <section class="section">
+
+    <div class="wrap">
+
+      <h2>ডেলিভারি তথ্য</h2>
+
+      <div class="grid">
+
+        <div class="panel">
+
+          <h3>📍 কুমিল্লা</h3>
+
+          <div class="price">
+            ৳80
+          </div>
+
+          <p class="muted">
+            Delivery Charge
+          </p>
+
+        </div>
+
+
+        <div class="panel">
+
+          <h3>🇧🇩 অন্যান্য জেলা</h3>
+
+          <div class="price">
+            ৳150
+          </div>
+
+          <p class="muted">
+            Delivery Charge
+          </p>
+
+        </div>
+
+
+        <div class="panel">
+
+          <h3>💵 Cash on Delivery</h3>
+
+          <p class="muted">
+            পণ্যের মূল্য ডেলিভারির সময়
+            পরিশোধ করার সুবিধা।
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CONTACT -->
+  <section
+    class="section"
+    id="contact">
+
+    <div class="wrap">
+
+      <div class="panel">
+
+        <h2>
+          MEHEDI XPRESS
+        </h2>
+
+        <h3>
+          Sports • Fashion • Custom Print
+        </h3>
+
+        <p>
+          📍 দক্ষিণ বাঙ্গরা বাজার
+          বাসস্ট্যান্ডের উত্তর পাশে,
+          বাঙ্গরা বাজার থানা,
+          মুরাদনগর, কুমিল্লা
+        </p>
+
+        <p>
+          📞
+          <a href="tel:+8801612961523">
+            +8801612961523
+          </a>
+        </p>
+
+        <p>
+          ✉️
+          <a href="mailto:mehedixpress522@gmail.com">
+            mehedixpress522@gmail.com
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="top">
+
+    <div class="wrap">
+
+      <h3>
+        MEHEDI XPRESS
+      </h3>
+
+      <p>
+        খেলাধুলার সামগ্রীর এক বিশাল সমাহার
+      </p>
+
+      <p id="footer"></p>
+
+      <p>
+        © 2026 Mehedi Xpress.
+        All Rights Reserved.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- CART DRAWER -->
+  <div
+    id="cart"
+    class="drawer">
+
+    <div class="drawerbox">
+
+      <div class="row between">
+
+        <h2>
+          🛒 Shopping Cart
+        </h2>
+
+        <button
+          class="btn light"
+          data-close="cart">
+          ✕
+        </button>
+
+      </div>
+
+      <div id="cartItems"></div>
+
+      <hr>
+
+      <h3 id="subtotal">
+        Subtotal: ৳0
+      </h3>
+
+      <button
+        id="checkout"
+        class="btn primary"
+        style="width:100%">
+        CHECKOUT
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCT DETAILS -->
+  <div
+    id="detail"
+    class="modal">
+
+    <div class="modalbox">
+
+      <div class="row between">
+
+        <h2>
+          Product Details
+        </h2>
+
+        <button
+          class="btn light"
+          data-close="detail">
+          ✕
+        </button>
+
+      </div>
+
+      <div id="detailBody"></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ACCOUNT -->
+  <div
+    id="accountModal"
+    class="modal">
+
+    <div class="modalbox">
+
+      <div class="row between">
+
+        <h2>
+          My Account
+        </h2>
+
+        <button
+          class="btn light"
+          data-close="accountModal">
+          ✕
+        </button>
+
+      </div>
+
+      <div
