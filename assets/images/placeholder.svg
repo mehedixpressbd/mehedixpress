@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="700" viewBox="0 0 700 700">
+  <rect width="700" height="700" fill="#eef1f5"/>
+  <rect x="40" y="40" width="620" height="620" rx="35" fill="#ffffff"/>
+  <text
+    x="350"
+    y="325"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="46"
+    font-weight="700"
+    fill="#111827">
+    MEHEDI
+  </text>
+  <text
+    x="350"
+    y="385"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="46"
+    font-weight="700"
+    fill="#f97316">
+    XPRESS
+  </text>
+  <text
+    x="350"
+    y="430"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="18"
+    fill="#64748b">
+    PRODUCT IMAGE
+  </text>
+</svg>
