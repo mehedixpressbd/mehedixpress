@@ -1,6 +1,6 @@
 /* =========================================================
-   MEHEDI XPRESS — CUSTOMER STORE
-   Sports • Fashion • Custom Print
+   MEHEDI XPRESS — STORE.JS
+   Customer Website
    ========================================================= */
 
 import { auth, db } from "./firebase.js";
@@ -27,122 +27,82 @@ import {
 
 
 /* =========================================================
-   BASIC HELPERS
+   HELPERS
    ========================================================= */
 
 const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => [...document.querySelectorAll(selector)];
 
-const $$ = (selector) =>
-  [...document.querySelectorAll(selector)];
-
-const money = (number) =>
-  "৳" + Number(number || 0).toLocaleString("en-BD");
+const money = (value) =>
+  "৳" + Number(value || 0).toLocaleString("en-BD");
 
 
 function escapeHtml(value = "") {
-
-  return String(value).replace(
-    /[&<>"']/g,
-    (character) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[character])
-  );
-
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
 }
 
 
 function safeImage(product) {
-
   if (
-    product?.images &&
-    Array.isArray(product.images) &&
+    Array.isArray(product?.images) &&
     product.images.length
   ) {
-
     const first = product.images[0];
 
-    if (typeof first === "string") {
-      return first;
-    }
-
-    if (first?.url) {
-      return first.url;
-    }
-
+    if (typeof first === "string") return first;
+    if (first?.url) return first.url;
   }
 
-  if (product?.image) {
-    return product.image;
-  }
-
-  if (product?.imageUrl) {
-    return product.imageUrl;
-  }
-
-  return "assets/images/placeholder.svg";
+  return (
+    product?.image ||
+    product?.imageUrl ||
+    "assets/images/placeholder.svg"
+  );
 }
 
 
 /* =========================================================
-   STORE STATE
+   STATE
    ========================================================= */
 
 let products = [];
-
 let categories = [];
-
 let settings = {};
-
 let user = null;
-
 let activeCategory = "";
 
 let currentLanguage =
   localStorage.getItem("mx-lang") || "bn";
 
-
 let cart = [];
-
 let wishlist = [];
 
 
 try {
+  cart = JSON.parse(
+    localStorage.getItem("mx-cart") || "[]"
+  );
 
-  cart =
-    JSON.parse(
-      localStorage.getItem("mx-cart") || "[]"
-    );
-
-  if (!Array.isArray(cart)) {
-    cart = [];
-  }
-
+  if (!Array.isArray(cart)) cart = [];
 } catch {
-
   cart = [];
-
 }
 
 
 try {
+  wishlist = JSON.parse(
+    localStorage.getItem("mx-wishlist") || "[]"
+  );
 
-  wishlist =
-    JSON.parse(
-      localStorage.getItem("mx-wishlist") || "[]"
-    );
-
-  if (!Array.isArray(wishlist)) {
-    wishlist = [];
-  }
-
+  if (!Array.isArray(wishlist)) wishlist = [];
 } catch {
-
   wishlist = [];
-
 }
 
 
@@ -151,7 +111,6 @@ try {
    ========================================================= */
 
 const demoCategories = [
-
   "Football Jersey",
   "Cricket Jersey",
   "Kids Jersey",
@@ -162,7 +121,6 @@ const demoCategories = [
   "Badminton",
   "Custom Jersey",
   "Custom Print"
-
 ];
 
 
@@ -171,18 +129,15 @@ const demoCategories = [
    ========================================================= */
 
 function productStock(product) {
-
   if (
     Array.isArray(product?.variants) &&
     product.variants.length
   ) {
-
     return product.variants.reduce(
       (total, variant) =>
         total + Number(variant.stock || 0),
       0
     );
-
   }
 
   return Number(product?.stock || 0);
@@ -190,7 +145,6 @@ function productStock(product) {
 
 
 function productPrice(product) {
-
   return Number(
     product?.salePrice ||
     product?.regularPrice ||
@@ -198,39 +152,30 @@ function productPrice(product) {
     product?.variants?.[0]?.sell ||
     0
   );
-
 }
 
 
 function regularPrice(product) {
-
   return Number(
     product?.regularPrice ||
     product?.price ||
     productPrice(product)
   );
-
 }
 
 
 function discountPercent(product) {
-
-  const regular =
-    regularPrice(product);
-
-  const sale =
-    Number(product?.salePrice || 0);
+  const regular = regularPrice(product);
+  const sale = Number(product?.salePrice || 0);
 
   if (
     regular > 0 &&
     sale > 0 &&
     sale < regular
   ) {
-
     return Math.round(
       ((regular - sale) / regular) * 100
     );
-
   }
 
   return 0;
@@ -238,12 +183,10 @@ function discountPercent(product) {
 
 
 function productName(product) {
-
   if (
     currentLanguage === "en" &&
     product?.nameEn
   ) {
-
     return product.nameEn;
   }
 
@@ -256,11 +199,10 @@ function productName(product) {
 
 
 /* =========================================================
-   LOCAL STORAGE
+   CART / WISHLIST STORAGE
    ========================================================= */
 
 function saveCart() {
-
   localStorage.setItem(
     "mx-cart",
     JSON.stringify(cart)
@@ -271,41 +213,30 @@ function saveCart() {
 
 
 function saveWishlist() {
-
   localStorage.setItem(
     "mx-wishlist",
     JSON.stringify(wishlist)
   );
 
   updateWishlistCount();
-
   renderProducts(activeCategory);
-
   renderPopularProducts();
-
   renderWishlistSection();
 }
 
 
 function isWished(id) {
-
   return wishlist.includes(id);
 }
 
 
 function toggleWishlist(id) {
-
   if (isWished(id)) {
-
-    wishlist =
-      wishlist.filter(
-        (itemId) => itemId !== id
-      );
-
+    wishlist = wishlist.filter(
+      (itemId) => itemId !== id
+    );
   } else {
-
     wishlist.push(id);
-
   }
 
   saveWishlist();
@@ -313,33 +244,375 @@ function toggleWishlist(id) {
 
 
 function updateWishlistCount() {
-
-  const element =
-    $("#wishlistCount");
+  const element = $("#wishlistCount");
 
   if (element) {
-
-    element.textContent =
-      wishlist.length;
-
+    element.textContent = wishlist.length;
   }
 }
 
 
 /* =========================================================
-   FIREBASE STORE LOAD
+   HERO SLIDER — FIXED VERSION
+   ========================================================= */
+
+function initBannerSlider() {
+  const hero = document.querySelector(".mx-hero");
+  const track = document.getElementById("bannerTrack");
+  const slides = Array.from(
+    document.querySelectorAll("#bannerTrack .mx-banner-slide")
+  );
+
+  const prevButton =
+    document.getElementById("bannerPrev");
+
+  const nextButton =
+    document.getElementById("bannerNext");
+
+  const dotsHost =
+    document.getElementById("bannerDots");
+
+
+  if (!track || slides.length === 0) {
+    console.warn("Mehedi Xpress: Hero slides পাওয়া যায়নি.");
+    return;
+  }
+
+
+  let currentSlide = 0;
+  let autoTimer = null;
+  let touchStartX = 0;
+
+
+  /* -----------------------------------------
+     IMPORTANT:
+     পুরনো CSS transform/flex slider override
+     ----------------------------------------- */
+
+  track.style.position = "relative";
+  track.style.display = "block";
+  track.style.transform = "none";
+  track.style.transition = "none";
+  track.style.width = "100%";
+  track.style.overflow = "hidden";
+
+
+  slides.forEach((slide, index) => {
+    slide.style.width = "100%";
+    slide.style.minWidth = "100%";
+    slide.style.margin = "0";
+    slide.style.transform = "none";
+
+    if (index === 0) {
+      slide.style.position = "relative";
+      slide.style.display = "block";
+      slide.style.opacity = "1";
+      slide.style.visibility = "visible";
+      slide.style.pointerEvents = "auto";
+      slide.style.zIndex = "2";
+    } else {
+      slide.style.position = "absolute";
+      slide.style.left = "0";
+      slide.style.top = "0";
+      slide.style.display = "none";
+      slide.style.opacity = "0";
+      slide.style.visibility = "hidden";
+      slide.style.pointerEvents = "none";
+      slide.style.zIndex = "1";
+    }
+  });
+
+
+  /* -----------------------------------------
+     Images
+     ----------------------------------------- */
+
+  slides.forEach((slide) => {
+    const image =
+      slide.querySelector(".mx-hero-banner-image");
+
+    if (image) {
+      image.style.display = "block";
+      image.style.width = "100%";
+      image.style.maxWidth = "100%";
+      image.style.height = "auto";
+    }
+  });
+
+
+  /* -----------------------------------------
+     Create dots
+     ----------------------------------------- */
+
+  let dots = [];
+
+  if (dotsHost) {
+    dotsHost.innerHTML = "";
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement("button");
+
+      dot.type = "button";
+      dot.className = "mx-banner-dot";
+
+      dot.setAttribute(
+        "aria-label",
+        `Banner ${index + 1}`
+      );
+
+      dot.dataset.slideTo = String(index);
+
+      dot.style.width = "10px";
+      dot.style.height = "10px";
+      dot.style.padding = "0";
+      dot.style.border = "0";
+      dot.style.borderRadius = "50%";
+      dot.style.cursor = "pointer";
+      dot.style.transition = "all .25s ease";
+
+      dotsHost.appendChild(dot);
+    });
+
+    dots = Array.from(
+      dotsHost.querySelectorAll(".mx-banner-dot")
+    );
+  }
+
+
+  /* -----------------------------------------
+     Show one slide
+     ----------------------------------------- */
+
+  function showSlide(index) {
+    if (!slides.length) return;
+
+    currentSlide =
+      (index + slides.length) %
+      slides.length;
+
+
+    slides.forEach((slide, slideIndex) => {
+      const active =
+        slideIndex === currentSlide;
+
+      slide.classList.toggle(
+        "active",
+        active
+      );
+
+      if (active) {
+        slide.style.display = "block";
+        slide.style.position = "relative";
+        slide.style.left = "0";
+        slide.style.top = "0";
+        slide.style.opacity = "1";
+        slide.style.visibility = "visible";
+        slide.style.pointerEvents = "auto";
+        slide.style.zIndex = "2";
+      } else {
+        slide.style.display = "none";
+        slide.style.position = "absolute";
+        slide.style.left = "0";
+        slide.style.top = "0";
+        slide.style.opacity = "0";
+        slide.style.visibility = "hidden";
+        slide.style.pointerEvents = "none";
+        slide.style.zIndex = "1";
+      }
+    });
+
+
+    dots.forEach((dot, dotIndex) => {
+      const active =
+        dotIndex === currentSlide;
+
+      dot.classList.toggle(
+        "active",
+        active
+      );
+
+      dot.style.background =
+        active ? "#76e30c" : "rgba(255,255,255,.75)";
+
+      dot.style.transform =
+        active ? "scale(1.35)" : "scale(1)";
+    });
+  }
+
+
+  /* -----------------------------------------
+     Auto slider
+     ----------------------------------------- */
+
+  function stopAutoSlide() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+
+  function startAutoSlide() {
+    stopAutoSlide();
+
+    if (slides.length <= 1) return;
+
+    autoTimer = setInterval(() => {
+      showSlide(currentSlide + 1);
+    }, 5500);
+  }
+
+
+  function restartAutoSlide() {
+    stopAutoSlide();
+    startAutoSlide();
+  }
+
+
+  /* -----------------------------------------
+     Arrow buttons
+     ----------------------------------------- */
+
+  if (prevButton) {
+    prevButton.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      showSlide(currentSlide - 1);
+      restartAutoSlide();
+    };
+  }
+
+
+  if (nextButton) {
+    nextButton.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      showSlide(currentSlide + 1);
+      restartAutoSlide();
+    };
+  }
+
+
+  /* -----------------------------------------
+     Dot buttons
+     ----------------------------------------- */
+
+  dots.forEach((dot, index) => {
+    dot.onclick = (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      showSlide(index);
+      restartAutoSlide();
+    };
+  });
+
+
+  /* -----------------------------------------
+     Pause on mouse hover
+     ----------------------------------------- */
+
+  if (hero) {
+    hero.addEventListener(
+      "mouseenter",
+      stopAutoSlide
+    );
+
+    hero.addEventListener(
+      "mouseleave",
+      startAutoSlide
+    );
+
+
+    /* ---------------------------------------
+       Mobile swipe
+       --------------------------------------- */
+
+    hero.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX =
+          event.touches[0]?.clientX || 0;
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    hero.addEventListener(
+      "touchend",
+      (event) => {
+        const touchEndX =
+          event.changedTouches[0]?.clientX || 0;
+
+        const difference =
+          touchStartX - touchEndX;
+
+
+        if (Math.abs(difference) < 45) {
+          return;
+        }
+
+
+        if (difference > 0) {
+          showSlide(currentSlide + 1);
+        } else {
+          showSlide(currentSlide - 1);
+        }
+
+        restartAutoSlide();
+      },
+      {
+        passive: true
+      }
+    );
+  }
+
+
+  /* -----------------------------------------
+     Browser tab inactive হলে timer বন্ধ
+     ----------------------------------------- */
+
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (document.hidden) {
+        stopAutoSlide();
+      } else {
+        startAutoSlide();
+      }
+    }
+  );
+
+
+  /* First slide */
+
+  showSlide(0);
+
+  /* Start */
+
+  startAutoSlide();
+
+  console.log(
+    `Mehedi Xpress Hero Slider Ready: ${slides.length} slides`
+  );
+}
+
+
+/* =========================================================
+   LOAD FIREBASE STORE
    ========================================================= */
 
 async function loadStore() {
-
   try {
-
     const [
       productSnapshot,
       categorySnapshot,
       settingsSnapshot
     ] = await Promise.all([
-
       getDocs(
         query(
           collection(db, "products"),
@@ -354,43 +627,33 @@ async function loadStore() {
       getDoc(
         doc(db, "settings", "store")
       )
-
     ]);
 
 
-    products =
-      productSnapshot.docs.map(
-        (document) => ({
-          id: document.id,
-          ...document.data()
-        })
-      );
+    products = productSnapshot.docs.map(
+      (document) => ({
+        id: document.id,
+        ...document.data()
+      })
+    );
 
 
-    categories =
-      categorySnapshot.docs.map(
-        (document) => ({
-          id: document.id,
-          ...document.data()
-        })
-      );
+    categories = categorySnapshot.docs.map(
+      (document) => ({
+        id: document.id,
+        ...document.data()
+      })
+    );
 
 
     if (!categories.length) {
-
-      categories =
-        demoCategories.map(
-          (name, index) => ({
-
-            id: "demo-" + index,
-
-            name,
-
-            active: true
-
-          })
-        );
-
+      categories = demoCategories.map(
+        (name, index) => ({
+          id: "demo-" + index,
+          name,
+          active: true
+        })
+      );
     }
 
 
@@ -401,30 +664,21 @@ async function loadStore() {
 
 
     showSettings();
-
     renderCategories();
-
     renderProducts();
-
     renderPopularProducts();
-
     renderWishlistSection();
-
     renderCart();
 
   } catch (error) {
-
     console.error(
       "Store loading error:",
       error
     );
 
-
-    const grid =
-      $("#grid");
+    const grid = $("#grid");
 
     if (grid) {
-
       grid.innerHTML = `
         <div class="mx-loading">
           পণ্য লোড করা যায়নি।
@@ -432,45 +686,33 @@ async function loadStore() {
           Firestore Rules পরীক্ষা করুন।
         </div>
       `;
-
     }
 
-
-    const popular =
-      $("#popularGrid");
+    const popular = $("#popularGrid");
 
     if (popular) {
-
       popular.innerHTML = `
         <div class="mx-loading">
           Popular products load করা যায়নি।
         </div>
       `;
-
     }
-
   }
-
 }
 
 
 /* =========================================================
-   STORE SETTINGS
+   SETTINGS
    ========================================================= */
 
 function showSettings() {
-
   const phone =
     settings.phone ||
     "+8801612961523";
 
-
-  const phoneElement =
-    $("#phone");
-
+  const phoneElement = $("#phone");
 
   if (phoneElement) {
-
     phoneElement.href =
       "tel:" +
       String(phone).replace(/\s/g, "");
@@ -479,28 +721,21 @@ function showSettings() {
       <span>☎</span>
       <span>${escapeHtml(phone)}</span>
     `;
-
   }
-
 }
 
 
 /* =========================================================
-   CATEGORY FILTER
+   FIREBASE CATEGORY BUTTONS
    ========================================================= */
 
 function renderCategories() {
+  const host = $("#cats");
 
-  const host =
-    $("#cats");
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   host.innerHTML = `
-
     <button
       type="button"
       class="active"
@@ -516,7 +751,6 @@ function renderCategories() {
       )
       .map(
         (category) => `
-
           <button
             type="button"
             data-category="${escapeHtml(
@@ -527,58 +761,38 @@ function renderCategories() {
               category.name || "Category"
             )}
           </button>
-
         `
       )
       .join("")}
-
   `;
 
 
   host
     .querySelectorAll("[data-category]")
     .forEach((button) => {
-
       button.addEventListener(
         "click",
         () => {
-
           activeCategory =
             button.dataset.category || "";
 
-
           host
-            .querySelectorAll(
-              "[data-category]"
-            )
-            .forEach(
-              (item) =>
-                item.classList.remove(
-                  "active"
-                )
+            .querySelectorAll("[data-category]")
+            .forEach((item) =>
+              item.classList.remove("active")
             );
 
+          button.classList.add("active");
 
-          button.classList.add(
-            "active"
-          );
-
-
-          renderProducts(
-            activeCategory
-          );
-
+          renderProducts(activeCategory);
 
           $("#products")
             ?.scrollIntoView({
               behavior: "smooth"
             });
-
         }
       );
-
     });
-
 }
 
 
@@ -587,28 +801,15 @@ function renderCategories() {
    ========================================================= */
 
 function productCard(product) {
-
-  const image =
-    safeImage(product);
-
-  const stock =
-    productStock(product);
-
-  const price =
-    productPrice(product);
-
-  const oldPrice =
-    regularPrice(product);
-
-  const discount =
-    discountPercent(product);
-
-  const wished =
-    isWished(product.id);
+  const image = safeImage(product);
+  const stock = productStock(product);
+  const price = productPrice(product);
+  const oldPrice = regularPrice(product);
+  const discount = discountPercent(product);
+  const wished = isWished(product.id);
 
 
   return `
-
     <article class="mx-product-card product-card">
 
       <div style="position:relative;">
@@ -662,9 +863,7 @@ function productCard(product) {
 
         <img
           src="${escapeHtml(image)}"
-          alt="${escapeHtml(
-            productName(product)
-          )}"
+          alt="${escapeHtml(productName(product))}"
           loading="lazy"
           onerror="this.src='assets/images/placeholder.svg'"
         >
@@ -681,16 +880,12 @@ function productCard(product) {
             margin-bottom:5px;
           "
         >
-          ${escapeHtml(
-            product.category || ""
-          )}
+          ${escapeHtml(product.category || "")}
         </div>
 
 
         <h3>
-          ${escapeHtml(
-            productName(product)
-          )}
+          ${escapeHtml(productName(product))}
         </h3>
 
 
@@ -721,7 +916,6 @@ function productCard(product) {
             margin:8px 0;
           "
         >
-
           <span class="price">
             ${money(price)}
           </span>
@@ -735,7 +929,6 @@ function productCard(product) {
               `
               : ""
           }
-
         </div>
 
 
@@ -744,11 +937,7 @@ function productCard(product) {
             margin-bottom:12px;
             font-size:13px;
             font-weight:700;
-            color:${
-              stock > 0
-                ? "#159447"
-                : "#e10b2c"
-            };
+            color:${stock > 0 ? "#159447" : "#e10b2c"};
           "
         >
           ${
@@ -774,9 +963,7 @@ function productCard(product) {
       </div>
 
     </article>
-
   `;
-
 }
 
 
@@ -784,43 +971,29 @@ function productCard(product) {
    PRODUCT BUTTONS
    ========================================================= */
 
-function bindProductButtons(
-  root = document
-) {
-
+function bindProductButtons(root = document) {
   root
     .querySelectorAll("[data-detail]")
     .forEach((button) => {
-
       button.onclick = () => {
-
         showProduct(
           button.dataset.detail
         );
-
       };
-
     });
 
 
   root
     .querySelectorAll("[data-wish]")
     .forEach((button) => {
-
-      button.onclick = (
-        event
-      ) => {
-
+      button.onclick = (event) => {
         event.stopPropagation();
 
         toggleWishlist(
           button.dataset.wish
         );
-
       };
-
     });
-
 }
 
 
@@ -831,88 +1004,63 @@ function bindProductButtons(
 function renderProducts(
   category = activeCategory
 ) {
+  const host = $("#grid");
 
-  const host =
-    $("#grid");
+  if (!host) return;
 
-  if (!host) {
-    return;
-  }
-
-
-  activeCategory =
-    category || "";
-
+  activeCategory = category || "";
 
   const search =
     ($("#search")?.value || "")
       .trim()
       .toLowerCase();
 
-
   const stockFilter =
     $("#stock")?.value || "all";
 
 
-  let list =
-    products.filter(
-      (product) => {
-
-        const text = `
-
-          ${product.name || ""}
-
-          ${product.nameEn || ""}
-
-          ${product.code || ""}
-
-          ${product.category || ""}
-
-          ${product.description || ""}
-
-        `
-          .toLowerCase();
+  let list = products.filter(
+    (product) => {
+      const text = `
+        ${product.name || ""}
+        ${product.nameEn || ""}
+        ${product.code || ""}
+        ${product.category || ""}
+        ${product.description || ""}
+      `.toLowerCase();
 
 
-        const categoryMatch =
-
-          !activeCategory ||
-
-          String(
-            product.category || ""
-          ).toLowerCase() ===
-
-          String(
-            activeCategory
-          ).toLowerCase();
+      const categoryMatch =
+        !activeCategory ||
+        String(
+          product.category || ""
+        ).toLowerCase() ===
+        String(
+          activeCategory
+        ).toLowerCase();
 
 
-        const searchMatch =
-
-          !search ||
-
-          text.includes(search);
+      const searchMatch =
+        !search ||
+        text.includes(search);
 
 
-        const stock =
-          productStock(product);
+      const stock =
+        productStock(product);
 
 
-        const stockMatch =
-
-          stockFilter !== "in" ||
-
-          stock > 0;
+      const stockMatch =
+        stockFilter !== "in" ||
+        stock > 0;
 
 
-        return (
-          categoryMatch &&
-          searchMatch &&
-          stockMatch
-        );
-
-      }
-    );
+      return (
+        categoryMatch &&
+        searchMatch &&
+        stockMatch
+      );
+    }
+  );
 
 
   const sort =
@@ -921,35 +1069,29 @@ function renderProducts(
 
 
   if (sort === "price-asc") {
-
     list.sort(
       (a, b) =>
         productPrice(a) -
         productPrice(b)
     );
-
   }
 
 
   if (sort === "price-desc") {
-
     list.sort(
       (a, b) =>
         productPrice(b) -
         productPrice(a)
     );
-
   }
 
 
   if (sort === "newest") {
-
     list.sort(
       (a, b) =>
         (b.createdAt?.seconds || 0) -
         (a.createdAt?.seconds || 0)
     );
-
   }
 
 
@@ -966,7 +1108,6 @@ function renderProducts(
 
 
   bindProductButtons(host);
-
 }
 
 
@@ -975,17 +1116,12 @@ function renderProducts(
    ========================================================= */
 
 function renderPopularProducts() {
+  const host = $("#popularGrid");
 
-  const host =
-    $("#popularGrid");
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   if (!products.length) {
-
     host.innerHTML = `
       <div class="mx-loading">
         এখনো কোনো পণ্য যোগ করা হয়নি।
@@ -997,17 +1133,14 @@ function renderPopularProducts() {
 
 
   const score = (product) =>
-
     Number(
       product.ratingAverage ||
       product.rating ||
       0
     ) * 10 +
-
     Number(
       product.reviewCount || 0
     ) +
-
     Number(
       product.deliveredSales ||
       product.soldCount ||
@@ -1016,7 +1149,6 @@ function renderPopularProducts() {
 
 
   const list =
-
     [...products]
       .sort(
         (a, b) =>
@@ -1033,7 +1165,6 @@ function renderPopularProducts() {
 
 
   bindProductButtons(host);
-
 }
 
 
@@ -1042,32 +1173,23 @@ function renderPopularProducts() {
    ========================================================= */
 
 function renderWishlistSection() {
+  const host = $("#wishlistGrid");
 
-  const host =
-    $("#wishlistGrid");
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   const list =
     products.filter(
       (product) =>
-        wishlist.includes(
-          product.id
-        )
+        wishlist.includes(product.id)
     );
 
 
   if (!list.length) {
-
     host.innerHTML = `
-
       <div class="mx-loading">
         ♡ এখনো কোনো পণ্য Wishlist-এ যোগ করা হয়নি।
       </div>
-
     `;
 
     return;
@@ -1081,7 +1203,6 @@ function renderWishlistSection() {
 
 
   bindProductButtons(host);
-
 }
 
 
@@ -1090,7 +1211,6 @@ function renderWishlistSection() {
    ========================================================= */
 
 function showProduct(id) {
-
   const product =
     products.find(
       (item) =>
@@ -1098,9 +1218,7 @@ function showProduct(id) {
     );
 
 
-  if (!product) {
-    return;
-  }
+  if (!product) return;
 
 
   const image =
@@ -1114,15 +1232,11 @@ function showProduct(id) {
     Array.isArray(product.variants) &&
     product.variants.length
   ) {
-
     variants =
       product.variants.filter(
         (variant) =>
-          Number(
-            variant.stock || 0
-          ) > 0
+          Number(variant.stock || 0) > 0
       );
-
   }
 
 
@@ -1130,16 +1244,13 @@ function showProduct(id) {
     !variants.length &&
     Number(product.stock || 0) > 0
   ) {
-
     variants = [{
-
       sku:
         product.sku ||
         product.code ||
         product.id,
 
       size: "",
-
       color: "",
 
       sell:
@@ -1147,45 +1258,30 @@ function showProduct(id) {
 
       stock:
         Number(product.stock || 0)
-
     }];
-
   }
 
 
-  const detail =
-    $("#detail");
+  const detail = $("#detail");
+  const body = $("#detailBody");
 
-
-  const body =
-    $("#detailBody");
-
-
-  if (!detail || !body) {
-    return;
-  }
+  if (!detail || !body) return;
 
 
   body.innerHTML = `
-
     <div
+      class="mx-detail-grid"
       style="
         display:grid;
-        grid-template-columns:
-          minmax(250px,1fr)
-          minmax(280px,1fr);
+        grid-template-columns:minmax(250px,1fr) minmax(280px,1fr);
         gap:30px;
       "
-      class="mx-detail-grid"
     >
 
       <div>
-
         <img
           src="${escapeHtml(image)}"
-          alt="${escapeHtml(
-            productName(product)
-          )}"
+          alt="${escapeHtml(productName(product))}"
           style="
             width:100%;
             border-radius:16px;
@@ -1193,7 +1289,6 @@ function showProduct(id) {
           "
           onerror="this.src='assets/images/placeholder.svg'"
         >
-
       </div>
 
 
@@ -1206,9 +1301,7 @@ function showProduct(id) {
             font-size:12px;
           "
         >
-          ${escapeHtml(
-            product.category || ""
-          )}
+          ${escapeHtml(product.category || "")}
         </div>
 
 
@@ -1218,9 +1311,7 @@ function showProduct(id) {
             color:#052f62;
           "
         >
-          ${escapeHtml(
-            productName(product)
-          )}
+          ${escapeHtml(productName(product))}
         </h2>
 
 
@@ -1229,11 +1320,7 @@ function showProduct(id) {
             ? `
               <p>
                 Product Code:
-                <b>
-                  ${escapeHtml(
-                    product.code
-                  )}
-                </b>
+                <b>${escapeHtml(product.code)}</b>
               </p>
             `
             : ""
@@ -1249,9 +1336,7 @@ function showProduct(id) {
                   color:#64768d;
                 "
               >
-                ${escapeHtml(
-                  product.description
-                )}
+                ${escapeHtml(product.description)}
               </p>
             `
             : ""
@@ -1265,49 +1350,15 @@ function showProduct(id) {
             font-size:28px;
           "
         >
-          ${money(
-            productPrice(product)
-          )}
+          ${money(productPrice(product))}
         </div>
 
 
         ${
-          Number(
-            product.reviewCount || 0
-          ) > 0
-
-            ? `
-              <p
-                style="
-                  margin-bottom:15px;
-                "
-              >
-                ⭐
-                ${Number(
-                  product.ratingAverage ||
-                  product.rating ||
-                  0
-                ).toFixed(1)}
-
-                (${Number(
-                  product.reviewCount || 0
-                )} reviews)
-              </p>
-            `
-
-            : ""
-        }
-
-
-        ${
           variants.length
-
             ? `
-
               <label>
-                <b>
-                  Size / Color
-                </b>
+                <b>Size / Color</b>
               </label>
 
               <select
@@ -1315,49 +1366,26 @@ function showProduct(id) {
                 id="variantSelect"
                 style="margin-top:7px;"
               >
-
                 ${variants
                   .map(
-                    (
-                      variant,
-                      index
-                    ) => `
-
-                      <option
-                        value="${index}"
-                      >
-
-                        ${
-                          variant.size ||
-                          "Standard"
-                        }
-
+                    (variant, index) => `
+                      <option value="${index}">
+                        ${variant.size || "Standard"}
                         ${
                           variant.color
-                            ? " / " +
-                              variant.color
+                            ? " / " + variant.color
                             : ""
                         }
-
                         —
                         ${money(
                           variant.sell ||
-                          productPrice(
-                            product
-                          )
+                          productPrice(product)
                         )}
-
-                        (${Number(
-                          variant.stock ||
-                          0
-                        )} available)
-
+                        (${Number(variant.stock || 0)} available)
                       </option>
-
                     `
                   )
                   .join("")}
-
               </select>
 
 
@@ -1388,17 +1416,12 @@ function showProduct(id) {
                 type="button"
                 class="btn primary"
                 id="addCart"
-                style="
-                  width:100%;
-                "
+                style="width:100%;"
               >
                 ADD TO CART
               </button>
-
             `
-
             : `
-
               <div
                 style="
                   padding:14px;
@@ -1410,36 +1433,29 @@ function showProduct(id) {
               >
                 এই পণ্যটি বর্তমানে Out of Stock
               </div>
-
             `
         }
 
       </div>
 
     </div>
-
   `;
 
 
   openModal(detail);
 
 
-  if (!variants.length) {
-    return;
-  }
+  if (!variants.length) return;
 
 
   $("#addCart").onclick = () => {
-
     const index =
       Number(
         $("#variantSelect").value
       );
 
-
     const variant =
       variants[index];
-
 
     const quantity =
       Math.max(
@@ -1449,22 +1465,12 @@ function showProduct(id) {
         )
       );
 
-
     const availableStock =
-      Number(
-        variant.stock || 0
-      );
+      Number(variant.stock || 0);
 
 
-    if (
-      quantity >
-      availableStock
-    ) {
-
-      alert(
-        "পর্যাপ্ত স্টক নেই।"
-      );
-
+    if (quantity > availableStock) {
+      alert("পর্যাপ্ত স্টক নেই।");
       return;
     }
 
@@ -1494,76 +1500,39 @@ function showProduct(id) {
 
 
     if (existing) {
-
       if (
-        existing.qty +
-          quantity >
+        existing.qty + quantity >
         availableStock
       ) {
-
-        alert(
-          "পর্যাপ্ত স্টক নেই।"
-        );
-
+        alert("পর্যাপ্ত স্টক নেই।");
         return;
       }
 
-
-      existing.qty +=
-        quantity;
-
+      existing.qty += quantity;
     } else {
-
       cart.push({
-
         key,
-
-        productId:
-          product.id,
-
-        name:
-          productName(product),
-
+        productId: product.id,
+        name: productName(product),
         image,
-
         sku,
-
-        size:
-          variant.size || "",
-
-        color:
-          variant.color || "",
-
-        price:
-          Number(
-            variant.sell ||
-            productPrice(product)
-          ),
-
-        qty:
-          quantity,
-
-        maxStock:
-          availableStock,
-
-        selected:
-          true
-
+        size: variant.size || "",
+        color: variant.color || "",
+        price: Number(
+          variant.sell ||
+          productPrice(product)
+        ),
+        qty: quantity,
+        maxStock: availableStock,
+        selected: true
       });
-
     }
 
 
     saveCart();
-
     closeModal(detail);
-
-    openModal(
-      $("#cart")
-    );
-
+    openModal($("#cart"));
   };
-
 }
 
 
@@ -1572,45 +1541,34 @@ function showProduct(id) {
    ========================================================= */
 
 function renderCart() {
-
   const totalCount =
     cart.reduce(
       (total, item) =>
-        total +
-        Number(item.qty || 0),
+        total + Number(item.qty || 0),
       0
     );
 
 
   if ($("#count")) {
-
     $("#count").textContent =
       totalCount;
-
   }
 
 
   if ($("#cartBadge")) {
-
     $("#cartBadge").textContent =
       totalCount;
-
   }
 
 
   const cartItems =
     $("#cartItems");
 
-
-  if (!cartItems) {
-    return;
-  }
+  if (!cartItems) return;
 
 
   if (!cart.length) {
-
     cartItems.innerHTML = `
-
       <div
         style="
           padding:35px 10px;
@@ -1620,16 +1578,12 @@ function renderCart() {
       >
         🛒 আপনার Cart এখন খালি।
       </div>
-
     `;
-
   } else {
-
     cartItems.innerHTML =
       cart
         .map(
           (item, index) => `
-
             <div
               style="
                 border:1px solid #dfe7ef;
@@ -1637,8 +1591,7 @@ function renderCart() {
                 padding:13px;
                 margin-bottom:12px;
                 display:grid;
-                grid-template-columns:
-                  72px 1fr;
+                grid-template-columns:72px 1fr;
                 gap:12px;
               "
             >
@@ -1648,9 +1601,7 @@ function renderCart() {
                   item.image ||
                   "assets/images/placeholder.svg"
                 )}"
-                alt="${escapeHtml(
-                  item.name
-                )}"
+                alt="${escapeHtml(item.name)}"
                 style="
                   width:72px;
                   height:72px;
@@ -1670,7 +1621,6 @@ function renderCart() {
                     align-items:flex-start;
                   "
                 >
-
                   <input
                     type="checkbox"
                     data-select="${index}"
@@ -1681,12 +1631,7 @@ function renderCart() {
                     }
                   >
 
-                  <b>
-                    ${escapeHtml(
-                      item.name
-                    )}
-                  </b>
-
+                  <b>${escapeHtml(item.name)}</b>
                 </label>
 
 
@@ -1697,33 +1642,23 @@ function renderCart() {
                     margin:5px 0;
                   "
                 >
-
                   ${
                     item.size
                       ? "Size: " +
-                        escapeHtml(
-                          item.size
-                        )
+                        escapeHtml(item.size)
                       : ""
                   }
 
                   ${
                     item.color
                       ? " • Color: " +
-                        escapeHtml(
-                          item.color
-                        )
+                        escapeHtml(item.color)
                       : ""
                   }
-
                 </div>
 
 
-                <strong
-                  style="
-                    color:#f51231;
-                  "
-                >
+                <strong style="color:#f51231;">
                   ${money(item.price)}
                 </strong>
 
@@ -1736,13 +1671,10 @@ function renderCart() {
                     margin-top:8px;
                   "
                 >
-
                   <input
                     type="number"
                     min="1"
-                    max="${
-                      item.maxStock || 999
-                    }"
+                    max="${item.maxStock || 999}"
                     value="${item.qty}"
                     data-qty="${index}"
                     style="
@@ -1767,17 +1699,14 @@ function renderCart() {
                   >
                     Remove
                   </button>
-
                 </div>
 
               </div>
 
             </div>
-
           `
         )
         .join("");
-
   }
 
 
@@ -1797,55 +1726,34 @@ function renderCart() {
 
 
   if ($("#subtotal")) {
-
     $("#subtotal").textContent =
       money(subtotal);
-
   }
 
 
   $$("[data-remove]")
     .forEach((button) => {
-
       button.onclick = () => {
-
         const index =
-          Number(
-            button.dataset.remove
-          );
+          Number(button.dataset.remove);
 
-
-        cart.splice(
-          index,
-          1
-        );
-
+        cart.splice(index, 1);
 
         saveCart();
-
       };
-
     });
 
 
   $$("[data-qty]")
     .forEach((input) => {
-
       input.onchange = () => {
-
         const index =
-          Number(
-            input.dataset.qty
-          );
-
+          Number(input.dataset.qty);
 
         const item =
           cart[index];
 
-
-        if (!item) {
-          return;
-        }
+        if (!item) return;
 
 
         let quantity =
@@ -1858,81 +1766,53 @@ function renderCart() {
         if (
           item.maxStock &&
           quantity >
-            Number(item.maxStock)
+          Number(item.maxStock)
         ) {
-
           quantity =
             Number(item.maxStock);
 
           alert(
             "এই পণ্যের available stock-এর বেশি নেওয়া যাবে না।"
           );
-
         }
 
 
-        item.qty =
-          quantity;
-
-
+        item.qty = quantity;
         saveCart();
-
       };
-
     });
 
 
   $$("[data-select]")
     .forEach((input) => {
-
       input.onchange = () => {
-
         const index =
-          Number(
-            input.dataset.select
-          );
+          Number(input.dataset.select);
 
-
-        if (!cart[index]) {
-          return;
-        }
-
+        if (!cart[index]) return;
 
         cart[index].selected =
           input.checked;
 
-
         saveCart();
-
       };
-
     });
-
 }
 
 
 /* =========================================================
-   MODAL / DRAWER
+   MODALS
    ========================================================= */
 
 function openModal(element) {
+  if (!element) return;
 
-  if (!element) {
-    return;
-  }
-
-  element.classList.add(
-    "active"
-  );
-
+  element.classList.add("active");
 }
 
 
 function closeModal(element) {
-
-  if (!element) {
-    return;
-  }
+  if (!element) return;
 
   element.classList.remove(
     "active",
@@ -1940,13 +1820,8 @@ function closeModal(element) {
     "show",
     "on"
   );
-
 }
 
-
-/* =========================================================
-   CLOSE BUTTONS
-   ========================================================= */
 
 $("[data-close-cart]")
   ?.addEventListener(
@@ -1965,24 +1840,16 @@ $("[data-close-detail]")
 $("[data-close-account]")
   ?.addEventListener(
     "click",
-    () =>
-      closeModal(
-        $("#accountModal")
-      )
+    () => closeModal($("#accountModal"))
   );
 
 
 $("[data-close-checkout]")
   ?.addEventListener(
     "click",
-    () =>
-      closeModal(
-        $("#checkoutModal")
-      )
+    () => closeModal($("#checkoutModal"))
   );
 
-
-/* Click outside modal */
 
 [
   "#cart",
@@ -1990,105 +1857,71 @@ $("[data-close-checkout]")
   "#accountModal",
   "#checkoutModal"
 ].forEach((selector) => {
-
-  const element =
-    $(selector);
-
+  const element = $(selector);
 
   element?.addEventListener(
     "click",
     (event) => {
-
-      if (
-        event.target === element
-      ) {
-
+      if (event.target === element) {
         closeModal(element);
-
       }
-
     }
   );
-
 });
 
-
-/* ESC */
 
 document.addEventListener(
   "keydown",
   (event) => {
-
-    if (event.key !== "Escape") {
-      return;
-    }
-
+    if (event.key !== "Escape") return;
 
     [
       "#cart",
       "#detail",
       "#accountModal",
       "#checkoutModal"
-    ].forEach(
-      (selector) =>
-        closeModal(
-          $(selector)
-        )
+    ].forEach((selector) =>
+      closeModal($(selector))
     );
-
   }
 );
 
 
 /* =========================================================
-   SEARCH / SORT / STOCK
+   SEARCH / FILTER
    ========================================================= */
 
 $("#search")
   ?.addEventListener(
     "input",
-    () =>
-      renderProducts(
-        activeCategory
-      )
+    () => renderProducts(activeCategory)
   );
 
 
 $("#sort")
   ?.addEventListener(
     "change",
-    () =>
-      renderProducts(
-        activeCategory
-      )
+    () => renderProducts(activeCategory)
   );
 
 
 $("#stock")
   ?.addEventListener(
     "change",
-    () =>
-      renderProducts(
-        activeCategory
-      )
+    () => renderProducts(activeCategory)
   );
 
 
 /* =========================================================
-   CART BUTTON
+   CART OPEN
    ========================================================= */
 
 $("#cartBtn")
   ?.addEventListener(
     "click",
     () => {
-
       renderCart();
-
-      openModal(
-        $("#cart")
-      );
-
+      openModal($("#cart"));
     }
   );
 
@@ -2101,7 +1934,6 @@ $("#checkout")
   ?.addEventListener(
     "click",
     () => {
-
       const selected =
         cart.filter(
           (item) =>
@@ -2110,82 +1942,59 @@ $("#checkout")
 
 
       if (!selected.length) {
-
         alert(
           "Cart থেকে অন্তত একটি পণ্য Select করুন।"
         );
-
         return;
       }
 
 
       if (!user) {
-
         alert(
           "Checkout করার আগে Login অথবা Register করুন।"
         );
 
-
-        closeModal(
-          $("#cart")
-        );
-
+        closeModal($("#cart"));
 
         showAccount();
 
-
-        openModal(
-          $("#accountModal")
-        );
-
+        openModal($("#accountModal"));
 
         return;
       }
 
 
-      closeModal(
-        $("#cart")
-      );
-
+      closeModal($("#cart"));
 
       fillCheckoutProfile();
 
-
-      openModal(
-        $("#checkoutModal")
-      );
-
+      openModal($("#checkoutModal"));
     }
   );
 
 
 /* =========================================================
-   CHECKOUT
+   CHECKOUT SUBMIT
    ========================================================= */
 
 $("#checkoutForm")
   ?.addEventListener(
     "submit",
     async (event) => {
-
       event.preventDefault();
 
 
       if (!user) {
-
         alert(
           "Checkout করার জন্য Login প্রয়োজন।"
         );
-
         return;
       }
 
 
       const form =
         Object.fromEntries(
-          new FormData(
-            event.target
-          )
+          new FormData(event.target)
         );
 
 
@@ -2197,11 +2006,9 @@ $("#checkoutForm")
 
 
       if (!items.length) {
-
         alert(
           "Cart-এ কোনো selected product নেই।"
         );
-
         return;
       }
 
@@ -2217,30 +2024,23 @@ $("#checkoutForm")
 
 
       const district =
-        String(
-          form.district || ""
-        )
+        String(form.district || "")
           .trim()
           .toLowerCase();
 
 
       const isCumilla =
-
         district === "কুমিল্লা" ||
-
         district === "cumilla" ||
-
         district === "comilla";
 
 
       const delivery =
         isCumilla
-
           ? Number(
               settings.insideDelivery ||
               80
             )
-
           : Number(
               settings.outsideDelivery ||
               150
@@ -2260,20 +2060,14 @@ $("#checkoutForm")
 
       if (
         (
-          paymentMethod ===
-            "bkash" ||
-
-          paymentMethod ===
-            "nagad"
+          paymentMethod === "bkash" ||
+          paymentMethod === "nagad"
         ) &&
-
         !transactionId
       ) {
-
         alert(
           "bKash/Nagad payment করলে Transaction ID দিতে হবে।"
         );
-
         return;
       }
 
@@ -2281,72 +2075,31 @@ $("#checkoutForm")
       const orderItems =
         items.map(
           (item) => ({
-
-            productId:
-              item.productId,
-
-            name:
-              item.name,
-
-            sku:
-              item.sku || "",
-
-            size:
-              item.size || "",
-
-            color:
-              item.color || "",
-
-            price:
-              Number(item.price),
-
-            qty:
-              Number(item.qty),
-
-            image:
-              item.image || ""
-
+            productId: item.productId,
+            name: item.name,
+            sku: item.sku || "",
+            size: item.size || "",
+            color: item.color || "",
+            price: Number(item.price),
+            qty: Number(item.qty),
+            image: item.image || ""
           })
         );
 
 
       const orderData = {
-
-        userId:
-          user.uid,
-
-        customerEmail:
-          user.email || "",
-
-        customerName:
-          form.name || "",
-
-        phone:
-          form.phone || "",
-
-        division:
-          form.division || "",
-
-        district:
-          form.district || "",
-
-        upazila:
-          form.upazila || "",
-
-        area:
-          form.area || "",
-
-        address:
-          form.address || "",
-
-        payment:
-          paymentMethod,
-
+        userId: user.uid,
+        customerEmail: user.email || "",
+        customerName: form.name || "",
+        phone: form.phone || "",
+        division: form.division || "",
+        district: form.district || "",
+        upazila: form.upazila || "",
+        area: form.area || "",
+        address: form.address || "",
+        payment: paymentMethod,
         paymentMethod,
-
-        trx:
-          transactionId,
-
+        trx: transactionId,
         transactionId,
 
         paymentStatus:
@@ -2354,39 +2107,20 @@ $("#checkoutForm")
             ? "COD"
             : "Pending Verification",
 
-        items:
-          orderItems,
-
+        items: orderItems,
         subtotal,
-
         delivery,
-
-        total:
-          subtotal +
-          delivery,
-
-        status:
-          "Pending",
-
-        stockState:
-          "none",
-
-        source:
-          "Website",
-
-        createdAt:
-          serverTimestamp()
-
+        total: subtotal + delivery,
+        status: "Pending",
+        stockState: "none",
+        source: "Website",
+        createdAt: serverTimestamp()
       };
 
 
       try {
-
         await addDoc(
-          collection(
-            db,
-            "orders"
-          ),
+          collection(db, "orders"),
           orderData
         );
 
@@ -2400,40 +2134,28 @@ $("#checkoutForm")
 
         saveCart();
 
-
         event.target.reset();
 
+        initAddressSelectors(true);
 
-        initAddressSelectors(
-          true
-        );
-
-
-        closeModal(
-          $("#checkoutModal")
-        );
+        closeModal($("#checkoutModal"));
 
 
         alert(
           "আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে।"
         );
 
-
       } catch (error) {
-
         console.error(
           "Order error:",
           error
         );
 
-
         alert(
           "Order করা যায়নি। " +
           error.message
         );
-
       }
-
     }
   );
 
@@ -2446,32 +2168,20 @@ $("#account")
   ?.addEventListener(
     "click",
     () => {
-
       showAccount();
-
-      openModal(
-        $("#accountModal")
-      );
-
+      openModal($("#accountModal"));
     }
   );
 
 
 function showAccount() {
+  const host = $("#accountBody");
 
-  const host =
-    $("#accountBody");
-
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   if (user) {
-
     host.innerHTML = `
-
       <div
         style="
           display:flex;
@@ -2502,10 +2212,7 @@ function showAccount() {
 
 
         <div>
-
-          <b>
-            আমার Account
-          </b>
+          <b>আমার Account</b>
 
           <div
             style="
@@ -2513,22 +2220,14 @@ function showAccount() {
               font-size:13px;
             "
           >
-            ${escapeHtml(
-              user.email || ""
-            )}
+            ${escapeHtml(user.email || "")}
           </div>
-
         </div>
 
       </div>
 
 
-      <div
-        style="
-          display:grid;
-          gap:9px;
-        "
-      >
+      <div style="display:grid;gap:9px;">
 
         <button
           type="button"
@@ -2552,9 +2251,7 @@ function showAccount() {
           type="button"
           class="btn light"
           id="logoutCustomer"
-          style="
-            color:#d90b29;
-          "
+          style="color:#d90b29;"
         >
           Logout
         </button>
@@ -2567,12 +2264,10 @@ function showAccount() {
         style="margin-top:18px;"
       ></div>
 
-
       <div
         id="myOrders"
         style="margin-top:18px;"
       ></div>
-
     `;
 
 
@@ -2580,13 +2275,11 @@ function showAccount() {
       ?.addEventListener(
         "click",
         async () => {
-
           await signOut(auth);
 
           closeModal(
             $("#accountModal")
           );
-
         }
       );
 
@@ -2610,16 +2303,8 @@ function showAccount() {
 
 
   host.innerHTML = `
-
-    <div
-      style="
-        margin-bottom:18px;
-      "
-    >
-
-      <h3>
-        Login / Register
-      </h3>
+    <div style="margin-bottom:18px;">
+      <h3>Login / Register</h3>
 
       <p
         style="
@@ -2629,15 +2314,12 @@ function showAccount() {
       >
         অর্ডার ও Order History দেখার জন্য Account ব্যবহার করুন।
       </p>
-
     </div>
 
 
     <form id="customerLogin">
 
-      <label>
-        Email
-      </label>
+      <label>Email</label>
 
       <input
         class="field"
@@ -2651,9 +2333,7 @@ function showAccount() {
       <br><br>
 
 
-      <label>
-        Password
-      </label>
+      <label>Password</label>
 
       <input
         class="field"
@@ -2703,7 +2383,6 @@ function showAccount() {
       </button>
 
     </form>
-
   `;
 
 
@@ -2711,43 +2390,27 @@ function showAccount() {
     ?.addEventListener(
       "submit",
       async (event) => {
-
         event.preventDefault();
 
-
         const form =
-          new FormData(
-            event.target
-          );
+          new FormData(event.target);
 
 
         try {
-
           await signInWithEmailAndPassword(
-
             auth,
-
             form.get("email"),
-
             form.get("password")
-
           );
 
-
-          alert(
-            "Login সফল হয়েছে।"
-          );
-
+          alert("Login সফল হয়েছে।");
 
         } catch (error) {
-
           alert(
             "Login করা যায়নি: " +
             error.message
           );
-
         }
-
       }
     );
 
@@ -2756,114 +2419,72 @@ function showAccount() {
     ?.addEventListener(
       "click",
       async () => {
-
         const formElement =
           $("#customerLogin");
 
-
-        if (!formElement) {
-          return;
-        }
+        if (!formElement) return;
 
 
         const form =
-          new FormData(
-            formElement
-          );
-
+          new FormData(formElement);
 
         const email =
           String(
-            form.get("email") ||
-            ""
+            form.get("email") || ""
           ).trim();
-
 
         const password =
           String(
-            form.get("password") ||
-            ""
+            form.get("password") || ""
           );
 
 
-        if (
-          !email ||
-          !password
-        ) {
-
+        if (!email || !password) {
           alert(
             "Email এবং Password লিখুন।"
           );
-
           return;
         }
 
 
-        if (
-          password.length < 6
-        ) {
-
+        if (password.length < 6) {
           alert(
             "Password কমপক্ষে 6 অক্ষরের হতে হবে।"
           );
-
           return;
         }
 
 
         try {
-
           const result =
             await createUserWithEmailAndPassword(
-
               auth,
-
               email,
-
               password
-
             );
 
 
           await setDoc(
-
             doc(
               db,
               "users",
               result.user.uid
             ),
-
             {
-
-              email:
-                result.user.email,
-
+              email: result.user.email,
               name: "",
-
               phone: "",
-
               division: "",
-
               district: "",
-
               upazila: "",
-
               area: "",
-
               address: "",
-
-              role:
-                "customer",
-
-              createdAt:
-                serverTimestamp()
-
+              role: "customer",
+              createdAt: serverTimestamp()
             },
-
             {
               merge: true
             }
-
           );
 
 
@@ -2871,16 +2492,12 @@ function showAccount() {
             "Account সফলভাবে তৈরি হয়েছে।"
           );
 
-
         } catch (error) {
-
           alert(
             "Account তৈরি করা যায়নি: " +
             error.message
           );
-
         }
-
       }
     );
 
@@ -2889,63 +2506,42 @@ function showAccount() {
     ?.addEventListener(
       "click",
       async () => {
-
         const formElement =
           $("#customerLogin");
 
-
-        if (!formElement) {
-          return;
-        }
+        if (!formElement) return;
 
 
         const form =
-          new FormData(
-            formElement
-          );
-
+          new FormData(formElement);
 
         const email =
           String(
-            form.get("email") ||
-            ""
+            form.get("email") || ""
           ).trim();
 
 
         if (!email) {
-
-          alert(
-            "আগে Email লিখুন।"
-          );
-
+          alert("আগে Email লিখুন।");
           return;
         }
 
 
         try {
-
           await sendPasswordResetEmail(
             auth,
             email
           );
 
-
           alert(
             "Password reset email পাঠানো হয়েছে।"
           );
 
-
         } catch (error) {
-
-          alert(
-            error.message
-          );
-
+          alert(error.message);
         }
-
       }
     );
-
 }
 
 
@@ -2954,23 +2550,15 @@ function showAccount() {
    ========================================================= */
 
 async function loadProfileEditor() {
-
-  if (!user) {
-    return;
-  }
-
+  if (!user) return;
 
   const host =
     $("#profileEditor");
 
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   try {
-
     const reference =
       doc(
         db,
@@ -2990,7 +2578,6 @@ async function loadProfileEditor() {
 
 
     host.innerHTML = `
-
       <div
         style="
           border-top:1px solid #e1e8ef;
@@ -2998,11 +2585,7 @@ async function loadProfileEditor() {
         "
       >
 
-        <h3
-          style="
-            margin-bottom:13px;
-          "
-        >
+        <h3 style="margin-bottom:13px;">
           Profile / Address
         </h3>
 
@@ -3013,9 +2596,7 @@ async function loadProfileEditor() {
             class="field"
             name="name"
             placeholder="আপনার নাম"
-            value="${escapeHtml(
-              profile.name || ""
-            )}"
+            value="${escapeHtml(profile.name || "")}"
             required
           >
 
@@ -3026,9 +2607,7 @@ async function loadProfileEditor() {
             class="field"
             name="phone"
             placeholder="মোবাইল নম্বর"
-            value="${escapeHtml(
-              profile.phone || ""
-            )}"
+            value="${escapeHtml(profile.phone || "")}"
             required
           >
 
@@ -3039,9 +2618,7 @@ async function loadProfileEditor() {
             class="field"
             name="division"
             placeholder="বিভাগ"
-            value="${escapeHtml(
-              profile.division || ""
-            )}"
+            value="${escapeHtml(profile.division || "")}"
           >
 
           <br><br>
@@ -3051,9 +2628,7 @@ async function loadProfileEditor() {
             class="field"
             name="district"
             placeholder="জেলা"
-            value="${escapeHtml(
-              profile.district || ""
-            )}"
+            value="${escapeHtml(profile.district || "")}"
           >
 
           <br><br>
@@ -3063,9 +2638,7 @@ async function loadProfileEditor() {
             class="field"
             name="upazila"
             placeholder="উপজেলা / থানা"
-            value="${escapeHtml(
-              profile.upazila || ""
-            )}"
+            value="${escapeHtml(profile.upazila || "")}"
           >
 
           <br><br>
@@ -3075,9 +2648,7 @@ async function loadProfileEditor() {
             class="field"
             name="area"
             placeholder="এলাকা / গ্রাম"
-            value="${escapeHtml(
-              profile.area || ""
-            )}"
+            value="${escapeHtml(profile.area || "")}"
           >
 
           <br><br>
@@ -3088,9 +2659,7 @@ async function loadProfileEditor() {
             name="address"
             rows="3"
             placeholder="সম্পূর্ণ ঠিকানা"
-          >${escapeHtml(
-            profile.address || ""
-          )}</textarea>
+          >${escapeHtml(profile.address || "")}</textarea>
 
           <br><br>
 
@@ -3106,7 +2675,6 @@ async function loadProfileEditor() {
         </form>
 
       </div>
-
     `;
 
 
@@ -3114,93 +2682,60 @@ async function loadProfileEditor() {
       ?.addEventListener(
         "submit",
         async (event) => {
-
           event.preventDefault();
 
 
           const data =
             Object.fromEntries(
-              new FormData(
-                event.target
-              )
+              new FormData(event.target)
             );
 
 
           try {
-
             await setDoc(
-
               reference,
-
               {
-
                 ...data,
-
-                email:
-                  user.email || "",
-
-                role:
-                  "customer",
-
-                updatedAt:
-                  serverTimestamp()
-
+                email: user.email || "",
+                role: "customer",
+                updatedAt: serverTimestamp()
               },
-
               {
                 merge: true
               }
-
             );
 
 
-            alert(
-              "Profile Save হয়েছে।"
-            );
-
+            alert("Profile Save হয়েছে.");
 
           } catch (error) {
-
             alert(
               "Profile Save করা যায়নি: " +
               error.message
             );
-
           }
-
         }
       );
 
-
   } catch (error) {
-
     console.error(error);
 
-
     host.innerHTML = `
-      <p>
-        Profile load করা যায়নি।
-      </p>
+      <p>Profile load করা যায়নি।</p>
     `;
-
   }
-
 }
 
 
 /* =========================================================
-   FILL CHECKOUT FROM PROFILE
+   CHECKOUT PROFILE AUTOFILL
    ========================================================= */
 
 async function fillCheckoutProfile() {
-
-  if (!user) {
-    return;
-  }
+  if (!user) return;
 
 
   try {
-
     const snapshot =
       await getDoc(
         doc(
@@ -3211,9 +2746,7 @@ async function fillCheckoutProfile() {
       );
 
 
-    if (!snapshot.exists()) {
-      return;
-    }
+    if (!snapshot.exists()) return;
 
 
     const profile =
@@ -3221,44 +2754,34 @@ async function fillCheckoutProfile() {
 
 
     if ($("#checkoutName")) {
-
       $("#checkoutName").value =
         profile.name || "";
-
     }
 
 
     if ($("#checkoutPhone")) {
-
       $("#checkoutPhone").value =
         profile.phone || "";
-
     }
 
 
     if ($("#checkoutArea")) {
-
       $("#checkoutArea").value =
         profile.area || "";
-
     }
 
 
     if ($("#checkoutAddress")) {
-
       $("#checkoutAddress").value =
         profile.address || "";
-
     }
 
 
     const division =
       $("#checkoutDivision");
 
-
     const district =
       $("#checkoutDistrict");
-
 
     const upazila =
       $("#checkoutUpazila");
@@ -3267,14 +2790,10 @@ async function fillCheckoutProfile() {
     if (
       division &&
       profile.division &&
-      bdAddress[
-        profile.division
-      ]
+      bdAddress[profile.division]
     ) {
-
       division.value =
         profile.division;
-
 
       fillDistricts(
         profile.division
@@ -3285,10 +2804,8 @@ async function fillCheckoutProfile() {
         district &&
         profile.district
       ) {
-
         district.value =
           profile.district;
-
 
         fillUpazilas(
           profile.district
@@ -3299,7 +2816,6 @@ async function fillCheckoutProfile() {
           upazila &&
           profile.upazila
         ) {
-
           const exists =
             [...upazila.options]
               .some(
@@ -3308,29 +2824,20 @@ async function fillCheckoutProfile() {
                   profile.upazila
               );
 
-
           if (exists) {
-
             upazila.value =
               profile.upazila;
-
           }
-
         }
-
       }
-
     }
 
   } catch (error) {
-
     console.error(
       "Profile autofill error:",
       error
     );
-
   }
-
 }
 
 
@@ -3339,19 +2846,11 @@ async function fillCheckoutProfile() {
    ========================================================= */
 
 async function loadMyOrders() {
+  if (!user) return;
 
-  if (!user) {
-    return;
-  }
+  const host = $("#myOrders");
 
-
-  const host =
-    $("#myOrders");
-
-
-  if (!host) {
-    return;
-  }
+  if (!host) return;
 
 
   host.innerHTML = `
@@ -3362,58 +2861,36 @@ async function loadMyOrders() {
 
 
   try {
-
     const snapshot =
       await getDocs(
-
         query(
-
-          collection(
-            db,
-            "orders"
-          ),
-
+          collection(db, "orders"),
           where(
             "userId",
             "==",
             user.uid
           )
-
         )
-
       );
 
 
     const list =
       snapshot.docs.map(
         (document) => ({
-
-          id:
-            document.id,
-
+          id: document.id,
           ...document.data()
-
         })
       );
 
 
     list.sort(
       (a, b) =>
-
-        (
-          b.createdAt?.seconds ||
-          0
-        ) -
-
-        (
-          a.createdAt?.seconds ||
-          0
-        )
+        (b.createdAt?.seconds || 0) -
+        (a.createdAt?.seconds || 0)
     );
 
 
     if (!list.length) {
-
       host.innerHTML = `
         <p
           style="
@@ -3430,7 +2907,6 @@ async function loadMyOrders() {
 
 
     host.innerHTML = `
-
       <div
         style="
           border-top:1px solid #e1e8ef;
@@ -3438,11 +2914,7 @@ async function loadMyOrders() {
         "
       >
 
-        <h3
-          style="
-            margin-bottom:12px;
-          "
-        >
+        <h3 style="margin-bottom:12px;">
           আমার Orders
         </h3>
 
@@ -3450,7 +2922,6 @@ async function loadMyOrders() {
         ${list
           .map(
             (order) => `
-
               <div
                 style="
                   border:1px solid #dce6ef;
@@ -3463,10 +2934,7 @@ async function loadMyOrders() {
                 <b>
                   Order #
                   ${escapeHtml(
-                    order.id.slice(
-                      0,
-                      8
-                    )
+                    order.id.slice(0, 8)
                   )}
                 </b>
 
@@ -3484,14 +2952,8 @@ async function loadMyOrders() {
 
                 <p>
                   Total:
-                  <strong
-                    style="
-                      color:#f51231;
-                    "
-                  >
-                    ${money(
-                      order.total
-                    )}
+                  <strong style="color:#f51231;">
+                    ${money(order.total)}
                   </strong>
                 </p>
 
@@ -3511,43 +2973,32 @@ async function loadMyOrders() {
                 </p>
 
               </div>
-
             `
           )
           .join("")}
 
       </div>
-
     `;
 
-
   } catch (error) {
-
     console.error(
       "Orders error:",
       error
     );
 
-
     host.innerHTML = `
-      <p>
-        Order History load করা যায়নি।
-      </p>
+      <p>Order History load করা যায়নি।</p>
     `;
-
   }
-
 }
 
 
 /* =========================================================
-   BANGLADESH ADDRESS DATA
+   BANGLADESH ADDRESS
    ========================================================= */
 
 const bdAddress = {
-
   "চট্টগ্রাম": [
-
     "কুমিল্লা",
     "চট্টগ্রাম",
     "কক্সবাজার",
@@ -3559,12 +3010,9 @@ const bdAddress = {
     "খাগড়াছড়ি",
     "রাঙ্গামাটি",
     "বান্দরবান"
-
   ],
 
-
   "ঢাকা": [
-
     "ঢাকা",
     "গাজীপুর",
     "নারায়ণগঞ্জ",
@@ -3578,12 +3026,9 @@ const bdAddress = {
     "মাদারীপুর",
     "রাজবাড়ী",
     "শরীয়তপুর"
-
   ],
 
-
   "রাজশাহী": [
-
     "রাজশাহী",
     "বগুড়া",
     "জয়পুরহাট",
@@ -3592,12 +3037,9 @@ const bdAddress = {
     "চাঁপাইনবাবগঞ্জ",
     "পাবনা",
     "সিরাজগঞ্জ"
-
   ],
 
-
   "খুলনা": [
-
     "খুলনা",
     "বাগেরহাট",
     "সাতক্ষীরা",
@@ -3608,34 +3050,25 @@ const bdAddress = {
     "কুষ্টিয়া",
     "চুয়াডাঙ্গা",
     "মেহেরপুর"
-
   ],
 
-
   "বরিশাল": [
-
     "বরিশাল",
     "ভোলা",
     "ঝালকাঠি",
     "পটুয়াখালী",
     "পিরোজপুর",
     "বরগুনা"
-
   ],
 
-
   "সিলেট": [
-
     "সিলেট",
     "মৌলভীবাজার",
     "হবিগঞ্জ",
     "সুনামগঞ্জ"
-
   ],
 
-
   "রংপুর": [
-
     "রংপুর",
     "দিনাজপুর",
     "গাইবান্ধা",
@@ -3644,24 +3077,18 @@ const bdAddress = {
     "নীলফামারী",
     "পঞ্চগড়",
     "ঠাকুরগাঁও"
-
   ],
 
-
   "ময়মনসিংহ": [
-
     "ময়মনসিংহ",
     "জামালপুর",
     "নেত্রকোনা",
     "শেরপুর"
-
   ]
-
 };
 
 
 const cumillaUpazilas = [
-
   "মুরাদনগর",
   "বরুড়া",
   "কুমিল্লা আদর্শ সদর",
@@ -3679,7 +3106,6 @@ const cumillaUpazilas = [
   "ব্রাহ্মণপাড়া",
   "চৌদ্দগ্রাম",
   "লালমাই"
-
 ];
 
 
@@ -3687,31 +3113,21 @@ const cumillaUpazilas = [
    ADDRESS SELECTORS
    ========================================================= */
 
-function fillDistricts(
-  divisionName
-) {
-
+function fillDistricts(divisionName) {
   const district =
     $("#checkoutDistrict");
-
 
   const upazila =
     $("#checkoutUpazila");
 
-
-  if (!district) {
-    return;
-  }
+  if (!district) return;
 
 
   const list =
-    bdAddress[
-      divisionName
-    ] || [];
+    bdAddress[divisionName] || [];
 
 
   district.innerHTML = `
-
     <option value="">
       জেলা নির্বাচন করুন
     </option>
@@ -3725,50 +3141,33 @@ function fillDistricts(
         `
       )
       .join("")}
-
   `;
 
 
   if (upazila) {
-
     upazila.innerHTML = `
       <option value="">
         উপজেলা / থানা নির্বাচন করুন
       </option>
     `;
-
   }
-
 }
 
 
-function fillUpazilas(
-  districtName
-) {
-
+function fillUpazilas(districtName) {
   const upazila =
     $("#checkoutUpazila");
 
-
-  if (!upazila) {
-    return;
-  }
+  if (!upazila) return;
 
 
   const list =
-
-    districtName ===
-      "কুমিল্লা"
-
+    districtName === "কুমিল্লা"
       ? cumillaUpazilas
-
-      : [
-          "অন্যান্য / আমার এলাকা"
-        ];
+      : ["অন্যান্য / আমার এলাকা"];
 
 
   upazila.innerHTML = `
-
     <option value="">
       উপজেলা / থানা নির্বাচন করুন
     </option>
@@ -3782,23 +3181,16 @@ function fillUpazilas(
         `
       )
       .join("")}
-
   `;
-
 }
 
 
-function initAddressSelectors(
-  force = false
-) {
-
+function initAddressSelectors(force = false) {
   const division =
     $("#checkoutDivision");
 
-
   const district =
     $("#checkoutDistrict");
-
 
   const upazila =
     $("#checkoutUpazila");
@@ -3809,7 +3201,6 @@ function initAddressSelectors(
     !district ||
     !upazila
   ) {
-
     return;
   }
 
@@ -3818,17 +3209,14 @@ function initAddressSelectors(
     division.dataset.ready &&
     !force
   ) {
-
     return;
   }
 
 
-  division.dataset.ready =
-    "1";
+  division.dataset.ready = "1";
 
 
   division.innerHTML = `
-
     <option value="">
       বিভাগ নির্বাচন করুন
     </option>
@@ -3843,7 +3231,6 @@ function initAddressSelectors(
         `
       )
       .join("")}
-
   `;
 
 
@@ -3862,342 +3249,28 @@ function initAddressSelectors(
 
 
   division.onchange = () => {
-
     fillDistricts(
       division.value
     );
-
   };
 
 
   district.onchange = () => {
-
     fillUpazilas(
       district.value
     );
-
   };
-
 }
 
 
 /* =========================================================
-   HERO — 4 IMAGE AUTO SLIDER
-   ========================================================= */
-
-function initBannerSlider() {
-
-  const slides =
-    $$(".mx-banner-slide");
-
-
-  const dotsHost =
-    $("#bannerDots");
-
-
-  const previous =
-    $("#bannerPrev");
-
-
-  const next =
-    $("#bannerNext");
-
-
-  if (
-    !slides.length ||
-    !dotsHost
-  ) {
-
-    return;
-  }
-
-
-  let currentIndex = 0;
-
-  let timer = null;
-
-
-  dotsHost.innerHTML =
-    slides
-      .map(
-        (_, index) => `
-
-          <button
-            type="button"
-            class="mx-banner-dot ${
-              index === 0
-                ? "active"
-                : ""
-            }"
-            data-banner-dot="${index}"
-            aria-label="Banner ${index + 1}"
-          ></button>
-
-        `
-      )
-      .join("");
-
-
-  const dots =
-    [
-      ...dotsHost.querySelectorAll(
-        "[data-banner-dot]"
-      )
-    ];
-
-
-  function showSlide(index) {
-
-    currentIndex =
-      (
-        index +
-        slides.length
-      ) %
-      slides.length;
-
-
-    slides.forEach(
-      (slide, slideIndex) => {
-
-        slide.classList.toggle(
-          "active",
-          slideIndex ===
-            currentIndex
-        );
-
-      }
-    );
-
-
-    dots.forEach(
-      (dot, dotIndex) => {
-
-        dot.classList.toggle(
-          "active",
-          dotIndex ===
-            currentIndex
-        );
-
-      }
-    );
-
-  }
-
-
-  function stopAutoSlide() {
-
-    if (timer) {
-
-      clearInterval(timer);
-
-      timer = null;
-
-    }
-
-  }
-
-
-  function startAutoSlide() {
-
-    stopAutoSlide();
-
-
-    timer =
-      setInterval(
-        () => {
-
-          showSlide(
-            currentIndex + 1
-          );
-
-        },
-        5500
-      );
-
-  }
-
-
-  function restart() {
-
-    startAutoSlide();
-
-  }
-
-
-  previous
-    ?.addEventListener(
-      "click",
-      (event) => {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        showSlide(
-          currentIndex - 1
-        );
-
-        restart();
-
-      }
-    );
-
-
-  next
-    ?.addEventListener(
-      "click",
-      (event) => {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        showSlide(
-          currentIndex + 1
-        );
-
-        restart();
-
-      }
-    );
-
-
-  dots.forEach(
-    (dot) => {
-
-      dot.addEventListener(
-        "click",
-        (event) => {
-
-          event.preventDefault();
-
-          event.stopPropagation();
-
-
-          showSlide(
-            Number(
-              dot.dataset.bannerDot
-            )
-          );
-
-
-          restart();
-
-        }
-      );
-
-    }
-  );
-
-
-  /* pause when mouse over */
-
-  const hero =
-    $(".mx-hero");
-
-
-  hero?.addEventListener(
-    "mouseenter",
-    stopAutoSlide
-  );
-
-
-  hero?.addEventListener(
-    "mouseleave",
-    startAutoSlide
-  );
-
-
-  /* swipe support */
-
-  let touchStartX = 0;
-
-
-  hero?.addEventListener(
-    "touchstart",
-    (event) => {
-
-      touchStartX =
-        event.touches[0]
-          ?.clientX || 0;
-
-    },
-    {
-      passive: true
-    }
-  );
-
-
-  hero?.addEventListener(
-    "touchend",
-    (event) => {
-
-      const touchEndX =
-        event.changedTouches[0]
-          ?.clientX || 0;
-
-
-      const difference =
-        touchStartX -
-        touchEndX;
-
-
-      if (
-        Math.abs(
-          difference
-        ) < 45
-      ) {
-
-        return;
-      }
-
-
-      if (
-        difference > 0
-      ) {
-
-        showSlide(
-          currentIndex + 1
-        );
-
-      } else {
-
-        showSlide(
-          currentIndex - 1
-        );
-
-      }
-
-
-      restart();
-
-    },
-    {
-      passive: true
-    }
-  );
-
-
-  showSlide(0);
-
-  startAutoSlide();
-
-}
-
-
-/* =========================================================
-   LANGUAGE SWITCH
+   LANGUAGE
    ========================================================= */
 
 function initLanguageSwitch() {
+  const buttons = $$(".mx-lang");
 
-  const buttons =
-    $$(".mx-lang");
-
-
-  if (!buttons.length) {
-    return;
-  }
+  if (!buttons.length) return;
 
 
   document.documentElement.lang =
@@ -4205,181 +3278,66 @@ function initLanguageSwitch() {
 
 
   function updateButtons() {
-
-    buttons.forEach(
-      (button) => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.lang ===
-            currentLanguage
-        );
-
-      }
-    );
-
+    buttons.forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.lang ===
+          currentLanguage
+      );
+    });
   }
 
 
   updateButtons();
 
 
-  buttons.forEach(
-    (button) => {
+  buttons.forEach((button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        currentLanguage =
+          button.dataset.lang || "bn";
 
-      button.addEventListener(
-        "click",
-        () => {
-
-          currentLanguage =
-            button.dataset.lang ||
-            "bn";
-
-
-          localStorage.setItem(
-            "mx-lang",
-            currentLanguage
-          );
-
-
-          document.documentElement.lang =
-            currentLanguage;
-
-
-          updateButtons();
-
-          renderProducts();
-
-          renderPopularProducts();
-
-          renderWishlistSection();
-
-
-          if (
-            currentLanguage ===
-            "en"
-          ) {
-
-            const search =
-              $("#search");
-
-
-            if (search) {
-
-              search.placeholder =
-                "Search products, jerseys or Product Code...";
-
-            }
-
-
-            const searchButton =
-              $(".mx-search-button");
-
-
-            if (searchButton) {
-
-              searchButton.textContent =
-                "Search";
-
-            }
-
-          } else {
-
-            const search =
-              $("#search");
-
-
-            if (search) {
-
-              search.placeholder =
-                "পণ্য, জার্সি বা Product Code খুঁজুন...";
-
-            }
-
-
-            const searchButton =
-              $(".mx-search-button");
-
-
-            if (searchButton) {
-
-              searchButton.textContent =
-                "খুঁজুন";
-
-            }
-
-          }
-
-        }
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   AUTH STATE
-   ========================================================= */
-
-onAuthStateChanged(
-  auth,
-  (currentUser) => {
-
-    user =
-      currentUser;
-
-
-    const accountButton =
-      $("#account");
-
-
-    if (accountButton) {
-
-      const text =
-        accountButton.querySelector(
-          ".mx-action-text b"
+        localStorage.setItem(
+          "mx-lang",
+          currentLanguage
         );
 
+        document.documentElement.lang =
+          currentLanguage;
 
-      if (text) {
+        updateButtons();
 
-        text.textContent =
-          user
-            ? "My Account"
-            : "Login";
+        renderProducts();
+        renderPopularProducts();
+        renderWishlistSection();
 
+
+        if (currentLanguage === "en") {
+          if ($("#search")) {
+            $("#search").placeholder =
+              "Search products, jerseys or Product Code...";
+          }
+
+          if ($(".mx-search-button")) {
+            $(".mx-search-button").textContent =
+              "Search";
+          }
+        } else {
+          if ($("#search")) {
+            $("#search").placeholder =
+              "পণ্য, জার্সি বা Product Code খুঁজুন...";
+          }
+
+          if ($(".mx-search-button")) {
+            $(".mx-search-button").textContent =
+              "খুঁজুন";
+          }
+        }
       }
-
-    }
-
-
-    const accountModal =
-      $("#accountModal");
-
-
-    if (
-      accountModal &&
-      (
-        accountModal.classList.contains(
-          "active"
-        ) ||
-        accountModal.classList.contains(
-          "open"
-        ) ||
-        accountModal.classList.contains(
-          "show"
-        )
-      )
-    ) {
-
-      showAccount();
-
-    }
-
-  }
-);
+    );
+  });
+}
 
 
 /* =========================================================
@@ -4387,9 +3345,7 @@ onAuthStateChanged(
    ========================================================= */
 
 function initVisualCategories() {
-
   const map = {
-
     ".mx-cat-football-jersey":
       "Football Jersey",
 
@@ -4416,70 +3372,111 @@ function initVisualCategories() {
 
     ".mx-cat-custom-jersey":
       "Custom Jersey"
-
   };
 
 
   Object.entries(map)
     .forEach(
-      ([
-        selector,
-        category
-      ]) => {
-
+      ([selector, category]) => {
         $(selector)
           ?.addEventListener(
             "click",
             (event) => {
-
               event.preventDefault();
-
 
               activeCategory =
                 category;
 
-
-              renderProducts(
-                category
-              );
-
+              renderProducts(category);
 
               $("#products")
                 ?.scrollIntoView({
-                  behavior:
-                    "smooth"
+                  behavior: "smooth"
                 });
-
             }
           );
-
       }
     );
-
 }
 
 
 /* =========================================================
-   INITIAL START
+   AUTH STATE
+   ========================================================= */
+
+onAuthStateChanged(
+  auth,
+  (currentUser) => {
+    user = currentUser;
+
+
+    const accountButton =
+      $("#account");
+
+
+    if (accountButton) {
+      const text =
+        accountButton.querySelector(
+          ".mx-action-text b"
+        );
+
+      if (text) {
+        text.textContent =
+          user
+            ? "My Account"
+            : "Login";
+      }
+    }
+
+
+    const accountModal =
+      $("#accountModal");
+
+
+    if (
+      accountModal &&
+      accountModal.classList.contains("active")
+    ) {
+      showAccount();
+    }
+  }
+);
+
+
+/* =========================================================
+   START WEBSITE
    ========================================================= */
 
 function startStore() {
-
-  updateWishlistCount();
-
-  renderCart();
-
+  /*
+    HERO FIRST.
+    Firebase load হওয়ার অপেক্ষা করবে না।
+  */
   initBannerSlider();
 
+  updateWishlistCount();
+  renderCart();
+
   initLanguageSwitch();
-
   initAddressSelectors();
-
   initVisualCategories();
 
+  /*
+    Firebase আলাদাভাবে load হবে।
+    Firebase error হলেও Hero slider চলবে।
+  */
   loadStore();
-
 }
 
 
-startStore();
+/* DOM নিশ্চিত হওয়ার পর start */
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    startStore,
+    { once: true }
+  );
+} else {
+  startStore();
+}
