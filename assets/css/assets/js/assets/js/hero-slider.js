@@ -1,75 +1,66 @@
-/* ==========================================
-   MEHEDI XPRESS — STANDALONE HERO SLIDER
-   ========================================== */
+/* =========================================================
+   MEHEDI XPRESS — HERO SLIDER
+   FINAL STANDALONE VERSION
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
+  "use strict";
 
-  const slides = document.querySelectorAll(".mx-banner-slide");
-  const prevBtn = document.getElementById("bannerPrev");
-  const nextBtn = document.getElementById("bannerNext");
-  const dotsBox = document.getElementById("bannerDots");
-  const hero = document.querySelector(".mx-hero");
+  function initHeroSlider() {
 
-  if (!slides.length) {
-    console.log("Hero slides not found");
-    return;
-  }
+    const hero = document.getElementById("home");
+    const track = document.getElementById("bannerTrack");
+    const slides = Array.from(
+      document.querySelectorAll("#bannerTrack .mx-banner-slide")
+    );
 
-  let current = 0;
-  let timer = null;
-  let startX = 0;
+    const prevBtn = document.getElementById("bannerPrev");
+    const nextBtn = document.getElementById("bannerNext");
+    const dotsBox = document.getElementById("bannerDots");
 
-  /* ---------------------------
-     CREATE DOTS
-     --------------------------- */
+    /* -----------------------------------------
+       CHECK
+    ----------------------------------------- */
 
-  if (dotsBox) {
-    dotsBox.innerHTML = "";
-
-    slides.forEach(function (_, index) {
-      const dot = document.createElement("button");
-
-      dot.type = "button";
-      dot.className = "mx-banner-dot";
-      dot.setAttribute(
-        "aria-label",
-        "Banner " + (index + 1)
-      );
-
-      dot.addEventListener("click", function () {
-        showSlide(index);
-        restart();
-      });
-
-      dotsBox.appendChild(dot);
-    });
-  }
-
-  function getDots() {
-    return dotsBox
-      ? dotsBox.querySelectorAll(".mx-banner-dot")
-      : [];
-  }
-
-  /* ---------------------------
-     SHOW SLIDE
-     --------------------------- */
-
-  function showSlide(index) {
-
-    if (index >= slides.length) {
-      index = 0;
+    if (!hero || !track || slides.length === 0) {
+      console.error("Mehedi Xpress Hero Slider: elements not found.");
+      return;
     }
 
-    if (index < 0) {
-      index = slides.length - 1;
-    }
+    console.log(
+      "Mehedi Xpress Hero Slider:",
+      slides.length,
+      "slides found"
+    );
 
-    current = index;
+    let currentIndex = 0;
+    let autoTimer = null;
+    let touchStartX = 0;
+    let touchEndX = 0;
 
-    slides.forEach(function (slide, i) {
+    const AUTO_TIME = 5000;
 
-      if (i === current) {
+
+    /* =========================================
+       PREPARE SLIDES
+    ========================================= */
+
+    track.style.position = "relative";
+    track.style.overflow = "hidden";
+
+    slides.forEach(function (slide, index) {
+
+      slide.style.position = "absolute";
+      slide.style.top = "0";
+      slide.style.left = "0";
+      slide.style.width = "100%";
+      slide.style.height = "100%";
+
+      slide.style.transition =
+        "opacity 0.65s ease-in-out";
+
+      if (index === 0) {
+
         slide.classList.add("active");
 
         slide.style.opacity = "1";
@@ -78,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         slide.style.zIndex = "2";
 
       } else {
+
         slide.classList.remove("active");
 
         slide.style.opacity = "0";
@@ -85,175 +77,438 @@ document.addEventListener("DOMContentLoaded", function () {
         slide.style.pointerEvents = "none";
         slide.style.zIndex = "1";
       }
-
     });
 
-    const dots = getDots();
 
-    dots.forEach(function (dot, i) {
-      dot.classList.toggle(
-        "active",
-        i === current
+    /* =========================================
+       CREATE DOTS
+    ========================================= */
+
+    if (dotsBox) {
+
+      dotsBox.innerHTML = "";
+
+      slides.forEach(function (_, index) {
+
+        const dot = document.createElement("button");
+
+        dot.type = "button";
+        dot.className = "mx-banner-dot";
+
+        dot.setAttribute(
+          "aria-label",
+          "Banner " + (index + 1)
+        );
+
+        if (index === 0) {
+          dot.classList.add("active");
+        }
+
+        dot.addEventListener("click", function (event) {
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          showSlide(index);
+          restartAutoSlide();
+
+        });
+
+        dotsBox.appendChild(dot);
+      });
+    }
+
+
+    /* =========================================
+       GET DOTS
+    ========================================= */
+
+    function getDots() {
+
+      if (!dotsBox) {
+        return [];
+      }
+
+      return Array.from(
+        dotsBox.querySelectorAll(".mx-banner-dot")
       );
-    });
-  }
-
-  /* ---------------------------
-     NEXT / PREVIOUS
-     --------------------------- */
-
-  function nextSlide() {
-    showSlide(current + 1);
-  }
-
-  function previousSlide() {
-    showSlide(current - 1);
-  }
-
-  /* ---------------------------
-     AUTO PLAY
-     --------------------------- */
-
-  function start() {
-
-    stop();
-
-    if (slides.length <= 1) {
-      return;
     }
 
-    timer = setInterval(function () {
-      nextSlide();
-    }, 5000);
-  }
 
-  function stop() {
+    /* =========================================
+       SHOW SLIDE
+    ========================================= */
 
-    if (timer) {
-      clearInterval(timer);
-      timer = null;
+    function showSlide(index) {
+
+      if (index >= slides.length) {
+        index = 0;
+      }
+
+      if (index < 0) {
+        index = slides.length - 1;
+      }
+
+      currentIndex = index;
+
+      slides.forEach(function (slide, slideIndex) {
+
+        const isActive =
+          slideIndex === currentIndex;
+
+        if (isActive) {
+
+          slide.classList.add("active");
+
+          slide.style.opacity = "1";
+          slide.style.visibility = "visible";
+          slide.style.pointerEvents = "auto";
+          slide.style.zIndex = "2";
+
+        } else {
+
+          slide.classList.remove("active");
+
+          slide.style.opacity = "0";
+          slide.style.visibility = "hidden";
+          slide.style.pointerEvents = "none";
+          slide.style.zIndex = "1";
+        }
+      });
+
+
+      const dots = getDots();
+
+      dots.forEach(function (dot, dotIndex) {
+
+        if (dotIndex === currentIndex) {
+          dot.classList.add("active");
+        } else {
+          dot.classList.remove("active");
+        }
+
+      });
+
+
+      console.log(
+        "Hero slide:",
+        currentIndex + 1,
+        "/",
+        slides.length
+      );
     }
-  }
 
-  function restart() {
-    stop();
-    start();
-  }
 
-  /* ---------------------------
-     ARROWS
-     --------------------------- */
+    /* =========================================
+       NEXT
+    ========================================= */
 
-  if (nextBtn) {
-    nextBtn.addEventListener(
-      "click",
-      function (event) {
+    function nextSlide() {
+
+      let nextIndex =
+        currentIndex + 1;
+
+      if (nextIndex >= slides.length) {
+        nextIndex = 0;
+      }
+
+      showSlide(nextIndex);
+    }
+
+
+    /* =========================================
+       PREVIOUS
+    ========================================= */
+
+    function previousSlide() {
+
+      let previousIndex =
+        currentIndex - 1;
+
+      if (previousIndex < 0) {
+        previousIndex =
+          slides.length - 1;
+      }
+
+      showSlide(previousIndex);
+    }
+
+
+    /* =========================================
+       AUTO SLIDER
+    ========================================= */
+
+    function stopAutoSlide() {
+
+      if (autoTimer !== null) {
+
+        clearInterval(autoTimer);
+        autoTimer = null;
+      }
+    }
+
+
+    function startAutoSlide() {
+
+      stopAutoSlide();
+
+      if (slides.length <= 1) {
+        return;
+      }
+
+      autoTimer = window.setInterval(
+        function () {
+
+          nextSlide();
+
+        },
+        AUTO_TIME
+      );
+    }
+
+
+    function restartAutoSlide() {
+
+      stopAutoSlide();
+      startAutoSlide();
+    }
+
+
+    /* =========================================
+       NEXT BUTTON
+    ========================================= */
+
+    if (nextBtn) {
+
+      nextBtn.onclick = function (event) {
+
         event.preventDefault();
+        event.stopPropagation();
 
         nextSlide();
-        restart();
-      }
-    );
-  }
+        restartAutoSlide();
 
-  if (prevBtn) {
-    prevBtn.addEventListener(
-      "click",
-      function (event) {
+        return false;
+      };
+    }
+
+
+    /* =========================================
+       PREVIOUS BUTTON
+    ========================================= */
+
+    if (prevBtn) {
+
+      prevBtn.onclick = function (event) {
+
         event.preventDefault();
+        event.stopPropagation();
 
         previousSlide();
-        restart();
+        restartAutoSlide();
+
+        return false;
+      };
+    }
+
+
+    /* =========================================
+       KEYBOARD
+    ========================================= */
+
+    document.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (event.key === "ArrowRight") {
+
+          nextSlide();
+          restartAutoSlide();
+
+        }
+
+        if (event.key === "ArrowLeft") {
+
+          previousSlide();
+          restartAutoSlide();
+
+        }
       }
     );
-  }
 
-  /* ---------------------------
-     PAUSE ON HOVER
-     --------------------------- */
 
-  if (hero) {
-
-    hero.addEventListener(
-      "mouseenter",
-      stop
-    );
-
-    hero.addEventListener(
-      "mouseleave",
-      start
-    );
-
-    /* -------------------------
+    /* =========================================
        MOBILE SWIPE
-       ------------------------- */
+    ========================================= */
 
     hero.addEventListener(
       "touchstart",
       function (event) {
 
-        startX =
-          event.touches[0].clientX;
+        if (!event.changedTouches.length) {
+          return;
+        }
+
+        touchStartX =
+          event.changedTouches[0].screenX;
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
     );
+
 
     hero.addEventListener(
       "touchend",
       function (event) {
 
-        const endX =
-          event.changedTouches[0].clientX;
-
-        const difference =
-          startX - endX;
-
-        if (Math.abs(difference) < 50) {
+        if (!event.changedTouches.length) {
           return;
         }
 
-        if (difference > 0) {
+        touchEndX =
+          event.changedTouches[0].screenX;
+
+        const distance =
+          touchStartX - touchEndX;
+
+
+        if (Math.abs(distance) < 50) {
+          return;
+        }
+
+
+        if (distance > 0) {
+
           nextSlide();
+
         } else {
+
           previousSlide();
         }
 
-        restart();
+
+        restartAutoSlide();
 
       },
-      { passive: true }
+      {
+        passive: true
+      }
+    );
+
+
+    /* =========================================
+       PAGE VISIBILITY
+    ========================================= */
+
+    document.addEventListener(
+      "visibilitychange",
+      function () {
+
+        if (document.hidden) {
+
+          stopAutoSlide();
+
+        } else {
+
+          startAutoSlide();
+        }
+      }
+    );
+
+
+    /* =========================================
+       IMAGE ERROR CHECK
+    ========================================= */
+
+    slides.forEach(function (slide, index) {
+
+      const image =
+        slide.querySelector(
+          ".mx-hero-banner-image"
+        );
+
+      if (!image) {
+        return;
+      }
+
+      image.addEventListener(
+        "error",
+        function () {
+
+          console.error(
+            "Hero image failed:",
+            index + 1,
+            image.src
+          );
+        }
+      );
+
+      image.addEventListener(
+        "load",
+        function () {
+
+          console.log(
+            "Hero image loaded:",
+            index + 1
+          );
+        }
+      );
+    });
+
+
+    /* =========================================
+       START
+    ========================================= */
+
+    showSlide(0);
+
+    startAutoSlide();
+
+
+    /* =========================================
+       DEBUG ACCESS
+    ========================================= */
+
+    window.MehediHeroSlider = {
+
+      next: nextSlide,
+
+      prev: previousSlide,
+
+      show: showSlide,
+
+      start: startAutoSlide,
+
+      stop: stopAutoSlide
+
+    };
+
+
+    console.log(
+      "MEHEDI XPRESS HERO SLIDER READY"
     );
   }
 
-  /* ---------------------------
-     TAB VISIBILITY
-     --------------------------- */
 
-  document.addEventListener(
-    "visibilitychange",
-    function () {
+  /* ===========================================
+     RUN
+  =========================================== */
 
-      if (document.hidden) {
-        stop();
-      } else {
-        start();
+  if (document.readyState === "loading") {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initHeroSlider,
+      {
+        once: true
       }
+    );
 
-    }
-  );
+  } else {
 
-  /* ---------------------------
-     START
-     --------------------------- */
+    initHeroSlider();
+  }
 
-  showSlide(0);
-  start();
-
-  console.log(
-    "Mehedi Xpress Hero Slider:",
-    slides.length,
-    "slides ready"
-  );
-
-});
+})();
