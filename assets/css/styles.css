@@ -152,7 +152,7 @@ img{
   display:flex;
   align-items:center;
   gap:8px;
-  font-size:16px;
+  font-size:18px;
   font-weight:800;
   white-space:nowrap;
 }
@@ -198,9 +198,9 @@ img{
 }
 
 .mx-header-main{
-  min-height:90px;
+  min-height:105px;
   display:grid;
-  grid-template-columns:250px minmax(380px,720px) 390px;
+  grid-template-columns:285px minmax(420px,760px) 430px;
   align-items:center;
   gap:28px;
 }
@@ -213,8 +213,8 @@ img{
 }
 
 .mx-logo-image{
-  width:125px;
-  height:68px;
+  width:145px;
+  height:82px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -246,9 +246,9 @@ img{
 }
 
 .mx-search{
-  height:52px;
+  height:58px;
   display:grid;
-  grid-template-columns:44px 1fr 125px;
+  grid-template-columns:50px 1fr 145px;
   align-items:center;
   border:4px solid var(--red);
   border-radius:22px;
@@ -374,9 +374,9 @@ img{
 }
 
 .mx-nav-inner{
-  height:56px;
+  height:65px;
   display:grid;
-  grid-template-columns:285px 1fr 190px;
+  grid-template-columns:345px 1fr 245px;
   align-items:stretch;
 }
 
@@ -400,7 +400,7 @@ img{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:25px;
+  gap:34px;
   min-width:0;
 }
 
@@ -466,9 +466,9 @@ img{
 .mx-banner-track{
   position:relative;
   width:100%;
-  aspect-ratio:16 / 4.5;
-  min-height:235px;
-  max-height:340px;
+  aspect-ratio:16 / 5;
+  min-height:280px;
+  max-height:420px;
   overflow:hidden;
 }
 
@@ -1827,8 +1827,8 @@ textarea.field{
   }
 
   .mx-logo-image{
-    width:100px;
-    height:50px;
+    width:115px;
+    height:58px;
   }
 
   .mx-search-wrap{
@@ -1930,9 +1930,9 @@ textarea.field{
 
   .mx-banner-track{
     width:100%;
-    aspect-ratio:16/5.5;
-    min-height:115px;
-    max-height:145px;
+    aspect-ratio:16/6;
+    min-height:135px;
+    max-height:170px;
   }
 
   .mx-hero-banner-image{
@@ -2151,7 +2151,7 @@ textarea.field{
   }
 
   .mx-logo-image{
-    width:95px;
+    width:105px;
   }
 
   .mx-search{
@@ -2177,7 +2177,7 @@ textarea.field{
   }
 
   .mx-banner-track{
-    min-height:100px;
+    min-height:105px;
   }
 
   .mx-product-grid,
@@ -2185,4 +2185,97 @@ textarea.field{
   .product-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
+}
+
+/* =========================================================
+   MEHEDI XPRESS — COMPACT HEADER / NAV / HERO FINAL OVERRIDES
+   ========================================================= */
+
+/* Desktop / Laptop */
+@media (min-width:1101px){
+  .mx-topbar-inner{min-height:54px;}
+  .mx-top-item,.mx-top-phone{font-size:15px;}
+  .mx-lang{min-height:38px;padding:0 18px;}
+  .mx-social-mini a,.mx-social-disabled{width:38px;height:38px;}
+
+  .mx-header-main{
+    min-height:88px;
+    grid-template-columns:300px minmax(420px,650px) 390px;
+    gap:18px;
+  }
+  .mx-logo-image{width:135px;height:72px;}
+  .mx-logo-divider{height:46px;}
+  .mx-logo-tagline{font-size:12px;line-height:1.35;}
+
+  .mx-search{
+    height:54px;
+    grid-template-columns:46px 1fr 130px;
+    border-width:3px;
+    border-radius:14px;
+  }
+  .mx-search-icon{font-size:21px;}
+  .mx-search input{font-size:17px;}
+  .mx-search-button{font-size:18px;border-radius:0 10px 10px 0;}
+
+  .mx-header-actions{gap:12px;}
+  .mx-header-action{gap:8px;}
+  .mx-header-action-icon{font-size:27px;}
+  .mx-action-text small{font-size:11px;}
+  .mx-action-text b{font-size:15px;}
+  .mx-header-divider{height:38px;}
+  .mx-action-count{min-width:20px;height:20px;font-size:11px;}
+
+  .mx-nav-inner{
+    height:58px;
+    grid-template-columns:270px 1fr 165px;
+  }
+  .mx-all-category{font-size:17px;padding:0 26px;}
+  .mx-menu-icon{font-size:25px;}
+  .mx-nav-links{gap:20px;}
+  .mx-nav-links a{font-size:14px;}
+  .mx-offer-button{font-size:17px;}
+  .mx-offer-button span{width:36px;height:36px;font-size:19px;}
+
+  .mx-banner-track{
+    aspect-ratio:16/4.5;
+    min-height:250px;
+    max-height:420px;
+  }
+}
+
+/* Tablet */
+@media (min-width:721px) and (max-width:1100px){
+  .mx-header-main{min-height:90px;gap:12px;padding:10px 14px;}
+  .mx-logo-image{width:125px;height:68px;}
+  .mx-search{height:52px;}
+  .mx-nav-inner{min-height:56px;}
+  .mx-banner-track{aspect-ratio:16/5.2;min-height:210px;max-height:320px;}
+}
+
+/* Mobile */
+@media (max-width:720px){
+  .mx-topbar-inner{padding-top:8px;padding-bottom:8px;gap:8px;}
+  .mx-header-main{gap:7px;padding:8px 12px;}
+  .mx-logo-image{width:105px;height:58px;}
+  .mx-logo-divider,.mx-logo-tagline{display:none;}
+  .mx-search{height:44px;grid-template-columns:36px 1fr 76px;border-width:2px;border-radius:12px;}
+  .mx-search input{font-size:12px;}
+  .mx-search-button{font-size:14px;}
+  .mx-header-actions{padding:4px 0;}
+  .mx-header-action-icon{font-size:22px;}
+  .mx-action-text small{display:none;}
+  .mx-action-text b{font-size:12px;}
+  .mx-header-divider{height:28px;}
+  .mx-all-category{min-height:44px;font-size:14px;padding:0 14px;}
+  .mx-offer-button{min-height:44px;font-size:14px;}
+  .mx-nav-links{height:42px;}
+  .mx-nav-links a{font-size:13px;}
+  .mx-banner-track{aspect-ratio:16/5.8;min-height:120px;max-height:165px;}
+  .mx-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;}
+  .mx-category-card{min-width:0;width:100%;}
+}
+
+@media (max-width:390px){
+  .mx-logo-image{width:95px;height:52px;}
+  .mx-banner-track{min-height:110px;max-height:145px;}
 }
