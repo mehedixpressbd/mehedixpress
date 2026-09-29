@@ -2188,94 +2188,128 @@ textarea.field{
 }
 
 /* =========================================================
-   MEHEDI XPRESS — COMPACT HEADER / NAV / HERO FINAL OVERRIDES
+   MEHEDI XPRESS — REFERENCE HEADER LAYOUT (2026-09-29)
+   Header only: topbar + logo/search/actions + category/offer/nav
    ========================================================= */
 
-/* Desktop / Laptop */
-@media (min-width:1101px){
-  .mx-topbar-inner{min-height:54px;}
-  .mx-top-item,.mx-top-phone{font-size:15px;}
-  .mx-lang{min-height:38px;padding:0 18px;}
-  .mx-social-mini a,.mx-social-disabled{width:38px;height:38px;}
+/* Top information strip */
+.mx-topbar-inner{
+  min-height:54px;
+}
+.mx-top-item{font-size:16px;}
+.mx-top-left{gap:18px;}
+.mx-top-right{gap:16px;}
+.mx-lang-switch,.mx-social-mini{display:none;}
+.mx-top-phone{font-size:16px;}
 
-  .mx-header-main{
-    min-height:88px;
-    grid-template-columns:300px minmax(420px,650px) 390px;
-    gap:18px;
-  }
-  .mx-logo-image{width:135px;height:72px;}
-  .mx-logo-divider{height:46px;}
-  .mx-logo-tagline{font-size:12px;line-height:1.35;}
+/* Logo + Search + Actions on ONE row */
+.mx-header-main{
+  min-height:112px;
+  grid-template-columns:220px minmax(360px,1fr) 360px;
+  gap:24px;
+}
+.mx-logo-image{width:175px;height:92px;}
+.mx-logo-divider,.mx-logo-tagline{display:none;}
+.mx-search{height:62px;border-width:2px;border-color:#d9e2ec;border-radius:32px;box-shadow:none;grid-template-columns:48px 1fr 112px;}
+.mx-search-icon{font-size:23px;}
+.mx-search input{font-size:17px;}
+.mx-search-button{font-size:0;border-radius:0 30px 30px 0;}
+.mx-search-button::before{content:"⌕";font-size:38px;font-family:Arial,sans-serif;font-weight:700;line-height:1;}
+.mx-header-action{min-width:0;padding:8px 13px;gap:8px;justify-content:center;text-align:center;}
+.mx-header-action-icon{font-size:31px;}
+.mx-action-text small{display:none;}
+.mx-action-text b{font-size:16px;}
+.mx-header-divider{height:45px;}
 
-  .mx-search{
-    height:54px;
-    grid-template-columns:46px 1fr 130px;
-    border-width:3px;
-    border-radius:14px;
-  }
-  .mx-search-icon{font-size:21px;}
-  .mx-search input{font-size:17px;}
-  .mx-search-button{font-size:18px;border-radius:0 10px 10px 0;}
+/* Category -> Offer -> Main links */
+.mx-nav-inner{
+  height:82px;
+  grid-template-columns:320px 175px 1fr;
+}
+.mx-all-category{grid-column:1;grid-row:1;border-radius:0;padding:0 34px;font-size:20px;}
+.mx-offer-button{grid-column:2;grid-row:1;border-radius:0;font-size:18px;}
+.mx-nav-links{grid-column:3;grid-row:1;gap:38px;padding:0 30px;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;}
+.mx-nav-links::-webkit-scrollbar{display:none;}
+.mx-nav-links a{font-size:17px;flex:0 0 auto;}
+.mx-nav-links a.active::after{bottom:10px;height:4px;}
 
-  .mx-header-actions{gap:12px;}
-  .mx-header-action{gap:8px;}
-  .mx-header-action-icon{font-size:27px;}
-  .mx-action-text small{font-size:11px;}
-  .mx-action-text b{font-size:15px;}
-  .mx-header-divider{height:38px;}
-  .mx-action-count{min-width:20px;height:20px;font-size:11px;}
+/* Keep current compact hero */
+.mx-banner-track{aspect-ratio:16/5;min-height:260px;max-height:410px;}
 
-  .mx-nav-inner{
-    height:58px;
-    grid-template-columns:270px 1fr 165px;
-  }
-  .mx-all-category{font-size:17px;padding:0 26px;}
-  .mx-menu-icon{font-size:25px;}
-  .mx-nav-links{gap:20px;}
-  .mx-nav-links a{font-size:14px;}
-  .mx-offer-button{font-size:17px;}
-  .mx-offer-button span{width:36px;height:36px;font-size:19px;}
-
-  .mx-banner-track{
-    aspect-ratio:16/4.5;
-    min-height:250px;
-    max-height:420px;
-  }
+@media (max-width:1100px){
+  .mx-topbar-inner{min-height:48px;padding:0;}
+  .mx-header-main{min-height:96px;padding:7px 0;grid-template-columns:160px minmax(280px,1fr) 300px;gap:12px;}
+  .mx-logo-image{width:145px;height:76px;}
+  .mx-search-wrap{grid-column:2;}
+  .mx-header-actions{grid-column:3;border-top:0;padding-top:0;}
+  .mx-search{height:54px;grid-template-columns:42px 1fr 82px;}
+  .mx-search input{font-size:15px;}
+  .mx-nav-inner{height:68px;grid-template-columns:250px 140px 1fr;}
+  .mx-all-category{min-height:68px;}
+  .mx-offer-button{min-width:0;}
+  .mx-nav-links{grid-column:3;grid-row:1;height:68px;padding:0 18px;gap:25px;}
+  .mx-banner-track{aspect-ratio:16/5.4;min-height:200px;max-height:300px;}
 }
 
-/* Tablet */
-@media (min-width:721px) and (max-width:1100px){
-  .mx-header-main{min-height:90px;gap:12px;padding:10px 14px;}
-  .mx-logo-image{width:125px;height:68px;}
-  .mx-search{height:52px;}
-  .mx-nav-inner{min-height:56px;}
-  .mx-banner-track{aspect-ratio:16/5.2;min-height:210px;max-height:320px;}
-}
-
-/* Mobile */
 @media (max-width:720px){
-  .mx-topbar-inner{padding-top:8px;padding-bottom:8px;gap:8px;}
-  .mx-header-main{gap:7px;padding:8px 12px;}
-  .mx-logo-image{width:105px;height:58px;}
-  .mx-logo-divider,.mx-logo-tagline{display:none;}
-  .mx-search{height:44px;grid-template-columns:36px 1fr 76px;border-width:2px;border-radius:12px;}
-  .mx-search input{font-size:12px;}
-  .mx-search-button{font-size:14px;}
-  .mx-header-actions{padding:4px 0;}
-  .mx-header-action-icon{font-size:22px;}
-  .mx-action-text small{display:none;}
-  .mx-action-text b{font-size:12px;}
-  .mx-header-divider{height:28px;}
-  .mx-all-category{min-height:44px;font-size:14px;padding:0 14px;}
-  .mx-offer-button{min-height:44px;font-size:14px;}
-  .mx-nav-links{height:42px;}
-  .mx-nav-links a{font-size:13px;}
-  .mx-banner-track{aspect-ratio:16/5.8;min-height:120px;max-height:165px;}
-  .mx-category-grid{grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;}
-  .mx-category-card{min-width:0;width:100%;}
+  .mx-container{width:94%;}
+
+  /* one-line compact topbar like reference */
+  .mx-topbar-inner{min-height:42px;flex-direction:row;justify-content:center;gap:12px;padding:0;}
+  .mx-top-left{width:auto;justify-content:flex-start;gap:10px;}
+  .mx-top-left .mx-top-item:nth-of-type(2){display:flex;}
+  .mx-top-left .mx-top-item:last-child{display:none;}
+  .mx-top-item{font-size:10px;gap:5px;}
+  .mx-top-icon{font-size:13px;}
+  .mx-top-right{width:auto;justify-content:flex-end;gap:0;}
+  .mx-lang-switch,.mx-social-mini{display:none;}
+  .mx-top-phone{font-size:10px;gap:4px;}
+
+  /* Mobile: logo + search + actions remain in same header row */
+  .mx-header-main{
+    min-height:74px;
+    padding:5px 0;
+    grid-template-columns:72px minmax(0,1fr) 112px;
+    gap:7px;
+  }
+  .mx-logo{justify-content:flex-start;}
+  .mx-logo-image{width:70px;height:54px;}
+  .mx-search-wrap{grid-column:2;grid-row:1;}
+  .mx-search{height:42px;border-width:1px;border-radius:24px;grid-template-columns:27px minmax(0,1fr) 45px;}
+  .mx-search-icon{font-size:14px;}
+  .mx-search input{font-size:10px;min-width:0;}
+  .mx-search-button{border-radius:0 22px 22px 0;}
+  .mx-search-button::before{font-size:25px;}
+  .mx-header-actions{grid-column:3;grid-row:1;width:100%;padding:0;border:0;justify-content:space-between;}
+  .mx-header-action{flex:1;min-width:0;padding:2px;gap:1px;flex-direction:column;}
+  .mx-header-action-icon{font-size:20px;}
+  .mx-action-text b{font-size:9px;white-space:nowrap;}
+  .mx-header-divider{display:none;}
+  .mx-action-count{min-width:17px;height:17px;font-size:8px;top:-8px;right:-8px;border-width:2px;}
+
+  /* Category + Offer + menu in one row */
+  .mx-nav-inner{height:54px;display:grid;grid-template-columns:145px 82px minmax(0,1fr);align-items:stretch;}
+  .mx-all-category{grid-column:1;grid-row:1;min-height:54px;padding:0 12px;gap:9px;font-size:13px;}
+  .mx-menu-icon{font-size:20px;}
+  .mx-offer-button{grid-column:2;grid-row:1;min-width:0;font-size:11px;gap:5px;}
+  .mx-offer-button span{width:25px;height:25px;}
+  .mx-nav-links{grid-column:3;grid-row:1;height:54px;padding:0 10px;gap:20px;overflow-x:auto;justify-content:flex-start;}
+  .mx-nav-links a{font-size:11px;}
+  .mx-nav-links a.active::after{bottom:5px;height:3px;}
+
+  .mx-banner-track{aspect-ratio:16/6;min-height:125px;max-height:165px;}
 }
 
 @media (max-width:390px){
-  .mx-logo-image{width:95px;height:52px;}
-  .mx-banner-track{min-height:110px;max-height:145px;}
+  .mx-header-main{grid-template-columns:64px minmax(0,1fr) 102px;gap:5px;}
+  .mx-logo-image{width:62px;height:48px;}
+  .mx-search{grid-template-columns:24px minmax(0,1fr) 40px;}
+  .mx-search input{font-size:9px;}
+  .mx-action-text b{font-size:8px;}
+  .mx-nav-inner{grid-template-columns:128px 72px minmax(0,1fr);}
+  .mx-all-category{font-size:12px;padding:0 9px;}
+  .mx-offer-button{font-size:10px;}
+  .mx-nav-links{gap:17px;padding:0 8px;}
+  .mx-nav-links a{font-size:10px;}
+  .mx-banner-track{min-height:115px;max-height:150px;}
 }
