@@ -1,3 +1,8 @@
+/* =========================================================
+   MEHEDI XPRESS — CUSTOMER STORE
+   Sports • Fashion • Custom Print
+   ========================================================= */
+
 import { auth, db } from "./firebase.js";
 
 import {
@@ -17,386 +22,905 @@ import {
   doc,
   addDoc,
   setDoc,
-  updateDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-const $ = (s) => document.querySelector(s);
-const money = (n) => "৳" + Number(n || 0).toLocaleString("en-BD");
+
+/* =========================================================
+   BASIC HELPERS
+   ========================================================= */
+
+const $ = (selector) => document.querySelector(selector);
+
+const $$ = (selector) =>
+  [...document.querySelectorAll(selector)];
+
+const money = (number) =>
+  "৳" + Number(number || 0).toLocaleString("en-BD");
+
+
+function escapeHtml(value = "") {
+
+  return String(value).replace(
+    /[&<>"']/g,
+    (character) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[character])
+  );
+
+}
+
+
+function safeImage(product) {
+
+  if (
+    product?.images &&
+    Array.isArray(product.images) &&
+    product.images.length
+  ) {
+
+    const first = product.images[0];
+
+    if (typeof first === "string") {
+      return first;
+    }
+
+    if (first?.url) {
+      return first.url;
+    }
+
+  }
+
+  if (product?.image) {
+    return product.image;
+  }
+
+  if (product?.imageUrl) {
+    return product.imageUrl;
+  }
+
+  return "assets/images/placeholder.svg";
+}
+
+
+/* =========================================================
+   STORE STATE
+   ========================================================= */
 
 let products = [];
+
 let categories = [];
+
 let settings = {};
+
 let user = null;
 
-let cart = JSON.parse(localStorage.getItem("mx-cart") || "[]");
-let wishlist = JSON.parse(localStorage.getItem("mx-wishlist") || "[]");
 let activeCategory = "";
 
+let currentLanguage =
+  localStorage.getItem("mx-lang") || "bn";
+
+
+let cart = [];
+
+let wishlist = [];
+
+
+try {
+
+  cart =
+    JSON.parse(
+      localStorage.getItem("mx-cart") || "[]"
+    );
+
+  if (!Array.isArray(cart)) {
+    cart = [];
+  }
+
+} catch {
+
+  cart = [];
+
+}
+
+
+try {
+
+  wishlist =
+    JSON.parse(
+      localStorage.getItem("mx-wishlist") || "[]"
+    );
+
+  if (!Array.isArray(wishlist)) {
+    wishlist = [];
+  }
+
+} catch {
+
+  wishlist = [];
+
+}
+
+
+/* =========================================================
+   FALLBACK CATEGORIES
+   ========================================================= */
+
 const demoCategories = [
+
   "Football Jersey",
   "Cricket Jersey",
   "Kids Jersey",
   "T-Shirt / Polo",
   "Shorts / Trouser",
-  "Football & Cricket",
+  "Football",
+  "Cricket Equipment",
   "Badminton",
+  "Custom Jersey",
   "Custom Print"
+
 ];
 
-function escapeHtml(value = "") {
-  return String(value).replace(/[&<>"']/g, (ch) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  }[ch]));
-}
 
-function saveWishlist() {
-  localStorage.setItem("mx-wishlist", JSON.stringify(wishlist));
-  renderProducts(activeCategory);
-  renderWishlistSection();
-}
-
-function isWished(id) {
-  return wishlist.includes(id);
-}
-
-function toggleWishlist(id) {
-  wishlist = isWished(id)
-    ? wishlist.filter(x => x !== id)
-    : [...wishlist, id];
-
-  saveWishlist();
-}
-
-function renderWishlistSection() {
-  const host = document.querySelector("#wishlistGrid");
-
-  if (!host) return;
-
-  const list = products.filter(p => wishlist.includes(p.id));
-
-  host.innerHTML = list.length
-    ? list.map(productCard).join("")
-    : '<p class="muted">❤️ পছন্দের পণ্য Heart বাটনে চাপ দিলে এখানে দেখা যাবে।</p>';
-
-  bindProductButtons(host);
-}
-
-function saveCart() {
-  localStorage.setItem("mx-cart", JSON.stringify(cart));
-  renderCart();
-}
-
-async function loadStore() {
-  try {
-    const [productSnap, categorySnap, settingsSnap] =
-      await Promise.all([
-        getDocs(
-          query(
-            collection(db, "products"),
-            where("published", "==", true)
-          )
-        ),
-        getDocs(collection(db, "categories")),
-        getDoc(doc(db, "settings", "store"))
-      ]);
-
-    products = productSnap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    }));
-
-    categories = categorySnap.docs.map((d) => ({
-      id: d.id,
-      ...d.data()
-    }));
-
-    if (!categories.length) {
-      categories = demoCategories.map((name, i) => ({
-        id: "demo-" + i,
-        name,
-        active: true
-      }));
-    }
-
-    settings = settingsSnap.exists()
-      ? settingsSnap.data()
-      : {};
-
-    showSettings();
-    renderCategories();
-    renderProducts();
-    renderPopularProducts();
-    renderWishlistSection();
-    renderCart();
-
-    initBannerSlider();
-    initLanguageSwitch();
-    initAddressSelectors();
-
-  } catch (error) {
-    console.error(error);
-
-    $("#grid").innerHTML =
-      "<p>ডাটা লোড হয়নি। Firebase configuration এবং Firestore Rules পরীক্ষা করুন।</p>";
-  }
-}
-
-function showSettings() {
-  if (settings.phone) {
-    $("#phone").innerHTML = `
-      <a
-        style="color:white;text-decoration:none"
-        href="tel:${settings.phone}">
-        ${settings.phone}
-      </a>
-    `;
-  }
-
-  $("#footer").textContent =
-    [
-      settings.address,
-      settings.phone,
-      settings.hours
-    ]
-      .filter(Boolean)
-      .join(" • ");
-}
+/* =========================================================
+   PRODUCT HELPERS
+   ========================================================= */
 
 function productStock(product) {
-  return (product.variants || [])
-    .reduce(
+
+  if (
+    Array.isArray(product?.variants) &&
+    product.variants.length
+  ) {
+
+    return product.variants.reduce(
       (total, variant) =>
         total + Number(variant.stock || 0),
       0
     );
+
+  }
+
+  return Number(product?.stock || 0);
 }
 
+
 function productPrice(product) {
+
   return Number(
-    product.salePrice ||
-    product.regularPrice ||
-    product.variants?.[0]?.sell ||
+    product?.salePrice ||
+    product?.regularPrice ||
+    product?.price ||
+    product?.variants?.[0]?.sell ||
     0
+  );
+
+}
+
+
+function regularPrice(product) {
+
+  return Number(
+    product?.regularPrice ||
+    product?.price ||
+    productPrice(product)
+  );
+
+}
+
+
+function discountPercent(product) {
+
+  const regular =
+    regularPrice(product);
+
+  const sale =
+    Number(product?.salePrice || 0);
+
+  if (
+    regular > 0 &&
+    sale > 0 &&
+    sale < regular
+  ) {
+
+    return Math.round(
+      ((regular - sale) / regular) * 100
+    );
+
+  }
+
+  return 0;
+}
+
+
+function productName(product) {
+
+  if (
+    currentLanguage === "en" &&
+    product?.nameEn
+  ) {
+
+    return product.nameEn;
+  }
+
+  return (
+    product?.name ||
+    product?.nameBn ||
+    "Product"
   );
 }
 
-function renderCategories() {
-  $("#cats").innerHTML =
-    `
-      <button
-        class="btn light"
-        data-category="">
-        সব
-      </button>
-    ` +
 
-    categories
-      .filter((category) => category.active !== false)
+/* =========================================================
+   LOCAL STORAGE
+   ========================================================= */
+
+function saveCart() {
+
+  localStorage.setItem(
+    "mx-cart",
+    JSON.stringify(cart)
+  );
+
+  renderCart();
+}
+
+
+function saveWishlist() {
+
+  localStorage.setItem(
+    "mx-wishlist",
+    JSON.stringify(wishlist)
+  );
+
+  updateWishlistCount();
+
+  renderProducts(activeCategory);
+
+  renderPopularProducts();
+
+  renderWishlistSection();
+}
+
+
+function isWished(id) {
+
+  return wishlist.includes(id);
+}
+
+
+function toggleWishlist(id) {
+
+  if (isWished(id)) {
+
+    wishlist =
+      wishlist.filter(
+        (itemId) => itemId !== id
+      );
+
+  } else {
+
+    wishlist.push(id);
+
+  }
+
+  saveWishlist();
+}
+
+
+function updateWishlistCount() {
+
+  const element =
+    $("#wishlistCount");
+
+  if (element) {
+
+    element.textContent =
+      wishlist.length;
+
+  }
+}
+
+
+/* =========================================================
+   FIREBASE STORE LOAD
+   ========================================================= */
+
+async function loadStore() {
+
+  try {
+
+    const [
+      productSnapshot,
+      categorySnapshot,
+      settingsSnapshot
+    ] = await Promise.all([
+
+      getDocs(
+        query(
+          collection(db, "products"),
+          where("published", "==", true)
+        )
+      ),
+
+      getDocs(
+        collection(db, "categories")
+      ),
+
+      getDoc(
+        doc(db, "settings", "store")
+      )
+
+    ]);
+
+
+    products =
+      productSnapshot.docs.map(
+        (document) => ({
+          id: document.id,
+          ...document.data()
+        })
+      );
+
+
+    categories =
+      categorySnapshot.docs.map(
+        (document) => ({
+          id: document.id,
+          ...document.data()
+        })
+      );
+
+
+    if (!categories.length) {
+
+      categories =
+        demoCategories.map(
+          (name, index) => ({
+
+            id: "demo-" + index,
+
+            name,
+
+            active: true
+
+          })
+        );
+
+    }
+
+
+    settings =
+      settingsSnapshot.exists()
+        ? settingsSnapshot.data()
+        : {};
+
+
+    showSettings();
+
+    renderCategories();
+
+    renderProducts();
+
+    renderPopularProducts();
+
+    renderWishlistSection();
+
+    renderCart();
+
+  } catch (error) {
+
+    console.error(
+      "Store loading error:",
+      error
+    );
+
+
+    const grid =
+      $("#grid");
+
+    if (grid) {
+
+      grid.innerHTML = `
+        <div class="mx-loading">
+          পণ্য লোড করা যায়নি।
+          Firebase configuration এবং
+          Firestore Rules পরীক্ষা করুন।
+        </div>
+      `;
+
+    }
+
+
+    const popular =
+      $("#popularGrid");
+
+    if (popular) {
+
+      popular.innerHTML = `
+        <div class="mx-loading">
+          Popular products load করা যায়নি।
+        </div>
+      `;
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   STORE SETTINGS
+   ========================================================= */
+
+function showSettings() {
+
+  const phone =
+    settings.phone ||
+    "+8801612961523";
+
+
+  const phoneElement =
+    $("#phone");
+
+
+  if (phoneElement) {
+
+    phoneElement.href =
+      "tel:" +
+      String(phone).replace(/\s/g, "");
+
+    phoneElement.innerHTML = `
+      <span>☎</span>
+      <span>${escapeHtml(phone)}</span>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+   ========================================================= */
+
+function renderCategories() {
+
+  const host =
+    $("#cats");
+
+  if (!host) {
+    return;
+  }
+
+
+  host.innerHTML = `
+
+    <button
+      type="button"
+      class="active"
+      data-category=""
+    >
+      সব পণ্য
+    </button>
+
+    ${categories
+      .filter(
+        (category) =>
+          category.active !== false
+      )
       .map(
         (category) => `
+
           <button
-            class="btn light"
-            data-category="${category.name}">
-            ${category.name}
+            type="button"
+            data-category="${escapeHtml(
+              category.name || ""
+            )}"
+          >
+            ${escapeHtml(
+              category.name || "Category"
+            )}
           </button>
+
         `
       )
-      .join("");
+      .join("")}
 
-  document
+  `;
+
+
+  host
     .querySelectorAll("[data-category]")
     .forEach((button) => {
 
-      button.onclick = () => {
-        renderProducts(button.dataset.category);
-      };
+      button.addEventListener(
+        "click",
+        () => {
+
+          activeCategory =
+            button.dataset.category || "";
+
+
+          host
+            .querySelectorAll(
+              "[data-category]"
+            )
+            .forEach(
+              (item) =>
+                item.classList.remove(
+                  "active"
+                )
+            );
+
+
+          button.classList.add(
+            "active"
+          );
+
+
+          renderProducts(
+            activeCategory
+          );
+
+
+          $("#products")
+            ?.scrollIntoView({
+              behavior: "smooth"
+            });
+
+        }
+      );
 
     });
+
 }
 
-function discountPercent(product) {
-  const regular = Number(product.regularPrice || 0);
-  const sale = Number(product.salePrice || 0);
 
-  return regular > 0 &&
-         sale > 0 &&
-         sale < regular
-
-    ? Math.round(
-        ((regular - sale) / regular) * 100
-      )
-
-    : 0;
-}
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
 
 function productCard(product) {
-  const image =
-    product.images?.[0]?.url ||
-    "assets/images/placeholder.svg";
 
-  const stock = productStock(product);
-  const discount = discountPercent(product);
+  const image =
+    safeImage(product);
+
+  const stock =
+    productStock(product);
+
+  const price =
+    productPrice(product);
+
+  const oldPrice =
+    regularPrice(product);
+
+  const discount =
+    discountPercent(product);
+
+  const wished =
+    isWished(product.id);
+
 
   return `
-    <article class="card">
 
-      <button
-        class="mx-wishlist-btn ${isWished(product.id) ? "on" : ""}"
-        data-wish="${product.id}"
-        aria-label="পছন্দের পণ্য">
+    <article class="mx-product-card product-card">
 
-        ${isWished(product.id) ? "♥" : "♡"}
-
-      </button>
-
-      ${
-        discount
-          ? `<span class="badge">-${discount}%</span>`
-          : ""
-      }
-
-      <img
-        src="${escapeHtml(image)}"
-        alt="${escapeHtml(product.name || "Product")}">
-
-      <h3>
-        ${escapeHtml(product.name || "পণ্য")}
-      </h3>
-
-      <div class="muted">
-        ${escapeHtml(product.code || "")}
-      </div>
-
-      <div class="price">
-
-        ${money(productPrice(product))}
+      <div style="position:relative;">
 
         ${
-          product.salePrice &&
-          Number(product.regularPrice) >
-          Number(product.salePrice)
-
+          discount
             ? `
-              <span class="old">
-                ${money(product.regularPrice)}
+              <span
+                style="
+                  position:absolute;
+                  left:12px;
+                  top:12px;
+                  z-index:3;
+                  background:#f51231;
+                  color:white;
+                  padding:5px 9px;
+                  border-radius:7px;
+                  font-weight:800;
+                  font-size:12px;
+                "
+              >
+                -${discount}%
               </span>
             `
-
             : ""
         }
 
+
+        <button
+          type="button"
+          data-wish="${product.id}"
+          aria-label="Wishlist"
+          style="
+            position:absolute;
+            right:12px;
+            top:12px;
+            z-index:4;
+            width:38px;
+            height:38px;
+            border:0;
+            border-radius:50%;
+            background:white;
+            color:#f51231;
+            font-size:24px;
+            box-shadow:0 5px 15px rgba(0,0,0,.12);
+          "
+        >
+          ${wished ? "♥" : "♡"}
+        </button>
+
+
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(
+            productName(product)
+          )}"
+          loading="lazy"
+          onerror="this.src='assets/images/placeholder.svg'"
+        >
+
       </div>
 
-      <p>
-        ${stock > 0 ? "✓ In Stock" : "Out of Stock"}
-      </p>
 
-      <button
-        class="btn light"
-        data-detail="${product.id}">
-        DETAILS
-      </button>
+      <div class="content">
+
+        <div
+          style="
+            color:#6f8199;
+            font-size:12px;
+            margin-bottom:5px;
+          "
+        >
+          ${escapeHtml(
+            product.category || ""
+          )}
+        </div>
+
+
+        <h3>
+          ${escapeHtml(
+            productName(product)
+          )}
+        </h3>
+
+
+        ${
+          product.code
+            ? `
+              <div
+                style="
+                  color:#8391a3;
+                  font-size:12px;
+                  margin-bottom:7px;
+                "
+              >
+                Code:
+                ${escapeHtml(product.code)}
+              </div>
+            `
+            : ""
+        }
+
+
+        <div
+          style="
+            display:flex;
+            align-items:center;
+            gap:8px;
+            flex-wrap:wrap;
+            margin:8px 0;
+          "
+        >
+
+          <span class="price">
+            ${money(price)}
+          </span>
+
+          ${
+            oldPrice > price
+              ? `
+                <span class="old-price">
+                  ${money(oldPrice)}
+                </span>
+              `
+              : ""
+          }
+
+        </div>
+
+
+        <div
+          style="
+            margin-bottom:12px;
+            font-size:13px;
+            font-weight:700;
+            color:${
+              stock > 0
+                ? "#159447"
+                : "#e10b2c"
+            };
+          "
+        >
+          ${
+            stock > 0
+              ? `✓ In Stock (${stock})`
+              : "Out of Stock"
+          }
+        </div>
+
+
+        <button
+          type="button"
+          data-detail="${product.id}"
+          style="
+            width:100%;
+            background:#0569c9;
+            color:#fff;
+          "
+        >
+          DETAILS
+        </button>
+
+      </div>
 
     </article>
+
   `;
+
 }
 
-function bindProductButtons(root = document) {
+
+/* =========================================================
+   PRODUCT BUTTONS
+   ========================================================= */
+
+function bindProductButtons(
+  root = document
+) {
 
   root
     .querySelectorAll("[data-detail]")
-    .forEach(button => {
+    .forEach((button) => {
 
-      button.onclick = () =>
-        showProduct(button.dataset.detail);
+      button.onclick = () => {
+
+        showProduct(
+          button.dataset.detail
+        );
+
+      };
 
     });
 
 
   root
     .querySelectorAll("[data-wish]")
-    .forEach(button => {
+    .forEach((button) => {
 
-      button.onclick = (e) => {
+      button.onclick = (
+        event
+      ) => {
 
-        e.stopPropagation();
+        event.stopPropagation();
 
         toggleWishlist(
           button.dataset.wish
         );
+
       };
 
     });
+
 }
 
-function renderProducts(category = activeCategory) {
 
-  activeCategory = category || "";
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+
+function renderProducts(
+  category = activeCategory
+) {
+
+  const host =
+    $("#grid");
+
+  if (!host) {
+    return;
+  }
+
+
+  activeCategory =
+    category || "";
+
 
   const search =
     ($("#search")?.value || "")
-      .toLowerCase()
-      .trim();
+      .trim()
+      .toLowerCase();
+
 
   const stockFilter =
-    $("#stock")?.value || "";
+    $("#stock")?.value || "all";
 
 
   let list =
-    products.filter(product => {
+    products.filter(
+      (product) => {
 
-      const text =
-        `${
-          product.name || ""
-        } ${
-          product.code || ""
-        } ${
-          product.category || ""
-        }`
+        const text = `
+
+          ${product.name || ""}
+
+          ${product.nameEn || ""}
+
+          ${product.code || ""}
+
+          ${product.category || ""}
+
+          ${product.description || ""}
+
+        `
           .toLowerCase();
 
 
-      const categoryMatch =
-        !activeCategory ||
-        product.category === activeCategory;
+        const categoryMatch =
+
+          !activeCategory ||
+
+          String(
+            product.category || ""
+          ).toLowerCase() ===
+
+          String(
+            activeCategory
+          ).toLowerCase();
 
 
-      const searchMatch =
-        !search ||
-        text.includes(search);
+        const searchMatch =
+
+          !search ||
+
+          text.includes(search);
 
 
-      const stock =
-        productStock(product);
+        const stock =
+          productStock(product);
 
 
-      const stockMatch =
-        !stockFilter ||
-        (
-          stockFilter === "in"
-            ? stock > 0
-            : stock <= 0
+        const stockMatch =
+
+          stockFilter !== "in" ||
+
+          stock > 0;
+
+
+        return (
+          categoryMatch &&
+          searchMatch &&
+          stockMatch
         );
 
-
-      return (
-        categoryMatch &&
-        searchMatch &&
-        stockMatch
-      );
-    });
+      }
+    );
 
 
   const sort =
-    $("#sort")?.value || "new";
+    $("#sort")?.value ||
+    "default";
 
 
-  if (sort === "low") {
+  if (sort === "price-asc") {
 
     list.sort(
       (a, b) =>
@@ -404,7 +928,10 @@ function renderProducts(category = activeCategory) {
         productPrice(b)
     );
 
-  } else if (sort === "high") {
+  }
+
+
+  if (sort === "price-desc") {
 
     list.sort(
       (a, b) =>
@@ -412,37 +939,59 @@ function renderProducts(category = activeCategory) {
         productPrice(a)
     );
 
-  } else {
+  }
+
+
+  if (sort === "newest") {
 
     list.sort(
       (a, b) =>
         (b.createdAt?.seconds || 0) -
         (a.createdAt?.seconds || 0)
     );
+
   }
 
 
-  $("#grid").innerHTML =
+  host.innerHTML =
     list.length
-      ? list.map(productCard).join("")
-      : "<p>কোনো পণ্য পাওয়া যায়নি।</p>";
+      ? list
+          .map(productCard)
+          .join("")
+      : `
+        <div class="mx-loading">
+          কোনো পণ্য পাওয়া যায়নি।
+        </div>
+      `;
 
 
-  bindProductButtons(
-    $("#grid")
-  );
+  bindProductButtons(host);
+
 }
+
+
+/* =========================================================
+   POPULAR PRODUCTS
+   ========================================================= */
 
 function renderPopularProducts() {
 
   const host =
-    document.querySelector("#popularGrid");
+    $("#popularGrid");
+
+  if (!host) {
+    return;
+  }
 
 
-  if (
-    !host ||
-    !products.length
-  ) {
+  if (!products.length) {
+
+    host.innerHTML = `
+      <div class="mx-loading">
+        এখনো কোনো পণ্য যোগ করা হয়নি।
+      </div>
+    `;
+
     return;
   }
 
@@ -453,16 +1002,11 @@ function renderPopularProducts() {
       product.ratingAverage ||
       product.rating ||
       0
-    ) * 10
-
-    +
+    ) * 10 +
 
     Number(
-      product.reviewCount ||
-      0
-    )
-
-    +
+      product.reviewCount || 0
+    ) +
 
     Number(
       product.deliveredSales ||
@@ -472,12 +1016,14 @@ function renderPopularProducts() {
 
 
   const list =
+
     [...products]
       .sort(
         (a, b) =>
-          score(b) - score(a)
+          score(b) -
+          score(a)
       )
-      .slice(0, 4);
+      .slice(0, 5);
 
 
   host.innerHTML =
@@ -487,97 +1033,270 @@ function renderPopularProducts() {
 
 
   bindProductButtons(host);
+
 }
+
+
+/* =========================================================
+   WISHLIST
+   ========================================================= */
+
+function renderWishlistSection() {
+
+  const host =
+    $("#wishlistGrid");
+
+  if (!host) {
+    return;
+  }
+
+
+  const list =
+    products.filter(
+      (product) =>
+        wishlist.includes(
+          product.id
+        )
+    );
+
+
+  if (!list.length) {
+
+    host.innerHTML = `
+
+      <div class="mx-loading">
+        ♡ এখনো কোনো পণ্য Wishlist-এ যোগ করা হয়নি।
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  host.innerHTML =
+    list
+      .map(productCard)
+      .join("");
+
+
+  bindProductButtons(host);
+
+}
+
+
+/* =========================================================
+   PRODUCT DETAILS
+   ========================================================= */
 
 function showProduct(id) {
 
   const product =
     products.find(
-      (p) => p.id === id
+      (item) =>
+        item.id === id
     );
 
 
-  if (!product) return;
+  if (!product) {
+    return;
+  }
 
 
-  const variants =
-    (product.variants || [])
-      .filter(
+  const image =
+    safeImage(product);
+
+
+  let variants = [];
+
+
+  if (
+    Array.isArray(product.variants) &&
+    product.variants.length
+  ) {
+
+    variants =
+      product.variants.filter(
         (variant) =>
           Number(
             variant.stock || 0
           ) > 0
       );
 
-
-  const image =
-    product.images?.[0]?.url ||
-    "assets/images/placeholder.svg";
+  }
 
 
-  $("#detailBody").innerHTML = `
+  if (
+    !variants.length &&
+    Number(product.stock || 0) > 0
+  ) {
 
-    <div class="grid">
+    variants = [{
+
+      sku:
+        product.sku ||
+        product.code ||
+        product.id,
+
+      size: "",
+
+      color: "",
+
+      sell:
+        productPrice(product),
+
+      stock:
+        Number(product.stock || 0)
+
+    }];
+
+  }
+
+
+  const detail =
+    $("#detail");
+
+
+  const body =
+    $("#detailBody");
+
+
+  if (!detail || !body) {
+    return;
+  }
+
+
+  body.innerHTML = `
+
+    <div
+      style="
+        display:grid;
+        grid-template-columns:
+          minmax(250px,1fr)
+          minmax(280px,1fr);
+        gap:30px;
+      "
+      class="mx-detail-grid"
+    >
 
       <div>
 
         <img
-          style="width:100%;border-radius:12px"
-          src="${image}"
-          alt="${escapeHtml(product.name || "Product")}">
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(
+            productName(product)
+          )}"
+          style="
+            width:100%;
+            border-radius:16px;
+            background:#f5f7fa;
+          "
+          onerror="this.src='assets/images/placeholder.svg'"
+        >
 
       </div>
 
 
       <div>
 
-        <h2>
-          ${escapeHtml(product.name || "")}
+        <div
+          style="
+            color:#f51231;
+            font-weight:800;
+            font-size:12px;
+          "
+        >
+          ${escapeHtml(
+            product.category || ""
+          )}
+        </div>
+
+
+        <h2
+          style="
+            margin:7px 0 10px;
+            color:#052f62;
+          "
+        >
+          ${escapeHtml(
+            productName(product)
+          )}
         </h2>
 
 
-        <p>
-          ${escapeHtml(product.description || "")}
-        </p>
+        ${
+          product.code
+            ? `
+              <p>
+                Product Code:
+                <b>
+                  ${escapeHtml(
+                    product.code
+                  )}
+                </b>
+              </p>
+            `
+            : ""
+        }
 
 
-        <p class="muted">
-
-          Category:
-          ${escapeHtml(product.category || "-")}
-
-          •
-
-          Code:
-          ${escapeHtml(product.code || "-")}
-
-        </p>
-
-
-        <p>
-
-          ⭐
-          ${Number(
-            product.ratingAverage ||
-            product.rating ||
-            0
-          ).toFixed(1)}
-
-          (${Number(
-            product.reviewCount ||
-            0
-          )} reviews)
-
-        </p>
+        ${
+          product.description
+            ? `
+              <p
+                style="
+                  margin:12px 0;
+                  color:#64768d;
+                "
+              >
+                ${escapeHtml(
+                  product.description
+                )}
+              </p>
+            `
+            : ""
+        }
 
 
-        <div class="price">
-
+        <div
+          class="price"
+          style="
+            margin:15px 0;
+            font-size:28px;
+          "
+        >
           ${money(
             productPrice(product)
           )}
-
         </div>
+
+
+        ${
+          Number(
+            product.reviewCount || 0
+          ) > 0
+
+            ? `
+              <p
+                style="
+                  margin-bottom:15px;
+                "
+              >
+                ⭐
+                ${Number(
+                  product.ratingAverage ||
+                  product.rating ||
+                  0
+                ).toFixed(1)}
+
+                (${Number(
+                  product.reviewCount || 0
+                )} reviews)
+              </p>
+            `
+
+            : ""
+        }
 
 
         ${
@@ -586,39 +1305,58 @@ function showProduct(id) {
             ? `
 
               <label>
-                Size / Color
+                <b>
+                  Size / Color
+                </b>
               </label>
-
 
               <select
                 class="field"
-                id="variantSelect">
+                id="variantSelect"
+                style="margin-top:7px;"
+              >
 
-                ${
-                  variants
-                    .map(
-                      (variant, index) => `
+                ${variants
+                  .map(
+                    (
+                      variant,
+                      index
+                    ) => `
 
-                        <option value="${index}">
+                      <option
+                        value="${index}"
+                      >
 
-                          ${escapeHtml(variant.size || "-")}
+                        ${
+                          variant.size ||
+                          "Standard"
+                        }
 
-                          /
+                        ${
+                          variant.color
+                            ? " / " +
+                              variant.color
+                            : ""
+                        }
 
-                          ${escapeHtml(variant.color || "-")}
+                        —
+                        ${money(
+                          variant.sell ||
+                          productPrice(
+                            product
+                          )
+                        )}
 
-                          —
+                        (${Number(
+                          variant.stock ||
+                          0
+                        )} available)
 
-                          ${money(variant.sell)}
+                      </option>
 
-                          (${variant.stock} available)
-
-                        </option>
-
-                      `
-                    )
-                    .join("")
-                }
+                    `
+                  )
+                  .join("")}
 
               </select>
 
@@ -627,36 +1365,51 @@ function showProduct(id) {
 
 
               <label>
-                Quantity
+                <b>Quantity</b>
               </label>
-
 
               <input
                 class="field"
                 id="productQty"
                 type="number"
                 min="1"
-                value="1">
+                value="1"
+                style="
+                  margin-top:7px;
+                  max-width:130px;
+                "
+              >
 
 
               <br><br>
 
 
               <button
+                type="button"
                 class="btn primary"
-                id="addCart">
-
+                id="addCart"
+                style="
+                  width:100%;
+                "
+              >
                 ADD TO CART
-
               </button>
 
             `
 
             : `
 
-              <p>
-                <b>স্টক শেষ</b>
-              </p>
+              <div
+                style="
+                  padding:14px;
+                  border-radius:10px;
+                  background:#fff0f2;
+                  color:#d30b29;
+                  font-weight:800;
+                "
+              >
+                এই পণ্যটি বর্তমানে Out of Stock
+              </div>
 
             `
         }
@@ -664,12 +1417,11 @@ function showProduct(id) {
       </div>
 
     </div>
+
   `;
 
 
-  $("#detail")
-    .classList
-    .add("on");
+  openModal(detail);
 
 
   if (!variants.length) {
@@ -679,12 +1431,14 @@ function showProduct(id) {
 
   $("#addCart").onclick = () => {
 
+    const index =
+      Number(
+        $("#variantSelect").value
+      );
+
+
     const variant =
-      variants[
-        Number(
-          $("#variantSelect").value
-        )
-      ];
+      variants[index];
 
 
     const quantity =
@@ -696,9 +1450,15 @@ function showProduct(id) {
       );
 
 
+    const availableStock =
+      Number(
+        variant.stock || 0
+      );
+
+
     if (
       quantity >
-      Number(variant.stock)
+      availableStock
     ) {
 
       alert(
@@ -709,10 +1469,21 @@ function showProduct(id) {
     }
 
 
+    const sku =
+      variant.sku ||
+      product.sku ||
+      product.code ||
+      "default";
+
+
     const key =
       product.id +
       "|" +
-      variant.sku;
+      sku +
+      "|" +
+      (variant.size || "") +
+      "|" +
+      (variant.color || "");
 
 
     const existing =
@@ -725,8 +1496,9 @@ function showProduct(id) {
     if (existing) {
 
       if (
-        existing.qty + quantity >
-        Number(variant.stock)
+        existing.qty +
+          quantity >
+        availableStock
       ) {
 
         alert(
@@ -737,7 +1509,8 @@ function showProduct(id) {
       }
 
 
-      existing.qty += quantity;
+      existing.qty +=
+        quantity;
 
     } else {
 
@@ -749,12 +1522,11 @@ function showProduct(id) {
           product.id,
 
         name:
-          product.name,
+          productName(product),
 
         image,
 
-        sku:
-          variant.sku,
+        sku,
 
         size:
           variant.size || "",
@@ -764,226 +1536,276 @@ function showProduct(id) {
 
         price:
           Number(
-            variant.sell || 0
+            variant.sell ||
+            productPrice(product)
           ),
 
         qty:
           quantity,
 
+        maxStock:
+          availableStock,
+
         selected:
           true
+
       });
+
     }
 
 
     saveCart();
 
+    closeModal(detail);
 
-    $("#detail")
-      .classList
-      .remove("on");
+    openModal(
+      $("#cart")
+    );
+
   };
+
 }
+
+
+/* =========================================================
+   CART
+   ========================================================= */
+
 function renderCart() {
 
-  const host = $("#cartItems");
-
-  if (!host) return;
-
-
-  $("#count").textContent =
+  const totalCount =
     cart.reduce(
-      (sum, item) =>
-        sum + Number(item.qty || 0),
+      (total, item) =>
+        total +
+        Number(item.qty || 0),
       0
     );
 
 
-  if (!cart.length) {
+  if ($("#count")) {
 
-    host.innerHTML =
-      '<p class="muted">আপনার Cart খালি।</p>';
+    $("#count").textContent =
+      totalCount;
 
-    $("#subtotal").textContent =
-      "Subtotal: ৳0";
+  }
 
+
+  if ($("#cartBadge")) {
+
+    $("#cartBadge").textContent =
+      totalCount;
+
+  }
+
+
+  const cartItems =
+    $("#cartItems");
+
+
+  if (!cartItems) {
     return;
   }
 
 
-  host.innerHTML =
-    cart.map((item, index) => `
+  if (!cart.length) {
 
-      <div class="cartitem">
+    cartItems.innerHTML = `
 
-        <input
-          type="checkbox"
-          data-select="${index}"
-          ${item.selected !== false ? "checked" : ""}>
-
-
-        <img
-          src="${escapeHtml(
-            item.image ||
-            "assets/images/placeholder.svg"
-          )}"
-          alt="${escapeHtml(item.name)}">
-
-
-        <div>
-
-          <b>
-            ${escapeHtml(item.name)}
-          </b>
-
-
-          <div class="muted">
-
-            ${escapeHtml(item.size || "")}
-
-            ${item.color ? " • " + escapeHtml(item.color) : ""}
-
-          </div>
-
-
-          <div>
-            ${money(item.price)}
-          </div>
-
-
-          <div class="qty">
-
-            <button
-              type="button"
-              data-minus="${index}">
-              −
-            </button>
-
-
-            <span>
-              ${item.qty}
-            </span>
-
-
-            <button
-              type="button"
-              data-plus="${index}">
-              +
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <button
-          type="button"
-          class="btn danger"
-          data-remove="${index}">
-          ×
-        </button>
-
+      <div
+        style="
+          padding:35px 10px;
+          text-align:center;
+          color:#718197;
+        "
+      >
+        🛒 আপনার Cart এখন খালি।
       </div>
 
-    `).join("");
+    `;
+
+  } else {
+
+    cartItems.innerHTML =
+      cart
+        .map(
+          (item, index) => `
+
+            <div
+              style="
+                border:1px solid #dfe7ef;
+                border-radius:14px;
+                padding:13px;
+                margin-bottom:12px;
+                display:grid;
+                grid-template-columns:
+                  72px 1fr;
+                gap:12px;
+              "
+            >
+
+              <img
+                src="${escapeHtml(
+                  item.image ||
+                  "assets/images/placeholder.svg"
+                )}"
+                alt="${escapeHtml(
+                  item.name
+                )}"
+                style="
+                  width:72px;
+                  height:72px;
+                  object-fit:cover;
+                  border-radius:10px;
+                  background:#f5f7fa;
+                "
+              >
 
 
-  const selectedItems =
-    cart.filter(
-      item =>
-        item.selected !== false
-    );
+              <div>
+
+                <label
+                  style="
+                    display:flex;
+                    gap:7px;
+                    align-items:flex-start;
+                  "
+                >
+
+                  <input
+                    type="checkbox"
+                    data-select="${index}"
+                    ${
+                      item.selected !== false
+                        ? "checked"
+                        : ""
+                    }
+                  >
+
+                  <b>
+                    ${escapeHtml(
+                      item.name
+                    )}
+                  </b>
+
+                </label>
+
+
+                <div
+                  style="
+                    color:#7a8a9d;
+                    font-size:12px;
+                    margin:5px 0;
+                  "
+                >
+
+                  ${
+                    item.size
+                      ? "Size: " +
+                        escapeHtml(
+                          item.size
+                        )
+                      : ""
+                  }
+
+                  ${
+                    item.color
+                      ? " • Color: " +
+                        escapeHtml(
+                          item.color
+                        )
+                      : ""
+                  }
+
+                </div>
+
+
+                <strong
+                  style="
+                    color:#f51231;
+                  "
+                >
+                  ${money(item.price)}
+                </strong>
+
+
+                <div
+                  style="
+                    display:flex;
+                    gap:7px;
+                    align-items:center;
+                    margin-top:8px;
+                  "
+                >
+
+                  <input
+                    type="number"
+                    min="1"
+                    max="${
+                      item.maxStock || 999
+                    }"
+                    value="${item.qty}"
+                    data-qty="${index}"
+                    style="
+                      width:65px;
+                      padding:6px;
+                      border:1px solid #d5e0ea;
+                      border-radius:7px;
+                    "
+                  >
+
+                  <button
+                    type="button"
+                    data-remove="${index}"
+                    style="
+                      border:0;
+                      background:#fff0f2;
+                      color:#d90b29;
+                      padding:7px 10px;
+                      border-radius:7px;
+                      font-weight:700;
+                    "
+                  >
+                    Remove
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+  }
 
 
   const subtotal =
-    selectedItems.reduce(
-      (sum, item) =>
-        sum +
-        Number(item.price) *
-        Number(item.qty),
-      0
-    );
+    cart
+      .filter(
+        (item) =>
+          item.selected !== false
+      )
+      .reduce(
+        (total, item) =>
+          total +
+          Number(item.price) *
+          Number(item.qty),
+        0
+      );
 
 
-  $("#subtotal").textContent =
-    "Subtotal: " +
-    money(subtotal);
+  if ($("#subtotal")) {
+
+    $("#subtotal").textContent =
+      money(subtotal);
+
+  }
 
 
-  host
-    .querySelectorAll("[data-select]")
-    .forEach(input => {
-
-      input.onchange = () => {
-
-        const index =
-          Number(
-            input.dataset.select
-          );
-
-
-        cart[index].selected =
-          input.checked;
-
-
-        saveCart();
-      };
-
-    });
-
-
-  host
-    .querySelectorAll("[data-minus]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        const index =
-          Number(
-            button.dataset.minus
-          );
-
-
-        cart[index].qty =
-          Math.max(
-            1,
-            Number(cart[index].qty) - 1
-          );
-
-
-        saveCart();
-      };
-
-    });
-
-
-  host
-    .querySelectorAll("[data-plus]")
-    .forEach(button => {
-
-      button.onclick = () => {
-
-        const index =
-          Number(
-            button.dataset.plus
-          );
-
-
-        cart[index].qty =
-          Number(
-            cart[index].qty
-          ) + 1;
-
-
-        saveCart();
-      };
-
-    });
-
-
-  host
-    .querySelectorAll("[data-remove]")
-    .forEach(button => {
+  $$("[data-remove]")
+    .forEach((button) => {
 
       button.onclick = () => {
 
@@ -1000,126 +1822,1381 @@ function renderCart() {
 
 
         saveCart();
+
       };
 
     });
+
+
+  $$("[data-qty]")
+    .forEach((input) => {
+
+      input.onchange = () => {
+
+        const index =
+          Number(
+            input.dataset.qty
+          );
+
+
+        const item =
+          cart[index];
+
+
+        if (!item) {
+          return;
+        }
+
+
+        let quantity =
+          Math.max(
+            1,
+            Number(input.value)
+          );
+
+
+        if (
+          item.maxStock &&
+          quantity >
+            Number(item.maxStock)
+        ) {
+
+          quantity =
+            Number(item.maxStock);
+
+          alert(
+            "এই পণ্যের available stock-এর বেশি নেওয়া যাবে না।"
+          );
+
+        }
+
+
+        item.qty =
+          quantity;
+
+
+        saveCart();
+
+      };
+
+    });
+
+
+  $$("[data-select]")
+    .forEach((input) => {
+
+      input.onchange = () => {
+
+        const index =
+          Number(
+            input.dataset.select
+          );
+
+
+        if (!cart[index]) {
+          return;
+        }
+
+
+        cart[index].selected =
+          input.checked;
+
+
+        saveCart();
+
+      };
+
+    });
+
 }
 
 
-$("#cartBtn").onclick = () => {
+/* =========================================================
+   MODAL / DRAWER
+   ========================================================= */
 
-  renderCart();
+function openModal(element) {
 
-  $("#cart")
-    .classList
-    .add("on");
-};
+  if (!element) {
+    return;
+  }
 
+  element.classList.add(
+    "active"
+  );
 
-document
-  .querySelectorAll("[data-close]")
-  .forEach(button => {
-
-    button.onclick = () => {
-
-      const id =
-        button.dataset.close;
+}
 
 
-      document
-        .getElementById(id)
-        ?.classList
-        .remove("on");
-    };
+function closeModal(element) {
 
-  });
+  if (!element) {
+    return;
+  }
+
+  element.classList.remove(
+    "active",
+    "open",
+    "show",
+    "on"
+  );
+
+}
 
 
-$("#search").addEventListener(
-  "input",
-  () =>
-    renderProducts(
-      activeCategory
-    )
+/* =========================================================
+   CLOSE BUTTONS
+   ========================================================= */
+
+$("[data-close-cart]")
+  ?.addEventListener(
+    "click",
+    () => closeModal($("#cart"))
+  );
+
+
+$("[data-close-detail]")
+  ?.addEventListener(
+    "click",
+    () => closeModal($("#detail"))
+  );
+
+
+$("[data-close-account]")
+  ?.addEventListener(
+    "click",
+    () =>
+      closeModal(
+        $("#accountModal")
+      )
+  );
+
+
+$("[data-close-checkout]")
+  ?.addEventListener(
+    "click",
+    () =>
+      closeModal(
+        $("#checkoutModal")
+      )
+  );
+
+
+/* Click outside modal */
+
+[
+  "#cart",
+  "#detail",
+  "#accountModal",
+  "#checkoutModal"
+].forEach((selector) => {
+
+  const element =
+    $(selector);
+
+
+  element?.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target === element
+      ) {
+
+        closeModal(element);
+
+      }
+
+    }
+  );
+
+});
+
+
+/* ESC */
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (event.key !== "Escape") {
+      return;
+    }
+
+
+    [
+      "#cart",
+      "#detail",
+      "#accountModal",
+      "#checkoutModal"
+    ].forEach(
+      (selector) =>
+        closeModal(
+          $(selector)
+        )
+    );
+
+  }
 );
 
 
-$("#stock").addEventListener(
-  "change",
-  () =>
-    renderProducts(
-      activeCategory
-    )
-);
+/* =========================================================
+   SEARCH / SORT / STOCK
+   ========================================================= */
+
+$("#search")
+  ?.addEventListener(
+    "input",
+    () =>
+      renderProducts(
+        activeCategory
+      )
+  );
 
 
-$("#sort").addEventListener(
-  "change",
-  () =>
-    renderProducts(
-      activeCategory
-    )
-);
+$("#sort")
+  ?.addEventListener(
+    "change",
+    () =>
+      renderProducts(
+        activeCategory
+      )
+  );
 
 
-/* =====================================================
+$("#stock")
+  ?.addEventListener(
+    "change",
+    () =>
+      renderProducts(
+        activeCategory
+      )
+  );
+
+
+/* =========================================================
+   CART BUTTON
+   ========================================================= */
+
+$("#cartBtn")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      renderCart();
+
+      openModal(
+        $("#cart")
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   CHECKOUT OPEN
+   ========================================================= */
+
+$("#checkout")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      const selected =
+        cart.filter(
+          (item) =>
+            item.selected !== false
+        );
+
+
+      if (!selected.length) {
+
+        alert(
+          "Cart থেকে অন্তত একটি পণ্য Select করুন।"
+        );
+
+        return;
+      }
+
+
+      if (!user) {
+
+        alert(
+          "Checkout করার আগে Login অথবা Register করুন।"
+        );
+
+
+        closeModal(
+          $("#cart")
+        );
+
+
+        showAccount();
+
+
+        openModal(
+          $("#accountModal")
+        );
+
+
+        return;
+      }
+
+
+      closeModal(
+        $("#cart")
+      );
+
+
+      fillCheckoutProfile();
+
+
+      openModal(
+        $("#checkoutModal")
+      );
+
+    }
+  );
+
+
+/* =========================================================
    CHECKOUT
-===================================================== */
+   ========================================================= */
 
-$("#checkout").onclick = () => {
+$("#checkoutForm")
+  ?.addEventListener(
+    "submit",
+    async (event) => {
 
-  const selected =
-    cart.filter(
-      item =>
-        item.selected !== false
-    );
+      event.preventDefault();
 
 
-  if (!selected.length) {
+      if (!user) {
 
-    alert(
-      "Checkout করার জন্য অন্তত একটি পণ্য Select করুন।"
-    );
+        alert(
+          "Checkout করার জন্য Login প্রয়োজন।"
+        );
+
+        return;
+      }
+
+
+      const form =
+        Object.fromEntries(
+          new FormData(
+            event.target
+          )
+        );
+
+
+      const items =
+        cart.filter(
+          (item) =>
+            item.selected !== false
+        );
+
+
+      if (!items.length) {
+
+        alert(
+          "Cart-এ কোনো selected product নেই।"
+        );
+
+        return;
+      }
+
+
+      const subtotal =
+        items.reduce(
+          (total, item) =>
+            total +
+            Number(item.price) *
+            Number(item.qty),
+          0
+        );
+
+
+      const district =
+        String(
+          form.district || ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      const isCumilla =
+
+        district === "কুমিল্লা" ||
+
+        district === "cumilla" ||
+
+        district === "comilla";
+
+
+      const delivery =
+        isCumilla
+
+          ? Number(
+              settings.insideDelivery ||
+              80
+            )
+
+          : Number(
+              settings.outsideDelivery ||
+              150
+            );
+
+
+      const paymentMethod =
+        form.paymentMethod ||
+        "cod";
+
+
+      const transactionId =
+        String(
+          form.transactionId || ""
+        ).trim();
+
+
+      if (
+        (
+          paymentMethod ===
+            "bkash" ||
+
+          paymentMethod ===
+            "nagad"
+        ) &&
+
+        !transactionId
+      ) {
+
+        alert(
+          "bKash/Nagad payment করলে Transaction ID দিতে হবে।"
+        );
+
+        return;
+      }
+
+
+      const orderItems =
+        items.map(
+          (item) => ({
+
+            productId:
+              item.productId,
+
+            name:
+              item.name,
+
+            sku:
+              item.sku || "",
+
+            size:
+              item.size || "",
+
+            color:
+              item.color || "",
+
+            price:
+              Number(item.price),
+
+            qty:
+              Number(item.qty),
+
+            image:
+              item.image || ""
+
+          })
+        );
+
+
+      const orderData = {
+
+        userId:
+          user.uid,
+
+        customerEmail:
+          user.email || "",
+
+        customerName:
+          form.name || "",
+
+        phone:
+          form.phone || "",
+
+        division:
+          form.division || "",
+
+        district:
+          form.district || "",
+
+        upazila:
+          form.upazila || "",
+
+        area:
+          form.area || "",
+
+        address:
+          form.address || "",
+
+        payment:
+          paymentMethod,
+
+        paymentMethod,
+
+        trx:
+          transactionId,
+
+        transactionId,
+
+        paymentStatus:
+          paymentMethod === "cod"
+            ? "COD"
+            : "Pending Verification",
+
+        items:
+          orderItems,
+
+        subtotal,
+
+        delivery,
+
+        total:
+          subtotal +
+          delivery,
+
+        status:
+          "Pending",
+
+        stockState:
+          "none",
+
+        source:
+          "Website",
+
+        createdAt:
+          serverTimestamp()
+
+      };
+
+
+      try {
+
+        await addDoc(
+          collection(
+            db,
+            "orders"
+          ),
+          orderData
+        );
+
+
+        cart =
+          cart.filter(
+            (item) =>
+              item.selected === false
+          );
+
+
+        saveCart();
+
+
+        event.target.reset();
+
+
+        initAddressSelectors(
+          true
+        );
+
+
+        closeModal(
+          $("#checkoutModal")
+        );
+
+
+        alert(
+          "আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে।"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Order error:",
+          error
+        );
+
+
+        alert(
+          "Order করা যায়নি। " +
+          error.message
+        );
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   ACCOUNT
+   ========================================================= */
+
+$("#account")
+  ?.addEventListener(
+    "click",
+    () => {
+
+      showAccount();
+
+      openModal(
+        $("#accountModal")
+      );
+
+    }
+  );
+
+
+function showAccount() {
+
+  const host =
+    $("#accountBody");
+
+
+  if (!host) {
+    return;
+  }
+
+
+  if (user) {
+
+    host.innerHTML = `
+
+      <div
+        style="
+          display:flex;
+          gap:12px;
+          align-items:center;
+          padding:15px;
+          background:#f3f8fd;
+          border-radius:14px;
+          margin-bottom:18px;
+        "
+      >
+
+        <div
+          style="
+            width:55px;
+            height:55px;
+            border-radius:50%;
+            background:#0569c9;
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:25px;
+          "
+        >
+          👤
+        </div>
+
+
+        <div>
+
+          <b>
+            আমার Account
+          </b>
+
+          <div
+            style="
+              color:#728399;
+              font-size:13px;
+            "
+          >
+            ${escapeHtml(
+              user.email || ""
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        style="
+          display:grid;
+          gap:9px;
+        "
+      >
+
+        <button
+          type="button"
+          class="btn primary"
+          id="showOrders"
+        >
+          আমার Orders
+        </button>
+
+
+        <button
+          type="button"
+          class="btn light"
+          id="editProfile"
+        >
+          Profile / Address
+        </button>
+
+
+        <button
+          type="button"
+          class="btn light"
+          id="logoutCustomer"
+          style="
+            color:#d90b29;
+          "
+        >
+          Logout
+        </button>
+
+      </div>
+
+
+      <div
+        id="profileEditor"
+        style="margin-top:18px;"
+      ></div>
+
+
+      <div
+        id="myOrders"
+        style="margin-top:18px;"
+      ></div>
+
+    `;
+
+
+    $("#logoutCustomer")
+      ?.addEventListener(
+        "click",
+        async () => {
+
+          await signOut(auth);
+
+          closeModal(
+            $("#accountModal")
+          );
+
+        }
+      );
+
+
+    $("#showOrders")
+      ?.addEventListener(
+        "click",
+        loadMyOrders
+      );
+
+
+    $("#editProfile")
+      ?.addEventListener(
+        "click",
+        loadProfileEditor
+      );
+
 
     return;
   }
 
+
+  host.innerHTML = `
+
+    <div
+      style="
+        margin-bottom:18px;
+      "
+    >
+
+      <h3>
+        Login / Register
+      </h3>
+
+      <p
+        style="
+          color:#718197;
+          font-size:14px;
+        "
+      >
+        অর্ডার ও Order History দেখার জন্য Account ব্যবহার করুন।
+      </p>
+
+    </div>
+
+
+    <form id="customerLogin">
+
+      <label>
+        Email
+      </label>
+
+      <input
+        class="field"
+        name="email"
+        type="email"
+        placeholder="আপনার Email"
+        required
+      >
+
+
+      <br><br>
+
+
+      <label>
+        Password
+      </label>
+
+      <input
+        class="field"
+        name="password"
+        type="password"
+        minlength="6"
+        placeholder="কমপক্ষে 6 অক্ষর"
+        required
+      >
+
+
+      <br><br>
+
+
+      <button
+        type="submit"
+        class="btn primary"
+        style="width:100%;"
+      >
+        LOGIN
+      </button>
+
+
+      <br><br>
+
+
+      <button
+        type="button"
+        class="btn light"
+        id="registerCustomer"
+        style="width:100%;"
+      >
+        CREATE ACCOUNT
+      </button>
+
+
+      <br><br>
+
+
+      <button
+        type="button"
+        class="btn light"
+        id="resetPassword"
+        style="width:100%;"
+      >
+        RESET PASSWORD
+      </button>
+
+    </form>
+
+  `;
+
+
+  $("#customerLogin")
+    ?.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+
+        const form =
+          new FormData(
+            event.target
+          );
+
+
+        try {
+
+          await signInWithEmailAndPassword(
+
+            auth,
+
+            form.get("email"),
+
+            form.get("password")
+
+          );
+
+
+          alert(
+            "Login সফল হয়েছে।"
+          );
+
+
+        } catch (error) {
+
+          alert(
+            "Login করা যায়নি: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+
+  $("#registerCustomer")
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        const formElement =
+          $("#customerLogin");
+
+
+        if (!formElement) {
+          return;
+        }
+
+
+        const form =
+          new FormData(
+            formElement
+          );
+
+
+        const email =
+          String(
+            form.get("email") ||
+            ""
+          ).trim();
+
+
+        const password =
+          String(
+            form.get("password") ||
+            ""
+          );
+
+
+        if (
+          !email ||
+          !password
+        ) {
+
+          alert(
+            "Email এবং Password লিখুন।"
+          );
+
+          return;
+        }
+
+
+        if (
+          password.length < 6
+        ) {
+
+          alert(
+            "Password কমপক্ষে 6 অক্ষরের হতে হবে।"
+          );
+
+          return;
+        }
+
+
+        try {
+
+          const result =
+            await createUserWithEmailAndPassword(
+
+              auth,
+
+              email,
+
+              password
+
+            );
+
+
+          await setDoc(
+
+            doc(
+              db,
+              "users",
+              result.user.uid
+            ),
+
+            {
+
+              email:
+                result.user.email,
+
+              name: "",
+
+              phone: "",
+
+              division: "",
+
+              district: "",
+
+              upazila: "",
+
+              area: "",
+
+              address: "",
+
+              role:
+                "customer",
+
+              createdAt:
+                serverTimestamp()
+
+            },
+
+            {
+              merge: true
+            }
+
+          );
+
+
+          alert(
+            "Account সফলভাবে তৈরি হয়েছে।"
+          );
+
+
+        } catch (error) {
+
+          alert(
+            "Account তৈরি করা যায়নি: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+
+  $("#resetPassword")
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        const formElement =
+          $("#customerLogin");
+
+
+        if (!formElement) {
+          return;
+        }
+
+
+        const form =
+          new FormData(
+            formElement
+          );
+
+
+        const email =
+          String(
+            form.get("email") ||
+            ""
+          ).trim();
+
+
+        if (!email) {
+
+          alert(
+            "আগে Email লিখুন।"
+          );
+
+          return;
+        }
+
+
+        try {
+
+          await sendPasswordResetEmail(
+            auth,
+            email
+          );
+
+
+          alert(
+            "Password reset email পাঠানো হয়েছে।"
+          );
+
+
+        } catch (error) {
+
+          alert(
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+async function loadProfileEditor() {
 
   if (!user) {
-
-    alert(
-      "অর্ডার করার আগে Account-এ Login করুন।"
-    );
-
-
-    $("#cart")
-      .classList
-      .remove("on");
-
-
-    openAccount();
-
     return;
   }
 
 
-  $("#cart")
-    .classList
-    .remove("on");
+  const host =
+    $("#profileEditor");
 
 
-  $("#checkoutModal")
-    .classList
-    .add("on");
+  if (!host) {
+    return;
+  }
 
 
-  fillCheckoutProfile();
-};
+  try {
 
+    const reference =
+      doc(
+        db,
+        "users",
+        user.uid
+      );
+
+
+    const snapshot =
+      await getDoc(reference);
+
+
+    const profile =
+      snapshot.exists()
+        ? snapshot.data()
+        : {};
+
+
+    host.innerHTML = `
+
+      <div
+        style="
+          border-top:1px solid #e1e8ef;
+          padding-top:18px;
+        "
+      >
+
+        <h3
+          style="
+            margin-bottom:13px;
+          "
+        >
+          Profile / Address
+        </h3>
+
+
+        <form id="profileForm">
+
+          <input
+            class="field"
+            name="name"
+            placeholder="আপনার নাম"
+            value="${escapeHtml(
+              profile.name || ""
+            )}"
+            required
+          >
+
+          <br><br>
+
+
+          <input
+            class="field"
+            name="phone"
+            placeholder="মোবাইল নম্বর"
+            value="${escapeHtml(
+              profile.phone || ""
+            )}"
+            required
+          >
+
+          <br><br>
+
+
+          <input
+            class="field"
+            name="division"
+            placeholder="বিভাগ"
+            value="${escapeHtml(
+              profile.division || ""
+            )}"
+          >
+
+          <br><br>
+
+
+          <input
+            class="field"
+            name="district"
+            placeholder="জেলা"
+            value="${escapeHtml(
+              profile.district || ""
+            )}"
+          >
+
+          <br><br>
+
+
+          <input
+            class="field"
+            name="upazila"
+            placeholder="উপজেলা / থানা"
+            value="${escapeHtml(
+              profile.upazila || ""
+            )}"
+          >
+
+          <br><br>
+
+
+          <input
+            class="field"
+            name="area"
+            placeholder="এলাকা / গ্রাম"
+            value="${escapeHtml(
+              profile.area || ""
+            )}"
+          >
+
+          <br><br>
+
+
+          <textarea
+            class="field"
+            name="address"
+            rows="3"
+            placeholder="সম্পূর্ণ ঠিকানা"
+          >${escapeHtml(
+            profile.address || ""
+          )}</textarea>
+
+          <br><br>
+
+
+          <button
+            type="submit"
+            class="btn primary"
+            style="width:100%;"
+          >
+            SAVE PROFILE
+          </button>
+
+        </form>
+
+      </div>
+
+    `;
+
+
+    $("#profileForm")
+      ?.addEventListener(
+        "submit",
+        async (event) => {
+
+          event.preventDefault();
+
+
+          const data =
+            Object.fromEntries(
+              new FormData(
+                event.target
+              )
+            );
+
+
+          try {
+
+            await setDoc(
+
+              reference,
+
+              {
+
+                ...data,
+
+                email:
+                  user.email || "",
+
+                role:
+                  "customer",
+
+                updatedAt:
+                  serverTimestamp()
+
+              },
+
+              {
+                merge: true
+              }
+
+            );
+
+
+            alert(
+              "Profile Save হয়েছে।"
+            );
+
+
+          } catch (error) {
+
+            alert(
+              "Profile Save করা যায়নি: " +
+              error.message
+            );
+
+          }
+
+        }
+      );
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    host.innerHTML = `
+      <p>
+        Profile load করা যায়নি।
+      </p>
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   FILL CHECKOUT FROM PROFILE
+   ========================================================= */
 
 async function fillCheckoutProfile() {
 
-  if (!user) return;
+  if (!user) {
+    return;
+  }
 
 
   try {
@@ -1143,1200 +3220,173 @@ async function fillCheckoutProfile() {
       snapshot.data();
 
 
-    const form =
-      $("#checkoutForm");
+    if ($("#checkoutName")) {
 
+      $("#checkoutName").value =
+        profile.name || "";
 
-    if (profile.name) {
-      form.name.value =
-        profile.name;
     }
 
 
-    if (profile.phone) {
-      form.phone.value =
-        profile.phone;
+    if ($("#checkoutPhone")) {
+
+      $("#checkoutPhone").value =
+        profile.phone || "";
+
     }
 
 
-    if (profile.address) {
-      form.address.value =
-        profile.address;
+    if ($("#checkoutArea")) {
+
+      $("#checkoutArea").value =
+        profile.area || "";
+
     }
+
+
+    if ($("#checkoutAddress")) {
+
+      $("#checkoutAddress").value =
+        profile.address || "";
+
+    }
+
+
+    const division =
+      $("#checkoutDivision");
+
+
+    const district =
+      $("#checkoutDistrict");
+
+
+    const upazila =
+      $("#checkoutUpazila");
 
 
     if (
+      division &&
       profile.division &&
-      $("#checkoutDivision")
+      bdAddress[
+        profile.division
+      ]
     ) {
 
-      $("#checkoutDivision").value =
+      division.value =
         profile.division;
 
 
-      $("#checkoutDivision")
-        .dispatchEvent(
-          new Event("change")
-        );
-    }
+      fillDistricts(
+        profile.division
+      );
 
-
-    setTimeout(() => {
 
       if (
-        profile.district &&
-        $("#checkoutDistrict")
+        district &&
+        profile.district
       ) {
 
-        $("#checkoutDistrict").value =
+        district.value =
           profile.district;
 
 
-        $("#checkoutDistrict")
-          .dispatchEvent(
-            new Event("change")
-          );
-      }
+        fillUpazilas(
+          profile.district
+        );
 
-
-      setTimeout(() => {
 
         if (
-          profile.upazila &&
-          $("#checkoutUpazila")
+          upazila &&
+          profile.upazila
         ) {
 
-          $("#checkoutUpazila").value =
-            profile.upazila;
+          const exists =
+            [...upazila.options]
+              .some(
+                (option) =>
+                  option.value ===
+                  profile.upazila
+              );
+
+
+          if (exists) {
+
+            upazila.value =
+              profile.upazila;
+
+          }
+
         }
 
-      }, 50);
+      }
 
-    }, 50);
-
-
-    if (profile.area) {
-      form.area.value =
-        profile.area;
     }
 
   } catch (error) {
 
     console.error(
-      "Profile fill error:",
+      "Profile autofill error:",
       error
     );
+
   }
+
 }
 
 
-function deliveryCharge(
-  district
-) {
-
-  const name =
-    String(
-      district || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-  const isCumilla =
-    name.includes("cumilla") ||
-    name.includes("comilla") ||
-    name.includes("কুমিল্লা");
-
-
-  return isCumilla
-
-    ? Number(
-        settings.insideDelivery ||
-        80
-      )
-
-    : Number(
-        settings.outsideDelivery ||
-        150
-      );
-}
-
-
-$("#checkoutForm")
-  .addEventListener(
-    "submit",
-    async (event) => {
-
-      event.preventDefault();
-
-
-      if (!user) {
-
-        alert(
-          "Login প্রয়োজন।"
-        );
-
-        return;
-      }
-
-
-      const selected =
-        cart.filter(
-          item =>
-            item.selected !== false
-        );
-
-
-      if (!selected.length) {
-
-        alert(
-          "কোনো পণ্য Select করা নেই।"
-        );
-
-        return;
-      }
-
-
-      const form =
-        new FormData(
-          event.currentTarget
-        );
-
-
-      const customerName =
-        String(
-          form.get("name") || ""
-        ).trim();
-
-
-      const phone =
-        String(
-          form.get("phone") || ""
-        ).trim();
-
-
-      const division =
-        String(
-          form.get("division") || ""
-        ).trim();
-
-
-      const district =
-        String(
-          form.get("district") || ""
-        ).trim();
-
-
-      const upazila =
-        String(
-          form.get("upazila") || ""
-        ).trim();
-
-
-      const area =
-        String(
-          form.get("area") || ""
-        ).trim();
-
-
-      const address =
-        String(
-          form.get("address") || ""
-        ).trim();
-
-
-      const payment =
-        String(
-          form.get("payment") ||
-          "Cash on Delivery"
-        );
-
-
-      const trx =
-        String(
-          form.get("trx") || ""
-        ).trim();
-
-
-      if (
-        !customerName ||
-        !phone ||
-        !division ||
-        !district ||
-        !upazila ||
-        !area ||
-        !address
-      ) {
-
-        alert(
-          "ঠিকানার সব প্রয়োজনীয় তথ্য পূরণ করুন।"
-        );
-
-        return;
-      }
-
-
-      if (
-        payment !==
-        "Cash on Delivery" &&
-        !trx
-      ) {
-
-        alert(
-          "bKash/Nagad পেমেন্টের Transaction ID লিখুন।"
-        );
-
-        return;
-      }
-
-
-      const subtotal =
-        selected.reduce(
-          (sum, item) =>
-            sum +
-            Number(item.price) *
-            Number(item.qty),
-          0
-        );
-
-
-      const delivery =
-        deliveryCharge(
-          district
-        );
-
-
-      const total =
-        subtotal +
-        delivery;
-
-
-      const orderItems =
-        selected.map(
-          item => ({
-
-            productId:
-              item.productId,
-
-            name:
-              item.name,
-
-            sku:
-              item.sku || "",
-
-            size:
-              item.size || "",
-
-            color:
-              item.color || "",
-
-            image:
-              item.image || "",
-
-            price:
-              Number(item.price),
-
-            qty:
-              Number(item.qty)
-
-          })
-        );
-
-
-      const submitButton =
-        event.currentTarget
-          .querySelector(
-            '[type="submit"]'
-          );
-
-
-      submitButton.disabled =
-        true;
-
-
-      submitButton.textContent =
-        "ORDER হচ্ছে...";
-
-
-      try {
-
-        const orderRef =
-          await addDoc(
-            collection(
-              db,
-              "orders"
-            ),
-            {
-
-              userId:
-                user.uid,
-
-              customerName,
-
-              phone,
-
-              address: {
-
-                division,
-                district,
-                upazila,
-                area,
-                fullAddress:
-                  address
-
-              },
-
-              payment: {
-
-                method:
-                  payment,
-
-                transactionId:
-                  trx,
-
-                status:
-                  payment ===
-                  "Cash on Delivery"
-
-                    ? "COD"
-
-                    : "Pending Verification"
-
-              },
-
-              items:
-                orderItems,
-
-              subtotal:
-                Number(subtotal),
-
-              delivery:
-                Number(delivery),
-
-              total:
-                Number(total),
-
-              status:
-                "Pending",
-
-              stockState:
-                "none",
-
-              source:
-                "online",
-
-              createdAt:
-                serverTimestamp()
-
-            }
-          );
-
-
-        const selectedKeys =
-          new Set(
-            selected.map(
-              item =>
-                item.key
-            )
-          );
-
-
-        cart =
-          cart.filter(
-            item =>
-              !selectedKeys.has(
-                item.key
-              )
-          );
-
-
-        saveCart();
-
-
-        $("#checkoutModal")
-          .classList
-          .remove("on");
-
-
-        event.currentTarget
-          .reset();
-
-
-        alert(
-          "অর্ডার সফল হয়েছে।\n\nOrder ID: " +
-          orderRef.id +
-          "\n\nমোট: " +
-          money(total)
-        );
-
-
-        openAccount();
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-
-        alert(
-          "অর্ডার Save হয়নি। Firestore Rules পরীক্ষা করুন।"
-        );
-
-      } finally {
-
-        submitButton.disabled =
-          false;
-
-
-        submitButton.textContent =
-          "PLACE ORDER";
-      }
-    }
-  );
-
-
-/* =====================================================
-   ACCOUNT
-===================================================== */
-
-$("#account").onclick =
-  openAccount;
-
-
-function openAccount() {
-
-  $("#accountModal")
-    .classList
-    .add("on");
-
-
-  renderAccount();
-}
-
-
-onAuthStateChanged(
-  auth,
-  (currentUser) => {
-
-    user =
-      currentUser;
-
-
-    renderAccount();
-
-
-    if (
-      $("#account")
-    ) {
-
-      const bold =
-        $("#account")
-          .querySelector("b");
-
-
-      if (bold) {
-
-        bold.textContent =
-          user
-            ? "My Account"
-            : "Login";
-      }
-    }
-  }
-);
-
-
-function renderAccount() {
-
-  const host =
-    $("#accountBody");
-
-
-  if (!host) return;
-
+/* =========================================================
+   MY ORDERS
+   ========================================================= */
+
+async function loadMyOrders() {
 
   if (!user) {
+    return;
+  }
 
-    host.innerHTML = `
 
-      <div class="account-tabs">
+  const host =
+    $("#myOrders");
 
-        <button
-          class="btn primary"
-          id="showLogin">
 
-          Login
-
-        </button>
-
-
-        <button
-          class="btn light"
-          id="showRegister">
-
-          Register
-
-        </button>
-
-      </div>
-
-
-      <form
-        id="loginForm"
-        style="margin-top:16px">
-
-        <h3>
-          Customer Login
-        </h3>
-
-
-        <label>
-          Email
-        </label>
-
-        <input
-          class="field"
-          type="email"
-          name="email"
-          required
-          placeholder="আপনার Email">
-
-
-        <br><br>
-
-
-        <label>
-          Password
-        </label>
-
-        <input
-          class="field"
-          type="password"
-          name="password"
-          required
-          placeholder="Password">
-
-
-        <br><br>
-
-
-        <button
-          class="btn primary"
-          type="submit">
-
-          LOGIN
-
-        </button>
-
-
-        <button
-          class="btn light"
-          type="button"
-          id="resetPassword">
-
-          Forgot Password?
-
-        </button>
-
-      </form>
-
-
-      <form
-        id="registerForm"
-        style="margin-top:16px;display:none">
-
-        <h3>
-          নতুন Account তৈরি করুন
-        </h3>
-
-
-        <label>
-          Email
-        </label>
-
-        <input
-          class="field"
-          type="email"
-          name="email"
-          required
-          placeholder="আপনার Email">
-
-
-        <br><br>
-
-
-        <label>
-          Password
-        </label>
-
-        <input
-          class="field"
-          type="password"
-          name="password"
-          minlength="6"
-          required
-          placeholder="কমপক্ষে ৬ অক্ষর">
-
-
-        <br><br>
-
-
-        <button
-          class="btn primary"
-          type="submit">
-
-          CREATE ACCOUNT
-
-        </button>
-
-      </form>
-
-
-      <p
-        class="muted"
-        style="margin-top:15px">
-
-        বর্তমানে নিরাপদ Email + Password Login চালু আছে।
-
-      </p>
-    `;
-
-
-    $("#showLogin").onclick =
-      () => {
-
-        $("#loginForm").style.display =
-          "block";
-
-        $("#registerForm").style.display =
-          "none";
-      };
-
-
-    $("#showRegister").onclick =
-      () => {
-
-        $("#loginForm").style.display =
-          "none";
-
-        $("#registerForm").style.display =
-          "block";
-      };
-
-
-    $("#loginForm")
-      .onsubmit =
-      async (event) => {
-
-        event.preventDefault();
-
-
-        const data =
-          new FormData(
-            event.currentTarget
-          );
-
-
-        try {
-
-          await signInWithEmailAndPassword(
-            auth,
-            data.get("email"),
-            data.get("password")
-          );
-
-
-          alert(
-            "Login সফল হয়েছে।"
-          );
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
-
-
-          alert(
-            "Login হয়নি। Email অথবা Password পরীক্ষা করুন।"
-          );
-        }
-      };
-
-
-    $("#registerForm")
-      .onsubmit =
-      async (event) => {
-
-        event.preventDefault();
-
-
-        const data =
-          new FormData(
-            event.currentTarget
-          );
-
-
-        try {
-
-          const credential =
-            await createUserWithEmailAndPassword(
-              auth,
-              data.get("email"),
-              data.get("password")
-            );
-
-
-          await setDoc(
-            doc(
-              db,
-              "users",
-              credential.user.uid
-            ),
-            {
-
-              email:
-                credential.user.email,
-
-              role:
-                "customer",
-
-              name:
-                "",
-
-              phone:
-                "",
-
-              division:
-                "",
-
-              district:
-                "",
-
-              upazila:
-                "",
-
-              area:
-                "",
-
-              address:
-                "",
-
-              createdAt:
-                serverTimestamp()
-
-            }
-          );
-
-
-          alert(
-            "Account তৈরি হয়েছে।"
-          );
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
-
-
-          alert(
-            "Account তৈরি হয়নি। Email আগে ব্যবহার করা হয়েছে কি না পরীক্ষা করুন।"
-          );
-        }
-      };
-
-
-    $("#resetPassword")
-      .onclick =
-      async () => {
-
-        const email =
-          $("#loginForm")
-            .email
-            .value
-            .trim();
-
-
-        if (!email) {
-
-          alert(
-            "আগে Email লিখুন।"
-          );
-
-          return;
-        }
-
-
-        try {
-
-          await sendPasswordResetEmail(
-            auth,
-            email
-          );
-
-
-          alert(
-            "Password reset Email পাঠানো হয়েছে।"
-          );
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
-
-
-          alert(
-            "Reset Email পাঠানো যায়নি।"
-          );
-        }
-      };
-
-
+  if (!host) {
     return;
   }
 
 
   host.innerHTML = `
-
-    <div class="mx-account-profile">
-
-      <div class="mx-account-avatar">
-        👤
-      </div>
-
-
-      <div>
-
-        <b>
-          Customer Account
-        </b>
-
-        <div class="muted">
-          ${escapeHtml(user.email || "")}
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      id="profileBtn">
-
-      Profile & Address
-
-    </button>
-
-
-    <button
-      class="btn light"
-      id="ordersBtn">
-
-      My Orders
-
-    </button>
-
-
-    <button
-      class="btn light"
-      id="logoutBtn">
-
-      Logout
-
-    </button>
-
-
-    <div
-      id="accountContent"
-      style="margin-top:18px">
+    <div class="mx-loading">
+      Order history load হচ্ছে...
     </div>
   `;
-
-
-  $("#profileBtn").onclick =
-    loadProfileEditor;
-
-
-  $("#ordersBtn").onclick =
-    loadMyOrders;
-
-
-  $("#logoutBtn").onclick =
-    async () => {
-
-      await signOut(auth);
-
-      $("#accountModal")
-        .classList
-        .remove("on");
-    };
-
-
-  loadProfileEditor();
-}
-async function loadProfileEditor() {
-
-  if (!user) return;
-
-
-  const ref =
-    doc(
-      db,
-      "users",
-      user.uid
-    );
-
-
-  try {
-
-    const snapshot =
-      await getDoc(ref);
-
-
-    const profile =
-      snapshot.exists()
-        ? snapshot.data()
-        : {};
-
-
-    const host =
-      $("#accountContent");
-
-
-    if (!host) return;
-
-
-    host.innerHTML = `
-
-      <h3>
-        Profile & Address
-      </h3>
-
-
-      <form id="profileForm">
-
-        <label>
-          নাম
-        </label>
-
-        <input
-          class="field"
-          name="name"
-          required
-          value="${escapeHtml(profile.name || "")}"
-          placeholder="আপনার নাম">
-
-
-        <br><br>
-
-
-        <label>
-          মোবাইল নাম্বার
-        </label>
-
-        <input
-          class="field"
-          name="phone"
-          required
-          value="${escapeHtml(profile.phone || "")}"
-          placeholder="01XXXXXXXXX">
-
-
-        <br><br>
-
-
-        <label>
-          বিভাগ
-        </label>
-
-        <input
-          class="field"
-          name="division"
-          value="${escapeHtml(profile.division || "")}"
-          placeholder="যেমন: চট্টগ্রাম">
-
-
-        <br><br>
-
-
-        <label>
-          জেলা
-        </label>
-
-        <input
-          class="field"
-          name="district"
-          value="${escapeHtml(profile.district || "")}"
-          placeholder="যেমন: কুমিল্লা">
-
-
-        <br><br>
-
-
-        <label>
-          উপজেলা / থানা
-        </label>
-
-        <input
-          class="field"
-          name="upazila"
-          value="${escapeHtml(profile.upazila || "")}"
-          placeholder="যেমন: মুরাদনগর">
-
-
-        <br><br>
-
-
-        <label>
-          ইউনিয়ন / এরিয়া
-        </label>
-
-        <input
-          class="field"
-          name="area"
-          value="${escapeHtml(profile.area || "")}"
-          placeholder="ইউনিয়ন / এলাকার নাম">
-
-
-        <br><br>
-
-
-        <label>
-          সম্পূর্ণ ঠিকানা
-        </label>
-
-        <textarea
-          class="field"
-          name="address"
-          rows="3"
-          placeholder="গ্রাম / রাস্তা / বাজার / বাড়ির তথ্য">${escapeHtml(profile.address || "")}</textarea>
-
-
-        <br><br>
-
-
-        <button
-          class="btn primary"
-          type="submit">
-
-          SAVE PROFILE
-
-        </button>
-
-      </form>
-    `;
-
-
-    $("#profileForm")
-      .onsubmit =
-      async (event) => {
-
-        event.preventDefault();
-
-
-        const data =
-          Object.fromEntries(
-            new FormData(
-              event.currentTarget
-            )
-          );
-
-
-        try {
-
-          await setDoc(
-            ref,
-            {
-
-              ...data,
-
-              email:
-                user.email || "",
-
-              role:
-                "customer",
-
-              updatedAt:
-                serverTimestamp()
-
-            },
-            {
-              merge: true
-            }
-          );
-
-
-          alert(
-            "Profile Save হয়েছে।"
-          );
-
-        } catch (error) {
-
-          console.error(
-            error
-          );
-
-
-          alert(
-            "Profile Save হয়নি।"
-          );
-        }
-      };
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-  }
-}
-
-
-/* =====================================================
-   MY ORDERS
-===================================================== */
-
-async function loadMyOrders() {
-
-  if (!user) return;
-
-
-  const host =
-    $("#accountContent");
-
-
-  if (!host) return;
-
-
-  host.innerHTML =
-    "<p>Order history loading...</p>";
 
 
   try {
 
     const snapshot =
       await getDocs(
+
         query(
+
           collection(
             db,
             "orders"
           ),
+
           where(
             "userId",
             "==",
             user.uid
           )
+
         )
+
       );
 
 
     const list =
       snapshot.docs.map(
-        document => ({
+        (document) => ({
 
           id:
             document.id,
@@ -2349,349 +3399,155 @@ async function loadMyOrders() {
 
     list.sort(
       (a, b) =>
-        (b.createdAt?.seconds || 0) -
-        (a.createdAt?.seconds || 0)
+
+        (
+          b.createdAt?.seconds ||
+          0
+        ) -
+
+        (
+          a.createdAt?.seconds ||
+          0
+        )
     );
+
+
+    if (!list.length) {
+
+      host.innerHTML = `
+        <p
+          style="
+            margin-top:15px;
+            color:#718197;
+          "
+        >
+          এখনো কোনো Order নেই।
+        </p>
+      `;
+
+      return;
+    }
 
 
     host.innerHTML = `
 
-      <h3>
-        My Orders
-      </h3>
+      <div
+        style="
+          border-top:1px solid #e1e8ef;
+          padding-top:18px;
+        "
+      >
 
-      ${
-        list.length
+        <h3
+          style="
+            margin-bottom:12px;
+          "
+        >
+          আমার Orders
+        </h3>
 
-          ? list.map(
-              order => `
 
-                <div
-                  class="panel"
-                  style="margin-bottom:12px">
+        ${list
+          .map(
+            (order) => `
 
-                  <b>
-                    Order #
+              <div
+                style="
+                  border:1px solid #dce6ef;
+                  border-radius:12px;
+                  padding:13px;
+                  margin-bottom:10px;
+                "
+              >
+
+                <b>
+                  Order #
+                  ${escapeHtml(
+                    order.id.slice(
+                      0,
+                      8
+                    )
+                  )}
+                </b>
+
+
+                <p>
+                  Status:
+                  <strong>
                     ${escapeHtml(
-                      order.id.slice(0, 8)
+                      order.status ||
+                      "Pending"
                     )}
-                  </b>
+                  </strong>
+                </p>
 
 
-                  <p>
-                    Status:
-                    <strong>
-                      ${escapeHtml(
-                        order.status ||
-                        "Pending"
-                      )}
-                    </strong>
-                  </p>
-
-
-                  <p>
-                    Total:
-                    <strong>
-                      ${money(
-                        order.total
-                      )}
-                    </strong>
-                  </p>
-
-
-                  <p class="muted">
-
-                    Payment:
-
-                    ${escapeHtml(
-                      order.payment?.method ||
-                      "-"
+                <p>
+                  Total:
+                  <strong
+                    style="
+                      color:#f51231;
+                    "
+                  >
+                    ${money(
+                      order.total
                     )}
+                  </strong>
+                </p>
 
-                    •
 
-                    ${escapeHtml(
-                      order.payment?.status ||
-                      "-"
-                    )}
+                <p
+                  style="
+                    color:#718197;
+                    font-size:13px;
+                  "
+                >
+                  Payment:
+                  ${escapeHtml(
+                    order.paymentStatus ||
+                    order.paymentMethod ||
+                    ""
+                  )}
+                </p>
 
-                  </p>
+              </div>
 
-                </div>
+            `
+          )
+          .join("")}
 
-              `
-            ).join("")
+      </div>
 
-          : "<p>এখনো কোনো Order নেই।</p>"
-      }
     `;
+
 
   } catch (error) {
 
     console.error(
+      "Orders error:",
       error
     );
 
 
-    host.innerHTML =
-      "<p>Order history load করা যায়নি।</p>";
+    host.innerHTML = `
+      <p>
+        Order History load করা যায়নি।
+      </p>
+    `;
+
   }
+
 }
 
 
-/* =====================================================
-   BANNER SLIDER
-===================================================== */
-
-function initBannerSlider() {
-
-  const slides =
-    [
-      ...document.querySelectorAll(
-        ".mx-banner-slide"
-      )
-    ];
-
-
-  const dotsHost =
-    $("#bannerDots");
-
-
-  if (
-    !slides.length ||
-    !dotsHost ||
-    dotsHost.dataset.ready
-  ) {
-    return;
-  }
-
-
-  dotsHost.dataset.ready =
-    "1";
-
-
-  let index = 0;
-  let timer;
-
-
-  dotsHost.innerHTML =
-    slides.map(
-      (_, i) => `
-
-        <button
-          type="button"
-          data-slide="${i}"
-          aria-label="Banner ${i + 1}">
-        </button>
-
-      `
-    ).join("");
-
-
-  const dots =
-    [
-      ...dotsHost.querySelectorAll(
-        "button"
-      )
-    ];
-
-
-  function show(i) {
-
-    index =
-      (
-        i +
-        slides.length
-      ) %
-      slides.length;
-
-
-    slides.forEach(
-      (slide, number) => {
-
-        slide.classList.toggle(
-          "active",
-          number === index
-        );
-      }
-    );
-
-
-    dots.forEach(
-      (dot, number) => {
-
-        dot.classList.toggle(
-          "active",
-          number === index
-        );
-      }
-    );
-  }
-
-
-  function restart() {
-
-    clearInterval(
-      timer
-    );
-
-
-    timer =
-      setInterval(
-        () =>
-          show(
-            index + 1
-          ),
-        5500
-      );
-  }
-
-
-  $("#bannerPrev")
-    ?.addEventListener(
-      "click",
-      () => {
-
-        show(
-          index - 1
-        );
-
-        restart();
-      }
-    );
-
-
-  $("#bannerNext")
-    ?.addEventListener(
-      "click",
-      () => {
-
-        show(
-          index + 1
-        );
-
-        restart();
-      }
-    );
-
-
-  dots.forEach(
-    dot => {
-
-      dot.addEventListener(
-        "click",
-        () => {
-
-          show(
-            Number(
-              dot.dataset.slide
-            )
-          );
-
-          restart();
-        }
-      );
-    }
-  );
-
-
-  show(0);
-  restart();
-}
-
-
-/* =====================================================
-   LANGUAGE
-===================================================== */
-
-function initLanguageSwitch() {
-
-  const buttons =
-    [
-      ...document.querySelectorAll(
-        ".mx-lang"
-      )
-    ];
-
-
-  if (!buttons.length) {
-    return;
-  }
-
-
-  const saved =
-    localStorage.getItem(
-      "mx-lang"
-    ) ||
-    "bn";
-
-
-  document.documentElement.lang =
-    saved;
-
-
-  buttons.forEach(
-    button => {
-
-      button.classList.toggle(
-        "active",
-        button.dataset.lang === saved
-      );
-    }
-  );
-
-
-  buttons.forEach(
-    button => {
-
-      button.onclick = () => {
-
-        const lang =
-          button.dataset.lang;
-
-
-        localStorage.setItem(
-          "mx-lang",
-          lang
-        );
-
-
-        document.documentElement.lang =
-          lang;
-
-
-        buttons.forEach(
-          item => {
-
-            item.classList.toggle(
-              "active",
-              item === button
-            );
-          }
-        );
-
-
-        if (
-          lang === "en"
-        ) {
-
-          alert(
-            "English preference Save হয়েছে। সম্পূর্ণ English catalogue দেখাতে Admin থেকে Product ও Category-এর English translation যোগ করতে হবে।"
-          );
-        }
-      };
-    }
-  );
-}
-
-
-/* =====================================================
-   BANGLADESH ADDRESS
-===================================================== */
+/* =========================================================
+   BANGLADESH ADDRESS DATA
+   ========================================================= */
 
 const bdAddress = {
 
   "চট্টগ্রাম": [
+
     "কুমিল্লা",
     "চট্টগ্রাম",
     "কক্সবাজার",
@@ -2703,9 +3559,12 @@ const bdAddress = {
     "খাগড়াছড়ি",
     "রাঙ্গামাটি",
     "বান্দরবান"
+
   ],
 
+
   "ঢাকা": [
+
     "ঢাকা",
     "গাজীপুর",
     "নারায়ণগঞ্জ",
@@ -2719,9 +3578,12 @@ const bdAddress = {
     "মাদারীপুর",
     "রাজবাড়ী",
     "শরীয়তপুর"
+
   ],
 
+
   "রাজশাহী": [
+
     "রাজশাহী",
     "বগুড়া",
     "জয়পুরহাট",
@@ -2730,9 +3592,12 @@ const bdAddress = {
     "চাঁপাইনবাবগঞ্জ",
     "পাবনা",
     "সিরাজগঞ্জ"
+
   ],
 
+
   "খুলনা": [
+
     "খুলনা",
     "বাগেরহাট",
     "সাতক্ষীরা",
@@ -2743,25 +3608,34 @@ const bdAddress = {
     "কুষ্টিয়া",
     "চুয়াডাঙ্গা",
     "মেহেরপুর"
+
   ],
 
+
   "বরিশাল": [
+
     "বরিশাল",
     "ভোলা",
     "ঝালকাঠি",
     "পটুয়াখালী",
     "পিরোজপুর",
     "বরগুনা"
+
   ],
 
+
   "সিলেট": [
+
     "সিলেট",
     "মৌলভীবাজার",
     "হবিগঞ্জ",
     "সুনামগঞ্জ"
+
   ],
 
+
   "রংপুর": [
+
     "রংপুর",
     "দিনাজপুর",
     "গাইবান্ধা",
@@ -2770,13 +3644,17 @@ const bdAddress = {
     "নীলফামারী",
     "পঞ্চগড়",
     "ঠাকুরগাঁও"
+
   ],
 
+
   "ময়মনসিংহ": [
+
     "ময়মনসিংহ",
     "জামালপুর",
     "নেত্রকোনা",
     "শেরপুর"
+
   ]
 
 };
@@ -2805,7 +3683,114 @@ const cumillaUpazilas = [
 ];
 
 
-function initAddressSelectors() {
+/* =========================================================
+   ADDRESS SELECTORS
+   ========================================================= */
+
+function fillDistricts(
+  divisionName
+) {
+
+  const district =
+    $("#checkoutDistrict");
+
+
+  const upazila =
+    $("#checkoutUpazila");
+
+
+  if (!district) {
+    return;
+  }
+
+
+  const list =
+    bdAddress[
+      divisionName
+    ] || [];
+
+
+  district.innerHTML = `
+
+    <option value="">
+      জেলা নির্বাচন করুন
+    </option>
+
+    ${list
+      .map(
+        (name) => `
+          <option value="${name}">
+            ${name}
+          </option>
+        `
+      )
+      .join("")}
+
+  `;
+
+
+  if (upazila) {
+
+    upazila.innerHTML = `
+      <option value="">
+        উপজেলা / থানা নির্বাচন করুন
+      </option>
+    `;
+
+  }
+
+}
+
+
+function fillUpazilas(
+  districtName
+) {
+
+  const upazila =
+    $("#checkoutUpazila");
+
+
+  if (!upazila) {
+    return;
+  }
+
+
+  const list =
+
+    districtName ===
+      "কুমিল্লা"
+
+      ? cumillaUpazilas
+
+      : [
+          "অন্যান্য / আমার এলাকা"
+        ];
+
+
+  upazila.innerHTML = `
+
+    <option value="">
+      উপজেলা / থানা নির্বাচন করুন
+    </option>
+
+    ${list
+      .map(
+        (name) => `
+          <option value="${name}">
+            ${name}
+          </option>
+        `
+      )
+      .join("")}
+
+  `;
+
+}
+
+
+function initAddressSelectors(
+  force = false
+) {
 
   const division =
     $("#checkoutDivision");
@@ -2822,9 +3807,18 @@ function initAddressSelectors() {
   if (
     !division ||
     !district ||
-    !upazila ||
-    division.dataset.ready
+    !upazila
   ) {
+
+    return;
+  }
+
+
+  if (
+    division.dataset.ready &&
+    !force
+  ) {
+
     return;
   }
 
@@ -2839,97 +3833,653 @@ function initAddressSelectors() {
       বিভাগ নির্বাচন করুন
     </option>
 
-    ${
-      Object.keys(
-        bdAddress
+    ${Object
+      .keys(bdAddress)
+      .map(
+        (name) => `
+          <option value="${name}">
+            ${name}
+          </option>
+        `
       )
-        .map(
-          name => `
-            <option value="${name}">
-              ${name}
-            </option>
-          `
-        )
-        .join("")
-    }
+      .join("")}
+
+  `;
+
+
+  district.innerHTML = `
+    <option value="">
+      জেলা নির্বাচন করুন
+    </option>
+  `;
+
+
+  upazila.innerHTML = `
+    <option value="">
+      উপজেলা / থানা নির্বাচন করুন
+    </option>
   `;
 
 
   division.onchange = () => {
 
-    const list =
-      bdAddress[
-        division.value
-      ] ||
-      [];
+    fillDistricts(
+      division.value
+    );
 
-
-    district.innerHTML = `
-
-      <option value="">
-        জেলা নির্বাচন করুন
-      </option>
-
-      ${
-        list
-          .map(
-            name => `
-              <option value="${name}">
-                ${name}
-              </option>
-            `
-          )
-          .join("")
-      }
-    `;
-
-
-    upazila.innerHTML = `
-
-      <option value="">
-        উপজেলা / থানা নির্বাচন করুন
-      </option>
-    `;
   };
 
 
   district.onchange = () => {
 
-    const list =
-      district.value ===
-      "কুমিল্লা"
+    fillUpazilas(
+      district.value
+    );
 
-        ? cumillaUpazilas
-
-        : [
-            "অন্যান্য / আমার এলাকা"
-          ];
-
-
-    upazila.innerHTML = `
-
-      <option value="">
-        উপজেলা / থানা নির্বাচন করুন
-      </option>
-
-      ${
-        list
-          .map(
-            name => `
-              <option value="${name}">
-                ${name}
-              </option>
-            `
-          )
-          .join("")
-      }
-    `;
   };
+
 }
 
 
-/* =====================================================
-   START WEBSITE
-===================================================== */
+/* =========================================================
+   HERO — 4 IMAGE AUTO SLIDER
+   ========================================================= */
 
-loadStore();
+function initBannerSlider() {
+
+  const slides =
+    $$(".mx-banner-slide");
+
+
+  const dotsHost =
+    $("#bannerDots");
+
+
+  const previous =
+    $("#bannerPrev");
+
+
+  const next =
+    $("#bannerNext");
+
+
+  if (
+    !slides.length ||
+    !dotsHost
+  ) {
+
+    return;
+  }
+
+
+  let currentIndex = 0;
+
+  let timer = null;
+
+
+  dotsHost.innerHTML =
+    slides
+      .map(
+        (_, index) => `
+
+          <button
+            type="button"
+            class="mx-banner-dot ${
+              index === 0
+                ? "active"
+                : ""
+            }"
+            data-banner-dot="${index}"
+            aria-label="Banner ${index + 1}"
+          ></button>
+
+        `
+      )
+      .join("");
+
+
+  const dots =
+    [
+      ...dotsHost.querySelectorAll(
+        "[data-banner-dot]"
+      )
+    ];
+
+
+  function showSlide(index) {
+
+    currentIndex =
+      (
+        index +
+        slides.length
+      ) %
+      slides.length;
+
+
+    slides.forEach(
+      (slide, slideIndex) => {
+
+        slide.classList.toggle(
+          "active",
+          slideIndex ===
+            currentIndex
+        );
+
+      }
+    );
+
+
+    dots.forEach(
+      (dot, dotIndex) => {
+
+        dot.classList.toggle(
+          "active",
+          dotIndex ===
+            currentIndex
+        );
+
+      }
+    );
+
+  }
+
+
+  function stopAutoSlide() {
+
+    if (timer) {
+
+      clearInterval(timer);
+
+      timer = null;
+
+    }
+
+  }
+
+
+  function startAutoSlide() {
+
+    stopAutoSlide();
+
+
+    timer =
+      setInterval(
+        () => {
+
+          showSlide(
+            currentIndex + 1
+          );
+
+        },
+        5500
+      );
+
+  }
+
+
+  function restart() {
+
+    startAutoSlide();
+
+  }
+
+
+  previous
+    ?.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        showSlide(
+          currentIndex - 1
+        );
+
+        restart();
+
+      }
+    );
+
+
+  next
+    ?.addEventListener(
+      "click",
+      (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        showSlide(
+          currentIndex + 1
+        );
+
+        restart();
+
+      }
+    );
+
+
+  dots.forEach(
+    (dot) => {
+
+      dot.addEventListener(
+        "click",
+        (event) => {
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+
+          showSlide(
+            Number(
+              dot.dataset.bannerDot
+            )
+          );
+
+
+          restart();
+
+        }
+      );
+
+    }
+  );
+
+
+  /* pause when mouse over */
+
+  const hero =
+    $(".mx-hero");
+
+
+  hero?.addEventListener(
+    "mouseenter",
+    stopAutoSlide
+  );
+
+
+  hero?.addEventListener(
+    "mouseleave",
+    startAutoSlide
+  );
+
+
+  /* swipe support */
+
+  let touchStartX = 0;
+
+
+  hero?.addEventListener(
+    "touchstart",
+    (event) => {
+
+      touchStartX =
+        event.touches[0]
+          ?.clientX || 0;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  hero?.addEventListener(
+    "touchend",
+    (event) => {
+
+      const touchEndX =
+        event.changedTouches[0]
+          ?.clientX || 0;
+
+
+      const difference =
+        touchStartX -
+        touchEndX;
+
+
+      if (
+        Math.abs(
+          difference
+        ) < 45
+      ) {
+
+        return;
+      }
+
+
+      if (
+        difference > 0
+      ) {
+
+        showSlide(
+          currentIndex + 1
+        );
+
+      } else {
+
+        showSlide(
+          currentIndex - 1
+        );
+
+      }
+
+
+      restart();
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  showSlide(0);
+
+  startAutoSlide();
+
+}
+
+
+/* =========================================================
+   LANGUAGE SWITCH
+   ========================================================= */
+
+function initLanguageSwitch() {
+
+  const buttons =
+    $$(".mx-lang");
+
+
+  if (!buttons.length) {
+    return;
+  }
+
+
+  document.documentElement.lang =
+    currentLanguage;
+
+
+  function updateButtons() {
+
+    buttons.forEach(
+      (button) => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.lang ===
+            currentLanguage
+        );
+
+      }
+    );
+
+  }
+
+
+  updateButtons();
+
+
+  buttons.forEach(
+    (button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          currentLanguage =
+            button.dataset.lang ||
+            "bn";
+
+
+          localStorage.setItem(
+            "mx-lang",
+            currentLanguage
+          );
+
+
+          document.documentElement.lang =
+            currentLanguage;
+
+
+          updateButtons();
+
+          renderProducts();
+
+          renderPopularProducts();
+
+          renderWishlistSection();
+
+
+          if (
+            currentLanguage ===
+            "en"
+          ) {
+
+            const search =
+              $("#search");
+
+
+            if (search) {
+
+              search.placeholder =
+                "Search products, jerseys or Product Code...";
+
+            }
+
+
+            const searchButton =
+              $(".mx-search-button");
+
+
+            if (searchButton) {
+
+              searchButton.textContent =
+                "Search";
+
+            }
+
+          } else {
+
+            const search =
+              $("#search");
+
+
+            if (search) {
+
+              search.placeholder =
+                "পণ্য, জার্সি বা Product Code খুঁজুন...";
+
+            }
+
+
+            const searchButton =
+              $(".mx-search-button");
+
+
+            if (searchButton) {
+
+              searchButton.textContent =
+                "খুঁজুন";
+
+            }
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+onAuthStateChanged(
+  auth,
+  (currentUser) => {
+
+    user =
+      currentUser;
+
+
+    const accountButton =
+      $("#account");
+
+
+    if (accountButton) {
+
+      const text =
+        accountButton.querySelector(
+          ".mx-action-text b"
+        );
+
+
+      if (text) {
+
+        text.textContent =
+          user
+            ? "My Account"
+            : "Login";
+
+      }
+
+    }
+
+
+    const accountModal =
+      $("#accountModal");
+
+
+    if (
+      accountModal &&
+      (
+        accountModal.classList.contains(
+          "active"
+        ) ||
+        accountModal.classList.contains(
+          "open"
+        ) ||
+        accountModal.classList.contains(
+          "show"
+        )
+      )
+    ) {
+
+      showAccount();
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   VISUAL CATEGORY CARDS
+   ========================================================= */
+
+function initVisualCategories() {
+
+  const map = {
+
+    ".mx-cat-football-jersey":
+      "Football Jersey",
+
+    ".mx-cat-cricket-jersey":
+      "Cricket Jersey",
+
+    ".mx-cat-kids":
+      "Kids Jersey",
+
+    ".mx-cat-tshirt":
+      "T-Shirt / Polo",
+
+    ".mx-cat-shorts":
+      "Shorts / Trouser",
+
+    ".mx-cat-football":
+      "Football",
+
+    ".mx-cat-cricket":
+      "Cricket Equipment",
+
+    ".mx-cat-badminton":
+      "Badminton",
+
+    ".mx-cat-custom-jersey":
+      "Custom Jersey"
+
+  };
+
+
+  Object.entries(map)
+    .forEach(
+      ([
+        selector,
+        category
+      ]) => {
+
+        $(selector)
+          ?.addEventListener(
+            "click",
+            (event) => {
+
+              event.preventDefault();
+
+
+              activeCategory =
+                category;
+
+
+              renderProducts(
+                category
+              );
+
+
+              $("#products")
+                ?.scrollIntoView({
+                  behavior:
+                    "smooth"
+                });
+
+            }
+          );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL START
+   ========================================================= */
+
+function startStore() {
+
+  updateWishlistCount();
+
+  renderCart();
+
+  initBannerSlider();
+
+  initLanguageSwitch();
+
+  initAddressSelectors();
+
+  initVisualCategories();
+
+  loadStore();
+
+}
+
+
+startStore();
