@@ -3726,8 +3726,8 @@ function startStore() {
     অপেক্ষা করতে হবে না।
   */
 
-  initBannerSlider();
-
+  initBannerSlider();//
+   
 
   updateWishlistCount();
 
