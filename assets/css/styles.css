@@ -2522,3 +2522,92 @@ textarea.field{
     font-size:12px;
   }
 }
+
+/* =========================================================
+   MOBILE TOPBAR SOCIAL — FINAL
+   Desktop unchanged. Mobile shows Facebook + TikTok only for now.
+   YouTube/Instagram stay hidden until their links are added.
+   ========================================================= */
+@media (max-width:720px){
+  .mx-topbar-inner{
+    min-height:48px;
+    height:auto;
+    padding:5px 0;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+  }
+
+  .mx-top-left{
+    width:auto;
+    min-width:0;
+    flex:1 1 auto;
+    justify-content:flex-start;
+    gap:6px;
+    overflow:hidden;
+  }
+
+  .mx-top-right{
+    width:auto;
+    flex:0 0 auto;
+    justify-content:flex-end;
+    gap:5px;
+  }
+
+  .mx-lang-switch{
+    display:flex !important;
+    flex:0 0 auto;
+    padding:2px;
+    transform:none;
+  }
+
+  .mx-lang{
+    min-width:31px;
+    height:27px;
+    padding:0 6px;
+    font-size:9px;
+    border-radius:16px;
+  }
+
+  .mx-top-phone{
+    display:none !important;
+  }
+
+  .mx-social-mini{
+    display:flex !important;
+    flex:0 0 auto;
+    align-items:center;
+    gap:4px;
+  }
+
+  .mx-social-mini a{
+    display:inline-flex !important;
+    width:28px;
+    height:28px;
+    min-width:28px;
+    border-radius:50%;
+    font-size:13px;
+    line-height:1;
+    opacity:1;
+    visibility:visible;
+  }
+
+  /* YouTube + Instagram placeholders are hidden on mobile for now */
+  .mx-social-mini span,
+  .mx-social-disabled{
+    display:none !important;
+  }
+}
+
+@media (max-width:390px){
+  .mx-topbar-inner{min-height:46px;gap:4px;padding:4px 0;}
+  .mx-top-left{gap:4px;}
+  .mx-top-item{font-size:9px;gap:3px;}
+  .mx-top-icon{font-size:11px;}
+  .mx-top-right{gap:3px;}
+  .mx-lang{min-width:28px;height:25px;padding:0 5px;font-size:8px;}
+  .mx-social-mini{gap:3px;}
+  .mx-social-mini a{width:26px;height:26px;min-width:26px;font-size:12px;}
+}
