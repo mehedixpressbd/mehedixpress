@@ -1184,328 +1184,325 @@ function renderWishlistSection() {
    ========================================================= */
 
 function showProduct(id) {
-  const product =
-    products.find(
-      (item) =>
-        item.id === id
-    );
-
-
+  const product = products.find(item => item.id === id);
   if (!product) return;
-
-
-  const image =
-    safeImage(product);
-
-
-  let variants = [];
-
-
-  if (
-    Array.isArray(product.variants) &&
-    product.variants.length
-  ) {
-    variants =
-      product.variants.filter(
-        (variant) =>
-          Number(variant.stock || 0) > 0
-      );
-  }
-
-
-  if (
-    !variants.length &&
-    Number(product.stock || 0) > 0
-  ) {
-    variants = [{
-      sku:
-        product.sku ||
-        product.code ||
-        product.id,
-
-      size: "",
-      color: "",
-
-      sell:
-        productPrice(product),
-
-      stock:
-        Number(product.stock || 0)
-    }];
-  }
-
 
   const detail = $("#detail");
   const body = $("#detailBody");
-
   if (!detail || !body) return;
 
+  const images = (
+    Array.isArray(product.images) && product.images.length
+      ? product.images.map(item => item?.url).filter(Boolean)
+      : [safeImage(product)]
+  );
+  const mainImage = images[0] || "assets/images/placeholder.svg";
+
+  let variants = [];
+  if (Array.isArray(product.variants) && product.variants.length) {
+    variants = product.variants.filter(variant => Number(variant.stock || 0) > 0);
+  }
+
+  if (!variants.length && Number(product.stock || 0) > 0) {
+    variants = [{
+      sku: product.sku || product.code || product.id,
+      size: "",
+      color: "",
+      sell: productPrice(product),
+      stock: Number(product.stock || 0)
+    }];
+  }
+
+  const totalStock = productStock(product);
+  const regular = regularPrice(product);
+  const current = productPrice(product);
+  const discount = discountPercent(product);
+
+  const related = products
+    .filter(item => item.id !== product.id && item.category === product.category)
+    .slice(0, 4);
 
   body.innerHTML = `
-    <div
-      class="mx-detail-grid"
-      style="
-        display:grid;
-        grid-template-columns:minmax(250px,1fr) minmax(280px,1fr);
-        gap:30px;
-      "
-    >
+    <div class="mx-pd">
 
-      <div>
-        <img
-          src="${escapeHtml(image)}"
-          alt="${escapeHtml(productName(product))}"
-          style="
-            width:100%;
-            border-radius:16px;
-            background:#f5f7fa;
-          "
-          onerror="this.src='assets/images/placeholder.svg'"
-        >
-      </div>
-
-
-      <div>
-
-        <div
-          style="
-            color:#f51231;
-            font-weight:800;
-            font-size:12px;
-          "
-        >
-          ${escapeHtml(product.category || "")}
+      <section class="mx-pd-gallery">
+        <div class="mx-pd-main-image">
+          ${discount ? `<span class="mx-pd-discount">-${discount}%</span>` : ""}
+          <img
+            id="mxPdMainImage"
+            src="${escapeHtml(mainImage)}"
+            alt="${escapeHtml(productName(product))}"
+            onerror="this.src='assets/images/placeholder.svg'"
+          >
         </div>
 
-
-        <h2
-          style="
-            margin:7px 0 10px;
-            color:#052f62;
-          "
-        >
-          ${escapeHtml(productName(product))}
-        </h2>
-
-
         ${
-          product.code
-            ? `
-              <p>
-                Product Code:
-                <b>${escapeHtml(product.code)}</b>
-              </p>
-            `
+          images.length > 1
+            ? `<div class="mx-pd-thumbs">
+                ${images.map((url, index) => `
+                  <button type="button" class="mx-pd-thumb ${index === 0 ? "active" : ""}" data-pd-image="${escapeHtml(url)}">
+                    <img src="${escapeHtml(url)}" alt="">
+                  </button>
+                `).join("")}
+              </div>`
             : ""
         }
+      </section>
 
+      <section class="mx-pd-info">
+        <div class="mx-pd-category">${escapeHtml(categoryLabel(product.category || ""))}</div>
+
+        <h2 class="mx-pd-name">${escapeHtml(productName(product))}</h2>
+
+        <div class="mx-pd-meta">
+          ${product.code ? `<span>${uiText("পণ্য কোড", "Product Code")}: <b>${escapeHtml(product.code)}</b></span>` : ""}
+          <span class="${totalStock > 0 ? "in" : "out"}">
+            ${totalStock > 0 ? `✓ ${uiText("স্টকে আছে", "In Stock")} (${totalStock})` : uiText("স্টক শেষ", "Out of Stock")}
+          </span>
+        </div>
+
+        <div class="mx-pd-price">
+          <strong>${money(current)}</strong>
+          ${
+            regular > current
+              ? `<del>${money(regular)}</del>`
+              : ""
+          }
+        </div>
 
         ${
           product.description
-            ? `
-              <p
-                style="
-                  margin:12px 0;
-                  color:#64768d;
-                "
-              >
-                ${escapeHtml(product.description)}
-              </p>
-            `
+            ? `<p class="mx-pd-short-desc">${escapeHtml(product.description)}</p>`
             : ""
         }
-
-
-        <div
-          class="price"
-          style="
-            margin:15px 0;
-            font-size:28px;
-          "
-        >
-          ${money(productPrice(product))}
-        </div>
-
 
         ${
           variants.length
             ? `
-              <label>
-                <b>Size / Color</b>
-              </label>
+              <div class="mx-pd-option">
+                <div class="mx-pd-option-title">${uiText("সাইজ / কালার নির্বাচন করুন", "Choose Size / Color")}</div>
+                <div class="mx-pd-variants" id="mxPdVariants">
+                  ${variants.map((variant, index) => `
+                    <button
+                      type="button"
+                      class="mx-pd-variant ${index === 0 ? "active" : ""}"
+                      data-variant-index="${index}"
+                    >
+                      <b>${escapeHtml(variant.size || uiText("স্ট্যান্ডার্ড", "Standard"))}</b>
+                      ${variant.color ? `<small>${escapeHtml(variant.color)}</small>` : ""}
+                    </button>
+                  `).join("")}
+                </div>
+              </div>
 
-              <select
-                class="field"
-                id="variantSelect"
-                style="margin-top:7px;"
-              >
-                ${variants
-                  .map(
-                    (variant, index) => `
-                      <option value="${index}">
-                        ${variant.size || "Standard"}
-                        ${
-                          variant.color
-                            ? " / " + variant.color
-                            : ""
-                        }
-                        —
-                        ${money(
-                          variant.sell ||
-                          productPrice(product)
-                        )}
-                        (${Number(variant.stock || 0)} available)
-                      </option>
-                    `
-                  )
-                  .join("")}
-              </select>
+              <div class="mx-pd-buy-row">
+                <div class="mx-pd-qty-wrap">
+                  <span>${uiText("পরিমাণ", "Quantity")}</span>
+                  <div class="mx-pd-qty">
+                    <button type="button" id="mxQtyMinus" aria-label="Decrease">−</button>
+                    <input id="productQty" type="number" min="1" value="1">
+                    <button type="button" id="mxQtyPlus" aria-label="Increase">+</button>
+                  </div>
+                </div>
 
+                <div class="mx-pd-stock-note" id="mxPdVariantStock"></div>
+              </div>
 
-              <br><br>
-
-
-              <label>
-                <b>Quantity</b>
-              </label>
-
-              <input
-                class="field"
-                id="productQty"
-                type="number"
-                min="1"
-                value="1"
-                style="
-                  margin-top:7px;
-                  max-width:130px;
-                "
-              >
-
-
-              <br><br>
-
-
-              <button
-                type="button"
-                class="btn primary"
-                id="addCart"
-                style="width:100%;"
-              >
-                ADD TO CART
-              </button>
+              <div class="mx-pd-actions">
+                <button type="button" class="btn mx-pd-cart-btn" id="addCart">
+                  🛒 ${uiText("কার্টে যোগ করুন", "Add to Cart")}
+                </button>
+                <button type="button" class="btn mx-pd-buy-btn" id="buyNow">
+                  ⚡ ${uiText("এখনই কিনুন", "Buy Now")}
+                </button>
+              </div>
             `
             : `
-              <div
-                style="
-                  padding:14px;
-                  border-radius:10px;
-                  background:#fff0f2;
-                  color:#d30b29;
-                  font-weight:800;
-                "
-              >
-                এই পণ্যটি বর্তমানে Out of Stock
+              <div class="mx-pd-out">
+                ${uiText("এই পণ্যটি বর্তমানে স্টক শেষ।", "This product is currently out of stock.")}
               </div>
             `
         }
 
-      </div>
+        <div class="mx-pd-delivery">
+          <div>
+            <span>📍</span>
+            <p><b>${uiText("কুমিল্লা জেলার মধ্যে", "Inside Cumilla")}</b><small>${uiText("ডেলিভারি চার্জ", "Delivery Charge")} ৳80</small></p>
+          </div>
+          <div>
+            <span>🚚</span>
+            <p><b>${uiText("বাংলাদেশের অন্যান্য জেলা", "Other Districts")}</b><small>${uiText("ডেলিভারি চার্জ", "Delivery Charge")} ৳150</small></p>
+          </div>
+          <div>
+            <span>💳</span>
+            <p><b>COD / bKash / Nagad</b><small>${uiText("নিরাপদ পেমেন্ট অপশন", "Secure payment options")}</small></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-pd-extra">
+        <div class="mx-pd-extra-card">
+          <h3>${uiText("পণ্যের বিবরণ", "Product Description")}</h3>
+          <p>${escapeHtml(product.description || uiText("এই পণ্যের বিস্তারিত তথ্য শীঘ্রই যোগ করা হবে।", "Product details will be added soon."))}</p>
+        </div>
+
+        <div class="mx-pd-extra-card">
+          <h3>${uiText("সাইজ ও ভ্যারিয়েন্ট", "Size & Variants")}</h3>
+          ${
+            variants.length
+              ? `<div class="mx-pd-size-list">
+                  ${variants.map(v => `
+                    <span>
+                      ${escapeHtml(v.size || uiText("স্ট্যান্ডার্ড", "Standard"))}
+                      ${v.color ? ` • ${escapeHtml(v.color)}` : ""}
+                    </span>
+                  `).join("")}
+                </div>`
+              : `<p>${uiText("কোনো ভ্যারিয়েন্ট বর্তমানে স্টকে নেই।", "No variants are currently in stock.")}</p>`
+          }
+        </div>
+      </section>
+
+      ${
+        related.length
+          ? `<section class="mx-pd-related">
+              <div class="mx-pd-related-head">
+                <span>${uiText("আরও দেখুন", "YOU MAY ALSO LIKE")}</span>
+                <h3>${uiText("সম্পর্কিত পণ্য", "Related Products")}</h3>
+              </div>
+              <div class="mx-pd-related-grid">
+                ${related.map(productCard).join("")}
+              </div>
+            </section>`
+          : ""
+      }
 
     </div>
   `;
 
-
   openModal(detail);
 
+  body.querySelectorAll("[data-pd-image]").forEach(button => {
+    button.addEventListener("click", () => {
+      const target = $("#mxPdMainImage");
+      if (target) target.src = button.dataset.pdImage || mainImage;
+      body.querySelectorAll("[data-pd-image]").forEach(x => x.classList.remove("active"));
+      button.classList.add("active");
+    });
+  });
+
+  body.querySelectorAll("[data-detail]").forEach(button => {
+    button.addEventListener("click", () => showProduct(button.dataset.detail));
+  });
 
   if (!variants.length) return;
 
+  let selectedVariantIndex = 0;
 
-  $("#addCart").onclick = () => {
-    const index =
-      Number(
-        $("#variantSelect").value
+  const selectedVariant = () => variants[selectedVariantIndex];
+
+  const updateVariantUI = () => {
+    body.querySelectorAll("[data-variant-index]").forEach(button => {
+      button.classList.toggle(
+        "active",
+        Number(button.dataset.variantIndex) === selectedVariantIndex
       );
+    });
 
-    const variant =
-      variants[index];
+    const variant = selectedVariant();
+    const note = $("#mxPdVariantStock");
+    if (note) {
+      note.textContent = `${uiText("এই ভ্যারিয়েন্টে স্টক", "Variant stock")}: ${Number(variant.stock || 0)}`;
+    }
+  };
 
-    const quantity =
-      Math.max(
-        1,
-        Number(
-          $("#productQty").value
-        )
-      );
+  body.querySelectorAll("[data-variant-index]").forEach(button => {
+    button.addEventListener("click", () => {
+      selectedVariantIndex = Number(button.dataset.variantIndex || 0);
+      const qty = $("#productQty");
+      if (qty) qty.value = "1";
+      updateVariantUI();
+    });
+  });
 
-    const availableStock =
-      Number(variant.stock || 0);
+  const qtyInput = $("#productQty");
+  $("#mxQtyMinus")?.addEventListener("click", () => {
+    if (!qtyInput) return;
+    qtyInput.value = String(Math.max(1, Number(qtyInput.value || 1) - 1));
+  });
+  $("#mxQtyPlus")?.addEventListener("click", () => {
+    if (!qtyInput) return;
+    const max = Number(selectedVariant().stock || 0);
+    qtyInput.value = String(Math.min(max, Number(qtyInput.value || 1) + 1));
+  });
 
+  const addSelectedToCart = () => {
+    const variant = selectedVariant();
+    const quantity = Math.max(1, Number(qtyInput?.value || 1));
+    const availableStock = Number(variant.stock || 0);
 
     if (quantity > availableStock) {
-      alert("পর্যাপ্ত স্টক নেই।");
-      return;
+      alert(uiText("পর্যাপ্ত স্টক নেই।", "Not enough stock."));
+      return false;
     }
 
-
-    const sku =
-      variant.sku ||
-      product.sku ||
-      product.code ||
-      "default";
-
-
-    const key =
-      product.id +
-      "|" +
-      sku +
-      "|" +
-      (variant.size || "") +
-      "|" +
-      (variant.color || "");
-
-
-    const existing =
-      cart.find(
-        (item) =>
-          item.key === key
-      );
-
+    const sku = variant.sku || product.sku || product.code || "default";
+    const key = product.id + "|" + sku + "|" + (variant.size || "") + "|" + (variant.color || "");
+    const existing = cart.find(item => item.key === key);
 
     if (existing) {
-      if (
-        existing.qty + quantity >
-        availableStock
-      ) {
-        alert("পর্যাপ্ত স্টক নেই।");
-        return;
+      if (existing.qty + quantity > availableStock) {
+        alert(uiText("পর্যাপ্ত স্টক নেই।", "Not enough stock."));
+        return false;
       }
-
       existing.qty += quantity;
+      existing.selected = true;
     } else {
       cart.push({
         key,
         productId: product.id,
         name: productName(product),
-        image,
+        image: mainImage,
         sku,
         size: variant.size || "",
         color: variant.color || "",
-        price: Number(
-          variant.sell ||
-          productPrice(product)
-        ),
+        price: Number(variant.sell || productPrice(product)),
         qty: quantity,
         maxStock: availableStock,
         selected: true
       });
     }
 
-
     saveCart();
-    closeModal(detail);
-    openModal($("#cart"));
+    return true;
   };
+
+  $("#addCart")?.addEventListener("click", () => {
+    if (!addSelectedToCart()) return;
+    closeModal(detail);
+    renderCart();
+    openModal($("#cart"));
+  });
+
+  $("#buyNow")?.addEventListener("click", () => {
+    if (!addSelectedToCart()) return;
+    closeModal(detail);
+
+    if (!user) {
+      alert(uiText(
+        "অর্ডার করতে আগে Login অথবা Register করুন।",
+        "Please login or register before ordering."
+      ));
+      showAccount();
+      openModal($("#accountModal"));
+      return;
+    }
+
+    fillCheckoutProfile();
+    openModal($("#checkoutModal"));
+  });
+
+  updateVariantUI();
 }
 
 
