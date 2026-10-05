@@ -215,12 +215,34 @@ function renderInventory(){
 }
 function renderCats(){$("pCategory").innerHTML=categories.map(c=>`<option>${esc(c)}</option>`).join("");$("catChips").innerHTML=categories.map(c=>`<span class="status" style="display:inline-block;margin:5px">${esc(c)} <button onclick="deleteCategory('${c}')" style="border:0;background:none;cursor:pointer">×</button></span>`).join("")}
 $("catForm").onsubmit=async e=>{e.preventDefault();const n=$("catName").value.trim();if(!n)return;await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n});$("catName").value=""};window.deleteCategory=async n=>{if(confirm("Category মুছবেন?"))await deleteDoc(doc(db,"categories",encodeURIComponent(n)))};
+function imageUrl(x){return typeof x==="string"?x:(x?.url||"")}
 function renderProducts(){
- $("productRows").innerHTML=products.map(p=>{const img=(p.images&&p.images[0])||"";const reg=Number(p.regularPrice??p.price??0),off=p.offerPrice===null||p.offerPrice===undefined?null:Number(p.offerPrice);
- return `<tr><td>${img?`<img class="pimg" src="${img}">`:"—"}</td><td><b>${esc(p.name)}</b><br><small>${esc(p.details||"").slice(0,70)}</small></td><td>${esc(p.code||"—")}</td><td>${esc(p.category)}</td><td>${off!==null&&off<reg?`<span class="offer-price">${money(off)}</span><span class="old-price">${money(reg)}</span>`:money(reg)}</td><td>${Number(p.stock||0)}</td><td><span class="status ${p.active===false?"badge-disabled":"badge-active"}">${p.active===false?"Disabled":"Active"}</span></td><td class="actions"><button class="btn" onclick="editProduct('${p.id}')">Edit</button><button class="btn danger" onclick="removeProduct('${p.id}')">Delete</button></td></tr>`}).join("")
-}window.setStatus=(id,status)=>updateDoc(doc(db,"orders",id),{status});
-function renderReviews(){$("reviewRows").innerHTML=reviews.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(products.find(p=>p.id===r.productId)?.name||r.productId)}</td><td>${"★".repeat(Number(r.rating||0))}</td><td>${esc(r.comment)}</td><td><button class="btn danger" onclick="removeReview('${r.id}')">Delete</button></td></tr>`).join("")}window.removeReview=id=>confirm("Review মুছবেন?")&&deleteDoc(doc(db,"reviews",id));
-renderCats();
+ $("productRows").innerHTML=products.map(p=>{const img=imageUrl((p.images||[])[0]);const reg=Number(p.regularPrice??p.price??0),off=p.offerPrice===null||p.offerPrice===undefined?null:Number(p.offerPrice);
+ return `<tr><td>${img?`<img class="pimg" src="${esc(img)}" onerror="this.style.display='none'">`:"—"}</td><td><b>${esc(p.name)}</b><br><small>${esc(p.details||"").slice(0,70)}</small></td><td>${esc(p.code||"—")}</td><td>${esc(p.category)}</td><td>${off!==null&&off<reg?`<span class="offer-price">${money(off)}</span><span class="old-price">${money(reg)}</span>`:money(off??reg)}</td><td>${Number(p.stock||0)}</td><td><span class="status ${p.active===false?"badge-disabled":"badge-active"}">${p.active===false?"Disabled":"Active"}</span></td><td class="actions"><button class="btn" onclick="editProduct('${p.id}')">Edit</button><button class="btn danger" onclick="removeProduct('${p.id}')">Delete</button></td></tr>`}).join("");
+ renderInventory();
+}
+window.setStatus=(id,status)=>updateDoc(doc(db,"orders",id),{status});
+
+function renderReviews(){$("reviewRows").innerHTML=reviews.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(products.find(p=>p.id===r.productId)?.name||r.productId)}</td><td>${"★".repeat(Number(r.rating||0))}</td><td>${esc(r.comment)}</td><td><button class="btn danger" onclick="removeReview('${r.id}')">Delete</button></td></tr>`).join("")}
+window.removeReview=id=>confirm("Review মুছবেন?")&&deleteDoc(doc(db,"reviews",id));
+
+function addVariantRow(v={}){
+ const tr=document.createElement("tr");
+ tr.innerHTML=`<td><input class="vSku" value="${esc(v.sku||"")}" placeholder="SKU"></td><td><input class="vSize" value="${esc(v.size||"")}" placeholder="M/L/XL"></td><td><input class="vColor" value="${esc(v.color||"")}" placeholder="Color"></td><td><input class="vStock" type="number" min="0" value="${Number(v.stock||0)}"></td><td><button type="button" class="btn danger vRemove">×</button></td>`;
+ tr.querySelector(".vRemove").onclick=()=>{tr.remove();updateVariantTotal()};
+ tr.querySelector(".vStock").oninput=updateVariantTotal;
+ $("variantRows").appendChild(tr); updateVariantTotal();
+}
+function getVariants(){
+ return [...$("variantRows").querySelectorAll("tr")].map(tr=>({
+  sku:tr.querySelector(".vSku").value.trim(),
+  size:tr.querySelector(".vSize").value.trim(),
+  color:tr.querySelector(".vColor").value.trim(),
+  stock:Math.max(0,Number(tr.querySelector(".vStock").value||0))
+ }));
+}
+function updateVariantTotal(){const n=getVariants().reduce((a,v)=>a+v.stock,0);$("variantTotal").textContent=n;updatePriceCalc()}
+$("addVariant").onclick=()=>addVariantRow();
 
 function updatePriceCalc(){
  const cost=Number($("pCostPrice")?.value||0),reg=Number($("pRegularPrice")?.value||0);
@@ -230,4 +252,79 @@ function updatePriceCalc(){
 }
 ["pCostPrice","pRegularPrice","pOfferPrice"].forEach(id=>{const e=$(id);if(e)e.addEventListener("input",updatePriceCalc)});
 
+function resetProductForm(){
+ $("productForm").reset();$("editId").value="";existingImages=[];$("preview").innerHTML="";$("variantRows").innerHTML="";
+ $("pCostPrice").value="0";$("pLowStockAt").value="5";$("pStatus").value="active";addVariantRow({stock:0});updatePriceCalc();
+}
+$("newProduct").onclick=()=>{resetProductForm();$("productEditor").style.display="block";$("productEditor").scrollIntoView({behavior:"smooth",block:"start"})};
+$("cancelProduct").onclick=()=>{$("productEditor").style.display="none";resetProductForm()};
+
+function renderPreview(){
+ $("preview").innerHTML=existingImages.map((x,i)=>`<div style="position:relative"><img src="${esc(imageUrl(x))}"><button type="button" data-i="${i}" style="position:absolute;right:2px;top:2px;border:0;border-radius:50%;cursor:pointer">×</button></div>`).join("");
+ $("preview").querySelectorAll("button[data-i]").forEach(b=>b.onclick=()=>{existingImages.splice(Number(b.dataset.i),1);renderPreview()});
+}
+async function fileToCompressedDataURL(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=reject;
+  reader.onload=()=>{const im=new Image();im.onerror=reject;im.onload=()=>{
+   const max=900,scale=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");
+   c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);
+   c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+   resolve(c.toDataURL("image/jpeg",.72));
+  };im.src=reader.result};reader.readAsDataURL(file);
+ });
+}
+$("pImages").onchange=async e=>{
+ const files=[...e.target.files].slice(0,Math.max(0,5-existingImages.length));
+ for(const f of files){if(f.size>8*1024*1024){alert(f.name+" অনেক বড়। 8MB-এর কম ছবি দিন।");continue}try{existingImages.push(await fileToCompressedDataURL(f))}catch(_){alert("ছবি পড়া যায়নি: "+f.name)}}
+ renderPreview();e.target.value="";
+};
+
+window.editProduct=id=>{
+ const p=products.find(x=>x.id===id);if(!p)return;
+ $("editId").value=p.id;$("pName").value=p.name||"";$("pCode").value=p.code||p.sku||"";$("pCategory").value=p.category||categories[0]||"";
+ $("pCostPrice").value=Number(p.costPrice||0);$("pRegularPrice").value=Number(p.regularPrice??p.price??0);
+ $("pOfferPrice").value=(p.offerPrice===null||p.offerPrice===undefined)?"":Number(p.offerPrice);
+ $("pLowStockAt").value=Number(p.lowStockAt??5);$("pStatus").value=p.active===false?"disabled":"active";$("pDetails").value=p.details||p.description||"";
+ existingImages=(p.images||[]).map(imageUrl).filter(Boolean).slice(0,5);renderPreview();$("variantRows").innerHTML="";
+ const vs=(p.variants&&p.variants.length)?p.variants:[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}];vs.forEach(addVariantRow);
+ updatePriceCalc();$("productEditor").style.display="block";$("productEditor").scrollIntoView({behavior:"smooth",block:"start"});
+};
+
+window.removeProduct=async id=>{
+ const p=products.find(x=>x.id===id);if(!confirm(`"${p?.name||"Product"}" মুছে ফেলবেন?`))return;
+ try{await deleteDoc(doc(db,"products",id));alert("Product মুছে ফেলা হয়েছে।")}catch(e){alert("Delete হয়নি: "+(e.code||e.message))}
+};
+
+$("productForm").onsubmit=async e=>{
+ e.preventDefault();
+ const btn=e.submitter; if(btn){btn.disabled=true;btn.textContent="Saving..."}
+ try{
+  const id=$("editId").value,old=products.find(x=>x.id===id);
+  const variants=getVariants(),totalStock=variants.reduce((a,v)=>a+Number(v.stock||0),0);
+  const reg=Number($("pRegularPrice").value||0),raw=$("pOfferPrice").value.trim(),offer=raw===""?null:Number(raw),sell=offer??reg,cost=Number($("pCostPrice").value||0);
+  if(!$("pName").value.trim()||!$("pCode").value.trim()){alert("Product Name এবং Code দিন।");return}
+  if(sell<0||reg<0||cost<0){alert("Price সঠিকভাবে দিন।");return}
+  const data={
+   name:$("pName").value.trim(),code:$("pCode").value.trim(),sku:$("pCode").value.trim(),category:$("pCategory").value,
+   costPrice:cost,regularPrice:reg,offerPrice:offer,price:sell,
+   discountPercent:reg>0&&sell<reg?Number((((reg-sell)/reg)*100).toFixed(2)):0,
+   profitPerPiece:Number((sell-cost).toFixed(2)),markupPercent:cost>0?Number((((sell-cost)/cost)*100).toFixed(2)):0,
+   lowStockAt:Math.max(0,Number($("pLowStockAt").value||5)),stock:totalStock,variants,details:$("pDetails").value.trim(),
+   images:existingImages.slice(0,5),active:$("pStatus").value==="active",status:$("pStatus").value,updatedAt:serverTimestamp()
+  };
+  let pid=id;
+  if(id) await updateDoc(doc(db,"products",id),data);
+  else {const r=await addDoc(collection(db,"products"),{...data,createdAt:serverTimestamp()});pid=r.id}
+  const before=Number(old?.stock||0);
+  if(!old||before!==totalStock){
+   try{await addDoc(collection(db,"stockMovements"),{productId:pid,productName:data.name,before:old?before:0,after:totalStock,change:totalStock-(old?before:0),reason:old?"Admin stock edit":"Opening stock",createdAt:serverTimestamp()})}catch(err){console.warn("Stock movement log failed",err)}
+  }
+  $("productEditor").style.display="none";resetProductForm();alert(id?"Product update হয়েছে।":"Product add হয়েছে।");
+ }catch(err){console.error(err);alert("Save হয়নি: "+(err.code||err.message))}
+ finally{if(btn){btn.disabled=false;btn.textContent="Save Product"}}
+};
+
+renderCats();
 </script></body></html>
