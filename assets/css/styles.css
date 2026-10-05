@@ -3410,3 +3410,27 @@ font-family:"Noto Sans Bengali","Hind Siliguri","SolaimanLipi",Arial,sans-serif!
 html[lang="bn"] .mx-category-top h2,html[lang="bn"] .mx-showcase-heading h2,html[lang="bn"] .mx-all-products-head h2,html[lang="bn"] .mx-section-heading h2{font-weight:800!important;letter-spacing:0!important;line-height:1.28!important}
 html[lang="bn"] .mx-custom-print-content h2{font-weight:800!important;letter-spacing:0!important;line-height:1.32!important}
 }
+
+/* =========================================================
+   MEHEDI XPRESS V5 — REMOVE MOBILE BOTTOM UI COMPLETELY
+   ========================================================= */
+.mx-mobile-bottom-nav,
+.mx-floating-whatsapp{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+
+/* No reserved bottom space is needed anymore */
+@media (max-width:720px){
+  body{
+    padding-bottom:0 !important;
+  }
+  .mx-footer{
+    margin-bottom:0 !important;
+  }
+  .mx-footer-bottom{
+    margin-bottom:0 !important;
+  }
+}
