@@ -484,11 +484,11 @@
     <div class="mx-category-top">
 
       <div>
-        <span>SHOP BY CATEGORY</span>
-        <h2>আপনার পছন্দের ক্যাটাগরি</h2>
+        <span id="categoryEyebrow">SHOP BY CATEGORY</span>
+        <h2 id="categoryTitle">আপনার পছন্দের ক্যাটাগরি</h2>
       </div>
 
-      <a href="#products">
+      <a href="#products" id="categoryViewAll">
         সব পণ্য দেখুন →
       </a>
 
@@ -642,125 +642,29 @@
 
 
 <!-- =====================================================
-     FIREBASE CATEGORY FILTER
+     NEW PRODUCTS
 ===================================================== -->
 
-<section class="mx-filter-section">
-
+<section class="mx-showcase-section mx-new-products-section" id="new-products">
   <div class="mx-container">
 
-    <div class="mx-section-heading">
-
+    <div class="mx-showcase-heading">
       <div>
-        <span>PRODUCT COLLECTION</span>
-        <h2>আমাদের পণ্যসমূহ</h2>
+        <span class="mx-section-kicker" id="newProductsKicker">JUST ARRIVED</span>
+        <h2 id="newProductsTitle">নতুন পণ্য</h2>
+        <p id="newProductsNote">সর্বশেষ যোগ করা পণ্যগুলো এখানে দেখানো হবে।</p>
       </div>
 
-      <p>
-        আপনার প্রয়োজনীয় Sports, Fashion এবং
-        Custom Print পণ্য সহজেই খুঁজে নিন।
-      </p>
-
+      <a class="mx-section-link" href="#products" id="newProductsViewAll">
+        সব পণ্য দেখুন →
+      </a>
     </div>
 
-
-    <div
-      class="mx-category-filter"
-      id="cats"
-    >
-      <button
-        type="button"
-        class="active"
-        data-category=""
-      >
-        সব পণ্য
-      </button>
+    <div class="mx-product-grid mx-showcase-grid" id="newGrid">
+      <div class="mx-loading">এখনো কোনো পণ্য যোগ করা হয়নি।</div>
     </div>
 
   </div>
-
-</section>
-
-
-<!-- =====================================================
-     PRODUCT SECTION
-===================================================== -->
-
-<section
-  class="mx-products-section"
-  id="products"
->
-
-  <div class="mx-container">
-
-    <div class="mx-products-toolbar">
-
-      <div class="mx-products-title">
-
-        <span>MEHEDI XPRESS</span>
-
-        <h2>
-          নতুন ও জনপ্রিয় পণ্য
-        </h2>
-
-      </div>
-
-
-      <div class="mx-product-filters">
-
-        <select
-          id="stock"
-          class="field"
-          aria-label="Stock Filter"
-        >
-          <option value="all">
-            সব পণ্য
-          </option>
-
-          <option value="in">
-            In Stock
-          </option>
-        </select>
-
-
-        <select
-          id="sort"
-          class="field"
-          aria-label="Sort Products"
-        >
-          <option value="default">
-            Default
-          </option>
-
-          <option value="newest">
-            Newest
-          </option>
-
-          <option value="price-asc">
-            Price: Low to High
-          </option>
-
-          <option value="price-desc">
-            Price: High to Low
-          </option>
-        </select>
-
-      </div>
-
-    </div>
-
-
-    <div
-      class="mx-product-grid"
-      id="grid"
-    >
-      <div class="mx-loading">
-        পণ্য লোড হচ্ছে...
-      </div>
-    </div>
-
-  </div>
-
 </section>
 
 
@@ -768,35 +672,81 @@
      POPULAR PRODUCTS
 ===================================================== -->
 
-<section class="mx-popular-section">
-
+<section class="mx-showcase-section mx-popular-section" id="popular-products">
   <div class="mx-container">
 
-    <div class="mx-section-heading">
-
+    <div class="mx-showcase-heading">
       <div>
-        <span>POPULAR NOW</span>
-        <h2>জনপ্রিয় পণ্য</h2>
+        <span class="mx-section-kicker" id="popularProductsKicker">CUSTOMER FAVOURITES</span>
+        <h2 id="popularProductsTitle">জনপ্রিয় পণ্য</h2>
+        <p id="popularProductsNote">
+          বাস্তব অর্ডার, রিভিউ ও স্টার রেটিংয়ের ভিত্তিতে জনপ্রিয় পণ্য এখানে দেখানো হবে।
+        </p>
       </div>
 
-      <a href="#products">
-        সব পণ্য →
+      <a class="mx-section-link" href="#products" id="popularProductsViewAll">
+        সব পণ্য দেখুন →
       </a>
-
     </div>
 
-
-    <div
-      class="mx-product-grid"
-      id="popularGrid"
-    >
-      <div class="mx-loading">
-        Popular products লোড হচ্ছে...
-      </div>
+    <div class="mx-product-grid mx-showcase-grid" id="popularGrid">
+      <div class="mx-loading">জনপ্রিয় পণ্যের তথ্য এখনো তৈরি হয়নি।</div>
     </div>
 
   </div>
+</section>
 
+
+<!-- =====================================================
+     ALL PRODUCTS / MAIN SHOP
+===================================================== -->
+
+<section class="mx-products-section mx-all-products-section" id="products">
+  <div class="mx-container">
+
+    <div class="mx-all-products-head">
+      <div class="mx-products-title">
+        <span class="mx-section-kicker" id="allProductsKicker">MEHEDI XPRESS COLLECTION</span>
+        <h2 id="allProductsTitle">আমাদের পণ্যসমূহ</h2>
+        <p id="allProductsNote">
+          ক্যাটাগরি বেছে নিন, স্টক দেখুন এবং আপনার প্রয়োজনীয় পণ্য সহজে খুঁজে নিন।
+        </p>
+      </div>
+
+      <div class="mx-product-filters">
+        <label class="mx-filter-box">
+          <span id="stockFilterLabel">স্টক</span>
+          <select id="stock" class="field" aria-label="স্টক অনুযায়ী পণ্য">
+            <option value="all">সব পণ্য</option>
+            <option value="in">স্টকে আছে</option>
+            <option value="out">স্টক শেষ</option>
+          </select>
+        </label>
+
+        <label class="mx-filter-box">
+          <span id="sortFilterLabel">সাজান</span>
+          <select id="sort" class="field" aria-label="পণ্য সাজান">
+            <option value="default">ডিফল্ট</option>
+            <option value="newest">নতুন আগে</option>
+            <option value="price-asc">দাম: কম থেকে বেশি</option>
+            <option value="price-desc">দাম: বেশি থেকে কম</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="mx-shop-category-wrap">
+      <div class="mx-shop-category-label" id="shopCategoryLabel">ক্যাটাগরি</div>
+      <div class="mx-category-filter" id="cats">
+        <button type="button" class="active" data-category="">সব পণ্য</button>
+      </div>
+    </div>
+
+    <div class="mx-product-grid" id="grid">
+      <div class="mx-loading">পণ্য লোড হচ্ছে...</div>
+    </div>
+
+  </div>
 </section>
 
 
