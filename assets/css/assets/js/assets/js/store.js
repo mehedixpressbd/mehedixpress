@@ -49,21 +49,10 @@ function escapeHtml(value = "") {
 
 
 function safeImage(product) {
-  if (
-    Array.isArray(product?.images) &&
-    product.images.length
-  ) {
-    const first = product.images[0];
-
-    if (typeof first === "string") return first;
-    if (first?.url) return first.url;
-  }
-
-  return (
-    product?.image ||
-    product?.imageUrl ||
-    "assets/images/placeholder.svg"
-  );
+  const first = Array.isArray(product?.images) ? product.images[0] : null;
+  if (typeof first === "string" && first) return first;
+  if (first?.url) return first.url;
+  return product?.image || product?.imageUrl || "assets/images/placeholder.svg";
 }
 
 
@@ -640,10 +629,7 @@ async function loadStore() {
       settingsSnapshot
     ] = await Promise.all([
       getDocs(
-        query(
-          collection(db, "products"),
-          where("published", "==", true)
-        )
+        collection(db, "products")
       ),
 
       getDocs(
@@ -656,12 +642,72 @@ async function loadStore() {
     ]);
 
 
-    products = productSnapshot.docs.map(
-      (document) => ({
-        id: document.id,
-        ...document.data()
+    products = productSnapshot.docs
+      .map((document) => {
+        const raw = { id: document.id, ...document.data() };
+
+        /* Admin Product Management V2 compatibility */
+        const normalizedImages = Array.isArray(raw.images)
+          ? raw.images.map((item) =>
+              typeof item === "string" ? { url: item } : item
+            ).filter((item) => item?.url)
+          : [];
+
+        const normalizedVariants = Array.isArray(raw.variants)
+          ? raw.variants.map((variant) => ({
+              ...variant,
+              sell: Number(
+                variant.sell ??
+                raw.offerPrice ??
+                raw.regularPrice ??
+                raw.price ??
+                0
+              ),
+              stock: Math.max(0, Number(variant.stock || 0))
+            }))
+          : [];
+
+        const regular = Number(raw.regularPrice ?? raw.price ?? 0);
+        const offer =
+          raw.offerPrice === null ||
+          raw.offerPrice === undefined ||
+          raw.offerPrice === ""
+            ? null
+            : Number(raw.offerPrice);
+
+        return {
+          ...raw,
+          code: raw.code || raw.sku || "",
+          description: raw.description || raw.details || "",
+          images: normalizedImages,
+          variants: normalizedVariants,
+          regularPrice: regular,
+          price:
+            offer !== null && offer >= 0 && offer < regular
+              ? offer
+              : regular,
+          offerPrice: offer,
+          stock: normalizedVariants.length
+            ? normalizedVariants.reduce(
+                (sum, variant) => sum + Number(variant.stock || 0),
+                0
+              )
+            : Math.max(0, Number(raw.stock || 0)),
+          published:
+            raw.published !== undefined
+              ? raw.published
+              : raw.active !== false,
+          active:
+            raw.active !== undefined
+              ? raw.active
+              : raw.published !== false
+        };
       })
-    );
+      .filter((product) =>
+        product.active !== false &&
+        product.published !== false &&
+        product.status !== "disabled"
+      );
 
 
     categories = categorySnapshot.docs.map(
@@ -2688,7 +2734,7 @@ async function loadProfileEditor() {
       );
 
   } catch (error) {
-    console.error(error);
+    console.error("Mehedi Xpress store load error:", error);
 
     host.innerHTML = `
       <p>Profile load করা যায়নি।</p>
