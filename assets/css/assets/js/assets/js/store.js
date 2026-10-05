@@ -1,5 +1,3 @@
-
-
 /* =========================================================
    MEHEDI XPRESS — STORE.JS
    Customer Website
