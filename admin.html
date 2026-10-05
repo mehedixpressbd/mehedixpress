@@ -45,7 +45,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid #0b63ce2b;border-color
 
 .posgrid{display:grid;grid-template-columns:1.25fr .9fr;gap:14px}.pos-products{max-height:480px;overflow:auto}.pos-item{display:flex;justify-content:space-between;gap:10px;padding:11px;border-bottom:1px solid #edf0f5}.pos-cart-row{display:grid;grid-template-columns:1.6fr .7fr .7fr .8fr auto;gap:7px;align-items:center;padding:8px 0;border-bottom:1px solid #edf0f5}.pos-cart-row input{padding:8px;border:1px solid #d9e0ea;border-radius:8px;width:100%}.totals{margin-top:12px;border-top:2px solid #e3eaf3;padding-top:10px}.totalrow{display:flex;justify-content:space-between;padding:5px 0}.grand{font-size:20px;font-weight:900}.memo{background:#fff;color:#111;padding:28px;max-width:850px;margin:auto}.memo-head{display:grid;grid-template-columns:90px 1fr auto;gap:15px;align-items:center;border-bottom:2px solid #071f3f;padding-bottom:14px}.memo-logo{width:80px;height:80px;object-fit:contain}.memo-brand h1{margin:0;color:#071f3f}.memo-brand p{margin:4px 0;font-size:12px}.memo-meta{text-align:right;font-size:12px}.memo-customer{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;padding:14px 0}.memo table{font-size:13px}.memo-summary{margin-left:auto;width:min(360px,100%);padding-top:12px}.memo-foot{margin-top:30px;display:flex;justify-content:space-between;gap:20px;text-align:center;font-size:12px}.memo-note{text-align:center;margin-top:24px;border-top:1px dashed #aaa;padding-top:10px}
 @media(max-width:900px){.posgrid{grid-template-columns:1fr}.pos-cart-row{grid-template-columns:1.4fr .7fr .7fr}.pos-cart-row .lineTotal,.pos-cart-row .removeLine{grid-column:auto}.memo-head{grid-template-columns:65px 1fr}.memo-meta{grid-column:1/-1;text-align:left}.memo-customer{grid-template-columns:1fr}}
-@media print{body *{visibility:hidden!important}#memoPrint,#memoPrint *{visibility:visible!important}#memoPrint{position:absolute;left:0;top:0;width:100%;padding:10mm!important}.no-print{display:none!important}@page{size:A4;margin:8mm}}
+@media print{body *{visibility:hidden!important}#memoPrint,#memoPrint *{visibility:visible!important}#memoPrint{position:absolute;left:0;top:0;width:100%;box-shadow:none!important;margin:0!important}.no-print{display:none!important}
+body.print-a4 #memoPrint{width:194mm!important;min-height:281mm!important;padding:10mm!important;font-size:12pt!important}
+body.print-a5 #memoPrint{width:132mm!important;min-height:194mm!important;padding:7mm!important;font-size:9.5pt!important}
+body.print-a5 #memoPrint .memo-logo{width:55px!important;height:55px!important}
+body.print-a5 #memoPrint .memo-brand h1{font-size:22px!important}
+body.print-a5 #memoPrint .memo-brand p,body.print-a5 #memoPrint .memo-meta{font-size:9px!important}
+body.print-a5 #memoPrint table{font-size:9px!important}
+body.print-a5 #memoPrint .grand{font-size:15px!important}
+body.print-a5 #memoPrint .memo-foot,body.print-a5 #memoPrint .memo-note{font-size:9px!important}
+}
 
 
 body.admin-authenticated #login{display:none!important}
@@ -161,7 +170,7 @@ body.admin-authenticated #login{display:none!important}
 </section>
 
 <section id="cashmemo" class="panel">
-<div class="head no-print"><h3>Cash Memo / Invoice</h3><div class="actions"><button class="btn primary" id="printMemo">🖨 Print A4 / A5</button><button class="btn" id="backToPos">← POS</button></div></div>
+<div class="head no-print"><h3>Cash Memo / Invoice</h3><div class="actions"><button class="btn primary" id="printA4">🖨 Print A4</button><button class="btn primary" id="printA5">🖨 Print A5</button><button class="btn" id="backToPos">← POS</button></div></div>
 <div id="memoPrint" class="memo"><p>Sale complete করলে Cash Memo এখানে তৈরি হবে।</p></div>
 </section>
 <section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
@@ -513,7 +522,17 @@ function renderMemo(m){
  <div class="memo-summary"><div class="totalrow"><span>Subtotal</span><b>${money(m.sub)}</b></div><div class="totalrow"><span>Discount</span><b>- ${money(m.dis)}</b></div><div class="totalrow"><span>Delivery Charge</span><b>+ ${money(m.del)}</b></div><div class="totalrow grand"><span>Grand Total</span><span>${money(m.grand)}</span></div><div class="totalrow"><span>Paid</span><b>${money(m.paid)}</b></div><div class="totalrow"><span>Due</span><b>${money(m.due)}</b></div><div class="totalrow"><span>Payment</span><b>${esc(m.paymentMethod)} • ${esc(m.paymentStatus)}</b></div></div>
  <div class="memo-foot"><div>____________________<br>Customer Signature</div><div>____________________<br>Authorized Signature<br>Mehedi Xpress</div></div><div class="memo-note">আমাদের সাথে কেনাকাটা করার জন্য ধন্যবাদ। • Cash on Delivery nationwide</div>`;
 }
-$("printMemo").onclick=()=>window.print();
+function printMemoAs(size){
+ document.body.classList.remove("print-a4","print-a5");
+ document.body.classList.add(size==="A5"?"print-a5":"print-a4");
+ let style=document.getElementById("dynamicPrintPage");
+ if(!style){style=document.createElement("style");style.id="dynamicPrintPage";document.head.appendChild(style)}
+ style.textContent=size==="A5"?"@page { size: A5 portrait; margin: 8mm; }":"@page { size: A4 portrait; margin: 8mm; }";
+ setTimeout(()=>window.print(),80);
+}
+$("printA4").onclick=()=>printMemoAs("A4");
+$("printA5").onclick=()=>printMemoAs("A5");
+window.addEventListener("afterprint",()=>document.body.classList.remove("print-a4","print-a5"));
 $("backToPos").onclick=()=>{document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("pos").classList.add("active");document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p==="pos"));$("title").textContent="🧾 Offline Sale / POS"};
 const originalRenderProducts=renderProducts;
 renderProducts=function(){originalRenderProducts();renderPosProducts()};
