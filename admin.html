@@ -4,7 +4,7 @@
 
 /* Admin Authentication V3 */
 .loginbox{max-width:610px!important}
-#loginMsg,#securityMsg{font-weight:700;color:#b42318}
+#loginMsg,#securityMsg{font-weight:700;color:#b42318;word-break:break-word} #loginMsg small{font-weight:500;font-size:13px}
 .loginbox small{color:#667085}
 </style>
 <style>
@@ -125,7 +125,12 @@ $("loginForm").onsubmit=async e=>{
    }
    $("loginMsg").textContent="";
  }catch(x){
-   $("loginMsg").textContent="Login হয়নি। Email/Password পরীক্ষা করুন।";
+   console.error("Firebase Admin Login Error:", x);
+   const code=x?.code||"unknown-error";
+   const message=x?.message||"No Firebase message";
+   $("loginMsg").innerHTML="Login হয়নি।<br><b>Firebase Error:</b> "+
+     String(code).replace(/</g,"&lt;").replace(/>/g,"&gt;")+
+     "<br><small>"+String(message).replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</small>";
  }
 };
 
