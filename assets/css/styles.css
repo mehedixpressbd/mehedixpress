@@ -2411,3 +2411,169 @@ textarea.field{
   .mx-top-left,.mx-top-right{gap:10px;}
   .mx-top-item,.mx-top-phone{font-size:10px;}
 }
+
+/* =========================================================
+   FINAL FIX — TOP BAR + CATEGORY HORIZONTAL CAROUSEL
+   Only these two areas are overridden here.
+   ========================================================= */
+
+/* CATEGORY: desktop + mobile = one row, horizontal scroll */
+.mx-category-grid{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  grid-template-columns:none !important;
+  gap:16px !important;
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  padding:6px 2px 14px !important;
+  scroll-behavior:smooth;
+  scroll-snap-type:x proximity;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  overscroll-behavior-x:contain;
+}
+
+.mx-category-card{
+  flex:0 0 240px !important;
+  width:240px !important;
+  min-width:240px !important;
+  max-width:240px !important;
+  scroll-snap-align:start;
+}
+
+/* MOBILE TOP BAR: every item stays on ONE row and can swipe left/right */
+@media (max-width:720px){
+  .mx-topbar{
+    overflow:hidden !important;
+  }
+
+  .mx-topbar .mx-container{
+    width:100% !important;
+    max-width:none !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+
+  .mx-topbar-inner{
+    width:100% !important;
+    min-height:48px !important;
+    padding:0 10px !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    flex-wrap:nowrap !important;
+    gap:12px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    white-space:nowrap !important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    overscroll-behavior-x:contain;
+  }
+
+  .mx-topbar-inner::-webkit-scrollbar{
+    display:none;
+  }
+
+  .mx-top-left,
+  .mx-top-right{
+    width:max-content !important;
+    min-width:max-content !important;
+    flex:0 0 auto !important;
+    display:flex !important;
+    flex-direction:row !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    flex-wrap:nowrap !important;
+    gap:10px !important;
+  }
+
+  .mx-top-item,
+  .mx-top-phone,
+  .mx-top-separator,
+  .mx-lang-switch,
+  .mx-social-mini{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+
+  .mx-top-left .mx-top-item,
+  .mx-top-left .mx-top-item:last-child,
+  .mx-top-separator,
+  .mx-lang-switch,
+  .mx-top-phone,
+  .mx-social-mini{
+    display:flex !important;
+  }
+
+  .mx-top-item,
+  .mx-top-phone{
+    font-size:11px !important;
+  }
+
+  .mx-top-separator{
+    width:1px !important;
+    min-width:1px !important;
+    height:22px !important;
+  }
+
+  .mx-lang{
+    min-width:38px !important;
+    height:30px !important;
+    padding:0 8px !important;
+    font-size:11px !important;
+  }
+
+  .mx-social-mini{
+    gap:6px !important;
+  }
+
+  .mx-social-mini a,
+  .mx-social-mini span{
+    width:30px !important;
+    min-width:30px !important;
+    height:30px !important;
+    font-size:12px !important;
+  }
+
+  .mx-category-grid{
+    gap:12px !important;
+    padding:4px 0 12px !important;
+    scrollbar-width:none;
+  }
+
+  .mx-category-grid::-webkit-scrollbar{
+    display:none;
+  }
+
+  .mx-category-card{
+    flex:0 0 72vw !important;
+    width:72vw !important;
+    min-width:72vw !important;
+    max-width:280px !important;
+    height:220px !important;
+  }
+}
+
+@media (max-width:390px){
+  .mx-topbar-inner{
+    min-height:46px !important;
+    padding:0 8px !important;
+  }
+
+  .mx-top-item,
+  .mx-top-phone{
+    font-size:10px !important;
+  }
+
+  .mx-category-card{
+    flex-basis:76vw !important;
+    width:76vw !important;
+    min-width:76vw !important;
+    max-width:270px !important;
+    height:205px !important;
+  }
+}
