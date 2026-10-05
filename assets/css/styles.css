@@ -2423,3 +2423,102 @@ textarea.field{
 @media (prefers-reduced-motion:reduce){
   .mx-nav-links a{animation:none !important;}
 }
+
+/* =========================================================
+   MEHEDI XPRESS — SOCIAL ICONS VISIBILITY FIX (FINAL)
+   Keeps existing header design; restores language + social icons.
+   ========================================================= */
+.mx-lang-switch{
+  display:flex !important;
+}
+.mx-social-mini{
+  display:flex !important;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+}
+.mx-social-mini a,
+.mx-social-mini span{
+  display:inline-flex !important;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  min-width:34px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:50%;
+  color:#fff;
+  font-size:17px;
+  font-weight:700;
+  line-height:1;
+  text-decoration:none;
+  opacity:1;
+  visibility:visible;
+}
+.mx-social-disabled{
+  opacity:.9 !important;
+  cursor:default;
+}
+
+@media (max-width:1100px){
+  .mx-top-right{gap:8px;}
+  .mx-social-mini{gap:5px;}
+  .mx-social-mini a,
+  .mx-social-mini span{
+    width:30px;
+    height:30px;
+    min-width:30px;
+    font-size:15px;
+  }
+}
+
+@media (max-width:720px){
+  .mx-topbar-inner{
+    min-height:76px;
+    flex-wrap:wrap;
+    row-gap:5px;
+    padding:6px 0;
+  }
+  .mx-top-left{
+    width:100%;
+    justify-content:center;
+  }
+  .mx-top-right{
+    width:100%;
+    justify-content:center;
+    gap:7px;
+  }
+  .mx-lang-switch{
+    display:flex !important;
+    transform:scale(.88);
+    transform-origin:center;
+  }
+  .mx-top-phone{
+    font-size:10px;
+  }
+  .mx-social-mini{
+    display:flex !important;
+    gap:4px;
+  }
+  .mx-social-mini a,
+  .mx-social-mini span{
+    width:27px;
+    height:27px;
+    min-width:27px;
+    font-size:13px;
+  }
+}
+
+@media (max-width:390px){
+  .mx-top-right{gap:4px;}
+  .mx-lang-switch{transform:scale(.78);}
+  .mx-top-phone{font-size:9px;}
+  .mx-social-mini{gap:3px;}
+  .mx-social-mini a,
+  .mx-social-mini span{
+    width:24px;
+    height:24px;
+    min-width:24px;
+    font-size:12px;
+  }
+}
