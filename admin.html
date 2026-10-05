@@ -53,18 +53,28 @@ input:focus,select:focus,textarea:focus{outline:2px solid #0b63ce2b;border-color
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="orders">🛒 Orders</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
-<section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="head"><h3>Recent Orders</h3></div><div class="tablewrap"><table><tbody id="recent"></tbody></table></div></section>
+<section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
+<div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
+<div class="stat"><b id="sLowStock">0</b>Low Stock</div>
+<div class="stat"><b id="sOutStock">0</b>Out of Stock</div>
+<div class="stat"><b id="sStockValue">৳0</b>Stock Cost Value</div>
+</div>
+<div class="head"><h3>⚠ Stock Alerts</h3></div><div id="stockAlerts" class="card"></div>
+<div class="head"><h3>Recent Orders</h3></div><div class="tablewrap"><table><tbody id="recent"></tbody></table></div></section>
 <section id="products" class="panel"><div class="head"><h3>Product Management</h3><button class="btn primary" id="newProduct">+ Add Product</button></div><div id="productEditor" class="card" style="display:none">
 <form id="productForm" class="formgrid">
 <input id="editId" type="hidden">
 <div class="field"><label>Product Name *</label><input id="pName" required placeholder="যেমন: Argentina Home Jersey 2026"></div>
 <div class="field"><label>Product Code / SKU *</label><input id="pCode" required placeholder="যেমন: ARG-26-HOME"></div>
 <div class="field"><label>Category *</label><select id="pCategory" required></select></div>
-<div class="field"><label>Regular Price (৳) *</label><input id="pRegularPrice" type="number" min="0" required></div>
+<div class="field"><label>Purchase / Cost Price (৳) *</label><input id="pCostPrice" type="number" min="0" value="0" required></div>
+<div class="field"><label>Regular / Previous Price (৳) *</label><input id="pRegularPrice" type="number" min="0" required></div>
 <div class="field"><label>Offer Price (৳)</label><input id="pOfferPrice" type="number" min="0" placeholder="Offer না থাকলে খালি রাখুন"></div>
+<div class="field"><label>Low Stock Alert At</label><input id="pLowStockAt" type="number" min="0" value="5"></div>
 <div class="field"><label>Product Status</label><select id="pStatus"><option value="active">Active — Website-এ দেখাবে</option><option value="disabled">Disabled — Website-এ লুকানো</option></select></div>
+<div class="field full"><div id="priceCalc" class="notice">Discount: 0% • Profit/Piece: ৳0 • Markup: 0%</div></div>
 <div class="field full"><label>Product Description</label><textarea id="pDetails" placeholder="কাপড়, quality, fit, ব্যবহার, গুরুত্বপূর্ণ তথ্য..."></textarea></div>
 
 <div class="field full">
@@ -84,6 +94,10 @@ input:focus,select:focus,textarea:focus{outline:2px solid #0b63ce2b;border-color
 </form></div>
 <div class="tablewrap"><table><thead><tr><th>Image</th><th>Product</th><th>Code</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="productRows"></tbody></table></div></section>
 <section id="categories" class="panel"><div class="head"><h3>Category Management</h3></div><div class="card"><form id="catForm" class="formgrid"><div class="field"><label>নতুন Category</label><input id="catName" required></div><div><br><button class="btn primary">Add Category</button></div></form><div id="catChips" style="margin-top:20px"></div></div></section>
+<section id="inventory" class="panel"><div class="head"><h3>Inventory / Stock</h3></div>
+<div class="notice">প্রতিটি Product-এর Size/Color Variant stock থেকে মোট stock হিসাব হয়। Low Stock limit অনুযায়ী Dashboard alert দেখাবে।</div>
+<div class="tablewrap"><table><thead><tr><th>Product</th><th>Code</th><th>Category</th><th>Stock</th><th>Alert At</th><th>Cost Value</th><th>Status</th><th>Action</th></tr></thead><tbody id="inventoryRows"></tbody></table></div>
+</section>
 <section id="orders" class="panel"><div class="head"><h3>Order Management</h3></div><div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Product</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div></section>
 <section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
 <section id="settings" class="panel">
@@ -111,7 +125,7 @@ messagingSenderId:"750136252870",
 appId:"1:750136252870:web:201f53d2dfeac82eb07ac7"
 };
 const ADMIN_UID="3Z0MLHObZOay8OFFnhreMvbg0e53";
-const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb);let products=[],orders=[],reviews=[],categories=["Football Jersey","Cricket Jersey","T-Shirt","Shorts","Football","Cricket Bat","Gloves","Custom Printing"],existingImages=[];
+const fb=initializeApp(firebaseConfig),auth=getAuth(fb),db=getFirestore(fb);let products=[],orders=[],reviews=[],categories=["ফুটবল জার্সি","ক্রিকেট জার্সি","কিডস জার্সি","টি-শার্ট ও পোলো","শর্টস ও ট্রাউজার","ফুটবল ও ক্রিকেট সামগ্রী","ব্যাডমিন্টন","কাস্টম প্রিন্ট","অন্যান্য"],existingImages=[];
 const $=id=>document.getElementById(id),money=n=>"৳"+Number(n||0).toLocaleString("en-BD"),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 $("loginForm").onsubmit=async e=>{
  e.preventDefault();
@@ -178,7 +192,27 @@ let started=false;function start(){if(started)return;started=true;
  onSnapshot(collection(db,"reviews"),s=>{reviews=s.docs.map(d=>({id:d.id,...d.data()}));renderReviews()});
  onSnapshot(collection(db,"categories"),s=>{const x=s.docs.map(d=>d.data().name).filter(Boolean);if(x.length)categories=x;renderCats()});
 }
-function stats(){$("sProducts").textContent=products.length;$("sOrders").textContent=orders.length;$("sPending").textContent=orders.filter(o=>o.status==="Pending").length;$("sSales").textContent=money(orders.filter(o=>o.status==="Delivered").reduce((a,o)=>a+Number(o.total||0),0));$("recent").innerHTML=orders.slice(0,5).map(o=>`<tr><td>${esc(o.orderCode||o.id)}</td><td>${esc(o.customerName)}</td><td>${esc(o.product)}</td><td>${money(o.total)}</td></tr>`).join("")}
+function stats(){
+ $("sProducts").textContent=products.length;
+ $("sOrders").textContent=orders.length;
+ $("sPending").textContent=orders.filter(o=>o.status==="Pending").length;
+ $("sSales").textContent=money(orders.filter(o=>o.status==="Delivered").reduce((a,o)=>a+Number(o.total||0),0));
+ $("recent").innerHTML=orders.slice(0,5).map(o=>`<tr><td>${esc(o.orderCode||o.id)}</td><td>${esc(o.customerName)}</td><td>${esc(o.product)}</td><td>${money(o.total)}</td></tr>`).join("");
+ const totalStock=products.reduce((a,p)=>a+Number(p.stock||0),0);
+ const low=products.filter(p=>Number(p.stock||0)>0&&Number(p.stock||0)<=Number(p.lowStockAt??5));
+ const out=products.filter(p=>Number(p.stock||0)<=0);
+ $("sTotalStock").textContent=totalStock;
+ $("sLowStock").textContent=low.length;
+ $("sOutStock").textContent=out.length;
+ $("sStockValue").textContent=money(products.reduce((a,p)=>a+Number(p.stock||0)*Number(p.costPrice||0),0));
+ const alerts=[...out,...low].sort((a,b)=>Number(a.stock||0)-Number(b.stock||0));
+ $("stockAlerts").innerHTML=alerts.length?alerts.map(p=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px;border-bottom:1px solid #edf0f5"><span><b>${esc(p.name)}</b><br><small>${esc(p.code||"")}</small></span><span><b>${Number(p.stock||0)} pcs</b> • ${Number(p.stock||0)<=0?"Out of Stock":"Low Stock"} <button class="btn" onclick="editProduct('${p.id}')">Add Stock</button></span></div>`).join(""):"কোনো Low Stock alert নেই।";
+ renderInventory();
+}
+function renderInventory(){
+ const el=$("inventoryRows"); if(!el)return;
+ el.innerHTML=products.map(p=>{const s=Number(p.stock||0),l=Number(p.lowStockAt??5),cv=s*Number(p.costPrice||0);const st=s<=0?"Out of Stock":s<=l?"Low Stock":"In Stock";return `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.code||"—")}</td><td>${esc(p.category||"—")}</td><td>${s}</td><td>${l}</td><td>${money(cv)}</td><td>${st}</td><td><button class="btn" onclick="editProduct('${p.id}')">Edit / Add Stock</button></td></tr>`}).join("");
+}
 function renderCats(){$("pCategory").innerHTML=categories.map(c=>`<option>${esc(c)}</option>`).join("");$("catChips").innerHTML=categories.map(c=>`<span class="status" style="display:inline-block;margin:5px">${esc(c)} <button onclick="deleteCategory('${c}')" style="border:0;background:none;cursor:pointer">×</button></span>`).join("")}
 $("catForm").onsubmit=async e=>{e.preventDefault();const n=$("catName").value.trim();if(!n)return;await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n});$("catName").value=""};window.deleteCategory=async n=>{if(confirm("Category মুছবেন?"))await deleteDoc(doc(db,"categories",encodeURIComponent(n)))};
 function renderProducts(){
@@ -187,4 +221,13 @@ function renderProducts(){
 }window.setStatus=(id,status)=>updateDoc(doc(db,"orders",id),{status});
 function renderReviews(){$("reviewRows").innerHTML=reviews.map(r=>`<tr><td>${esc(r.name)}</td><td>${esc(products.find(p=>p.id===r.productId)?.name||r.productId)}</td><td>${"★".repeat(Number(r.rating||0))}</td><td>${esc(r.comment)}</td><td><button class="btn danger" onclick="removeReview('${r.id}')">Delete</button></td></tr>`).join("")}window.removeReview=id=>confirm("Review মুছবেন?")&&deleteDoc(doc(db,"reviews",id));
 renderCats();
+
+function updatePriceCalc(){
+ const cost=Number($("pCostPrice")?.value||0),reg=Number($("pRegularPrice")?.value||0);
+ const raw=$("pOfferPrice")?.value, sell=raw!==""?Number(raw||0):reg;
+ const disc=reg>0&&sell<reg?((reg-sell)/reg*100):0, profit=sell-cost, markup=cost>0?(profit/cost*100):0;
+ const box=$("priceCalc"); if(box) box.textContent=`Discount: ${disc.toFixed(1)}% • Profit/Piece: ${money(profit)} • Markup: ${markup.toFixed(1)}%`;
+}
+["pCostPrice","pRegularPrice","pOfferPrice"].forEach(id=>{const e=$(id);if(e)e.addEventListener("input",updatePriceCalc)});
+
 </script></body></html>
