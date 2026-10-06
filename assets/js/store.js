@@ -10,10 +10,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  sendPasswordResetEmail,
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
@@ -715,20 +712,6 @@ async function loadStore() {
         }));
   }
 
-  // Always show every useful category: Firebase categories + product categories + storefront defaults.
-  const mergedCategoryNames = [];
-  const addCategoryName = (value) => {
-    const name = String(value || "").trim();
-    if (!name) return;
-    if (!mergedCategoryNames.some(item => item.toLowerCase() === name.toLowerCase())) {
-      mergedCategoryNames.push(name);
-    }
-  };
-  categories.forEach(category => addCategoryName(category.name || category.nameEn || category.nameBn));
-  products.forEach(product => addCategoryName(product.categoryEn || product.category || product.categoryBn));
-  demoCategories.forEach(addCategoryName);
-  categories = mergedCategoryNames.map((name, index) => ({ id: `mx-category-${index}`, name, active: true }));
-
   renderCategories();
 
   // Store settings are also optional.
@@ -978,7 +961,7 @@ function productCard(product) {
             color:#fff;
           "
         >
-          ${uiText("অর্ডার করুন", "ORDER NOW")}
+          ${uiText("বিস্তারিত", "DETAILS")}
         </button>
 
       </div>
@@ -1189,161 +1172,323 @@ function renderWishlistSection() {
    ========================================================= */
 
 function showProduct(id) {
-  const product = products.find((item) => item.id === id);
+  const product =
+    products.find(
+      (item) =>
+        item.id === id
+    );
+
+
   if (!product) return;
 
-  const image = safeImage(product);
-  const rawVariants = Array.isArray(product.variants)
-    ? product.variants.filter((variant) => Number(variant.stock || 0) > 0)
-    : [];
 
-  if (!rawVariants.length && Number(product.stock || 0) > 0) {
-    rawVariants.push({
-      sku: product.sku || product.code || product.id,
-      size: "Standard",
-      color: "",
-      sell: productPrice(product),
-      stock: Number(product.stock || 0)
-    });
+  const image =
+    safeImage(product);
+
+
+  let variants = [];
+
+
+  if (
+    Array.isArray(product.variants) &&
+    product.variants.length
+  ) {
+    variants =
+      product.variants.filter(
+        (variant) =>
+          Number(variant.stock || 0) > 0
+      );
   }
 
-  // Admin may save "M\\L\\XL\\XXL" in one variant. Expand it into separate size rows.
-  const choices = [];
-  rawVariants.forEach((variant, variantIndex) => {
-    const rawSize = String(variant.size || "Standard").trim();
-    const sizes = rawSize === "Standard"
-      ? ["Standard"]
-      : rawSize.split(/[\\/|,;]+/).map(v => v.trim()).filter(Boolean);
-    (sizes.length ? sizes : [rawSize]).forEach((size, sizeIndex) => {
-      choices.push({
-        ...variant,
-        variantIndex,
-        choiceIndex: `${variantIndex}-${sizeIndex}`,
-        size,
-        stock: Number(variant.stock || 0),
-        sell: Number(variant.sell || productPrice(product))
-      });
-    });
-  });
+
+  if (
+    !variants.length &&
+    Number(product.stock || 0) > 0
+  ) {
+    variants = [{
+      sku:
+        product.sku ||
+        product.code ||
+        product.id,
+
+      size: "",
+      color: "",
+
+      sell:
+        productPrice(product),
+
+      stock:
+        Number(product.stock || 0)
+    }];
+  }
+
 
   const detail = $("#detail");
   const body = $("#detailBody");
+
   if (!detail || !body) return;
 
-  const oldPrice = regularPrice(product);
-  const salePrice = productPrice(product);
-  const description = product.details || product.description || "";
 
   body.innerHTML = `
-    <div class="mx-order-detail">
-      <div class="mx-order-media">
-        <div class="mx-order-image-wrap">
-          <img class="mx-order-image" src="${escapeHtml(image)}" alt="${escapeHtml(productName(product))}"
-            onerror="this.src='assets/images/placeholder.svg'">
-        </div>
+    <div
+      class="mx-detail-grid"
+      style="
+        display:grid;
+        grid-template-columns:minmax(250px,1fr) minmax(280px,1fr);
+        gap:30px;
+      "
+    >
+
+      <div>
+        <img
+          src="${escapeHtml(image)}"
+          alt="${escapeHtml(productName(product))}"
+          style="
+            width:100%;
+            border-radius:16px;
+            background:#f5f7fa;
+          "
+          onerror="this.src='assets/images/placeholder.svg'"
+        >
       </div>
 
-      <div class="mx-order-info">
-        <div class="mx-order-badge">${escapeHtml(categoryLabel(product.categoryEn || product.category || product.categoryBn || ""))}</div>
-        <h2>${escapeHtml(productName(product))}</h2>
-        ${product.code ? `<div class="mx-order-code">${uiText("পণ্য কোড", "Product Code")}: <b>${escapeHtml(product.code)}</b></div>` : ""}
-        ${description ? `<p class="mx-order-description">${escapeHtml(description)}</p>` : ""}
 
-        <div class="mx-order-price">
-          <strong>${money(salePrice)}</strong>
-          ${oldPrice > salePrice ? `<del>${money(oldPrice)}</del>` : ""}
+      <div>
+
+        <div
+          style="
+            color:#f51231;
+            font-weight:800;
+            font-size:12px;
+          "
+        >
+          ${escapeHtml(product.category || "")}
         </div>
 
-        ${choices.length ? `
-          <div class="mx-size-heading">
-            <div><b>${uiText("সাইজ ও পরিমাণ নির্বাচন করুন", "Choose Size & Quantity")}</b><small>${uiText("প্রয়োজনীয় প্রতিটি সাইজের পাশে + চাপুন", "Use + beside each size you need")}</small></div>
-          </div>
-          <div class="mx-size-qty-list">
-            ${choices.map(choice => `
-              <div class="mx-size-qty-row" data-choice="${choice.choiceIndex}" data-stock="${choice.stock}" data-price="${choice.sell}">
-                <div class="mx-size-name">
-                  <b>${escapeHtml(choice.size || uiText("স্ট্যান্ডার্ড", "Standard"))}</b>
-                  ${choice.color ? `<span>${escapeHtml(choice.color)}</span>` : ""}
-                  <small>${uiText("স্টক", "Stock")}: ${choice.stock}</small>
-                </div>
-                <div class="mx-stepper">
-                  <button type="button" data-minus="${choice.choiceIndex}" aria-label="Minus">−</button>
-                  <input type="number" value="0" min="0" max="${choice.stock}" data-size-qty="${choice.choiceIndex}" readonly>
-                  <button type="button" data-plus="${choice.choiceIndex}" aria-label="Plus">+</button>
-                </div>
+
+        <h2
+          style="
+            margin:7px 0 10px;
+            color:#052f62;
+          "
+        >
+          ${escapeHtml(productName(product))}
+        </h2>
+
+
+        ${
+          product.code
+            ? `
+              <p>
+                Product Code:
+                <b>${escapeHtml(product.code)}</b>
+              </p>
+            `
+            : ""
+        }
+
+
+        ${
+          (product.details || product.description)
+            ? `
+              <p
+                style="
+                  margin:12px 0;
+                  color:#64768d;
+                "
+              >
+                ${escapeHtml(product.details || product.description)}
+              </p>
+            `
+            : ""
+        }
+
+
+        <div
+          class="price"
+          style="
+            margin:15px 0;
+            font-size:28px;
+          "
+        >
+          ${money(productPrice(product))}
+        </div>
+
+
+        ${
+          variants.length
+            ? `
+              <label>
+                <b>Size / Color</b>
+              </label>
+
+              <select
+                class="field"
+                id="variantSelect"
+                style="margin-top:7px;"
+              >
+                ${variants
+                  .map(
+                    (variant, index) => `
+                      <option value="${index}">
+                        ${variant.size || "Standard"}
+                        ${
+                          variant.color
+                            ? " / " + variant.color
+                            : ""
+                        }
+                        —
+                        ${money(
+                          variant.sell ||
+                          productPrice(product)
+                        )}
+                        (${Number(variant.stock || 0)} available)
+                      </option>
+                    `
+                  )
+                  .join("")}
+              </select>
+
+
+              <br><br>
+
+
+              <label>
+                <b>Quantity</b>
+              </label>
+
+              <input
+                class="field"
+                id="productQty"
+                type="number"
+                min="1"
+                value="1"
+                style="
+                  margin-top:7px;
+                  max-width:130px;
+                "
+              >
+
+
+              <br><br>
+
+
+              <button
+                type="button"
+                class="btn primary"
+                id="addCart"
+                style="width:100%;"
+              >
+                ADD TO CART
+              </button>
+            `
+            : `
+              <div
+                style="
+                  padding:14px;
+                  border-radius:10px;
+                  background:#fff0f2;
+                  color:#d30b29;
+                  font-weight:800;
+                "
+              >
+                এই পণ্যটি বর্তমানে Out of Stock
               </div>
-            `).join("")}
-          </div>
-          <div class="mx-order-total"><span>${uiText("মোট", "Total")}</span><strong id="detailTotal">${money(0)}</strong></div>
-          <button type="button" class="btn primary mx-order-add" id="addCart">${uiText("কার্টে যোগ করুন", "ADD TO CART")}</button>
-        ` : `<div class="mx-out-stock">${uiText("এই পণ্যটি বর্তমানে স্টক শেষ", "This product is currently out of stock")}</div>`}
+            `
+        }
+
       </div>
-    </div>`;
+
+    </div>
+  `;
+
 
   openModal(detail);
-  if (!choices.length) return;
 
-  const getQty = (choice) => Number(body.querySelector(`[data-size-qty="${choice.choiceIndex}"]`)?.value || 0);
-  const updateTotal = () => {
-    const total = choices.reduce((sum, choice) => sum + getQty(choice) * Number(choice.sell || salePrice), 0);
-    const el = $("#detailTotal");
-    if (el) el.textContent = money(total);
-  };
 
-  body.querySelectorAll("[data-plus]").forEach(button => {
-    button.onclick = () => {
-      const key = button.dataset.plus;
-      const input = body.querySelector(`[data-size-qty="${key}"]`);
-      const choice = choices.find(item => item.choiceIndex === key);
-      if (!input || !choice) return;
-      // If multiple size rows came from one combined variant, their sum cannot exceed shared stock.
-      const sharedUsed = choices.filter(item => item.variantIndex === choice.variantIndex)
-        .reduce((sum, item) => sum + getQty(item), 0);
-      if (sharedUsed >= choice.stock) {
-        alert(uiText("এই ভ্যারিয়েন্টের পর্যাপ্ত স্টক নেই।", "Not enough stock for this variant."));
-        return;
-      }
-      input.value = Number(input.value || 0) + 1;
-      updateTotal();
-    };
-  });
+  if (!variants.length) return;
 
-  body.querySelectorAll("[data-minus]").forEach(button => {
-    button.onclick = () => {
-      const input = body.querySelector(`[data-size-qty="${button.dataset.minus}"]`);
-      if (!input) return;
-      input.value = Math.max(0, Number(input.value || 0) - 1);
-      updateTotal();
-    };
-  });
 
   $("#addCart").onclick = () => {
-    const selected = choices.filter(choice => getQty(choice) > 0);
-    if (!selected.length) {
-      alert(uiText("কমপক্ষে একটি সাইজের পরিমাণ নির্বাচন করুন।", "Select a quantity for at least one size."));
+    const index =
+      Number(
+        $("#variantSelect").value
+      );
+
+    const variant =
+      variants[index];
+
+    const quantity =
+      Math.max(
+        1,
+        Number(
+          $("#productQty").value
+        )
+      );
+
+    const availableStock =
+      Number(variant.stock || 0);
+
+
+    if (quantity > availableStock) {
+      alert("পর্যাপ্ত স্টক নেই।");
       return;
     }
 
-    for (const choice of selected) {
-      const quantity = getQty(choice);
-      const sku = choice.sku || product.sku || product.code || "default";
-      const key = product.id + "|" + sku + "|" + (choice.size || "") + "|" + (choice.color || "");
-      const existing = cart.find(item => item.key === key);
-      if (existing) existing.qty += quantity;
-      else cart.push({
+
+    const sku =
+      variant.sku ||
+      product.sku ||
+      product.code ||
+      "default";
+
+
+    const key =
+      product.id +
+      "|" +
+      sku +
+      "|" +
+      (variant.size || "") +
+      "|" +
+      (variant.color || "");
+
+
+    const existing =
+      cart.find(
+        (item) =>
+          item.key === key
+      );
+
+
+    if (existing) {
+      if (
+        existing.qty + quantity >
+        availableStock
+      ) {
+        alert("পর্যাপ্ত স্টক নেই।");
+        return;
+      }
+
+      existing.qty += quantity;
+    } else {
+      cart.push({
         key,
         productId: product.id,
         name: productName(product),
         image,
         sku,
-        size: choice.size === "Standard" ? "" : choice.size,
-        color: choice.color || "",
-        price: Number(choice.sell || salePrice),
+        size: variant.size || "",
+        color: variant.color || "",
+        price: Number(
+          variant.sell ||
+          productPrice(product)
+        ),
         qty: quantity,
-        maxStock: Number(choice.stock || 0),
+        maxStock: availableStock,
         selected: true
       });
     }
+
 
     saveCart();
     closeModal(detail);
@@ -1961,9 +2106,7 @@ $("#checkoutForm")
 
 
         alert(
-          paymentMethod === "bkash" || paymentMethod === "nagad"
-            ? uiText("ধন্যবাদ। আপনার অর্ডার ও Transaction ID গ্রহণ করা হয়েছে। পেমেন্ট যাচাই করে Admin থেকে স্ট্যাটাস আপডেট করা হবে।", "Thank you. Your order and Transaction ID were received. Payment will be verified by Admin and the status will be updated.")
-            : uiText("ধন্যবাদ। আপনার Cash on Delivery অর্ডার সফলভাবে গ্রহণ করা হয়েছে।", "Thank you. Your Cash on Delivery order was received successfully.")
+          "আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে।"
         );
 
       } catch (error) {
@@ -3357,190 +3500,3 @@ if (document.readyState === "loading") {
 } else {
   startStore();
 }
-
-/* =========================================================
-   MEHEDI XPRESS — CUSTOMER EXPERIENCE V2 OVERRIDES
-   Responsive ordering, full BD address, account/profile, reviews
-   ========================================================= */
-
-const MX_LOCATION_URL = "https://iqbalhasandev.github.io/bangladesh-geo-json/bangladesh-geo.json";
-let mxLocationTree = null;
-let mxLocationPromise = null;
-let mxProductPage = 1;
-const MX_PRODUCTS_PER_PAGE = 20;
-
-function mxAuthEmailFromMobile(mobile) {
-  const digits = String(mobile || "").replace(/\D/g, "");
-  return `${digits}@phone.mehedixpress.local`;
-}
-function mxValidMobile(mobile) { return /^01[3-9][0-9]{8}$/.test(String(mobile || "").trim()); }
-
-async function mxLoadLocations() {
-  if (mxLocationTree) return mxLocationTree;
-  if (!mxLocationPromise) {
-    mxLocationPromise = fetch(MX_LOCATION_URL, { cache: "force-cache" })
-      .then(r => { if (!r.ok) throw new Error("Location data load failed"); return r.json(); })
-      .then(data => { mxLocationTree = Array.isArray(data) ? data : []; return mxLocationTree; })
-      .catch(error => { console.warn("Bangladesh location data:", error); mxLocationTree = []; return mxLocationTree; });
-  }
-  return mxLocationPromise;
-}
-function mxBn(item) { return item?.bn_name || item?.name || ""; }
-function mxEn(item) { return item?.name || item?.bn_name || ""; }
-function mxLocationLabel(item) { return currentLanguage === "en" ? mxEn(item) : mxBn(item); }
-function mxFindByValue(list, value) {
-  const needle = String(value || "").trim().toLowerCase();
-  return (list || []).find(x => [x?.name, x?.bn_name].some(v => String(v || "").trim().toLowerCase() === needle));
-}
-function mxSetOptions(select, list, placeholder, selected="") {
-  if (!select) return;
-  select.innerHTML = `<option value="">${escapeHtml(placeholder)}</option>` + (list || []).map(item => {
-    const value = mxBn(item);
-    return `<option value="${escapeHtml(value)}" ${String(selected)===String(value)?"selected":""}>${escapeHtml(mxLocationLabel(item))}</option>`;
-  }).join("");
-}
-
-async function initAddressSelectors(force = false) {
-  const division = $("#checkoutDivision"), district = $("#checkoutDistrict"), upazila = $("#checkoutUpazila");
-  if (!division || !district || !upazila) return;
-  if (division.dataset.mxReady && !force) return;
-  const data = await mxLoadLocations();
-  division.dataset.mxReady = "1";
-  mxSetOptions(division, data, uiText("বিভাগ নির্বাচন করুন", "Select Division"));
-  mxSetOptions(district, [], uiText("জেলা নির্বাচন করুন", "Select District"));
-  mxSetOptions(upazila, [], uiText("উপজেলা / থানা নির্বাচন করুন", "Select Upazila / Thana"));
-  division.onchange = () => {
-    const div = mxFindByValue(data, division.value);
-    mxSetOptions(district, div?.districts || [], uiText("জেলা নির্বাচন করুন", "Select District"));
-    mxSetOptions(upazila, [], uiText("উপজেলা / থানা নির্বাচন করুন", "Select Upazila / Thana"));
-  };
-  district.onchange = () => {
-    const div = mxFindByValue(data, division.value);
-    const dist = mxFindByValue(div?.districts || [], district.value);
-    mxSetOptions(upazila, dist?.upazilas || [], uiText("উপজেলা / থানা নির্বাচন করুন", "Select Upazila / Thana"));
-  };
-}
-
-async function fillCheckoutProfile() {
-  if (!user) return;
-  try {
-    await initAddressSelectors(true);
-    const snapshot = await getDoc(doc(db, "users", user.uid));
-    if (!snapshot.exists()) return;
-    const p = snapshot.data();
-    if ($("#checkoutName")) $("#checkoutName").value = p.name || "";
-    if ($("#checkoutPhone")) $("#checkoutPhone").value = p.phone || "";
-    if ($("#checkoutArea")) $("#checkoutArea").value = p.area || "";
-    if ($("#checkoutAddress")) $("#checkoutAddress").value = p.address || "";
-    const data = await mxLoadLocations();
-    const d1=$("#checkoutDivision"), d2=$("#checkoutDistrict"), d3=$("#checkoutUpazila");
-    const div=mxFindByValue(data,p.division); if(div&&d1){d1.value=mxBn(div); mxSetOptions(d2,div.districts||[],uiText("জেলা নির্বাচন করুন","Select District"));}
-    const dist=mxFindByValue(div?.districts||[],p.district); if(dist&&d2){d2.value=mxBn(dist); mxSetOptions(d3,dist.upazilas||[],uiText("উপজেলা / থানা নির্বাচন করুন","Select Upazila / Thana"));}
-    const up=mxFindByValue(dist?.upazilas||[],p.upazila); if(up&&d3)d3.value=mxBn(up);
-  } catch(e){ console.warn("Profile autofill",e); }
-}
-
-function mxStars(rating=0) {
-  const r=Math.max(0,Math.min(5,Number(rating)||0));
-  return `<span class="mx-stars" aria-label="${r.toFixed(1)} out of 5">${[1,2,3,4,5].map(n=>`<span class="${n<=Math.round(r)?"on":""}">★</span>`).join("")}</span>`;
-}
-
-function productCard(product) {
-  const image=safeImage(product), stock=productStock(product), price=productPrice(product), oldPrice=regularPrice(product), discount=discountPercent(product), wished=isWished(product.id);
-  const rating=Number(product.ratingAverage||product.rating||0), reviews=Number(product.reviewCount||0);
-  return `<article class="mx-product-card product-card">
-    <div class="mx-product-image-box">
-      ${discount?`<span class="mx-discount-badge">-${discount}%</span>`:""}
-      <button type="button" data-wish="${product.id}" class="mx-wish-btn" aria-label="Wishlist">${wished?"♥":"♡"}</button>
-      <img src="${escapeHtml(image)}" alt="${escapeHtml(productName(product))}" loading="lazy" onerror="this.src='assets/images/placeholder.svg'">
-    </div>
-    <div class="content">
-      <div class="mx-card-category">${escapeHtml(categoryLabel(product.category||product.categoryBn||product.categoryEn||""))}</div>
-      <h3>${escapeHtml(productName(product))}</h3>
-      ${product.code?`<div class="mx-card-code">${uiText("কোড","Code")}: ${escapeHtml(product.code)}</div>`:""}
-      <div class="mx-card-rating">${mxStars(rating)} <small>${reviews?`(${reviews})`:uiText("রিভিউ নেই","No reviews")}</small></div>
-      <div class="mx-card-price"><span class="price">${money(price)}</span>${oldPrice>price?`<span class="old-price">${money(oldPrice)}</span>`:""}</div>
-      <div class="mx-stock-text ${stock>0?"in":"out"}">${stock>0?`✓ ${uiText("স্টকে আছে","In Stock")} (${stock})`:uiText("স্টক শেষ","Out of Stock")}</div>
-      <button type="button" data-detail="${product.id}" class="mx-card-order">${uiText("অর্ডার করুন","ORDER NOW")}</button>
-    </div></article>`;
-}
-
-function renderProducts(category=activeCategory) {
-  const host=$("#grid"); if(!host)return; activeCategory=category||"";
-  const search=($("#search")?.value||"").trim().toLowerCase(), stockFilter=$("#stock")?.value||"all";
-  let list=products.filter(p=>{
-    const text=`${p.name||""} ${p.nameEn||""} ${p.nameBn||""} ${p.code||""} ${p.category||""} ${p.categoryBn||""} ${p.categoryEn||""} ${p.details||""}`.toLowerCase();
-    const aliases=[p.category,p.categoryBn,p.categoryEn].filter(Boolean).map(v=>String(v).toLowerCase());
-    const categoryMatch=!activeCategory||aliases.includes(String(activeCategory).toLowerCase());
-    const st=productStock(p); return categoryMatch&&(!search||text.includes(search))&&(stockFilter==="all"||(stockFilter==="in"&&st>0)||(stockFilter==="out"&&st<=0));
-  });
-  const sort=$("#sort")?.value||"default";
-  if(sort==="price-asc")list.sort((a,b)=>productPrice(a)-productPrice(b));
-  else if(sort==="price-desc")list.sort((a,b)=>productPrice(b)-productPrice(a));
-  else if(sort==="newest")list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  const pages=Math.max(1,Math.ceil(list.length/MX_PRODUCTS_PER_PAGE)); mxProductPage=Math.min(mxProductPage,pages);
-  const start=(mxProductPage-1)*MX_PRODUCTS_PER_PAGE, page=list.slice(start,start+MX_PRODUCTS_PER_PAGE);
-  host.innerHTML=page.length?page.map(productCard).join(""):`<div class="mx-loading">${uiText("কোনো পণ্য পাওয়া যায়নি।","No products found.")}</div>`;
-  bindProductButtons(host);
-  let pager=$("#mxProductPager"); if(!pager){pager=document.createElement("div");pager.id="mxProductPager";host.after(pager);}
-  pager.className="mx-product-pager"; pager.innerHTML=pages>1?`<button ${mxProductPage<=1?"disabled":""} data-page-prev>‹ ${uiText("আগের","Prev")}</button><span>${uiText("পৃষ্ঠা","Page")} ${mxProductPage} / ${pages}</span><button ${mxProductPage>=pages?"disabled":""} data-page-next>${uiText("পরের","Next")} ›</button>`:"";
-  pager.querySelector("[data-page-prev]")?.addEventListener("click",()=>{mxProductPage--;renderProducts(activeCategory);$("#products")?.scrollIntoView({behavior:"smooth"});});
-  pager.querySelector("[data-page-next]")?.addEventListener("click",()=>{mxProductPage++;renderProducts(activeCategory);$("#products")?.scrollIntoView({behavior:"smooth"});});
-}
-
-async function mxLoadReviews(productId, host) {
-  if(!host)return;
-  try {
-    const snap=await getDocs(query(collection(db,"reviews"),where("productId","==",productId)));
-    const rows=snap.docs.map(d=>({id:d.id,...d.data()}));
-    const avg=rows.length?rows.reduce((s,r)=>s+Number(r.rating||0),0)/rows.length:0;
-    host.innerHTML=`<div class="mx-review-summary"><div>${mxStars(avg)} <b>${rows.length?avg.toFixed(1):"0.0"}</b></div><span>${rows.length} ${uiText("টি রিভিউ","reviews")}</span></div>
-      <form id="mxReviewForm" class="mx-review-form"><h4>${uiText("পণ্যের রিভিউ দিন","Write a Review")}</h4><label>${uiText("রেটিং","Rating")}</label><select class="field" name="rating" required><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option><option value="2">★★☆☆☆ 2</option><option value="1">★☆☆☆☆ 1</option></select><input class="field" name="name" placeholder="${uiText("আপনার নাম","Your name")}" required><textarea class="field" name="comment" rows="3" placeholder="${uiText("আপনার মতামত লিখুন","Write your review")}" required></textarea><button class="btn primary" type="submit">${uiText("রিভিউ জমা দিন","SUBMIT REVIEW")}</button></form>
-      <div class="mx-review-list">${rows.length?rows.slice(0,10).map(r=>`<div class="mx-review-item">${mxStars(r.rating)}<b>${escapeHtml(r.name||uiText("কাস্টমার","Customer"))}</b><p>${escapeHtml(r.comment||"")}</p></div>`).join(""):`<p>${uiText("এখনো কোনো রিভিউ নেই।","No reviews yet.")}</p>`}</div>`;
-    $("#mxReviewForm")?.addEventListener("submit",async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));try{await addDoc(collection(db,"reviews"),{productId,name:f.name,comment:f.comment,rating:Number(f.rating),userId:user?.uid||"",createdAt:serverTimestamp()});alert(uiText("রিভিউ জমা হয়েছে।","Review submitted."));mxLoadReviews(productId,host);}catch(err){alert(uiText("রিভিউ জমা দেওয়া যায়নি।","Could not submit review.")+" "+err.message);}});
-  }catch(e){host.innerHTML=`<p>${uiText("রিভিউ লোড করা যায়নি।","Reviews could not be loaded.")}</p>`;}
-}
-
-function showProduct(id) {
-  const product=products.find(p=>p.id===id); if(!product)return;
-  const image=safeImage(product), raw=Array.isArray(product.variants)?product.variants.filter(v=>Number(v.stock||0)>0):[];
-  if(!raw.length&&Number(product.stock||0)>0)raw.push({sku:product.sku||product.code||product.id,size:"Standard",color:"",sell:productPrice(product),stock:Number(product.stock||0)});
-  const choices=[]; raw.forEach((v,vi)=>{const rs=String(v.size||"Standard").trim();const sizes=rs==="Standard"?["Standard"]:rs.split(/[\\/|,;]+/).map(x=>x.trim()).filter(Boolean);(sizes.length?sizes:[rs]).forEach((size,si)=>choices.push({...v,variantIndex:vi,choiceIndex:`${vi}-${si}`,size,stock:Number(v.stock||0),sell:Number(v.sell||productPrice(product))}));});
-  const body=$("#detailBody"),detail=$("#detail");if(!body||!detail)return;const sale=productPrice(product),old=regularPrice(product),desc=product.details||product.description||uiText("এই পণ্যের বিস্তারিত তথ্য এখনো যোগ করা হয়নি।","Product details have not been added yet.");
-  body.innerHTML=`<div class="mx-order-detail"><div class="mx-order-media"><div class="mx-order-image-wrap"><img class="mx-order-image" src="${escapeHtml(image)}" alt="${escapeHtml(productName(product))}" onerror="this.src='assets/images/placeholder.svg'"></div></div><div class="mx-order-info"><div class="mx-order-badge">${escapeHtml(categoryLabel(product.category||product.categoryBn||product.categoryEn||""))}</div><h2>${escapeHtml(productName(product))}</h2>${product.code?`<div class="mx-order-code">${uiText("পণ্য কোড","Product Code")}: <b>${escapeHtml(product.code)}</b></div>`:""}<div class="mx-detail-title">${uiText("পণ্যের বিস্তারিত","Product Details")}</div><p class="mx-order-description">${escapeHtml(desc)}</p><div class="mx-order-price"><strong>${money(sale)}</strong>${old>sale?`<del>${money(old)}</del>`:""}</div>${choices.length?`<div class="mx-size-heading"><div><b>${uiText("সাইজ ও পরিমাণ","Size & Quantity")}</b><small>${uiText("প্রতিটি সাইজের পাশে + / − ব্যবহার করুন","Use + / − for each size")}</small></div></div><div class="mx-size-qty-list">${choices.map(c=>`<div class="mx-size-qty-row" data-choice="${c.choiceIndex}"><div class="mx-size-name"><b>${escapeHtml(c.size==="Standard"?uiText("স্ট্যান্ডার্ড","Standard"):c.size)}</b>${c.color?`<span>${escapeHtml(c.color)}</span>`:""}<small>${uiText("স্টক","Stock")}: ${c.stock}</small></div><div class="mx-stepper"><button type="button" data-minus="${c.choiceIndex}">−</button><input value="0" readonly data-size-qty="${c.choiceIndex}"><button type="button" data-plus="${c.choiceIndex}">+</button></div></div>`).join("")}</div><div class="mx-order-total"><span>${uiText("মোট","Total")}</span><strong id="detailTotal">${money(0)}</strong></div><div class="mx-detail-actions"><button type="button" class="btn light" id="addCart">${uiText("কার্টে যোগ করুন","ADD TO CART")}</button><button type="button" class="btn primary" id="buyNow">${uiText("অর্ডার নাও","ORDER NOW")}</button></div>`:`<div class="mx-out-stock">${uiText("স্টক শেষ","Out of stock")}</div>`}</div></div><section class="mx-reviews-section"><h3>${uiText("রেটিং ও রিভিউ","Ratings & Reviews")}</h3><div id="mxReviews"><div class="mx-loading">${uiText("রিভিউ লোড হচ্ছে...","Loading reviews...")}</div></div></section>`;
-  openModal(detail);mxLoadReviews(product.id,$("#mxReviews"));if(!choices.length)return;
-  const qty=c=>Number(body.querySelector(`[data-size-qty="${c.choiceIndex}"]`)?.value||0), total=()=>{const t=choices.reduce((s,c)=>s+qty(c)*c.sell,0);if($("#detailTotal"))$("#detailTotal").textContent=money(t);};
-  body.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>{const c=choices.find(x=>x.choiceIndex===b.dataset.plus),i=body.querySelector(`[data-size-qty="${b.dataset.plus}"]`);if(!c||!i)return;const used=choices.filter(x=>x.variantIndex===c.variantIndex).reduce((s,x)=>s+qty(x),0);if(used>=c.stock)return alert(uiText("পর্যাপ্ত স্টক নেই।","Not enough stock."));i.value=Number(i.value||0)+1;total();});
-  body.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>{const i=body.querySelector(`[data-size-qty="${b.dataset.minus}"]`);if(i){i.value=Math.max(0,Number(i.value||0)-1);total();}});
-  const add=()=>{const selected=choices.filter(c=>qty(c)>0);if(!selected.length){alert(uiText("কমপক্ষে একটি সাইজের পরিমাণ নির্বাচন করুন।","Select at least one size quantity."));return false;}selected.forEach(c=>{const q=qty(c),sku=c.sku||product.sku||product.code||"default",key=`${product.id}|${sku}|${c.size||""}|${c.color||""}`,ex=cart.find(i=>i.key===key);if(ex)ex.qty+=q;else cart.push({key,productId:product.id,name:productName(product),image,sku,size:c.size==="Standard"?"":c.size,color:c.color||"",price:c.sell,qty:q,maxStock:c.stock,selected:true});});saveCart();return true;};
-  $("#addCart").onclick=()=>{if(add()){closeModal(detail);openModal($("#cart"));}};
-  $("#buyNow").onclick=async()=>{if(add()){closeModal(detail);if(!user){showAccount();openModal($("#accountModal"));alert(uiText("অর্ডার করতে আগে Account তৈরি বা Login করুন।","Create an account or log in before checkout."));return;}await initAddressSelectors(true);await fillCheckoutProfile();openModal($("#checkoutModal"));}};
-}
-
-function mxEnhanceCartOrderButton(){const cartCard=$("#cart .modal-card");if(!cartCard||$("#mxCartOrderNow"))return;const checkout=$("#checkout");if(!checkout)return;const fresh=checkout.cloneNode(true);checkout.replaceWith(fresh);fresh.textContent=uiText("অর্ডার নাও","ORDER NOW");fresh.id="mxCartOrderNow";fresh.addEventListener("click",async()=>{if(!cart.some(i=>i.selected!==false))return alert(uiText("অর্ডারের জন্য পণ্য নির্বাচন করুন।","Select products to order."));if(!user){showAccount();openModal($("#accountModal"));return;}await initAddressSelectors(true);await fillCheckoutProfile();closeModal($("#cart"));openModal($("#checkoutModal"));});}
-
-function showAccount() {
-  const host=$("#accountBody");if(!host)return;
-  if(user){host.innerHTML=`<div class="mx-account-head"><div class="mx-avatar">👤</div><div><b>${uiText("আমার অ্যাকাউন্ট","My Account")}</b><small>${escapeHtml(user.email?.endsWith("@phone.mehedixpress.local")?uiText("মোবাইল অ্যাকাউন্ট","Mobile account"):(user.email||""))}</small></div></div><div class="mx-account-actions"><button class="btn primary" id="editProfile">${uiText("প্রোফাইল ও ঠিকানা এডিট","EDIT PROFILE & ADDRESS")}</button><button class="btn light" id="showOrders">${uiText("আমার অর্ডার","MY ORDERS")}</button><button class="btn light" id="changePasswordBtn">${uiText("পাসওয়ার্ড পরিবর্তন","CHANGE PASSWORD")}</button><button class="btn light" id="logoutCustomer">${uiText("লগআউট","LOGOUT")}</button></div><div id="profileEditor"></div><div id="myOrders"></div>`;
-    $("#editProfile")?.addEventListener("click",loadProfileEditor);$("#showOrders")?.addEventListener("click",loadMyOrders);$("#logoutCustomer")?.addEventListener("click",()=>signOut(auth));$("#changePasswordBtn")?.addEventListener("click",mxShowPasswordChange);return;}
-  host.innerHTML=`<div class="mx-auth-tabs"><button class="active" data-auth-tab="signup">${uiText("সাইন আপ","SIGN UP")}</button><button data-auth-tab="login">${uiText("লগইন","LOGIN")}</button></div><div id="mxAuthPanel"></div>`;
-  const panel=$("#mxAuthPanel");
-  const signup=()=>{host.querySelectorAll("[data-auth-tab]").forEach(b=>b.classList.toggle("active",b.dataset.authTab==="signup"));panel.innerHTML=`<form id="mxSignup" class="mx-auth-form"><label>${uiText("পূর্ণ নাম","Full Name")}</label><input class="field" name="name" required><label>${uiText("মোবাইল নম্বর","Mobile Number")}</label><input class="field" name="phone" placeholder="01XXXXXXXXX" required><label>${uiText("পাসওয়ার্ড","Password")}</label><input class="field" name="password" type="password" minlength="6" required><label>${uiText("কনফার্ম পাসওয়ার্ড","Confirm Password")}</label><input class="field" name="confirm" type="password" minlength="6" required><label>${uiText("ইমেইল (ঐচ্ছিক)","Email (Optional)")}</label><input class="field" name="contactEmail" type="email"><button class="btn primary" type="submit">${uiText("অ্যাকাউন্ট তৈরি করুন","CREATE ACCOUNT")}</button></form>`;$("#mxSignup").onsubmit=mxRegisterMobile;};
-  const login=()=>{host.querySelectorAll("[data-auth-tab]").forEach(b=>b.classList.toggle("active",b.dataset.authTab==="login"));panel.innerHTML=`<form id="mxMobileLogin" class="mx-auth-form"><label>${uiText("মোবাইল নম্বর","Mobile Number")}</label><input class="field" name="phone" placeholder="01XXXXXXXXX" required><label>${uiText("পাসওয়ার্ড","Password")}</label><input class="field" name="password" type="password" required><button class="btn primary" type="submit">${uiText("লগইন","LOGIN")}</button></form>`;$("#mxMobileLogin").onsubmit=mxLoginMobile;};
-  host.querySelector('[data-auth-tab="signup"]').onclick=signup;host.querySelector('[data-auth-tab="login"]').onclick=login;signup();
-}
-async function mxRegisterMobile(e){e.preventDefault();const f=Object.fromEntries(new FormData(e.target));if(!mxValidMobile(f.phone))return alert(uiText("সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।","Enter a valid Bangladesh mobile number."));if(f.password!==f.confirm)return alert(uiText("দুইটি পাসওয়ার্ড মিলছে না।","Passwords do not match."));try{const email=mxAuthEmailFromMobile(f.phone),result=await createUserWithEmailAndPassword(auth,email,f.password);await setDoc(doc(db,"users",result.user.uid),{name:f.name,phone:f.phone,contactEmail:f.contactEmail||"",authEmail:email,division:"",district:"",upazila:"",area:"",address:"",role:"customer",createdAt:serverTimestamp()},{merge:true});alert(uiText("অ্যাকাউন্ট তৈরি হয়েছে। এখন প্রোফাইলের ঠিকানা পূরণ করুন।","Account created. Please complete your profile address."));showAccount();loadProfileEditor();}catch(err){alert(uiText("অ্যাকাউন্ট তৈরি করা যায়নি: ","Could not create account: ")+err.message);}}
-async function mxLoginMobile(e){e.preventDefault();const f=Object.fromEntries(new FormData(e.target));try{await signInWithEmailAndPassword(auth,mxAuthEmailFromMobile(f.phone),f.password);alert(uiText("লগইন সফল হয়েছে।","Login successful."));}catch(err){alert(uiText("মোবাইল নম্বর বা পাসওয়ার্ড সঠিক নয়।","Mobile number or password is incorrect."));}}
-
-async function loadProfileEditor(){if(!user)return;const host=$("#profileEditor");if(!host)return;try{const ref=doc(db,"users",user.uid),snap=await getDoc(ref),p=snap.exists()?snap.data():{},data=await mxLoadLocations();host.innerHTML=`<form id="profileForm" class="mx-profile-form"><h3>${uiText("প্রোফাইল ও ঠিকানা","Profile & Address")}</h3><label>${uiText("পূর্ণ নাম","Full Name")}</label><input class="field" name="name" value="${escapeHtml(p.name||"")}" required><label>${uiText("মোবাইল নম্বর","Mobile Number")}</label><input class="field" name="phone" value="${escapeHtml(p.phone||"")}" required><label>${uiText("ইমেইল (ঐচ্ছিক)","Email (Optional)")}</label><input class="field" name="contactEmail" type="email" value="${escapeHtml(p.contactEmail||"")}"><label>${uiText("বিভাগ","Division")}</label><select class="field" name="division" id="profileDivision" required></select><label>${uiText("জেলা","District")}</label><select class="field" name="district" id="profileDistrict" required></select><label>${uiText("উপজেলা / থানা","Upazila / Thana")}</label><select class="field" name="upazila" id="profileUpazila" required></select><label>${uiText("এলাকা / ইউনিয়ন","Area / Union")}</label><select class="field" name="area" id="profileArea" required></select><label>${uiText("সম্পূর্ণ ঠিকানা","Full Address")}</label><textarea class="field" name="address" rows="3" required>${escapeHtml(p.address||"")}</textarea><button class="btn primary" type="submit">${uiText("প্রোফাইল সেভ করুন","SAVE PROFILE")}</button></form>`;
-  const d1=$("#profileDivision"),d2=$("#profileDistrict"),d3=$("#profileUpazila"),d4=$("#profileArea");mxSetOptions(d1,data,uiText("বিভাগ নির্বাচন করুন","Select Division"),p.division);let div=mxFindByValue(data,p.division);mxSetOptions(d2,div?.districts||[],uiText("জেলা নির্বাচন করুন","Select District"),p.district);let dist=mxFindByValue(div?.districts||[],p.district);mxSetOptions(d3,dist?.upazilas||[],uiText("উপজেলা / থানা নির্বাচন করুন","Select Upazila / Thana"),p.upazila);let up=mxFindByValue(dist?.upazilas||[],p.upazila);mxSetOptions(d4,up?.unions||[],uiText("এলাকা / ইউনিয়ন নির্বাচন করুন","Select Area / Union"),p.area);
-  d1.onchange=()=>{div=mxFindByValue(data,d1.value);mxSetOptions(d2,div?.districts||[],uiText("জেলা নির্বাচন করুন","Select District"));mxSetOptions(d3,[],uiText("উপজেলা / থানা নির্বাচন করুন","Select Upazila / Thana"));mxSetOptions(d4,[],uiText("এলাকা / ইউনিয়ন নির্বাচন করুন","Select Area / Union"));};d2.onchange=()=>{dist=mxFindByValue(div?.districts||[],d2.value);mxSetOptions(d3,dist?.upazilas||[],uiText("উপজেলা / থানা নির্বাচন করুন","Select Upazila / Thana"));mxSetOptions(d4,[],uiText("এলাকা / ইউনিয়ন নির্বাচন করুন","Select Area / Union"));};d3.onchange=()=>{up=mxFindByValue(dist?.upazilas||[],d3.value);mxSetOptions(d4,up?.unions||[],uiText("এলাকা / ইউনিয়ন নির্বাচন করুন","Select Area / Union"));};
-  $("#profileForm").onsubmit=async ev=>{ev.preventDefault();const x=Object.fromEntries(new FormData(ev.target));if(!mxValidMobile(x.phone))return alert(uiText("সঠিক মোবাইল নম্বর দিন।","Enter a valid mobile number."));try{await setDoc(ref,{...x,role:"customer",updatedAt:serverTimestamp()},{merge:true});alert(uiText("প্রোফাইল সেভ হয়েছে।","Profile saved."));}catch(err){alert(uiText("প্রোফাইল সেভ করা যায়নি: ","Could not save profile: ")+err.message);}};
-  }catch(err){host.innerHTML=`<p>${uiText("প্রোফাইল লোড করা যায়নি।","Could not load profile.")}</p>`;}}
-}
-function mxShowPasswordChange(){const host=$("#profileEditor");if(!host)return;host.innerHTML=`<form id="mxPasswordForm" class="mx-profile-form"><h3>${uiText("পাসওয়ার্ড পরিবর্তন","Change Password")}</h3><input class="field" name="current" type="password" placeholder="${uiText("বর্তমান পাসওয়ার্ড","Current password")}" required><input class="field" name="next" type="password" minlength="6" placeholder="${uiText("নতুন পাসওয়ার্ড","New password")}" required><input class="field" name="confirm" type="password" minlength="6" placeholder="${uiText("নতুন পাসওয়ার্ড আবার দিন","Confirm new password")}" required><button class="btn primary">${uiText("পাসওয়ার্ড পরিবর্তন করুন","CHANGE PASSWORD")}</button></form>`;$("#mxPasswordForm").onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));if(f.next!==f.confirm)return alert(uiText("নতুন পাসওয়ার্ড মিলছে না।","New passwords do not match."));try{const cred=EmailAuthProvider.credential(user.email,f.current);await reauthenticateWithCredential(user,cred);await updatePassword(user,f.next);alert(uiText("পাসওয়ার্ড পরিবর্তন হয়েছে।","Password changed."));showAccount();}catch(err){alert(uiText("বর্তমান পাসওয়ার্ড সঠিক নয় বা পরিবর্তন করা যায়নি।","Current password is incorrect or password could not be changed."));}};}
-
-function mxPaymentEnhance(){const method=$("#paymentMethod"),info=$("#mobilePaymentInfo"),trx=$("#transactionId");if(!method||!info)return;const update=()=>{const mobile=method.value==="bkash"||method.value==="nagad";info.style.display=mobile?"block":"none";if(trx)trx.required=mobile;const title=info.querySelector("b");if(title)title.textContent=method.value==="nagad"?"Nagad Send Money Number:":"bKash Send Money Number:";};method.onchange=update;update();if(!$("#mxCopyPay")){const strong=info.querySelector("strong");if(strong){const btn=document.createElement("button");btn.type="button";btn.id="mxCopyPay";btn.className="mx-copy-pay";btn.textContent=uiText("নম্বর কপি","COPY NUMBER");btn.onclick=()=>navigator.clipboard?.writeText("01820693313").then(()=>alert(uiText("নম্বর কপি হয়েছে।","Number copied.")));strong.after(btn);}}}
-
-// Run V2 enhancements after the original startup has created its UI state.
-document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{mxEnhanceCartOrderButton();mxPaymentEnhance();initAddressSelectors(true);},0);},{once:true});
