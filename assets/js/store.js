@@ -3543,3 +3543,25 @@ function mxPaymentEnhance(){const method=$("#paymentMethod"),info=$("#mobilePaym
 
 // Run V2 enhancements after the original startup has created its UI state.
 document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{mxEnhanceCartOrderButton();mxPaymentEnhance();initAddressSelectors(true);},0);},{once:true});
+
+/* =========================================================
+   V2.1 — PRODUCT RAIL CONTROLS
+   Adds left/right controls to every live product rail.
+   ========================================================= */
+function mxInstallProductRails(){
+  ["newGrid","popularGrid","grid","wishlistGrid"].forEach(id=>{
+    const rail=document.getElementById(id); if(!rail) return;
+    let shell=rail.parentElement?.classList.contains("mx-rail-shell")?rail.parentElement:null;
+    if(!shell){shell=document.createElement("div");shell.className="mx-rail-shell";rail.parentNode.insertBefore(shell,rail);shell.appendChild(rail);}
+    if(!shell.querySelector(".mx-rail-prev")){
+      const prev=document.createElement("button"),next=document.createElement("button");
+      prev.type=next.type="button";prev.className="mx-rail-arrow mx-rail-prev";next.className="mx-rail-arrow mx-rail-next";prev.innerHTML="‹";next.innerHTML="›";
+      prev.setAttribute("aria-label",uiText("বামে স্ক্রল করুন","Scroll left"));next.setAttribute("aria-label",uiText("ডানে স্ক্রল করুন","Scroll right"));
+      prev.onclick=()=>rail.scrollBy({left:-Math.max(rail.clientWidth*.78,180),behavior:"smooth"});next.onclick=()=>rail.scrollBy({left:Math.max(rail.clientWidth*.78,180),behavior:"smooth"});
+      shell.append(prev,next);
+    }
+  });
+}
+window.addEventListener("DOMContentLoaded",()=>setTimeout(mxInstallProductRails,250));
+const mxRailObserver=new MutationObserver(()=>mxInstallProductRails());
+window.addEventListener("DOMContentLoaded",()=>{["newGrid","popularGrid","grid","wishlistGrid"].forEach(id=>{const el=document.getElementById(id);if(el)mxRailObserver.observe(el,{childList:true});});});
