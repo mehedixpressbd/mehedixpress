@@ -3476,25 +3476,18 @@ onAuthStateChanged(
 
 function startStore() {
   /*
-    HERO FIRST.
-    Firebase load হওয়ার অপেক্ষা করবে না।
-  */
-  initBannerSlider();
-
-  updateWishlistCount();
-  renderCart();
-
-  initLanguageSwitch();
-  initAddressSelectors();
-  initVisualCategories();
-
-  /*
-    Firebase আলাদাভাবে load হবে।
-    Firebase error হলেও Hero slider চলবে।
+    Firestore product loading starts first.
+    Hero slider is already handled separately on the website.
+    Missing optional UI functions must not stop product loading.
   */
   loadStore();
-}
 
+  if (typeof updateWishlistCount === "function") updateWishlistCount();
+  if (typeof renderCart === "function") renderCart();
+  if (typeof initLanguageSwitch === "function") initLanguageSwitch();
+  if (typeof initAddressSelectors === "function") initAddressSelectors();
+  if (typeof initVisualCategories === "function") initVisualCategories();
+}
 
 /* DOM নিশ্চিত হওয়ার পর start */
 
