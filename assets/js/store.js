@@ -145,10 +145,14 @@ function productStock(product) {
 
 
 function productPrice(product) {
+  const offer = product?.offerPrice;
+  if (offer !== null && offer !== undefined && offer !== "") {
+    return Number(offer);
+  }
   return Number(
     product?.salePrice ||
-    product?.regularPrice ||
     product?.price ||
+    product?.regularPrice ||
     product?.variants?.[0]?.sell ||
     0
   );
@@ -166,7 +170,11 @@ function regularPrice(product) {
 
 function discountPercent(product) {
   const regular = regularPrice(product);
-  const sale = Number(product?.salePrice || 0);
+  const sale = Number(
+    product?.offerPrice ??
+    product?.salePrice ??
+    productPrice(product)
+  );
 
   if (
     regular > 0 &&
@@ -195,6 +203,32 @@ function productName(product) {
     product?.nameBn ||
     "Product"
   );
+}
+
+
+
+const categoryBnMap = {
+  "Football Jersey": "ফুটবল জার্সি",
+  "Cricket Jersey": "ক্রিকেট জার্সি",
+  "Kids Jersey": "কিডস জার্সি",
+  "T-Shirt / Polo": "টি-শার্ট ও পোলো",
+  "Shorts / Trouser": "শর্টস ও ট্রাউজার",
+  "Football": "ফুটবল",
+  "Cricket Equipment": "ক্রিকেট সামগ্রী",
+  "Badminton": "ব্যাডমিন্টন",
+  "Custom Jersey": "কাস্টম জার্সি",
+  "Custom Print": "কাস্টম প্রিন্ট"
+};
+
+function categoryLabel(name) {
+  const value = String(name || "");
+  return currentLanguage === "bn"
+    ? (categoryBnMap[value] || value || "ক্যাটাগরি")
+    : (value || "Category");
+}
+
+function uiText(bn, en) {
+  return currentLanguage === "en" ? en : bn;
 }
 
 
@@ -607,99 +641,90 @@ function initBannerSlider() {
    ========================================================= */
 
 async function loadStore() {
+  // Products are the most important data. Load them independently so a
+  // missing/blocked categories or settings document cannot hide products.
   try {
-    const [
-      productSnapshot,
-      categorySnapshot,
-      settingsSnapshot
-    ] = await Promise.all([
-      getDocs(
-        query(
-          collection(db, "products"),
-          where("published", "==", true)
-        )
-      ),
+    const productSnapshot = await getDocs(collection(db, "products"));
 
-      getDocs(
-        collection(db, "categories")
-      ),
-
-      getDoc(
-        doc(db, "settings", "store")
-      )
-    ]);
-
-
-    products = productSnapshot.docs.map(
-      (document) => ({
+    products = productSnapshot.docs
+      .map((document) => ({
         id: document.id,
         ...document.data()
-      })
-    );
+      }))
+      .filter((product) => {
+        const active = product.active !== false;
+        const status = String(product.status || "active").trim().toLowerCase();
+        return active && status !== "disabled" && status !== "inactive";
+      });
 
-
-    categories = categorySnapshot.docs.map(
-      (document) => ({
-        id: document.id,
-        ...document.data()
-      })
-    );
-
-
-    if (!categories.length) {
-      categories = demoCategories.map(
-        (name, index) => ({
-          id: "demo-" + index,
-          name,
-          active: true
-        })
-      );
-    }
-
-
-    settings =
-      settingsSnapshot.exists()
-        ? settingsSnapshot.data()
-        : {};
-
-
-    showSettings();
-    renderCategories();
+    // Render products immediately.
     renderProducts();
+    renderNewProducts();
     renderPopularProducts();
     renderWishlistSection();
     renderCart();
-
   } catch (error) {
-    console.error(
-      "Store loading error:",
-      error
+    console.error("Product loading error:", error);
+
+    const message = uiText(
+      "পণ্য লোড করা যায়নি। Firestore products read permission পরীক্ষা করুন।",
+      "Products could not be loaded. Check Firestore products read permission."
     );
 
-    const grid = $("#grid");
-
-    if (grid) {
-      grid.innerHTML = `
-        <div class="mx-loading">
-          পণ্য লোড করা যায়নি।
-          Firebase configuration এবং
-          Firestore Rules পরীক্ষা করুন।
-        </div>
-      `;
-    }
-
-    const popular = $("#popularGrid");
-
-    if (popular) {
-      popular.innerHTML = `
-        <div class="mx-loading">
-          Popular products load করা যায়নি।
-        </div>
-      `;
-    }
+    ["#grid", "#newGrid", "#popularGrid"].forEach((selector) => {
+      const el = $(selector);
+      if (el) el.innerHTML = `<div class="mx-loading">${message}</div>`;
+    });
   }
-}
 
+  // Categories are optional. If collection is missing/blocked, build them
+  // from the live products already loaded from Admin.
+  try {
+    const categorySnapshot = await getDocs(collection(db, "categories"));
+    categories = categorySnapshot.docs
+      .map((document) => ({
+        id: document.id,
+        ...document.data()
+      }))
+      .filter((category) => category.active !== false);
+  } catch (error) {
+    console.warn("Category loading warning:", error);
+    categories = [];
+  }
+
+  if (!categories.length) {
+    const names = [...new Set(
+      products
+        .map((product) => product.category || product.categoryBn || product.categoryEn)
+        .filter(Boolean)
+    )];
+
+    categories = names.length
+      ? names.map((name, index) => ({
+          id: "product-category-" + index,
+          name,
+          active: true
+        }))
+      : demoCategories.map((name, index) => ({
+          id: "demo-" + index,
+          name,
+          active: true
+        }));
+  }
+
+  renderCategories();
+
+  // Store settings are also optional.
+  try {
+    const settingsSnapshot = await getDoc(doc(db, "settings", "store"));
+    settings = settingsSnapshot.exists() ? settingsSnapshot.data() : {};
+  } catch (error) {
+    console.warn("Settings loading warning:", error);
+    settings = {};
+  }
+
+  showSettings();
+}
 
 /* =========================================================
    SETTINGS
@@ -731,68 +756,47 @@ function showSettings() {
 
 function renderCategories() {
   const host = $("#cats");
-
   if (!host) return;
 
-
   host.innerHTML = `
-    <button
-      type="button"
-      class="active"
-      data-category=""
-    >
-      সব পণ্য
+    <button type="button" class="${!activeCategory ? "active" : ""}" data-category="">
+      ${uiText("সব পণ্য", "All Products")}
     </button>
 
     ${categories
-      .filter(
-        (category) =>
-          category.active !== false
-      )
-      .map(
-        (category) => `
+      .filter(category => category.active !== false)
+      .map(category => {
+        const name = category.name || "";
+        return `
           <button
             type="button"
-            data-category="${escapeHtml(
-              category.name || ""
-            )}"
+            class="${activeCategory === name ? "active" : ""}"
+            data-category="${escapeHtml(name)}"
           >
-            ${escapeHtml(
-              category.name || "Category"
-            )}
+            ${escapeHtml(categoryLabel(name))}
           </button>
-        `
-      )
+        `;
+      })
       .join("")}
   `;
 
+  host.querySelectorAll("[data-category]").forEach(button => {
+    button.addEventListener("click", () => {
+      activeCategory = button.dataset.category || "";
 
-  host
-    .querySelectorAll("[data-category]")
-    .forEach((button) => {
-      button.addEventListener(
-        "click",
-        () => {
-          activeCategory =
-            button.dataset.category || "";
-
-          host
-            .querySelectorAll("[data-category]")
-            .forEach((item) =>
-              item.classList.remove("active")
-            );
-
-          button.classList.add("active");
-
-          renderProducts(activeCategory);
-
-          $("#products")
-            ?.scrollIntoView({
-              behavior: "smooth"
-            });
-        }
+      host.querySelectorAll("[data-category]").forEach(item =>
+        item.classList.remove("active")
       );
+      button.classList.add("active");
+
+      renderProducts(activeCategory);
+
+      $("#products")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     });
+  });
 }
 
 
@@ -880,7 +884,7 @@ function productCard(product) {
             margin-bottom:5px;
           "
         >
-          ${escapeHtml(product.category || "")}
+          ${escapeHtml(categoryLabel(product.category || ""))}
         </div>
 
 
@@ -942,8 +946,8 @@ function productCard(product) {
         >
           ${
             stock > 0
-              ? `✓ In Stock (${stock})`
-              : "Out of Stock"
+              ? `✓ ${uiText("স্টকে আছে", "In Stock")} (${stock})`
+              : uiText("স্টক শেষ", "Out of Stock")
           }
         </div>
 
@@ -957,7 +961,7 @@ function productCard(product) {
             color:#fff;
           "
         >
-          DETAILS
+          ${uiText("বিস্তারিত", "DETAILS")}
         </button>
 
       </div>
@@ -1001,169 +1005,126 @@ function bindProductButtons(root = document) {
    PRODUCTS
    ========================================================= */
 
-function renderProducts(
-  category = activeCategory
-) {
+function renderProducts(category = activeCategory) {
   const host = $("#grid");
-
   if (!host) return;
 
   activeCategory = category || "";
 
-  const search =
-    ($("#search")?.value || "")
-      .trim()
-      .toLowerCase();
+  const search = ($("#search")?.value || "").trim().toLowerCase();
+  const stockFilter = $("#stock")?.value || "all";
 
-  const stockFilter =
-    $("#stock")?.value || "all";
+  let list = products.filter(product => {
+    const text = `
+      ${product.name || ""}
+      ${product.nameEn || ""}
+      ${product.code || ""}
+      ${product.category || ""}
+      ${product.description || ""}
+    `.toLowerCase();
 
+    const categoryMatch =
+      !activeCategory ||
+      String(product.category || "").toLowerCase() ===
+      String(activeCategory).toLowerCase();
 
-  let list = products.filter(
-    (product) => {
-      const text = `
-        ${product.name || ""}
-        ${product.nameEn || ""}
-        ${product.code || ""}
-        ${product.category || ""}
-        ${product.description || ""}
-      `.toLowerCase();
+    const searchMatch = !search || text.includes(search);
+    const stock = productStock(product);
 
+    const stockMatch =
+      stockFilter === "all" ||
+      (stockFilter === "in" && stock > 0) ||
+      (stockFilter === "out" && stock <= 0);
 
-      const categoryMatch =
-        !activeCategory ||
-        String(
-          product.category || ""
-        ).toLowerCase() ===
-        String(
-          activeCategory
-        ).toLowerCase();
+    return categoryMatch && searchMatch && stockMatch;
+  });
 
-
-      const searchMatch =
-        !search ||
-        text.includes(search);
-
-
-      const stock =
-        productStock(product);
-
-
-      const stockMatch =
-        stockFilter !== "in" ||
-        stock > 0;
-
-
-      return (
-        categoryMatch &&
-        searchMatch &&
-        stockMatch
-      );
-    }
-  );
-
-
-  const sort =
-    $("#sort")?.value ||
-    "default";
-
+  const sort = $("#sort")?.value || "default";
 
   if (sort === "price-asc") {
-    list.sort(
-      (a, b) =>
-        productPrice(a) -
-        productPrice(b)
+    list.sort((a, b) => productPrice(a) - productPrice(b));
+  } else if (sort === "price-desc") {
+    list.sort((a, b) => productPrice(b) - productPrice(a));
+  } else if (sort === "newest") {
+    list.sort((a, b) =>
+      (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
     );
   }
 
-
-  if (sort === "price-desc") {
-    list.sort(
-      (a, b) =>
-        productPrice(b) -
-        productPrice(a)
-    );
-  }
-
-
-  if (sort === "newest") {
-    list.sort(
-      (a, b) =>
-        (b.createdAt?.seconds || 0) -
-        (a.createdAt?.seconds || 0)
-    );
-  }
-
-
-  host.innerHTML =
-    list.length
-      ? list
-          .map(productCard)
-          .join("")
-      : `
-        <div class="mx-loading">
-          কোনো পণ্য পাওয়া যায়নি।
-        </div>
-      `;
-
+  host.innerHTML = list.length
+    ? list.map(productCard).join("")
+    : `<div class="mx-loading">${uiText("কোনো পণ্য পাওয়া যায়নি।", "No products found.")}</div>`;
 
   bindProductButtons(host);
 }
 
 
 /* =========================================================
-   POPULAR PRODUCTS
+   NEW PRODUCTS
    ========================================================= */
 
-function renderPopularProducts() {
-  const host = $("#popularGrid");
-
+function renderNewProducts() {
+  const host = $("#newGrid");
   if (!host) return;
-
 
   if (!products.length) {
     host.innerHTML = `
       <div class="mx-loading">
-        এখনো কোনো পণ্য যোগ করা হয়নি।
+        ${uiText("এখনো কোনো পণ্য যোগ করা হয়নি।", "No products have been added yet.")}
       </div>
     `;
-
     return;
   }
 
+  const list = [...products]
+    .sort((a, b) =>
+      (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+    )
+    .slice(0, 5);
 
-  const score = (product) =>
-    Number(
-      product.ratingAverage ||
-      product.rating ||
-      0
-    ) * 10 +
-    Number(
-      product.reviewCount || 0
-    ) +
-    Number(
-      product.deliveredSales ||
-      product.soldCount ||
-      0
-    ) * 2;
+  host.innerHTML = list.map(productCard).join("");
+  bindProductButtons(host);
+}
 
 
-  const list =
-    [...products]
-      .sort(
-        (a, b) =>
-          score(b) -
-          score(a)
-      )
-      .slice(0, 5);
+/* =========================================================
+   POPULAR PRODUCTS
+   Real popularity signals only:
+   delivered orders + reviews + star rating
+   ========================================================= */
 
+function renderPopularProducts() {
+  const host = $("#popularGrid");
+  if (!host) return;
 
-  host.innerHTML =
-    list
-      .map(productCard)
-      .join("");
+  const score = product => {
+    const rating = Number(product.ratingAverage || product.rating || 0);
+    const reviews = Number(product.reviewCount || 0);
+    const delivered = Number(product.deliveredSales || product.soldCount || 0);
 
+    if (rating <= 0 && reviews <= 0 && delivered <= 0) return 0;
 
+    return (delivered * 5) + (reviews * 2) + (rating * 10);
+  };
+
+  const list = [...products]
+    .filter(product => score(product) > 0)
+    .sort((a, b) => score(b) - score(a))
+    .slice(0, 5);
+
+  if (!list.length) {
+    host.innerHTML = `
+      <div class="mx-loading">
+        ${uiText(
+          "বাস্তব অর্ডার ও রিভিউ পাওয়া গেলে জনপ্রিয় পণ্য এখানে দেখানো হবে।",
+          "Popular products will appear here after real orders and reviews are available."
+        )}
+      </div>
+    `;
+    return;
+  }
+
+  host.innerHTML = list.map(productCard).join("");
   bindProductButtons(host);
 }
 
@@ -1328,7 +1289,7 @@ function showProduct(id) {
 
 
         ${
-          product.description
+          (product.details || product.description)
             ? `
               <p
                 style="
@@ -1336,7 +1297,7 @@ function showProduct(id) {
                   color:#64768d;
                 "
               >
-                ${escapeHtml(product.description)}
+                ${escapeHtml(product.details || product.description)}
               </p>
             `
             : ""
@@ -2078,10 +2039,12 @@ $("#checkoutForm")
             productId: item.productId,
             name: item.name,
             sku: item.sku || "",
+            variantSku: item.sku || "",
             size: item.size || "",
             color: item.color || "",
             price: Number(item.price),
             qty: Number(item.qty),
+            lineTotal: Number(item.price) * Number(item.qty),
             image: item.image || ""
           })
         );
@@ -2110,6 +2073,7 @@ $("#checkoutForm")
         items: orderItems,
         subtotal,
         delivery,
+        deliveryCharge: delivery,
         total: subtotal + delivery,
         status: "Pending",
         stockState: "none",
@@ -3267,75 +3231,137 @@ function initAddressSelectors(force = false) {
    LANGUAGE
    ========================================================= */
 
-function initLanguageSwitch() {
-  const buttons = $$(".mx-lang");
+function applyStorefrontLanguage() {
+  document.documentElement.lang = currentLanguage;
 
-  if (!buttons.length) return;
+  const setText = (selector, bn, en) => {
+    const el = $(selector);
+    if (el) el.textContent = uiText(bn, en);
+  };
 
+  setText("#categoryEyebrow", "ক্যাটাগরি থেকে কিনুন", "SHOP BY CATEGORY");
+  setText("#categoryTitle", "আপনার পছন্দের ক্যাটাগরি", "Choose Your Favourite Category");
+  setText("#categoryViewAll", "সব পণ্য দেখুন →", "View All Products →");
 
-  document.documentElement.lang =
-    currentLanguage;
+  setText("#newProductsKicker", "সদ্য যোগ হয়েছে", "JUST ARRIVED");
+  setText("#newProductsTitle", "নতুন পণ্য", "New Products");
+  setText("#newProductsNote", "সর্বশেষ যোগ করা পণ্যগুলো এখানে দেখানো হবে।", "See the latest products added to Mehedi Xpress.");
+  setText("#newProductsViewAll", "সব পণ্য দেখুন →", "View All Products →");
 
+  setText("#popularProductsKicker", "ক্রেতাদের পছন্দ", "CUSTOMER FAVOURITES");
+  setText("#popularProductsTitle", "জনপ্রিয় পণ্য", "Popular Products");
+  setText(
+    "#popularProductsNote",
+    "বাস্তব অর্ডার, রিভিউ ও স্টার রেটিংয়ের ভিত্তিতে জনপ্রিয় পণ্য এখানে দেখানো হবে।",
+    "Popular products are ranked using real orders, reviews and star ratings."
+  );
+  setText("#popularProductsViewAll", "সব পণ্য দেখুন →", "View All Products →");
 
-  function updateButtons() {
-    buttons.forEach((button) => {
-      button.classList.toggle(
-        "active",
-        button.dataset.lang ===
-          currentLanguage
-      );
-    });
+  setText("#allProductsKicker", "মেহেদী এক্সপ্রেস কালেকশন", "MEHEDI XPRESS COLLECTION");
+  setText("#allProductsTitle", "আমাদের পণ্যসমূহ", "All Products");
+  setText(
+    "#allProductsNote",
+    "ক্যাটাগরি বেছে নিন, স্টক দেখুন এবং আপনার প্রয়োজনীয় পণ্য সহজে খুঁজে নিন।",
+    "Choose a category, check availability and find the product you need."
+  );
+  setText("#stockFilterLabel", "স্টক", "Stock");
+  setText("#sortFilterLabel", "সাজান", "Sort By");
+  setText("#shopCategoryLabel", "ক্যাটাগরি", "Category");
+
+  const stock = $("#stock");
+  if (stock) {
+    const selected = stock.value;
+    stock.innerHTML = currentLanguage === "en"
+      ? `<option value="all">All Products</option>
+         <option value="in">In Stock</option>
+         <option value="out">Out of Stock</option>`
+      : `<option value="all">সব পণ্য</option>
+         <option value="in">স্টকে আছে</option>
+         <option value="out">স্টক শেষ</option>`;
+    stock.value = selected;
+    stock.setAttribute("aria-label", uiText("স্টক অনুযায়ী পণ্য", "Filter products by stock"));
   }
 
+  const sort = $("#sort");
+  if (sort) {
+    const selected = sort.value;
+    sort.innerHTML = currentLanguage === "en"
+      ? `<option value="default">Default</option>
+         <option value="newest">Newest First</option>
+         <option value="price-asc">Price: Low to High</option>
+         <option value="price-desc">Price: High to Low</option>`
+      : `<option value="default">ডিফল্ট</option>
+         <option value="newest">নতুন আগে</option>
+         <option value="price-asc">দাম: কম থেকে বেশি</option>
+         <option value="price-desc">দাম: বেশি থেকে কম</option>`;
+    sort.value = selected;
+    sort.setAttribute("aria-label", uiText("পণ্য সাজান", "Sort products"));
+  }
+
+  if ($("#search")) {
+    $("#search").placeholder = uiText(
+      "পণ্য, জার্সি বা Product Code খুঁজুন...",
+      "Search products, jerseys or product code..."
+    );
+  }
+
+  if ($(".mx-search-button")) {
+    $(".mx-search-button").textContent = uiText("খুঁজুন", "Search");
+  }
+
+  const visualLabels = {
+    ".mx-cat-football-jersey": ["ফুটবল জার্সি", "Football Jersey", "ক্লাব ও জাতীয় দল", "Club & National"],
+    ".mx-cat-cricket-jersey": ["ক্রিকেট জার্সি", "Cricket Jersey", "প্রিমিয়াম কালেকশন", "Premium Collection"],
+    ".mx-cat-kids": ["কিডস জার্সি", "Kids Jersey", "শিশুদের কালেকশন", "Kids Collection"],
+    ".mx-cat-tshirt": ["টি-শার্ট ও পোলো", "T-Shirt & Polo", "ফ্যাশন কালেকশন", "Fashion Collection"],
+    ".mx-cat-shorts": ["শর্টস ও ট্রাউজার", "Shorts & Trouser", "স্পোর্টস ও ক্যাজুয়াল", "Sports & Casual"],
+    ".mx-cat-football": ["ফুটবল", "Football", "বল ও অ্যাকসেসরিজ", "Ball & Accessories"],
+    ".mx-cat-cricket": ["ক্রিকেট সামগ্রী", "Cricket Equipment", "ব্যাট • বল • গ্লাভস", "Bat • Ball • Gloves"],
+    ".mx-cat-badminton": ["ব্যাডমিন্টন", "Badminton", "র‍্যাকেট ও অ্যাকসেসরিজ", "Racket & Accessories"],
+    ".mx-cat-custom-jersey": ["কাস্টম জার্সি", "Custom Jersey", "নিজের ডিজাইন", "Your Own Design"],
+    ".mx-cat-custom-print": ["কাস্টম প্রিন্ট", "Custom Print", "আপনার ডিজাইন প্রিন্ট করুন", "Print Your Design"]
+  };
+
+  Object.entries(visualLabels).forEach(([selector, values]) => {
+    const card = $(selector);
+    if (!card) return;
+    const title = card.querySelector(".mx-category-content b");
+    const small = card.querySelector(".mx-category-content small");
+    if (title) title.textContent = uiText(values[0], values[1]);
+    if (small) small.textContent = uiText(values[2], values[3]);
+  });
+
+  renderCategories();
+  renderProducts(activeCategory);
+  renderNewProducts();
+  renderPopularProducts();
+  renderWishlistSection();
+}
+
+
+function initLanguageSwitch() {
+  const buttons = $$(".mx-lang");
+  if (!buttons.length) return;
+
+  const updateButtons = () => {
+    buttons.forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.lang === currentLanguage
+      );
+    });
+  };
 
   updateButtons();
+  applyStorefrontLanguage();
 
-
-  buttons.forEach((button) => {
-    button.addEventListener(
-      "click",
-      () => {
-        currentLanguage =
-          button.dataset.lang || "bn";
-
-        localStorage.setItem(
-          "mx-lang",
-          currentLanguage
-        );
-
-        document.documentElement.lang =
-          currentLanguage;
-
-        updateButtons();
-
-        renderProducts();
-        renderPopularProducts();
-        renderWishlistSection();
-
-
-        if (currentLanguage === "en") {
-          if ($("#search")) {
-            $("#search").placeholder =
-              "Search products, jerseys or Product Code...";
-          }
-
-          if ($(".mx-search-button")) {
-            $(".mx-search-button").textContent =
-              "Search";
-          }
-        } else {
-          if ($("#search")) {
-            $("#search").placeholder =
-              "পণ্য, জার্সি বা Product Code খুঁজুন...";
-          }
-
-          if ($(".mx-search-button")) {
-            $(".mx-search-button").textContent =
-              "খুঁজুন";
-          }
-        }
-      }
-    );
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      currentLanguage = button.dataset.lang || "bn";
+      localStorage.setItem("mx-lang", currentLanguage);
+      updateButtons();
+      applyStorefrontLanguage();
+    });
   });
 }
 
@@ -3387,6 +3413,7 @@ function initVisualCategories() {
               activeCategory =
                 category;
 
+              renderCategories();
               renderProducts(category);
 
               $("#products")
@@ -3449,25 +3476,18 @@ onAuthStateChanged(
 
 function startStore() {
   /*
-    HERO FIRST.
-    Firebase load হওয়ার অপেক্ষা করবে না।
-  */
-  initBannerSlider();
-
-  updateWishlistCount();
-  renderCart();
-
-  initLanguageSwitch();
-  initAddressSelectors();
-  initVisualCategories();
-
-  /*
-    Firebase আলাদাভাবে load হবে।
-    Firebase error হলেও Hero slider চলবে।
+    Firestore product loading starts first.
+    Hero slider is already handled separately on the website.
+    Missing optional UI functions must not stop product loading.
   */
   loadStore();
-}
 
+  if (typeof updateWishlistCount === "function") updateWishlistCount();
+  if (typeof renderCart === "function") renderCart();
+  if (typeof initLanguageSwitch === "function") initLanguageSwitch();
+  if (typeof initAddressSelectors === "function") initAddressSelectors();
+  if (typeof initVisualCategories === "function") initVisualCategories();
+}
 
 /* DOM নিশ্চিত হওয়ার পর start */
 
