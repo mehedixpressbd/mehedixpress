@@ -52,21 +52,21 @@ function escapeHtml(value = "") {
 
 
 function safeImage(product) {
-  if (
-    Array.isArray(product?.images) &&
-    product.images.length
-  ) {
-    const first = product.images[0];
+  // Admin versions used both Base64 strings and URL/object image formats.
+  // Accept every format already used by Mehedi Xpress without changing data.
+  const candidates = [];
+  if (Array.isArray(product?.images)) candidates.push(...product.images);
+  candidates.push(product?.image, product?.imageUrl, product?.photo, product?.thumbnail);
 
-    if (typeof first === "string") return first;
-    if (first?.url) return first.url;
+  for (const item of candidates) {
+    if (!item) continue;
+    if (typeof item === "string" && item.trim()) return item.trim();
+    if (typeof item === "object") {
+      const value = item.url || item.src || item.image || item.imageUrl || item.data || item.base64;
+      if (typeof value === "string" && value.trim()) return value.trim();
+    }
   }
-
-  return (
-    product?.image ||
-    product?.imageUrl ||
-    "assets/images/placeholder.svg"
-  );
+  return "assets/images/placeholder.svg";
 }
 
 
@@ -1101,6 +1101,7 @@ function renderNewProducts() {
 
   host.innerHTML = list.map(productCard).join("");
   bindProductButtons(host);
+  mxEnsureProductRail(host);
 }
 
 
@@ -1143,6 +1144,7 @@ function renderPopularProducts() {
 
   host.innerHTML = list.map(productCard).join("");
   bindProductButtons(host);
+  mxEnsureProductRail(host);
 }
 
 
@@ -3466,26 +3468,43 @@ function productCard(product) {
 }
 
 function renderProducts(category=activeCategory) {
-  const host=$("#grid"); if(!host)return; activeCategory=category||"";
-  const search=($("#search")?.value||"").trim().toLowerCase(), stockFilter=$("#stock")?.value||"all";
-  let list=products.filter(p=>{
-    const text=`${p.name||""} ${p.nameEn||""} ${p.nameBn||""} ${p.code||""} ${p.category||""} ${p.categoryBn||""} ${p.categoryEn||""} ${p.details||""}`.toLowerCase();
-    const aliases=[p.category,p.categoryBn,p.categoryEn].filter(Boolean).map(v=>String(v).toLowerCase());
-    const categoryMatch=!activeCategory||aliases.includes(String(activeCategory).toLowerCase());
-    const st=productStock(p); return categoryMatch&&(!search||text.includes(search))&&(stockFilter==="all"||(stockFilter==="in"&&st>0)||(stockFilter==="out"&&st<=0));
+  const host = $("#grid");
+  if (!host) return;
+  activeCategory = category || "";
+
+  const search = ($("#search")?.value || "").trim().toLowerCase();
+  const stockFilter = $("#stock")?.value || "all";
+  let list = products.filter(p => {
+    const text = `${p.name||""} ${p.nameEn||""} ${p.nameBn||""} ${p.code||""} ${p.category||""} ${p.categoryBn||""} ${p.categoryEn||""} ${p.details||""}`.toLowerCase();
+    const aliases = [p.category,p.categoryBn,p.categoryEn].filter(Boolean).map(v=>String(v).toLowerCase());
+    const categoryMatch = !activeCategory || aliases.includes(String(activeCategory).toLowerCase());
+    const st = productStock(p);
+    return categoryMatch && (!search || text.includes(search)) && (stockFilter === "all" || (stockFilter === "in" && st > 0) || (stockFilter === "out" && st <= 0));
   });
-  const sort=$("#sort")?.value||"default";
-  if(sort==="price-asc")list.sort((a,b)=>productPrice(a)-productPrice(b));
-  else if(sort==="price-desc")list.sort((a,b)=>productPrice(b)-productPrice(a));
-  else if(sort==="newest")list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  const pages=Math.max(1,Math.ceil(list.length/MX_PRODUCTS_PER_PAGE)); mxProductPage=Math.min(mxProductPage,pages);
-  const start=(mxProductPage-1)*MX_PRODUCTS_PER_PAGE, page=list.slice(start,start+MX_PRODUCTS_PER_PAGE);
-  host.innerHTML=page.length?page.map(productCard).join(""):`<div class="mx-loading">${uiText("কোনো পণ্য পাওয়া যায়নি।","No products found.")}</div>`;
+  const sort = $("#sort")?.value || "default";
+  if (sort === "price-asc") list.sort((a,b)=>productPrice(a)-productPrice(b));
+  else if (sort === "price-desc") list.sort((a,b)=>productPrice(b)-productPrice(a));
+  else if (sort === "newest") list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+
+  host.innerHTML = list.length ? list.map(productCard).join("") : `<div class="mx-loading">${uiText("কোনো পণ্য পাওয়া যায়নি।","No products found.")}</div>`;
   bindProductButtons(host);
-  let pager=$("#mxProductPager"); if(!pager){pager=document.createElement("div");pager.id="mxProductPager";host.after(pager);}
-  pager.className="mx-product-pager"; pager.innerHTML=pages>1?`<button ${mxProductPage<=1?"disabled":""} data-page-prev>‹ ${uiText("আগের","Prev")}</button><span>${uiText("পৃষ্ঠা","Page")} ${mxProductPage} / ${pages}</span><button ${mxProductPage>=pages?"disabled":""} data-page-next>${uiText("পরের","Next")} ›</button>`:"";
-  pager.querySelector("[data-page-prev]")?.addEventListener("click",()=>{mxProductPage--;renderProducts(activeCategory);$("#products")?.scrollIntoView({behavior:"smooth"});});
-  pager.querySelector("[data-page-next]")?.addEventListener("click",()=>{mxProductPage++;renderProducts(activeCategory);$("#products")?.scrollIntoView({behavior:"smooth"});});
+  mxEnsureProductRail(host);
+}
+
+function mxEnsureProductRail(host) {
+  if (!host || host.querySelector('.mx-loading')) return;
+  host.classList.add('mx-horizontal-product-rail');
+  const section = host.closest('section') || host.parentElement;
+  if (!section || section.querySelector(`.mx-rail-controls[data-for="${host.id}"]`)) return;
+  const controls = document.createElement('div');
+  controls.className = 'mx-rail-controls';
+  controls.dataset.for = host.id;
+  controls.innerHTML = `<button type="button" aria-label="Previous">‹</button><button type="button" aria-label="Next">›</button>`;
+  host.before(controls);
+  const [prev,next] = controls.querySelectorAll('button');
+  const move = dir => host.scrollBy({left: dir * Math.max(260, host.clientWidth * .82), behavior:'smooth'});
+  prev.addEventListener('click',()=>move(-1));
+  next.addEventListener('click',()=>move(1));
 }
 
 async function mxLoadReviews(productId, host) {
@@ -3543,25 +3562,3 @@ function mxPaymentEnhance(){const method=$("#paymentMethod"),info=$("#mobilePaym
 
 // Run V2 enhancements after the original startup has created its UI state.
 document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{mxEnhanceCartOrderButton();mxPaymentEnhance();initAddressSelectors(true);},0);},{once:true});
-
-/* =========================================================
-   V2.1 — PRODUCT RAIL CONTROLS
-   Adds left/right controls to every live product rail.
-   ========================================================= */
-function mxInstallProductRails(){
-  ["newGrid","popularGrid","grid","wishlistGrid"].forEach(id=>{
-    const rail=document.getElementById(id); if(!rail) return;
-    let shell=rail.parentElement?.classList.contains("mx-rail-shell")?rail.parentElement:null;
-    if(!shell){shell=document.createElement("div");shell.className="mx-rail-shell";rail.parentNode.insertBefore(shell,rail);shell.appendChild(rail);}
-    if(!shell.querySelector(".mx-rail-prev")){
-      const prev=document.createElement("button"),next=document.createElement("button");
-      prev.type=next.type="button";prev.className="mx-rail-arrow mx-rail-prev";next.className="mx-rail-arrow mx-rail-next";prev.innerHTML="‹";next.innerHTML="›";
-      prev.setAttribute("aria-label",uiText("বামে স্ক্রল করুন","Scroll left"));next.setAttribute("aria-label",uiText("ডানে স্ক্রল করুন","Scroll right"));
-      prev.onclick=()=>rail.scrollBy({left:-Math.max(rail.clientWidth*.78,180),behavior:"smooth"});next.onclick=()=>rail.scrollBy({left:Math.max(rail.clientWidth*.78,180),behavior:"smooth"});
-      shell.append(prev,next);
-    }
-  });
-}
-window.addEventListener("DOMContentLoaded",()=>setTimeout(mxInstallProductRails,250));
-const mxRailObserver=new MutationObserver(()=>mxInstallProductRails());
-window.addEventListener("DOMContentLoaded",()=>{["newGrid","popularGrid","grid","wishlistGrid"].forEach(id=>{const el=document.getElementById(id);if(el)mxRailObserver.observe(el,{childList:true});});});
