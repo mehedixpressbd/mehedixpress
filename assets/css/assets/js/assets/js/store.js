@@ -641,110 +641,90 @@ function initBannerSlider() {
    ========================================================= */
 
 async function loadStore() {
+  // Products are the most important data. Load them independently so a
+  // missing/blocked categories or settings document cannot hide products.
   try {
-    const [
-      productSnapshot,
-      categorySnapshot,
-      settingsSnapshot
-    ] = await Promise.all([
-      getDocs(
-        collection(db, "products")
-      ),
-
-      getDocs(
-        collection(db, "categories")
-      ),
-
-      getDoc(
-        doc(db, "settings", "store")
-      )
-    ]);
-
+    const productSnapshot = await getDocs(collection(db, "products"));
 
     products = productSnapshot.docs
       .map((document) => ({
         id: document.id,
         ...document.data()
       }))
-      .filter((product) =>
-        product.active !== false &&
-        String(product.status || "active").toLowerCase() !== "disabled"
-      );
+      .filter((product) => {
+        const active = product.active !== false;
+        const status = String(product.status || "active").trim().toLowerCase();
+        return active && status !== "disabled" && status !== "inactive";
+      });
 
-
-    categories = categorySnapshot.docs.map(
-      (document) => ({
-        id: document.id,
-        ...document.data()
-      })
-    );
-
-
-    if (!categories.length) {
-      categories = demoCategories.map(
-        (name, index) => ({
-          id: "demo-" + index,
-          name,
-          active: true
-        })
-      );
-    }
-
-
-    settings =
-      settingsSnapshot.exists()
-        ? settingsSnapshot.data()
-        : {};
-
-
-    showSettings();
-    renderCategories();
+    // Render products immediately.
     renderProducts();
     renderNewProducts();
     renderPopularProducts();
     renderWishlistSection();
     renderCart();
-
   } catch (error) {
-    console.error(
-      "Store loading error:",
-      error
+    console.error("Product loading error:", error);
+
+    const message = uiText(
+      "পণ্য লোড করা যায়নি। Firestore products read permission পরীক্ষা করুন।",
+      "Products could not be loaded. Check Firestore products read permission."
     );
 
-    const grid = $("#grid");
-
-    if (grid) {
-      grid.innerHTML = `
-        <div class="mx-loading">
-          পণ্য লোড করা যায়নি।
-          Firebase configuration এবং
-          Firestore Rules পরীক্ষা করুন।
-        </div>
-      `;
-    }
-
-    const newGrid = $("#newGrid");
-
-    if (newGrid) {
-      newGrid.innerHTML = `
-        <div class="mx-loading">
-          ${uiText("নতুন পণ্য লোড করা যায়নি।", "New products could not be loaded.")}
-        </div>
-      `;
-    }
-
-    const popular = $("#popularGrid");
-
-    if (popular) {
-      popular.innerHTML = `
-        <div class="mx-loading">
-          Popular products load করা যায়নি।
-        </div>
-      `;
-    }
+    ["#grid", "#newGrid", "#popularGrid"].forEach((selector) => {
+      const el = $(selector);
+      if (el) el.innerHTML = `<div class="mx-loading">${message}</div>`;
+    });
   }
-}
 
+  // Categories are optional. If collection is missing/blocked, build them
+  // from the live products already loaded from Admin.
+  try {
+    const categorySnapshot = await getDocs(collection(db, "categories"));
+    categories = categorySnapshot.docs
+      .map((document) => ({
+        id: document.id,
+        ...document.data()
+      }))
+      .filter((category) => category.active !== false);
+  } catch (error) {
+    console.warn("Category loading warning:", error);
+    categories = [];
+  }
+
+  if (!categories.length) {
+    const names = [...new Set(
+      products
+        .map((product) => product.category || product.categoryBn || product.categoryEn)
+        .filter(Boolean)
+    )];
+
+    categories = names.length
+      ? names.map((name, index) => ({
+          id: "product-category-" + index,
+          name,
+          active: true
+        }))
+      : demoCategories.map((name, index) => ({
+          id: "demo-" + index,
+          name,
+          active: true
+        }));
+  }
+
+  renderCategories();
+
+  // Store settings are also optional.
+  try {
+    const settingsSnapshot = await getDoc(doc(db, "settings", "store"));
+    settings = settingsSnapshot.exists() ? settingsSnapshot.data() : {};
+  } catch (error) {
+    console.warn("Settings loading warning:", error);
+    settings = {};
+  }
+
+  showSettings();
+}
 
 /* =========================================================
    SETTINGS
