@@ -80,7 +80,7 @@ body.admin-authenticated #login{display:none!important}
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="sales">💰 Sales Report</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 Banners</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="sales">💰 Sales Report</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="customers">👥 Customer Directory</button><button data-p="returns">↩️ POS Returns</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 Banners</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><button type="button" class="stat mx-clickable" data-stat-route="products"><b id="sProducts">0</b>Products<small>পণ্যের তালিকা →</small></button><button type="button" class="stat mx-clickable" data-stat-route="orders"><b id="sOrders">0</b>Orders<small>অনলাইন অর্ডার →</small></button><button type="button" class="stat mx-clickable" data-stat-route="sales"><b id="sSales">৳0</b>Sales<small>অনলাইন ও অফলাইন বিক্রয় →</small></button><button type="button" class="stat mx-clickable" data-stat-route="pending"><b id="sPending">0</b>Pending<small>Pending তালিকা →</small></button></div><div class="stats" style="margin-top:14px">
 <button type="button" class="stat mx-clickable" data-stat-route="inventory"><b id="sTotalStock">0</b>Total Stock<small>স্টক তালিকা →</small></button>
@@ -132,12 +132,23 @@ body.admin-authenticated #login{display:none!important}
 </section>
 
 <section id="sales" class="panel"><div class="head"><h3>Online & Offline Sales Report</h3></div><div class="mx-inline-tools"><label>Source <select id="salesSource"><option value="all">সব বিক্রয়</option><option value="online">Online</option><option value="offline">Offline POS</option></select></label><label>Status <select id="salesStatus"><option value="all">সব Status</option><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Completed</option><option>Cancelled</option><option>Returned</option></select></label></div><div id="salesSummary" class="notice"></div><div class="tablewrap"><table><thead><tr><th>Source / ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th>Details</th></tr></thead><tbody id="salesRows"></tbody></table></div></section>
+<section id="customers" class="panel">
+<div class="head"><h3>👥 Customer Directory / Customer Search</h3><span class="status">Online + Offline</span></div>
+<div class="notice">Customer ID, মোবাইল, নাম, Order ID অথবা Memo ID দিয়ে খুঁজুন। এখানে বিদ্যমান Order, Offline Sale ও Customer Records একসঙ্গে দেখানো হয়। এটি নতুন Customer ID তৈরি করে না।</div>
+<div class="toolbar"><input id="mxCustomerSearch" placeholder="Customer ID / Mobile / Name / Order ID / Memo ID" style="width:min(100%,550px)"><select id="mxCustomerSource"><option value="all">All Customers</option><option value="online">Online Only</option><option value="offline">Offline Only</option></select></div>
+<p id="mxCustomerCount" class="hint"></p>
+<div class="tablewrap"><table><thead><tr><th>Customer / ID</th><th>Mobile</th><th>Address</th><th>Online Orders</th><th>Offline Sales</th><th>Actions</th></tr></thead><tbody id="mxCustomerRows"></tbody></table></div>
+<div id="mxCustomerDetails" class="card" style="display:none;margin-top:15px"></div>
+</section>
 <section id="orderdetail" class="panel">
 <div class="head no-print"><h3>Online Order Details</h3><div class="actions"><button class="btn primary" id="orderPrintA4">🖨 Invoice A4</button><button class="btn primary" id="orderPrintA5">🖨 Invoice A5</button><button class="btn" id="backOrders">← Orders</button></div></div>
 <div id="orderDetailBox" class="card"></div>
 <div id="orderInvoicePrint" class="memo" style="margin-top:14px"></div>
 </section>
 
+<section id="returns" class="panel"><div class="head"><h3>↩️ Offline Return / Refund</h3><span class="status">POS sales only</span></div>
+<div class="card"><div class="field"><label>Search Sale ID / Mobile / Customer</label><input id="returnSearch" placeholder="Sale ID / mobile / name"></div><div class="tablewrap"><table><thead><tr><th>Sale ID</th><th>Customer</th><th>Total / Returned</th><th>Action</th></tr></thead><tbody id="returnSaleRows"></tbody></table></div></div>
+<div id="returnEditor" class="card" style="display:none;margin-top:14px"><h3 id="returnSaleTitle">Return</h3><p class="hint">প্রতি লাইনে কতটি পণ্য ফেরত এসেছে তা লিখুন। ফেরতযোগ্য টাকা মূল বিক্রয়মূল্যের বেশি হবে না।</p><div id="returnLineRows"></div><div class="formgrid"><div class="field"><label>Refund amount (৳)</label><input type="number" min="0" step="0.01" id="returnRefund" value="0"></div><div class="field"><label>Refund method</label><select id="returnMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option><option>Store Credit</option></select></div><div class="field full"><label>Reason / note</label><textarea id="returnReason" placeholder="ফেরতের কারণ"></textarea></div></div><p id="returnInfo" class="notice"></p><button class="btn primary" id="submitPosReturn" type="button">Confirm Return & Adjust Stock</button></div></section>
 <section id="pos" class="panel">
 <div class="head"><h3>Offline Sale / POS</h3><span class="status">Shared Product Stock</span></div>
 <div class="posgrid">
@@ -277,13 +288,14 @@ $("changeAdminPassword").onclick=async()=>{
  }
 };
 document.querySelectorAll(".menu button[data-p]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.p).classList.add("active");$("title").textContent=b.textContent.trim()});
-let offlineSales=[],categoryRecords=[];
+let offlineSales=[],categoryRecords=[],mxCustomerDocs=[];
 let started=false;function start(){if(started)return;started=true;
  onSnapshot(collection(db,"products"),s=>{products=s.docs.map(d=>({id:d.id,...d.data()}));renderProducts();stats()});
- onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));$("orderLoadState").textContent=`${orders.length}টি Online Order লোড হয়েছে।`;renderOrders();stats();renderSalesReport()},e=>{$("orderLoadState").textContent="Online Orders load হয়নি: "+(e.code||e.message);console.error("Online orders:",e)});
+ onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));$("orderLoadState").textContent=`${orders.length}টি Online Order লোড হয়েছে।`;renderOrders();stats();renderSalesReport();renderMxCustomers()},e=>{$("orderLoadState").textContent="Online Orders load হয়নি: "+(e.code||e.message);console.error("Online orders:",e)});
  onSnapshot(collection(db,"reviews"),s=>{reviews=s.docs.map(d=>({id:d.id,...d.data()}));renderReviews()});
  onSnapshot(collection(db,"categories"),s=>{categoryRecords=s.docs.map(d=>({id:d.id,...d.data()}));const x=categoryRecords.map(d=>d.name).filter(Boolean);if(x.length)categories=x;renderCats()},e=>console.warn("Categories:",e));
- onSnapshot(collection(db,"sales"),s=>{offlineSales=s.docs.map(d=>({id:d.id,...d.data()}));stats();renderSalesReport()},e=>console.warn("Offline sales:",e));
+ onSnapshot(collection(db,"sales"),s=>{offlineSales=s.docs.map(d=>({id:d.id,...d.data()}));stats();renderSalesReport();renderMxCustomers();renderReturnSales()},e=>console.warn("Offline sales:",e));
+ onSnapshot(collection(db,"customers"),s=>{mxCustomerDocs=s.docs.map(d=>({id:d.id,...d.data()}));renderMxCustomers()},e=>{console.warn("Customer directory:",e);renderMxCustomers()});
  loadBannerAdmin();
 }
 function stats(){
@@ -291,7 +303,7 @@ function stats(){
  $("sOrders").textContent=orders.length+offlineSales.length;
  $("sPending").textContent=orders.filter(o=>(o.status||"Pending")==="Pending").length;
  const onlineCompleted=orders.filter(o=>o.status==="Completed" && o.paymentVerified===true).reduce((sum,o)=>sum+Number(o.total||0),0);
- const offlineCompleted=offlineSales.filter(o=>o.status!=="Cancelled").reduce((sum,o)=>sum+Number(o.total||0),0);
+ const offlineCompleted=offlineSales.filter(o=>o.status!=="Cancelled").reduce((sum,o)=>sum+Math.max(0,Number(o.total||0)-Number(o.returnedAmount||0)),0);
  $("sSales").textContent=money(onlineCompleted+offlineCompleted);
  $("recent").innerHTML=[...orders].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,5).map(o=>`<tr><td><button class="btn" onclick="viewOrder('${o.id}')">${esc(orderCode(o))}</button></td><td>${esc(o.customerName||"—")}</td><td>${esc(orderItems(o).map(x=>x.name).join(", "))}</td><td>${money(o.total)}</td></tr>`).join("")||'<tr><td>কোনো Online Order নেই</td></tr>';
  const totalStock=products.reduce((sum,p)=>sum+Number(p.stock||0),0);
@@ -370,11 +382,18 @@ function renderSalesReport(){
  const online=orders.map(o=>({...o,_source:"online",_code:orderCode(o),_status:o.status||"Pending"}));
  const offline=offlineSales.map(o=>({...o,_source:"offline",_code:o.saleId||o.id,_status:o.status||"Completed"}));
  const list=[...online,...offline].filter(o=>(src==="all"||o._source===src)&&(st==="all"||o._status===st)).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
- $("salesSummary").textContent=`${list.length}টি রেকর্ড • মোট ${money(list.reduce((sum,o)=>sum+Number(o.total||0),0))} (নির্বাচিত ফিল্টার)`;
- box.innerHTML=list.map(o=>{const items=o._source==="online"?orderItems(o):o.items||[];return `<tr><td><b>${o._source==="online"?"🌐 Online":"🏪 Offline"}</b><br>${esc(o._code)}</td><td>${esc(o.customerName||o.name||"—")}</td><td>${esc(items.map(x=>x.name).join(", ").slice(0,100))}</td><td>${money(o.total)}</td><td>${esc(o._status)}</td><td>${o._source==="online"?`<button class="btn primary" onclick="viewOrder('${o.id}')">View / Manage</button>`:`<button class="btn" onclick="viewOfflineSale('${o.id}')">View Details</button>`}</td></tr>`}).join("")||'<tr><td colspan="6">কোনো বিক্রয় পাওয়া যায়নি।</td></tr>';
+ $("salesSummary").textContent=`${list.length}টি রেকর্ড • মোট ${money(list.reduce((sum,o)=>sum+Math.max(0,Number(o.total||0)-(o._source==="offline"?Number(o.returnedAmount||0):0)),0))} (নির্বাচিত ফিল্টার)`;
+ box.innerHTML=list.map(o=>{const items=o._source==="online"?orderItems(o):o.items||[];return `<tr><td><b>${o._source==="online"?"🌐 Online":"🏪 Offline"}</b><br>${esc(o._code)}</td><td>${esc(o.customerName||o.name||"—")}</td><td>${esc(items.map(x=>x.name).join(", ").slice(0,100))}</td><td>${money(o.total)}${o._source==="offline"&&Number(o.returnedAmount||0)>0?`<br><small>Returned: ${money(o.returnedAmount)} | Net: ${money(Math.max(0,Number(o.total||0)-Number(o.returnedAmount||0)))}</small>`:""}</td><td>${esc(o._status)}</td><td>${o._source==="online"?`<button class="btn primary" onclick="viewOrder('${o.id}')">View / Manage</button>`:`<button class="btn" onclick="viewOfflineSale('${o.id}')">View Details</button>`}</td></tr>`}).join("")||'<tr><td colspan="6">কোনো বিক্রয় পাওয়া যায়নি।</td></tr>';
 }
 window.viewOfflineSale=id=>{const o=offlineSales.find(x=>x.id===id);if(!o)return;const lines=(o.items||[]).map(x=>`${x.name} × ${x.qty}`).join("\n");alert(`Offline Sale: ${o.saleId||id}\nCustomer: ${o.customerName||"—"}\nMobile: ${o.customerMobile||"—"}\nProducts:\n${lines}\nTotal: ${money(o.total)}\nStatus: ${o.status||"Completed"}`)};
 
+// Phase 4: Offline POS return. Each operation uses a single Firestore transaction.
+let activeReturnSaleId=null;
+function saleReturnedQty(o,i){return Number(o.returnedQuantities?.[String(i)]||0)}
+function renderReturnSales(){const el=$("returnSaleRows");if(!el)return;const q=($("returnSearch")?.value||"").toLowerCase().trim();const list=offlineSales.filter(o=>o.status!=="Cancelled"&&[o.saleId,o.id,o.customerMobile,o.customerName].join(" ").toLowerCase().includes(q)).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));el.innerHTML=list.map(o=>`<tr><td>${esc(o.saleId||o.id)}</td><td>${esc(o.customerName||"—")}<br>${esc(o.customerMobile||"")}</td><td>${money(o.total)}<br><small>Refunded: ${money(o.returnedAmount||0)}</small></td><td><button class="btn" type="button" onclick="openPosReturn('${o.id}')">Process Return</button></td></tr>`).join("")||'<tr><td colspan="4">কোনো বিক্রয় পাওয়া যায়নি।</td></tr>'}
+$("returnSearch").oninput=renderReturnSales;
+window.openPosReturn=id=>{const o=offlineSales.find(x=>x.id===id);if(!o)return;activeReturnSaleId=id;$("returnEditor").style.display="block";$("returnSaleTitle").textContent="Return: "+(o.saleId||o.id);$("returnLineRows").innerHTML=(o.items||[]).map((x,i)=>{const left=Math.max(0,Number(x.qty||0)-saleReturnedQty(o,i));return `<div class="mx-settings-row"><span><b>${esc(x.name||"Product")}</b> ${esc([x.size,x.color].filter(Boolean).join(" / "))}<br><small>Sold ${Number(x.qty||0)} · Already returned ${saleReturnedQty(o,i)} · Remaining ${left} · Unit ${money(x.price||0)}</small></span><input type="number" class="return-qty" data-line="${i}" min="0" max="${left}" step="1" value="0" style="width:90px" ${left===0?"disabled":""}></div>`}).join("");$("returnRefund").value="0";$("returnReason").value="";$("returnInfo").textContent=`Already refunded: ${money(o.returnedAmount||0)}. Previously paid: ${money(o.paid||0)}.`;};
+$("submitPosReturn").onclick=async()=>{const o=offlineSales.find(x=>x.id===activeReturnSaleId);if(!o)return alert("Sale নির্বাচন করুন");const selected=[...document.querySelectorAll(".return-qty")].map(el=>({i:Number(el.dataset.line),qty:Number(el.value||0)})).filter(x=>x.qty>0);if(!selected.length)return alert("ফেরত পণ্যের সংখ্যা দিন");if(selected.some(x=>!Number.isInteger(x.qty)||x.qty<1))return alert("সঠিক পূর্ণসংখ্যা দিন");const refund=Number($("returnRefund").value);if(!Number.isFinite(refund)||refund<0)return alert("Refund amount সঠিক নয়");const reason=$("returnReason").value.trim(),method=$("returnMethod").value;if(!confirm(`Return ${selected.reduce((a,x)=>a+x.qty,0)} item(s) এবং Refund ${money(refund)} নিশ্চিত করবেন?`))return;const btn=$("submitPosReturn");btn.disabled=true;try{const saleRef=doc(db,"sales",o.id),returnRef=doc(collection(db,"posReturns"));await runTransaction(db,async tx=>{const ss=await tx.get(saleRef);if(!ss.exists())throw new Error("Sale পাওয়া যায়নি");const live=ss.data(),lines=live.items||[],prior=live.returnedQuantities||{},priorAmount=Number(live.returnedAmount||0),paid=Number(live.paid||0);const refs=new Map();for(const x of selected){const line=lines[x.i];if(!line||!line.productId)throw new Error("Product ID missing");if(!refs.has(line.productId))refs.set(line.productId,doc(db,"products",line.productId))}const snaps=new Map();for(const [id,ref] of refs){const ps=await tx.get(ref);if(!ps.exists())throw new Error("Product পাওয়া যায়নি: "+id);snaps.set(id,ps.data())}let maxRefund=0;const nextQty={...prior},changes=new Map();for(const x of selected){const line=lines[x.i],old=Number(prior[String(x.i)]||0),sold=Number(line.qty||0);if(!Number.isInteger(x.qty)||x.qty<1||old+x.qty>sold)throw new Error("Return quantity limit exceeded: "+line.name);nextQty[String(x.i)]=old+x.qty;maxRefund+=x.qty*Number(line.price||0);let variants=changes.get(line.productId);if(!variants){variants=productVariants(snaps.get(line.productId)).map(v=>({...v}));changes.set(line.productId,variants)}const idx=variants.findIndex(v=>(v.sku||"")===(line.variantSku||"")&&(v.size||"")===(line.size||"")&&(v.color||"")===(line.color||""));if(idx<0)throw new Error("Product variant পাওয়া যায়নি: "+line.name);variants[idx].stock=Number(variants[idx].stock||0)+x.qty}if(refund>maxRefund+0.001)throw new Error("Refund returned item value-এর বেশি");if(priorAmount+refund>paid+0.001)throw new Error("Refund previously paid amount-এর বেশি");const allReturned=lines.every((l,i)=>Number(nextQty[String(i)]||0)>=Number(l.qty||0));for(const [id,variants] of changes)tx.update(refs.get(id),{variants,stock:variants.reduce((a,v)=>a+Number(v.stock||0),0),updatedAt:serverTimestamp()});tx.update(saleRef,{returnedQuantities:nextQty,returnedAmount:Number((priorAmount+refund).toFixed(2)),status:allReturned?"Returned":"Partially Returned",lastReturnAt:serverTimestamp(),updatedAt:serverTimestamp()});tx.set(returnRef,{saleDocId:o.id,saleId:live.saleId||o.id,customerId:live.customerId||"",items:selected.map(x=>({lineIndex:x.i,...lines[x.i],returnQty:x.qty})),refundAmount:refund,refundMethod:method,reason,createdAt:serverTimestamp()})});alert("Return saved. Stock updated.");$("returnEditor").style.display="none";activeReturnSaleId=null}catch(e){console.error("POS Return",e);alert("Return failed: "+(e.message||e.code))}finally{btn.disabled=false}};
 $("orderSearch").oninput=renderOrders;$("orderStatusFilter").onchange=renderOrders;
 $("orderSourceFilter").onchange=()=>{if($("orderSourceFilter").value==="offline"){goAdminPanel("sales");$("salesSource").value="offline";renderSalesReport()}else renderOrders()};
 $("salesSource").onchange=renderSalesReport;$("salesStatus").onchange=renderSalesReport;
@@ -679,6 +698,46 @@ function calcPos(){
  return{sub,dis,del,grand,paid,due};
 }
 ["posDiscount","posDelivery","posPaid"].forEach(id=>$(id).oninput=calcPos);
+
+
+/* Phase 3: read-only customer directory based on existing Firebase data. */
+function mxPhone(v){return String(v||"").replace(/\D/g,"").replace(/^880(?=1[3-9])/,"0")}
+function mxCustomerKey(o){const mobile=mxPhone(o.mobile||o.phone||o.customerMobile||o.customerPhone);return mobile?"p:"+mobile:(o.customerId?"id:"+o.customerId:(o.userId?"u:"+o.userId:"unknown:"+o.id))}
+function mxCustomerIndex(){
+ const records=new Map();
+ function add(o,kind){
+  const key=mxCustomerKey(o);let c=records.get(key);
+  if(!c){c={key,name:"",mobile:"",customerId:"",division:"",district:"",upazila:"",area:"",address:"",online:[],offline:[],docs:[]};records.set(key,c)}
+  const name=o.customerName||o.name||"",mobile=o.customerMobile||o.phone||o.mobile||"";
+  c.name=c.name||name;c.mobile=c.mobile||mobile;c.customerId=c.customerId||o.customerId||"";
+  for(const field of ["division","district","upazila","area"]){c[field]=c[field]||o[field]||""}
+  c.address=c.address||o.customerAddress||o.fullAddress||o.address||"";
+  if(kind==="online")c.online.push(o);else if(kind==="offline")c.offline.push(o);else c.docs.push(o);
+ }
+ mxCustomerDocs.forEach(o=>add(o,"record"));orders.forEach(o=>add(o,"online"));offlineSales.forEach(o=>add(o,"offline"));
+ return [...records.values()].sort((a,b)=>(b.online.length+b.offline.length)-(a.online.length+a.offline.length));
+}
+function renderMxCustomers(){
+ const host=$("mxCustomerRows");if(!host)return;
+ const query=($("mxCustomerSearch")?.value||"").trim().toLowerCase(),source=$("mxCustomerSource")?.value||"all";
+ const list=mxCustomerIndex().filter(c=>{
+  if(source==="online"&&!c.online.length)return false;if(source==="offline"&&!c.offline.length)return false;
+  const text=[c.name,c.mobile,c.customerId,...c.online.map(o=>[o.id,orderCode(o)].join(" ")),...c.offline.map(s=>[s.id,s.saleId].join(" "))].join(" ").toLowerCase();
+  return !query||text.includes(query);
+ });
+ $("mxCustomerCount").textContent=`${list.length}টি Customer Record / Group পাওয়া গেছে`;
+ host.innerHTML=list.length?list.map((c,i)=>`<tr><td><b>${esc(c.name||"নাম নেই")}</b><br><small>${esc(c.customerId||"ID নেই")}</small></td><td>${esc(c.mobile||"—")}</td><td>${esc([c.area,c.upazila,c.district,c.division].filter(Boolean).join(", ")||c.address||"—")}</td><td>${c.online.length}</td><td>${c.offline.length}</td><td><button class="btn" data-mx-customer="${i}">View History</button></td></tr>`).join(""):'<tr><td colspan="6">কোনো Customer পাওয়া যায়নি।</td></tr>';
+ host.querySelectorAll("[data-mx-customer]").forEach(b=>b.onclick=()=>showMxCustomer(list[Number(b.dataset.mxCustomer)]));
+}
+function showMxCustomer(c){
+ if(!c)return;const box=$("mxCustomerDetails");box.style.display="block";
+ const online=c.online.map(o=>`<tr><td>${esc(orderCode(o))}</td><td>${money(o.total)}</td><td>${esc(o.status||"Pending")}</td><td><button class="btn" data-mx-order="${esc(o.id)}">Open Order</button></td></tr>`).join("");
+ const offline=c.offline.map(s=>`<tr><td>${esc(s.saleId||s.id)}</td><td>${money(s.total)}</td><td>${esc(s.paymentStatus||"—")}</td><td>Offline POS</td></tr>`).join("");
+ box.innerHTML=`<h3>${esc(c.name||"Customer")} — ${esc(c.customerId||"No Customer ID")}</h3><p><b>Mobile:</b> ${esc(c.mobile||"—")}<br><b>Address:</b> ${esc([c.address,c.area,c.upazila,c.district,c.division].filter(Boolean).join(", ")||"—")}</p><div class="tablewrap"><table><thead><tr><th>Order / Memo ID</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>${online+offline||'<tr><td colspan="4">No orders</td></tr>'}</tbody></table></div>`;
+ box.querySelectorAll("[data-mx-order]").forEach(b=>b.onclick=()=>window.viewOrder(b.dataset.mxOrder));box.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+$("mxCustomerSearch").addEventListener("input",renderMxCustomers);
+$("mxCustomerSource").addEventListener("change",renderMxCustomers);
 
 function nextCustomerId(){return "MXC-"+Date.now().toString().slice(-8)}
 function nextSaleId(){const d=new Date(),ds=d.toISOString().slice(0,10).replaceAll("-","");return "MXS-"+ds+"-"+Date.now().toString().slice(-6)}
