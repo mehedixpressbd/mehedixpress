@@ -1907,6 +1907,15 @@ $("#checkoutForm")
         );
 
 
+      // Always construct a full address before creating the Firestore order.
+      // Previously `fullAddress` was referenced without a declaration,
+      // causing ReferenceError when customers confirmed an order.
+      const fullAddress = [
+        form.address, form.area, form.upazila, form.district, form.division
+      ].map(value => String(value || "").trim()).filter(Boolean)
+        .filter((value, index, values) => values.indexOf(value) === index)
+        .join(", ");
+
       const orderData = {
         userId: user.uid,
         customerEmail: user.email || "",
@@ -2603,13 +2612,13 @@ async function legacy_fillCheckoutProfile() {
 
 
     const division =
-      $("#checkoutDivision");
+      $("#division");
 
     const district =
-      $("#checkoutDistrict");
+      $("#district");
 
     const upazila =
-      $("#checkoutUpazila");
+      $("#upazila");
 
 
     if (
@@ -2940,10 +2949,10 @@ const cumillaUpazilas = [
 
 function fillDistricts(divisionName) {
   const district =
-    $("#checkoutDistrict");
+    $("#district");
 
   const upazila =
-    $("#checkoutUpazila");
+    $("#upazila");
 
   if (!district) return;
 
@@ -2981,7 +2990,7 @@ function fillDistricts(divisionName) {
 
 function fillUpazilas(districtName) {
   const upazila =
-    $("#checkoutUpazila");
+    $("#upazila");
 
   if (!upazila) return;
 
@@ -3012,13 +3021,13 @@ function fillUpazilas(districtName) {
 
 function legacy_initAddressSelectors(force = false) {
   const division =
-    $("#checkoutDivision");
+    $("#division");
 
   const district =
-    $("#checkoutDistrict");
+    $("#district");
 
   const upazila =
-    $("#checkoutUpazila");
+    $("#upazila");
 
 
   if (
@@ -3405,7 +3414,7 @@ function mxSetOptions(select, list, placeholder, selected="") {
 }
 
 async function initAddressSelectors(force = false) {
-  const division = $("#checkoutDivision"), district = $("#checkoutDistrict"), upazila = $("#checkoutUpazila");
+  const division = $("#division"), district = $("#district"), upazila = $("#upazila");
   if (!division || !district || !upazila) return;
   if (division.dataset.mxReady && !force) return;
   const data = await mxLoadLocations();
@@ -3437,7 +3446,7 @@ async function fillCheckoutProfile() {
     if ($("#checkoutArea")) $("#checkoutArea").value = p.area || "";
     if ($("#checkoutAddress")) $("#checkoutAddress").value = p.address || "";
     const data = await mxLoadLocations();
-    const d1=$("#checkoutDivision"), d2=$("#checkoutDistrict"), d3=$("#checkoutUpazila");
+    const d1=$("#division"), d2=$("#district"), d3=$("#upazila");
     const div=mxFindByValue(data,p.division); if(div&&d1){d1.value=mxBn(div); mxSetOptions(d2,div.districts||[],uiText("জেলা নির্বাচন করুন","Select District"));}
     const dist=mxFindByValue(div?.districts||[],p.district); if(dist&&d2){d2.value=mxBn(dist); mxSetOptions(d3,dist.upazilas||[],uiText("উপজেলা / থানা নির্বাচন করুন","Select Upazila / Thana"));}
     const up=mxFindByValue(dist?.upazilas||[],p.upazila); if(up&&d3)d3.value=mxBn(up);
@@ -3609,11 +3618,11 @@ function mxCheckoutAddressPreview() {
     address.after(preview);
   }
   const update = () => {
-    const vals = ["checkoutAddress","checkoutArea","checkoutUpazila","checkoutDistrict","checkoutDivision"]
+    const vals = ["checkoutAddress","checkoutArea","upazila","district","division"]
       .map(id => document.getElementById(id)?.value?.trim()).filter(Boolean);
     document.querySelector("#mxAddressPreview").textContent = "অর্ডারে সম্পূর্ণ ঠিকানা: " + (vals.join(", ") || "ঠিকানা নির্বাচন করুন");
   };
-  ["checkoutAddress","checkoutArea","checkoutUpazila","checkoutDistrict","checkoutDivision"].forEach(id => {
+  ["checkoutAddress","checkoutArea","upazila","district","division"].forEach(id => {
     const el = document.getElementById(id);
     if (el && !el.dataset.mxPreviewBound) {
       el.addEventListener("input", update);
@@ -3625,3 +3634,29 @@ function mxCheckoutAddressPreview() {
 }
 mxInstallCheckoutNote();
 mxCheckoutAddressPreview();
+
+// Display the exact missing field when the browser prevents submit.
+(function mxCheckoutSubmitDiagnostics(){
+  const form = document.getElementById("checkoutForm");
+  if (!form) return;
+  form.addEventListener("invalid", event => {
+    const field = event.target;
+    if (!field || !field.name) return;
+    const names = {name:"নাম",phone:"মোবাইল",division:"বিভাগ",district:"জেলা",upazila:"উপজেলা",area:"গ্রাম / এলাকা",address:"সম্পূর্ণ ঠিকানা",transactionId:"Transaction ID"};
+    const label = names[field.name] || field.name;
+    let msg = document.getElementById("mxCheckoutError");
+    if (!msg) {
+      msg = document.createElement("p");
+      msg.id = "mxCheckoutError";
+      msg.setAttribute("role", "alert");
+      msg.style.cssText = "color:#b91c1c;background:#fff1f2;border-radius:8px;padding:10px;font-weight:700";
+      form.querySelector('[type="submit"]')?.before(msg);
+    }
+    msg.textContent = label + " সঠিকভাবে পূরণ করুন।";
+  }, true);
+  form.addEventListener("input", () => {
+    const msg = document.getElementById("mxCheckoutError");
+    if (msg) msg.textContent = "";
+  });
+})();
+
