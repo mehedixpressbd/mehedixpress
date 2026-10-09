@@ -459,7 +459,7 @@ window.saveOrderSettlement=async(id)=>{
 };
 window.changeOrderStatus=async(id,newStatus)=>{
  const o=orders.find(x=>x.id===id);if(!o)return;
- const old=o.status||"Pending";if(old===newStatus)return;
+ const old=o.status||"Pending";if(old===newStatus){alert("এই অর্ডার ইতিমধ্যে " + newStatus + " অবস্থায় আছে।");return;}
  if(newStatus==="Completed"){
   if(o.paymentVerified!==true||Number(o.verifiedAmount||0)+0.001<Number(o.total||0)){alert("Completed করার আগে সম্পূর্ণ টাকা Received ও Verified করে Save করুন।");return}
   if(!o.trackingId?.trim()){alert("Completed করার আগে Courier Tracking ID Save করুন।");return}
@@ -479,9 +479,11 @@ window.changeOrderStatus=async(id,newStatus)=>{
     if((newStatus==="Cancelled"||newStatus==="Returned")&&deducted&&!restored){await changeStockForOrder(tx,live,1);patch.stockRestored=true;patch.stockRestoredAt=serverTimestamp()}
     tx.update(ref,patch);
   });
-  await addDoc(collection(db,"stockMovements"),{orderId:id,orderCode:orderCode(o),reason:"Online Order: "+old+" → "+newStatus,createdAt:serverTimestamp()});
+  // Stock movement log is optional: do not report a committed order as failed if log permissions are missing.
+  try { await addDoc(collection(db,"stockMovements"),{orderId:id,orderCode:orderCode(o),reason:"Online Order: "+old+" → "+newStatus,createdAt:serverTimestamp()}); } catch(logError) { console.warn("Optional stock movement log failed:", logError); }
   selectedOrder={...o,status:newStatus};renderOrderDetail(selectedOrder);
- }catch(e){alert("Status change হয়নি: "+(e.message||e.code))}
+  alert("অর্ডারের Status সফলভাবে " + newStatus + " করা হয়েছে।");
+ }catch(e){console.error("Order status transaction failed:",e);alert("Status change হয়নি: "+(e.message||e.code||"Unknown error")+"\n\nProducts-এর Stock, Firebase permissions এবং Console পরীক্ষা করুন।") }
 };
 function renderOnlineInvoice(o){
  const its=orderItems(o),sub=Number(o.subtotal??its.reduce((a,x)=>a+x.lineTotal,0)),dis=Number(o.discount||0),del=Number(o.deliveryCharge||o.delivery||0),total=Number(o.total||Math.max(0,sub-dis+del));
