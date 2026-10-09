@@ -607,16 +607,31 @@ $("completeSale").onclick=async()=>{
    const saleId=nextSaleId(),lines=posCart.map(x=>({...x,lineTotal:Number((x.qty*x.price).toFixed(2)),costTotal:Number((x.qty*x.cost).toFixed(2))}));
    const saleRef=doc(collection(db,"sales"));
    await runTransaction(db,async tx=>{
+     // Firestore requires every read to finish before the first write.
+     const productRefs=new Map();
      for(const line of lines){
-       const pref=doc(db,"products",line.productId),ps=await tx.get(pref);if(!ps.exists())throw new Error("Product পাওয়া যায়নি: "+line.name);
-       const pd=ps.data(),vs=productVariants(pd),idx=vs.findIndex(v=>(v.sku||"")===(line.variantSku||"")&&(v.size||"")===(line.size||"")&&(v.color||"")===(line.color||""));
+       if(!productRefs.has(line.productId))productRefs.set(line.productId,doc(db,"products",line.productId));
+     }
+     const snapshots=new Map();
+     for(const [id,pref] of productRefs){
+       const snap=await tx.get(pref);
+       if(!snap.exists())throw new Error("Product পাওয়া যায়নি: "+id);
+       snapshots.set(id,snap.data());
+     }
+     const changes=new Map();
+     for(const line of lines){
+       const pd=snapshots.get(line.productId);
+       let vs=changes.get(line.productId);
+       if(!vs){vs=productVariants(pd).map(v=>({...v}));changes.set(line.productId,vs)}
+       const idx=vs.findIndex(v=>(v.sku||"")===(line.variantSku||"")&&(v.size||"")===(line.size||"")&&(v.color||"")===(line.color||""));
        if(idx<0)throw new Error("Variant পাওয়া যায়নি: "+line.name);
        if(Number(vs[idx].stock||0)<line.qty)throw new Error("Stock কম: "+line.name);
-       vs[idx]={...vs[idx],stock:Number(vs[idx].stock||0)-line.qty};
-       const newStock=vs.reduce((a,v)=>a+Number(v.stock||0),0);
-       tx.update(pref,{variants:vs,stock:newStock,updatedAt:serverTimestamp()});
+       vs[idx].stock=Number(vs[idx].stock||0)-line.qty;
      }
-     tx.set(saleRef,{saleId,type:"offline",customerDocId,customerId,customerName:name,customerMobile:mobile,customerWhatsApp:customerData.whatsapp,division,district,upazila,area,customerAddress:customerData.address,items:lines,subtotal:t.sub,discount:t.dis,deliveryCharge:t.del,total:t.grand,paid:t.paid,due:t.due,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due",status:"Completed",totalCost:lines.reduce((a,x)=>a+x.costTotal,0),grossProfit:Number((t.sub-t.dis-lines.reduce((a,x)=>a+x.costTotal,0)).toFixed(2)),createdAt:serverTimestamp()});
+     for(const [id,vs] of changes){
+       tx.update(productRefs.get(id),{variants:vs,stock:vs.reduce((sum,v)=>sum+Number(v.stock||0),0),updatedAt:serverTimestamp()});
+     }
+     tx.set(saleRef,{saleId,type:"offline",customerDocId,customerId,customerName:name,customerMobile:mobile,customerWhatsApp:customerData.whatsapp,division,district,upazila,area,customerAddress:customerData.address,items:lines,subtotal:t.sub,discount:t.dis,deliveryCharge:t.del,total:t.grand,paid:t.paid,due:t.due,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due",status:"Completed",totalCost:lines.reduce((sum,x)=>sum+x.costTotal,0),grossProfit:Number((t.sub-t.dis-lines.reduce((sum,x)=>sum+x.costTotal,0)).toFixed(2)),createdAt:serverTimestamp()});
    });
    for(const line of lines){try{await addDoc(collection(db,"stockMovements"),{productId:line.productId,productName:line.name,change:-line.qty,reason:"Offline POS Sale",linkedSaleId:saleId,createdAt:serverTimestamp()})}catch(e){}}
    lastMemo={saleId,date:new Date(),customerId,name,mobile,whatsapp:customerData.whatsapp,division,district,upazila,area,address:customerData.address,items:lines,...t,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due"};
