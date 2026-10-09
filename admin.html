@@ -151,7 +151,7 @@ body.admin-authenticated #login{display:none!important}
     <div class="field"><label>Customer ID</label><input id="posCustomerId" placeholder="Auto if blank"></div>
     <div class="field"><label>বিভাগ *</label><select id="posDivision" required><option value="">বিভাগ নির্বাচন করুন</option></select></div>
     <div class="field"><label>জেলা *</label><select id="posDistrict" required><option value="">জেলা নির্বাচন করুন</option></select></div>
-    <div class="field"><label>উপজেলা / থানা *</label><select id="posUpazila" required><option value="">উপজেলা / থানা নির্বাচন করুন</option></select></div>
+    <div class="field"><label>উপজেলা / থানা *</label><select id="posUpazila" required><option value="">উপজেলা / থানা নির্বাচন করুন</option></select><input id="posUpazilaManual" type="text" hidden placeholder="আপনার উপজেলা / থানার নাম লিখুন" style="margin-top:7px"></div>
     <div class="field"><label>এলাকা / গ্রাম *</label><input id="posArea" required placeholder="এলাকা / গ্রামের নাম"></div>
     <div class="field full"><label>বাড়ি / রোড / সম্পূর্ণ ঠিকানা</label><textarea id="posCustomerAddress" placeholder="বাড়ি, রোড, বাজার বা প্রয়োজনীয় বিস্তারিত ঠিকানা"></textarea></div>
    </div>
@@ -519,11 +519,19 @@ const bdAddressPOS={
 };
 const cumillaUpazilasPOS=["মুরাদনগর","বরুড়া","কুমিল্লা আদর্শ সদর","কুমিল্লা সদর দক্ষিণ","চান্দিনা","দাউদকান্দি","দেবিদ্বার","হোমনা","লাকসাম","মনোহরগঞ্জ","মেঘনা","নাঙ্গলকোট","তিতাস","বুড়িচং","ব্রাহ্মণপাড়া","চৌদ্দগ্রাম","লালমাই"];
 function initPosAddress(){
- const d=$("posDivision"),dist=$("posDistrict"),upa=$("posUpazila");if(!d||!dist||!upa)return;
- d.innerHTML='<option value="">বিভাগ নির্বাচন করুন</option>'+Object.keys(bdAddressPOS).map(x=>`<option value="${x}">${x}</option>`).join("");
- dist.innerHTML='<option value="">জেলা নির্বাচন করুন</option>';upa.innerHTML='<option value="">উপজেলা / থানা নির্বাচন করুন</option>';
- d.onchange=()=>{dist.innerHTML='<option value="">জেলা নির্বাচন করুন</option>'+(bdAddressPOS[d.value]||[]).map(x=>`<option value="${x}">${x}</option>`).join("");upa.innerHTML='<option value="">উপজেলা / থানা নির্বাচন করুন</option>';};
- dist.onchange=()=>{const list=dist.value==="কুমিল্লা"?cumillaUpazilasPOS:["অন্যান্য / আমার এলাকা"];upa.innerHTML='<option value="">উপজেলা / থানা নির্বাচন করুন</option>'+list.map(x=>`<option value="${x}">${x}</option>`).join(""); if(dist.value){$("posDelivery").value=dist.value==="কুমিল্লা"?80:150;calcPos()}};
+ const division=$("posDivision"),district=$("posDistrict"),upazila=$("posUpazila"),manual=$("posUpazilaManual");
+ if(!division||!district||!upazila)return;
+ const fill=(element,placeholder,items)=>element.replaceChildren(new Option(placeholder,""),...items.map(name=>new Option(name,name)));
+ fill(division,"বিভাগ নির্বাচন করুন",Object.keys(bdAddressPOS));
+ const districtChanged=()=>{
+   const list=district.value==="কুমিল্লা"?cumillaUpazilasPOS:[];
+   fill(upazila,"উপজেলা / থানা নির্বাচন করুন",list);
+   if(manual){const useManual=!!district.value&&!list.length;manual.hidden=!useManual;manual.required=useManual;manual.value="";upazila.hidden=useManual;upazila.required=!useManual;}
+   if(district.value){$("posDelivery").value=district.value==="কুমিল্লা"?80:150;calcPos()}
+ };
+ division.onchange=()=>{fill(district,"জেলা নির্বাচন করুন",bdAddressPOS[division.value]||[]);districtChanged()};
+ district.onchange=districtChanged;
+ division.onchange();
 }
 function validBdMobile(v){return /^01[3-9][0-9]{8}$/.test(String(v||"").trim())}
 function digitsOnlyInput(el){el?.addEventListener("input",()=>{el.value=el.value.replace(/\D/g,"").slice(0,11);el.classList.toggle("field-error",el.value.length>0&&!validBdMobile(el.value))})}
@@ -582,7 +590,7 @@ async function findCustomerByMobile(mobile){
 $("completeSale").onclick=async()=>{
  if(!posCart.length){alert("Cart-এ Product যোগ করুন।");return}
  const name=$("posCustomerName").value.trim(),mobile=$("posCustomerMobile").value.trim(),wa=$("posCustomerWhatsApp").value.trim();
- const division=$("posDivision").value,district=$("posDistrict").value,upazila=$("posUpazila").value,area=$("posArea").value.trim();
+ const division=$("posDivision").value,district=$("posDistrict").value,upazila=($("posUpazilaManual")?.hidden===false?$("posUpazilaManual").value.trim():$("posUpazila").value),area=$("posArea").value.trim();
  if(!name){alert("Customer Name দিন।");return}
  if(!validBdMobile(mobile)){alert("সঠিক ১১ সংখ্যার বাংলাদেশি Mobile Number দিন। যেমন: 01XXXXXXXXX");$("posCustomerMobile").focus();return}
  if(wa&&!validBdMobile(wa)){alert("WhatsApp Number দিলে সঠিক ১১ সংখ্যার বাংলাদেশি নম্বর দিন।");$("posCustomerWhatsApp").focus();return}
