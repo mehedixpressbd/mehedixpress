@@ -1916,7 +1916,9 @@ $("#checkoutForm")
         district: form.district || "",
         upazila: form.upazila || "",
         area: form.area || "",
-        address: form.address || "",
+        address: fullAddress,
+         addressDetails: form.address || "",
+         customerNote: String(form.customerNote || "").trim(),
         payment: paymentMethod,
         paymentMethod,
         trx: transactionId,
@@ -3576,3 +3578,50 @@ async function mxLoadManagedHomepage(){
  }catch(err){console.warn("Homepage managed images unavailable; defaults retained",err)}
 }
 mxLoadManagedHomepage();
+
+function mxInstallCheckoutNote() {
+  const form = document.querySelector("#checkoutForm");
+  if (!form || form.querySelector('[name="customerNote"]')) return;
+  const block = document.createElement("div");
+  block.style.margin = "14px 0";
+  const label = document.createElement("label");
+  label.textContent = "কাস্টমারের বিশেষ নির্দেশনা / Customer Note (ঐচ্ছিক)";
+  label.setAttribute("for", "mxCustomerNote");
+  const input = document.createElement("textarea");
+  input.id = "mxCustomerNote";
+  input.name = "customerNote";
+  input.className = "field";
+  input.rows = 3;
+  input.maxLength = 500;
+  input.placeholder = "জরুরি ডেলিভারি, উপহার, প্রিন্টিং নির্দেশনা ইত্যাদি";
+  block.append(label, input);
+  const submit = form.querySelector('[type="submit"]');
+  if (submit) submit.before(block); else form.append(block);
+}
+function mxCheckoutAddressPreview() {
+  const form = document.querySelector("#checkoutForm");
+  const address = document.querySelector("#checkoutAddress");
+  if (!form || !address) return;
+  if (!document.querySelector("#mxAddressPreview")) {
+    const preview = document.createElement("div");
+    preview.id = "mxAddressPreview";
+    preview.style.cssText = "margin:8px 0 14px;padding:12px;border-radius:12px;background:#eff6ff;color:#183b63;font-size:13px;line-height:1.6";
+    address.after(preview);
+  }
+  const update = () => {
+    const vals = ["checkoutAddress","checkoutArea","checkoutUpazila","checkoutDistrict","checkoutDivision"]
+      .map(id => document.getElementById(id)?.value?.trim()).filter(Boolean);
+    document.querySelector("#mxAddressPreview").textContent = "অর্ডারে সম্পূর্ণ ঠিকানা: " + (vals.join(", ") || "ঠিকানা নির্বাচন করুন");
+  };
+  ["checkoutAddress","checkoutArea","checkoutUpazila","checkoutDistrict","checkoutDivision"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.dataset.mxPreviewBound) {
+      el.addEventListener("input", update);
+      el.addEventListener("change", update);
+      el.dataset.mxPreviewBound = "1";
+    }
+  });
+  update();
+}
+mxInstallCheckoutNote();
+mxCheckoutAddressPreview();
