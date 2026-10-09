@@ -290,7 +290,7 @@ function stats(){
  $("sProducts").textContent=products.length;
  $("sOrders").textContent=orders.length+offlineSales.length;
  $("sPending").textContent=orders.filter(o=>(o.status||"Pending")==="Pending").length;
- const onlineCompleted=orders.filter(o=>["Delivered","Completed"].includes(o.status)).reduce((sum,o)=>sum+Number(o.total||0),0);
+ const onlineCompleted=orders.filter(o=>o.status==="Completed" && o.paymentVerified===true).reduce((sum,o)=>sum+Number(o.total||0),0);
  const offlineCompleted=offlineSales.filter(o=>o.status!=="Cancelled").reduce((sum,o)=>sum+Number(o.total||0),0);
  $("sSales").textContent=money(onlineCompleted+offlineCompleted);
  $("recent").innerHTML=[...orders].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,5).map(o=>`<tr><td><button class="btn" onclick="viewOrder('${o.id}')">${esc(orderCode(o))}</button></td><td>${esc(o.customerName||"—")}</td><td>${esc(orderItems(o).map(x=>x.name).join(", "))}</td><td>${money(o.total)}</td></tr>`).join("")||'<tr><td>কোনো Online Order নেই</td></tr>';
@@ -384,6 +384,15 @@ function renderOrderDetail(o){
  <div><b>Order ID:</b> ${esc(orderCode(o))}</div><div><b>Status:</b> ${esc(st)}</div>
  <div><b>Customer:</b> ${esc(o.customerName||"—")}</div><div><b>Mobile:</b> ${esc(orderPhone(o)||"—")}</div>
  <div class="full"><b>Address:</b> ${esc(orderAddress(o)||"—")}</div><div><b>Payment:</b> ${esc(orderPayment(o))}</div><div><b>Total:</b> ${money(total)}</div>
+ </div><div class="head"><h3>Courier & Payment Verification</h3></div>
+ <div class="formgrid" style="padding:12px;background:#f6f9fe;border-radius:12px">
+ <div class="field"><label>Courier / Delivery Company</label><input id="orderCourier" value="${esc(o.courierName||'')}" placeholder="e.g. Steadfast"></div>
+ <div class="field"><label>Courier Tracking / Consignment ID</label><input id="orderTracking" value="${esc(o.trackingId||'')}" placeholder="Courier ID"></div>
+ <div class="field"><label>Payment Method</label><select id="orderPayMethod">${["Cash","bKash","Nagad","Bank","COD","Other"].map(x=>`<option value="${x}" ${x===(o.verifiedPaymentMethod||"COD")?"selected":""}>${x}</option>`).join("")}</select></div>
+ <div class="field"><label>Payment Transaction ID / Reference</label><input id="orderTxn" value="${esc(o.paymentTransactionId||'')}" placeholder="Transaction / settlement reference"></div>
+ <div class="field"><label>Verified Amount Received (৳)</label><input type="number" id="orderReceived" min="0" step="0.01" value="${Number(o.verifiedAmount||0)}"></div>
+ <div class="field"><label>Payment Check</label><select id="orderPaymentVerified"><option value="no" ${o.paymentVerified!==true?"selected":""}>Not Verified</option><option value="yes" ${o.paymentVerified===true?"selected":""}>Verified by Admin</option></select></div>
+ <div class="full"><button class="btn primary" onclick="saveOrderSettlement('${o.id}')">Save Delivery & Payment Details</button><p class="hint">Only mark Verified after checking your actual payment account / courier settlement. No automatic gateway verification is connected.</p></div>
  </div><div class="head"><h3>Change Status</h3></div><div class="actions">
  ${["Pending","Confirmed","Processing","Shipped","Delivered","Completed","Cancelled","Returned"].map(x=>`<button class="btn ${x===st?"primary":""}" onclick="changeOrderStatus('${o.id}','${x}')">${x}</button>`).join("")}
  </div><p class="hint">Confirmed করলে stock একবার deduct হবে। Cancelled/Returned করলে আগে deduct হওয়া stock একবার restore হবে।</p>`;
@@ -410,15 +419,35 @@ async function changeStockForOrder(tx,o,direction){
  }
  for(const [id,vs] of changes)tx.update(refs.get(id),{variants:vs,stock:vs.reduce((sum,v)=>sum+Number(v.stock||0),0),updatedAt:serverTimestamp()});
 }
+window.saveOrderSettlement=async(id)=>{
+ const o=orders.find(x=>x.id===id);if(!o)return;
+ const courierName=$("orderCourier").value.trim(),trackingId=$("orderTracking").value.trim(),verifiedPaymentMethod=$("orderPayMethod").value,paymentTransactionId=$("orderTxn").value.trim();
+ const verifiedAmount=Number($("orderReceived").value),paymentVerified=$("orderPaymentVerified").value==="yes";
+ if(!Number.isFinite(verifiedAmount)||verifiedAmount<0){alert("সঠিক Payment Amount দিন।");return}
+ if(paymentVerified&&verifiedAmount+0.001<Number(o.total||0)){alert("সম্পূর্ণ পেমেন্ট পাওয়া যায়নি। Verified করা যাবে না।");return}
+ if(paymentVerified&&!confirm("ব্যাংক/বিকাশ/নগদ/কুরিয়ার থেকে টাকা বাস্তবে পেয়েছেন ও যাচাই করেছেন?"))return;
+ try{
+  await updateDoc(doc(db,"orders",id),{courierName,trackingId,verifiedPaymentMethod,paymentTransactionId,verifiedAmount,paymentVerified,paymentVerifiedAt:paymentVerified?serverTimestamp():null,updatedAt:serverTimestamp()});
+  selectedOrder={...o,courierName,trackingId,verifiedPaymentMethod,paymentTransactionId,verifiedAmount,paymentVerified};renderOrderDetail(selectedOrder);alert("Delivery / Payment details saved.");
+ }catch(e){alert("Save failed: "+(e.message||e.code))}
+};
 window.changeOrderStatus=async(id,newStatus)=>{
  const o=orders.find(x=>x.id===id);if(!o)return;
  const old=o.status||"Pending";if(old===newStatus)return;
+ if(newStatus==="Completed"){
+  if(o.paymentVerified!==true||Number(o.verifiedAmount||0)+0.001<Number(o.total||0)){alert("Completed করার আগে সম্পূর্ণ টাকা Received ও Verified করে Save করুন।");return}
+  if(!o.trackingId?.trim()){alert("Completed করার আগে Courier Tracking ID Save করুন।");return}
+  if(old!=="Delivered"){alert("আগে Delivered status দিন, তারপর Completed করুন।");return}
+ }
+ if(old==="Completed" && ["Cancelled","Returned"].includes(newStatus)){alert("Completed order ফেরত এলে আলাদা refund/return ledger প্রয়োজন। আপাতত সরাসরি status বদলানো বন্ধ রাখা হয়েছে।");return}
  if(!confirm(`${orderCode(o)}: ${old} → ${newStatus} করবেন?`))return;
  try{
   const ref=doc(db,"orders",id);
   await runTransaction(db,async tx=>{
     const snap=await tx.get(ref);if(!snap.exists())throw new Error("Order পাওয়া যায়নি।");
     const live={id:snap.id,...snap.data()},deducted=live.stockDeducted===true,restored=live.stockRestored===true;
+    if(newStatus==="Completed" && (live.status!=="Delivered"||live.paymentVerified!==true||Number(live.verifiedAmount||0)+0.001<Number(live.total||0)||!live.trackingId?.trim()))throw new Error("Delivery/Payment verification incomplete");
+    if(live.status==="Completed" && ["Cancelled","Returned"].includes(newStatus))throw new Error("Completed sale requires separate return/refund workflow");
     let patch={status:newStatus,updatedAt:serverTimestamp()};
     if(newStatus==="Confirmed"&&!deducted){await changeStockForOrder(tx,live,-1);patch.stockDeducted=true;patch.stockRestored=false;patch.stockDeductedAt=serverTimestamp()}
     if((newStatus==="Cancelled"||newStatus==="Returned")&&deducted&&!restored){await changeStockForOrder(tx,live,1);patch.stockRestored=true;patch.stockRestoredAt=serverTimestamp()}
@@ -431,7 +460,7 @@ window.changeOrderStatus=async(id,newStatus)=>{
 function renderOnlineInvoice(o){
  const its=orderItems(o),sub=Number(o.subtotal??its.reduce((a,x)=>a+x.lineTotal,0)),dis=Number(o.discount||0),del=Number(o.deliveryCharge||o.delivery||0),total=Number(o.total||Math.max(0,sub-dis+del));
  const rows=its.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b><br><small>${esc([x.size,x.color,x.variantSku].filter(Boolean).join(" / "))}</small></td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.lineTotal)}</td></tr>`).join("");
- $("orderInvoicePrint").innerHTML=`<div class="memo-head"><img class="memo-logo" src="assets/images/logo.png"><div class="memo-brand"><h1>MEHEDI XPRESS</h1><p><b>Sports • Fashion • Custom Print</b></p><p>খেলাধুলার সামগ্রী, ফ্যাশন ও কাস্টম প্রিন্টিং সেবা</p><p>দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা</p><p>Contact / WhatsApp: +8801612961523</p></div><div class="memo-meta"><b>ONLINE INVOICE</b><br>Order ID: ${esc(orderCode(o))}<br>Status: ${esc(o.status||"Pending")}<br>Payment: ${esc(orderPayment(o))}</div></div>
+ $("orderInvoicePrint").innerHTML=`<div class="memo-head"><img class="memo-logo" src="assets/images/logo.png"><div class="memo-brand"><h1>MEHEDI XPRESS</h1><p><b>Sports • Fashion • Custom Print</b></p><p>খেলাধুলার সামগ্রী, ফ্যাশন ও কাস্টম প্রিন্টিং সেবা</p><p>দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা</p><p>Contact / WhatsApp: +8801612961523</p></div><div class="memo-meta"><b>ONLINE INVOICE</b><br>Order ID: ${esc(orderCode(o))}<br>Status: ${esc(o.status||"Pending")}<br>Payment: ${esc(orderPayment(o))}<br>Courier: ${esc(o.courierName||"—")}<br>Tracking: ${esc(o.trackingId||"—")}<br>Verified Received: ${money(o.verifiedAmount||0)}</div></div>
  <div class="memo-customer"><div><b>Customer:</b> ${esc(o.customerName||"—")}</div><div><b>Mobile:</b> ${esc(orderPhone(o)||"—")}</div><div style="grid-column:1/-1"><b>Address:</b> ${esc(orderAddress(o)||"—")}</div></div>
  <table><thead><tr><th>#</th><th>Product / Variant</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>
  <div class="memo-summary"><div class="totalrow"><span>Subtotal</span><b>${money(sub)}</b></div><div class="totalrow"><span>Discount</span><b>- ${money(dis)}</b></div><div class="totalrow"><span>Delivery</span><b>+ ${money(del)}</b></div><div class="totalrow grand"><span>Grand Total</span><span>${money(total)}</span></div></div>
