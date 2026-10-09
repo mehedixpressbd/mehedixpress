@@ -93,7 +93,7 @@ body.admin-authenticated #login{display:none!important}
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
@@ -225,6 +225,42 @@ body.admin-authenticated #login{display:none!important}
 <div class="head"><h3>📒 Ledger Transactions</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Source</th><th>Account</th><th>Details</th><th>In</th><th>Out</th><th>Action</th></tr></thead><tbody id="mxLedgerRows"><tr><td colspan="7">Loading...</td></tr></tbody></table></div>
 <div id="mxLedgerPrint" style="display:none"></div>
 </section>
+
+<section id="purchases" class="panel">
+ <div class="head"><h3>🚚 Phase 7 — Purchase Management & Supplier Ledger</h3></div>
+ <div class="notice">Purchase save করলে নির্বাচিত Product Variant-এর stock বাড়বে এবং Supplier-এর বকেয়া হিসাব হবে। Supplier payment আলাদাভাবে লিখুন। Phase 6 Cash/Wallet Ledger-এ এই লেনদেন স্বয়ংক্রিয়ভাবে যোগ হয় না; প্রয়োজন হলে সেখানে একবার Money Out লিখুন। Product Cost Price স্বয়ংক্রিয়ভাবে পরিবর্তন হয় না।</div>
+ <div class="card"><h3>➕ New Stock Purchase</h3><form id="mxPurchaseForm" class="formgrid">
+ <div class="field"><label>Purchase Date *</label><input id="mxPurchaseDate" type="date" required></div>
+ <div class="field"><label>Supplier Name *</label><input id="mxPurchaseSupplier" required maxlength="100" placeholder="Supplier / wholesaler name"></div>
+ <div class="field"><label>Supplier Mobile</label><input id="mxPurchasePhone" maxlength="20" placeholder="01XXXXXXXXX"></div>
+ <div class="field"><label>Invoice / Reference</label><input id="mxPurchaseInvoice" maxlength="100" placeholder="Supplier invoice number"></div>
+ <div class="field"><label>Product *</label><select id="mxPurchaseProduct" required><option value="">Select Product</option></select></div>
+ <div class="field"><label>Size / Color Variant *</label><select id="mxPurchaseVariant" required><option value="">Select Variant</option></select></div>
+ <div class="field"><label>Quantity *</label><input id="mxPurchaseQty" type="number" min="1" step="1" required></div>
+ <div class="field"><label>Unit Purchase Cost (৳) *</label><input id="mxPurchaseUnitCost" type="number" min="0" step="0.01" required></div>
+ <div class="field"><label>Paid Now (৳)</label><input id="mxPurchasePaid" type="number" min="0" step="0.01" value="0"></div>
+ <div class="field"><label>Payment Method</label><select id="mxPurchasePaymentMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div>
+ <div class="field full"><label>Notes</label><input id="mxPurchaseNote" maxlength="300"></div>
+ <div class="full"><b id="mxPurchasePreview">Total ৳0 · Paid ৳0 · Due ৳0</b></div>
+ <div class="full"><button class="btn primary" id="mxPurchaseSave" type="submit">Save Purchase & Add Stock</button></div>
+ </form></div>
+ <div class="head"><h3>💰 Supplier Payment (Existing Due)</h3></div>
+ <div class="card"><form id="mxSupplierPayForm" class="formgrid">
+ <div class="field"><label>Payment Date *</label><input id="mxSupplierPayDate" type="date" required></div>
+ <div class="field"><label>Supplier *</label><select id="mxSupplierPaySupplier" required><option value="">Select Supplier</option></select></div>
+ <div class="field"><label>Amount (৳) *</label><input id="mxSupplierPayAmount" type="number" min="0.01" step="0.01" required></div>
+ <div class="field"><label>Method</label><select id="mxSupplierPayMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div>
+ <div class="field full"><label>Reference / Note</label><input id="mxSupplierPayNote" maxlength="250"></div>
+ <div class="full"><button class="btn primary" id="mxSupplierPaySave" type="submit">Record Supplier Payment</button></div>
+ </form></div>
+ <div class="head"><h3>📒 Supplier Balances</h3><button class="btn" type="button" id="mxSupplierCSV">⬇ Supplier CSV</button></div>
+ <div class="mx-report-stats"><div class="stat"><b id="mxPurchaseTotal">৳0</b>Total Purchases</div><div class="stat"><b id="mxPurchasePaidTotal">৳0</b>Total Paid</div><div class="stat"><b id="mxPurchaseDueTotal">৳0</b>Supplier Outstanding</div><div class="stat"><b id="mxPurchaseCount">0</b>Purchase Entries</div></div>
+ <div class="tablewrap"><table><thead><tr><th>Supplier</th><th>Mobile</th><th>Purchases</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mxSupplierRows"><tr><td colspan="5">Loading...</td></tr></tbody></table></div>
+ <div class="head"><h3>📦 Purchase History</h3><button class="btn" type="button" id="mxPurchaseCSV">⬇ Purchase CSV</button></div>
+ <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Invoice</th><th>Product / Variant</th><th>Qty</th><th>Cost</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mxPurchaseRows"><tr><td colspan="9">Loading...</td></tr></tbody></table></div>
+ <div class="head"><h3>💸 Supplier Payment History</h3></div>
+ <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Method</th><th>Amount</th><th>Reference</th></tr></thead><tbody id="mxSupplierPaymentRows"><tr><td colspan="5">Loading...</td></tr></tbody></table></div>
+ </section>
 <section id="settings" class="panel">
 <div class="head"><h3>Website Settings & Security</h3></div>
 <div class="card">
@@ -766,4 +802,67 @@ $("mxLedgerForm").onsubmit=async e=>{e.preventDefault();if(mxLedgerError){alert(
 $("mxLedgerCSV").onclick=()=>{const t=mxLedgerTotals();mxDownloadCSV("mehedi-xpress-ledger.csv",[["Date","Source","Account","Details","Money In","Money Out"],...t.rows.map(x=>[x.date,x.source,x.account,x.note,x.in,x.out]),["","Opening","","",t.opening,""],["","Closing","","",t.closing,""]])};
 $("mxLedgerPrintBtn").onclick=()=>{const t=mxLedgerTotals();$("mxLedgerPrint").innerHTML=`<h2>MEHEDI XPRESS — Cash & Wallet Ledger</h2><p>${esc($("mxLedgerFrom").value)} to ${esc($("mxLedgerTo").value)} | ${esc($("mxLedgerAccount").value)}</p><p>Opening: ${money(t.opening)} | In: ${money(t.incoming)} | Out: ${money(t.outgoing)} | Closing: ${money(t.closing)}</p><table><thead><tr><th>Date</th><th>Source</th><th>Account</th><th>Details</th><th>In</th><th>Out</th></tr></thead><tbody>${t.rows.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.source)}</td><td>${esc(x.account)}</td><td>${esc(x.note)}</td><td>${money(x.in)}</td><td>${money(x.out)}</td></tr>`).join("")}</tbody></table><p>Recorded balances only. Verify with physical cash and wallet statements.</p>`;$("mxLedgerPrint").style.display="block";document.body.classList.add("mx-print-ledger");const style=document.getElementById("dynamicPrintPage")||document.createElement("style");style.id="dynamicPrintPage";style.textContent="@page { size: A4 portrait; margin: 8mm; }";document.head.appendChild(style);setTimeout(()=>window.print(),100)};
 window.addEventListener("afterprint",()=>{document.body.classList.remove("mx-print-ledger");$("mxLedgerPrint").style.display="none"});
+
+// Phase 7 — additive purchasing and supplier ledger. Purchase writes are transactional.
+let mxPurchases=[],mxSupplierPayments=[],mxSuppliers=[],mxP7Started=false;
+const mxP7SupplierKey=name=>encodeURIComponent(String(name||"").trim().toLocaleLowerCase());
+const mxP7Money=x=>Math.round((Number(x)||0)*100)/100;
+function mxP7Options(){
+ const productSel=$("mxPurchaseProduct"),previous=productSel.value;
+ productSel.innerHTML='<option value="">Select Product</option>'+products.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} (${esc(p.code||"")})</option>`).join("");
+ if(products.some(p=>p.id===previous))productSel.value=previous;
+ mxP7Variants();
+ const supplierSel=$("mxSupplierPaySupplier"),old=supplierSel.value;
+ supplierSel.innerHTML='<option value="">Select Supplier</option>'+mxSuppliers.map(s=>`<option value="${esc(s.id)}">${esc(s.name)}</option>`).join("");
+ if(mxSuppliers.some(s=>s.id===old))supplierSel.value=old;
+}
+function mxP7Variants(){const p=products.find(x=>x.id===$("mxPurchaseProduct").value),sel=$("mxPurchaseVariant"),old=sel.value;
+ const variants=p?productVariants(p):[];
+ sel.innerHTML='<option value="">Select Variant</option>'+variants.map((v,i)=>`<option value="${i}">${esc([v.size,v.color,v.sku].filter(Boolean).join(" / ")||"Default")} — ${Number(v.stock||0)} in stock</option>`).join("");
+ if(old!==""&&Number(old)<variants.length)sel.value=old;
+ if(p)$("mxPurchaseUnitCost").value=Number(p.costPrice||0);
+}
+function mxP7Preview(){const total=mxP7Money(Number($("mxPurchaseQty").value||0)*Number($("mxPurchaseUnitCost").value||0)),paid=mxP7Money($("mxPurchasePaid").value);$("mxPurchasePreview").textContent=`Total ${money(total)} · Paid ${money(paid)} · Due ${money(Math.max(0,total-paid))}`}
+function mxP7SupplierTotals(){const map=new Map();for(const s of mxSuppliers)map.set(s.id,{...s,total:0,paid:0});
+ for(const p of mxPurchases){const x=map.get(p.supplierId)||{id:p.supplierId,name:p.supplierName||"Unknown",mobile:p.supplierPhone||"",total:0,paid:0};x.total+=mxP7Money(p.total);x.paid+=mxP7Money(p.paid);map.set(x.id,x)}
+ for(const p of mxSupplierPayments){const x=map.get(p.supplierId)||{id:p.supplierId,name:p.supplierName||"Unknown",mobile:"",total:0,paid:0};x.paid+=mxP7Money(p.amount);map.set(x.id,x)}return [...map.values()].map(x=>({...x,due:mxP7Money(x.total-x.paid)})).sort((a,b)=>b.due-a.due)}
+function mxP7Render(){mxP7Options();const totals=mxP7SupplierTotals();
+ $("mxPurchaseTotal").textContent=money(mxPurchases.reduce((n,p)=>n+mxP7Money(p.total),0));
+ $("mxPurchasePaidTotal").textContent=money(totals.reduce((n,x)=>n+x.paid,0));
+ $("mxPurchaseDueTotal").textContent=money(totals.reduce((n,x)=>n+x.due,0));
+ $("mxPurchaseCount").textContent=mxPurchases.length;
+ $("mxSupplierRows").innerHTML=totals.length?totals.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.mobile||"")}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(x.due)}</td></tr>`).join(""):'<tr><td colspan="5">No suppliers yet.</td></tr>';
+ $("mxPurchaseRows").innerHTML=[...mxPurchases].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.supplierName)}</td><td>${esc(x.invoice||"—")}</td><td>${esc(x.productName)}<br><small>${esc(x.variantLabel||"")}</small></td><td>${Number(x.qty||0)}</td><td>${money(x.unitCost)}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(mxP7Money(x.total-x.paid))}</td></tr>`).join("")||'<tr><td colspan="9">No purchases yet.</td></tr>';
+ $("mxSupplierPaymentRows").innerHTML=[...mxSupplierPayments].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.supplierName)}</td><td>${esc(x.method)}</td><td>${money(x.amount)}</td><td>${esc(x.note||"")}</td></tr>`).join("")||'<tr><td colspan="5">No payments yet.</td></tr>';
+}
+function mxP7Start(){if(mxP7Started)return;mxP7Started=true;
+ for(const [name,key] of [["purchases","mxPurchases"],["supplierPayments","mxSupplierPayments"],["suppliers","mxSuppliers"]]){
+ onSnapshot(collection(db,name),snap=>{const list=snap.docs.map(d=>({id:d.id,...d.data()}));if(key==="mxPurchases")mxPurchases=list;else if(key==="mxSupplierPayments")mxSupplierPayments=list;else mxSuppliers=list;mxP7Render()},err=>{console.error("Phase 7 read",name,err);alert("Phase 7 "+name+" read permission failed. Firebase Rules check করুন।")});
+ }mxP7Render();}
+const mxP7OldStart=start;start=function(){mxP7OldStart();mxP7Start()};
+const mxP7OldRenderProducts=renderProducts;renderProducts=function(){mxP7OldRenderProducts();mxP7Options()};
+$("mxPurchaseProduct").onchange=mxP7Variants;
+["mxPurchaseQty","mxPurchaseUnitCost","mxPurchasePaid"].forEach(id=>$(id).addEventListener("input",mxP7Preview));
+$("mxPurchaseDate").value=$("mxSupplierPayDate").value=mxDateLocal(new Date());
+$("mxPurchaseForm").onsubmit=async e=>{e.preventDefault();const btn=$("mxPurchaseSave"),productId=$("mxPurchaseProduct").value,variantIndex=Number($("mxPurchaseVariant").value),supplierName=$("mxPurchaseSupplier").value.trim(),qty=Number($("mxPurchaseQty").value),unitCost=mxP7Money($("mxPurchaseUnitCost").value),paid=mxP7Money($("mxPurchasePaid").value),total=mxP7Money(qty*unitCost),date=$("mxPurchaseDate").value;
+ if(!productId||$("mxPurchaseVariant").value===""||!supplierName||!date||!Number.isSafeInteger(qty)||qty<=0||unitCost<0||total<=0||paid<0||paid>total){alert("Product, variant, quantity, price, paid amount সঠিকভাবে দিন।");return}
+ const supplierId=mxP7SupplierKey(supplierName),purchaseRef=doc(collection(db,"purchases")),pRef=doc(db,"products",productId),sRef=doc(db,"suppliers",supplierId);
+ if(!confirm(`${supplierName} থেকে ${qty} pcs কিনবেন? Total ${money(total)}, Paid ${money(paid)}, Due ${money(total-paid)}. Stock বাড়বে।`))return;
+ btn.disabled=true;try{await runTransaction(db,async tx=>{
+ const ps=await tx.get(pRef),ss=await tx.get(sRef);if(!ps.exists())throw new Error("Product missing");const p=ps.data(),vs=productVariants(p).map(v=>({...v}));if(!vs[variantIndex])throw new Error("Variant missing");
+ const selected=vs[variantIndex],variantLabel=[selected.size,selected.color,selected.sku].filter(Boolean).join(" / ")||"Default";
+ selected.stock=Number(selected.stock||0)+qty;
+ tx.update(pRef,{variants:vs,stock:vs.reduce((n,v)=>n+Number(v.stock||0),0),updatedAt:serverTimestamp()});
+ tx.set(sRef,{name:ss.exists()?(ss.data().name||supplierName):supplierName,mobile:$("mxPurchasePhone").value.trim()||(ss.exists()?ss.data().mobile||"":""),updatedAt:serverTimestamp()},{merge:true});
+ tx.set(purchaseRef,{date,supplierId,supplierName, supplierPhone:$("mxPurchasePhone").value.trim(),invoice:$("mxPurchaseInvoice").value.trim(),productId,productName:p.name||"",variantIndex,variantLabel,qty,unitCost,total,paid,due:mxP7Money(total-paid),paymentMethod:$("mxPurchasePaymentMethod").value,note:$("mxPurchaseNote").value.trim(),createdBy:auth.currentUser?.uid||"",createdAt:serverTimestamp()});
+ });
+ try{await addDoc(collection(db,"stockMovements"),{productId,change:qty,reason:"Supplier Purchase",purchaseId:purchaseRef.id,createdAt:serverTimestamp()})}catch(err){console.warn("Stock movement audit failed",err)}
+ $("mxPurchaseForm").reset();$("mxPurchaseDate").value=mxDateLocal(new Date());mxP7Preview();alert("Purchase saved and stock updated.");
+ }catch(err){console.error(err);alert("Purchase failed: "+(err.message||err.code))}finally{btn.disabled=false}};
+$("mxSupplierPayForm").onsubmit=async e=>{e.preventDefault();const supplierId=$("mxSupplierPaySupplier").value,supplier=mxSuppliers.find(s=>s.id===supplierId),amount=mxP7Money($("mxSupplierPayAmount").value),balance=mxP7SupplierTotals().find(s=>s.id===supplierId)?.due||0,date=$("mxSupplierPayDate").value;
+ if(!supplier||!date||amount<=0||amount>balance){alert(`Supplier এবং সঠিক payment দিন। Current due: ${money(balance)}`);return}
+ if(!confirm(`${supplier.name} কে ${money(amount)} payment record করবেন?`))return;
+ const btn=$("mxSupplierPaySave");btn.disabled=true;try{await addDoc(collection(db,"supplierPayments"),{date,supplierId,supplierName:supplier.name,amount,method:$("mxSupplierPayMethod").value,note:$("mxSupplierPayNote").value.trim(),createdBy:auth.currentUser?.uid||"",createdAt:serverTimestamp()});$("mxSupplierPayForm").reset();$("mxSupplierPayDate").value=mxDateLocal(new Date());alert("Supplier payment saved.")}catch(err){alert("Payment failed: "+(err.message||err.code))}finally{btn.disabled=false}};
+$("mxPurchaseCSV").onclick=()=>mxDownloadCSV("mehedi-xpress-purchases.csv",[["Date","Supplier","Invoice","Product","Variant","Qty","Unit Cost","Total","Paid","Due"],...mxPurchases.map(x=>[x.date,x.supplierName,x.invoice,x.productName,x.variantLabel,x.qty,x.unitCost,x.total,x.paid,mxP7Money(x.total-x.paid)])]);
+$("mxSupplierCSV").onclick=()=>mxDownloadCSV("mehedi-xpress-suppliers.csv",[["Supplier","Mobile","Purchases","Paid","Due"],...mxP7SupplierTotals().map(x=>[x.name,x.mobile,x.total,x.paid,x.due])]);
 </script></body></html>
