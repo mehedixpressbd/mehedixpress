@@ -93,7 +93,7 @@ body.admin-authenticated #login{display:none!important}
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 Phase 12 Rewards</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
@@ -314,6 +314,17 @@ body.admin-authenticated #login{display:none!important}
 <section id="mxCRM" class="panel"><div class="head"><h3>🤝 Customer CRM</h3><button class="btn" id="mx10CustomerCSV">Export CSV</button></div><div class="notice">Existing POS customers are shown here. CRM notes and tags are saved in the same customers collection. Mobile numbers are private customer data: admin-only access required.</div><div class="card"><div class="formgrid"><div class="field"><label>Search customer / phone</label><input id="mx10Search" placeholder="Name / mobile / customer ID"></div><div class="field"><label>Customer</label><select id="mx10Customer"><option value="">Select customer</option></select></div><div class="field"><label>Customer Tag</label><select id="mx10Tag"><option>Regular</option><option>VIP</option><option>Wholesale</option><option>New</option><option>Inactive</option></select></div><div class="field full"><label>Internal Notes</label><textarea id="mx10Notes" maxlength="1500" placeholder="Only admin can view"></textarea></div><div class="full"><button class="btn primary" id="mx10SaveCRM">Save Customer Notes</button><p id="mx10CRMMsg" class="hint"></p></div></div></div><div class="head"><h3>Customer Directory</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Mobile</th><th>Location</th><th>Tag</th><th>Points</th><th>POS Sales</th></tr></thead><tbody id="mx10CustomerRows"></tbody></table></div></section>
 <section id="mxLoyalty" class="panel"><div class="head"><h3>🎁 Loyalty Points</h3><button class="btn" id="mx10PointsCSV">Export CSV</button></div><div class="notice">Manual points adjustment only. No automatic purchase rewards, discounts or redemption at checkout. A negative adjustment cannot make the balance negative.</div><div class="card"><form id="mx10PointsForm" class="formgrid"><div class="field"><label>Customer</label><select id="mx10PointsCustomer" required></select></div><div class="field"><label>Adjustment (+ earn / - redeem)</label><input id="mx10PointsAmount" type="number" step="1" required placeholder="e.g. 10 or -5"></div><div class="field full"><label>Reason</label><input id="mx10PointsReason" maxlength="240" required placeholder="Manual bonus / redeemed reward"></div><div class="full"><button class="btn primary" id="mx10PointsSave">Record Points Adjustment</button></div></form></div><div class="head"><h3>Points History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Customer</th><th>Change</th><th>Reason</th></tr></thead><tbody id="mx10PointsRows"></tbody></table></div></section>
 <section id="mxDues" class="panel"><div class="head"><h3>💳 Customer Due & Collection</h3><button class="btn" id="mx10DueCSV">Export CSV</button></div><div class="notice">Only POS sales in the existing sales collection are included. Collections update that sale's paid/due amounts atomically. They do NOT create Cash/bKash Ledger entries automatically. Avoid entering the same receipt twice.</div><div class="stats" style="margin-bottom:14px"><div class="stat"><b id="mx10DueTotal">৳0</b>Outstanding POS Due</div><div class="stat"><b id="mx10DueCount">0</b>Unpaid POS Sales</div><div class="stat"><b id="mx10Collected">৳0</b>Recorded Collections</div></div><div class="card"><form id="mx10CollectForm" class="formgrid"><div class="field"><label>Outstanding POS Sale</label><select id="mx10DueSale" required></select></div><div class="field"><label>Collection Amount (৳)</label><input id="mx10CollectAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Method</label><select id="mx10CollectMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field"><label>Reference / Note</label><input id="mx10CollectNote" maxlength="240"></div><div class="full"><button class="btn primary" id="mx10CollectSave">Record Due Collection</button></div></form></div><div class="head"><h3>Outstanding Sales</h3></div><div class="tablewrap"><table><thead><tr><th>Sale</th><th>Customer</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mx10DueRows"></tbody></table></div><div class="head"><h3>Collection History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Sale</th><th>Customer</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead><tbody id="mx10CollectionRows"></tbody></table></div></section>
+
+<section id="mx12Redemption" class="panel"><div class="head"><h3>🎟 Phase 12 — Coupon & Loyalty Redemption</h3><button class="btn" id="mx12Export">Export CSV</button></div>
+<div class="notice">Admin-only redemption against existing, unpaid OFFLINE POS sales. Coupon and points reduce the remaining due and sale total, not cash received. Website checkout integration requires a trusted server endpoint to prevent coupon/points fraud. This page does not enable public checkout redemption.</div>
+<div class="card"><form id="mx12Form" class="formgrid">
+<div class="field"><label>Unpaid POS sale</label><select id="mx12Sale" required></select></div>
+<div class="field"><label>Redemption type</label><select id="mx12Type"><option value="coupon">Coupon</option><option value="points">Loyalty points</option></select></div>
+<div class="field" id="mx12CouponField"><label>Coupon code</label><input id="mx12Coupon" maxlength="32" placeholder="MXWELCOME10"></div>
+<div class="field" id="mx12PointsField" hidden><label>Points to redeem (1 point = ৳1)</label><input id="mx12Points" type="number" min="1" step="1" value="1"></div>
+<div class="field full"><button type="button" class="btn" id="mx12Preview">Preview discount</button> <button class="btn primary" id="mx12Apply">Apply redemption</button></div>
+</form><p id="mx12Message" class="hint">Preview before applying. Requires admin permissions on sales, customers, coupons, loyaltyEvents, and redemptions.</p></div>
+<div class="head"><h3>Redemption History</h3></div><div class="tablewrap"><table><thead><tr><th>Time</th><th>Sale</th><th>Customer</th><th>Type</th><th>Discount</th><th>Reference</th></tr></thead><tbody id="mx12Rows"></tbody></table></div></section>
 </main></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -1020,5 +1031,73 @@ $('mx11Award').onclick=async()=>{mx11Preview();const ready=mx11PreviewRows.filte
 $('mx11CouponCSV').onclick=()=>mxDownloadCSV('mx-coupons.csv',[['Code','Type','Value','Max Discount','Min Order','Limit','Redeemed','Start','End','Status'],...mx11Coupons.map(c=>[c.code,c.type,c.value,c.maxDiscount,c.minOrder,c.limit,c.redeemedCount,c.startDate,c.endDate,c.status])]);
 $('mx11CampaignCSV').onclick=()=>mxDownloadCSV('mx-campaigns.csv',[['Name','Channel','Start','End','Message','Status'],...mx11Campaigns.map(c=>[c.name,c.channel,c.startDate,c.endDate,c.message,c.status])]);
 $('mx11RewardCSV').onclick=()=>mxDownloadCSV('mx-pos-rewards.csv',[['Sale ID','Customer','Points','Awarded At'],...mx10Sales.filter(s=>s.loyaltyAwardedAt).map(s=>[s.saleId||s.id,s.customerName||'',s.loyaltyAwardPoints||0,s.loyaltyAwardedAt?.toDate?s.loyaltyAwardedAt.toDate().toISOString():''])]);
+
+
+// Phase 12: admin-authorized atomic redemptions on existing unpaid POS sales.
+let mx12Redemptions=[],mx12Started=false;
+const mx12DateNow=()=>new Date().toLocaleDateString('en-CA');
+const mx12Round=n=>Math.round((Number(n)+Number.EPSILON)*100)/100;
+function mx12EligibleSales(){return mx10Sales.filter(s=>s.type==='offline'&&s.status==='Completed'&&Number(s.due)>0&&s.customerDocId)}
+function mx12Refresh(){
+ const selected=$('mx12Sale').value;
+ const eligible=mx12EligibleSales();
+ $('mx12Sale').innerHTML='<option value="">Select sale</option>'+eligible.map(s=>`<option value="${esc(s.id)}">${esc(s.saleId||s.id)} — ${esc(s.customerName||'')} — Due ${money(s.due)}</option>`).join('');
+ if(eligible.some(s=>s.id===selected))$('mx12Sale').value=selected;
+ $('mx12Rows').innerHTML=[...mx12Redemptions].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,300).map(r=>`<tr><td>${esc(r.createdAt?.toDate?.().toLocaleString('en-BD')||'')}</td><td>${esc(r.saleId||r.saleDocId)}</td><td>${esc(r.customerName)}</td><td>${esc(r.type)}</td><td>${money(r.discount)}</td><td>${esc(r.reference||'')}</td></tr>`).join('')||'<tr><td colspan="6">No redemptions</td></tr>';
+}
+function mx12PreviewDiscount(s,coupon,customer){
+ const due=Number(s.due),subtotal=Number(s.subtotal||0),today=mx12DateNow();
+ if(!Number.isFinite(due)||due<=0)throw Error('No outstanding due');
+ if($('mx12Type').value==='points'){
+  const points=Number($('mx12Points').value),balance=Number(customer.loyaltyPoints||0);
+  if(!Number.isSafeInteger(points)||points<1||points>balance)throw Error('Insufficient loyalty points');
+  if(points>due)throw Error('Points exceed remaining due');
+  return{discount:points,reference:`${points} points`,points};
+ }
+ if(!coupon)throw Error('Coupon not found');
+ if(coupon.status!=='active'||today<coupon.startDate||today>coupon.endDate)throw Error('Coupon inactive or expired');
+ if(Number(coupon.redeemedCount||0)>=Number(coupon.limit||0))throw Error('Coupon usage limit reached');
+ if(subtotal<Number(coupon.minOrder||0))throw Error('Minimum order amount not met');
+ if(s.couponCode||s.mx12CouponApplied)throw Error('This sale already has a coupon');
+ const base=Math.max(0,subtotal),raw=coupon.type==='percent'?base*Number(coupon.value)/100:Number(coupon.value);
+ const discount=mx12Round(Math.min(due,raw,coupon.type==='percent'&&Number(coupon.maxDiscount)>0?Number(coupon.maxDiscount):Infinity));
+ if(!Number.isFinite(discount)||discount<=0)throw Error('Invalid discount');
+ return{discount,reference:coupon.code};
+}
+function mx12Selected(){const s=mx10Sales.find(x=>x.id===$('mx12Sale').value);if(!s)throw Error('Select an unpaid POS sale');const customer=mx10Customers.find(c=>c.id===s.customerDocId);if(!customer)throw Error('Customer missing');const code=$('mx12Coupon').value.trim().toUpperCase();const coupon=mx11Coupons.find(c=>c.code===code);return{s,customer,coupon,code}}
+$('mx12Type').onchange=()=>{$('mx12CouponField').hidden=$('mx12Type').value!=='coupon';$('mx12PointsField').hidden=$('mx12Type').value!=='points'};
+$('mx12Preview').onclick=()=>{try{const {s,customer,coupon}=mx12Selected(),result=mx12PreviewDiscount(s,coupon,customer);$('mx12Message').textContent=`Preview: ${money(result.discount)} discount; due ${money(s.due)} → ${money(mx12Round(Number(s.due)-result.discount))}. No changes saved.`}catch(e){$('mx12Message').textContent=e.message}};
+$('mx12Apply').onclick=async()=>{
+ let selected,preview;try{selected=mx12Selected();preview=mx12PreviewDiscount(selected.s,selected.coupon,selected.customer)}catch(e){alert(e.message);return}
+ if(!confirm(`${selected.s.saleId||selected.s.id}: ${money(preview.discount)} discount apply করবেন? This will update the sale total/due.`))return;
+ const btn=$('mx12Apply');btn.disabled=true;
+ try{
+  const sref=doc(db,'sales',selected.s.id),cref=doc(db,'customers',selected.customer.id),isCoupon=$('mx12Type').value==='coupon';
+  const code=selected.code,points=Number($('mx12Points').value),couponRef=isCoupon?doc(db,'coupons',code):null;
+  const redRef=doc(collection(db,'redemptions'));
+  await runTransaction(db,async tx=>{
+   const refs=[sref,cref,...(couponRef?[couponRef]:[])];const snaps=await Promise.all(refs.map(ref=>tx.get(ref)));
+   const ss=snaps[0],cs=snaps[1],cp=snaps[2];if(!ss.exists()||!cs.exists())throw Error('Sale/customer no longer exists');
+   const s=ss.data(),c=cs.data();if(s.type!=='offline'||s.status!=='Completed'||s.customerDocId!==selected.customer.id)throw Error('Sale changed');
+   const type=isCoupon?'coupon':'points';
+   const previousType=$('mx12Type').value;
+   if(previousType!==type)throw Error('Type changed; retry');
+   const coupon=cp?.exists()?cp.data():null;
+   const result=mx12PreviewDiscount(s,coupon,c);
+   if(isCoupon&&(!cp||!cp.exists()))throw Error('Coupon no longer exists');
+   const total=Number(s.total),due=Number(s.due),paid=Number(s.paid||0);
+   if(!Number.isFinite(total)||!Number.isFinite(due)||total<result.discount||due<result.discount||paid>total-result.discount)throw Error('Invalid sale balance');
+   const patch={total:mx12Round(total-result.discount),due:mx12Round(due-result.discount),discount:mx12Round(Number(s.discount||0)+result.discount),updatedAt:serverTimestamp()};
+   patch.paymentStatus=patch.due===0?'Paid':paid>0?'Partial':'Due';
+   if(isCoupon){patch.couponCode=code;patch.mx12CouponApplied=true;tx.update(couponRef,{redeemedCount:Number(coupon.redeemedCount||0)+1,updatedAt:serverTimestamp()})}
+   else {const balance=Number(c.loyaltyPoints||0);if(!Number.isSafeInteger(balance)||balance<points||points!==result.points)throw Error('Points changed');tx.update(cref,{loyaltyPoints:balance-points,loyaltyUpdatedAt:serverTimestamp()});const ev=doc(collection(db,'loyaltyEvents'));tx.set(ev,{customerId:selected.customer.id,customerName:c.name||'',saleId:selected.s.id,delta:-points,reason:'Phase 12 POS redemption',balanceAfter:balance-points,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||''})}
+   tx.update(sref,patch);tx.set(redRef,{saleDocId:selected.s.id,saleId:s.saleId||selected.s.id,customerId:selected.customer.id,customerName:c.name||'',type,discount:result.discount,reference:result.reference,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||''});
+  });
+  $('mx12Message').textContent=`Applied ${money(preview.discount)}. Refresh sale data to verify.`;
+ }catch(e){alert('Redemption failed: '+(e.message||e.code))}finally{btn.disabled=false}
+};
+$('mx12Export').onclick=()=>mxDownloadCSV('mx-redemptions.csv',[['Time','Sale','Customer','Type','Discount','Reference'],...mx12Redemptions.map(r=>[r.createdAt?.toDate?.().toISOString()||'',r.saleId||r.saleDocId,r.customerName||'',r.type,r.discount,r.reference||''])]);
+function mx12Start(){if(mx12Started)return;mx12Started=true;onSnapshot(collection(db,'redemptions'),s=>{mx12Redemptions=s.docs.map(d=>({id:d.id,...d.data()}));mx12Refresh()},e=>{$('mx12Message').textContent='Firestore redemptions: '+(e.code||e.message)});onSnapshot(collection(db,'sales'),()=>setTimeout(mx12Refresh,0));onSnapshot(collection(db,'customers'),()=>setTimeout(mx12Refresh,0))}
+const mx12OldStart=start;start=function(){mx12OldStart();mx12Start()};
 
 </script></body></html>
