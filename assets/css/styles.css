@@ -3207,3 +3207,7 @@ html[lang="bn"] .mx-all-products-head h2{
   .mx-custom-actions .btn{width:100% !important;}
   .mx-custom-print-card{max-width:100% !important;min-height:170px !important;}
 }
+
+/* Footer brand finishing touch */
+.mx-footer-brand img{width:82px!important;height:82px!important;max-height:82px!important;border-radius:50%!important;object-fit:contain!important;padding:6px;background:radial-gradient(circle at 35% 25%,#fff,#d5e7fb 55%,#85b1e0);box-shadow:inset -5px -6px 10px #092e6b33,inset 3px 3px 6px #fff,0 9px 18px #0004!important;border:2px solid #d8ebff}
+.mx-mobile-bottom-nav{display:none!important}
