@@ -3562,3 +3562,17 @@ function mxPaymentEnhance(){const method=$("#paymentMethod"),info=$("#mobilePaym
 
 // Run V2 enhancements after the original startup has created its UI state.
 document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{mxEnhanceCartOrderButton();mxPaymentEnhance();initAddressSelectors(true);},0);},{once:true});
+
+
+/* Admin-managed homepage media: keeps existing static visuals as fallback. */
+async function mxLoadManagedHomepage(){
+ try{
+  const [catSnap,siteSnap]=await Promise.all([getDocs(collection(db,"categories")),getDoc(doc(db,"siteSettings","homepage"))]);
+  const records=catSnap.docs.map(d=>d.data());
+  const cards=document.querySelectorAll(".mx-category-grid .mx-category-card");
+  cards.forEach(card=>{const title=card.querySelector(".mx-category-content b")?.textContent?.trim().toLowerCase();if(!title)return;const cls=card.className;const aliases={"mx-cat-football-jersey":["ফুটবল জার্সি"],"mx-cat-cricket-jersey":["ক্রিকেট জার্সি"],"mx-cat-kids-jersey":["কিডস জার্সি"],"mx-cat-tshirt":["টি-শার্ট ও পোলো"],"mx-cat-shorts":["শর্টস ও ট্রাউজার"],"mx-cat-football":["ফুটবল ও ক্রিকেট সামগ্রী"],"mx-cat-cricket":["ফুটবল ও ক্রিকেট সামগ্রী"],"mx-cat-badminton":["ব্যাডমিন্টন"],"mx-cat-custom-jersey":["কাস্টম প্রিন্ট"],"mx-cat-custom-print":["কাস্টম প্রিন্ট"]};const names=Object.entries(aliases).filter(([key])=>cls.split(" ").includes(key)).flatMap(([,names])=>names);const match=records.find(r=>[title,...names].some(n=>String(r.name||"").trim().toLowerCase()===n.toLowerCase()));if(match?.image){card.style.backgroundImage=`linear-gradient(180deg,transparent,#061a3577),url("${match.image}")`;card.style.backgroundSize="cover";card.style.backgroundPosition="center"}});
+  const banners=siteSnap.exists()?siteSnap.data().banners:[];
+  if(Array.isArray(banners))document.querySelectorAll("#bannerTrack .mx-banner-slide img.mx-hero-banner-image").forEach((img,n)=>{if(typeof banners[n]==="string"&&banners[n])img.src=banners[n]});
+ }catch(err){console.warn("Homepage managed images unavailable; defaults retained",err)}
+}
+mxLoadManagedHomepage();
