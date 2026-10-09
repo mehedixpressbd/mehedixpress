@@ -63,6 +63,9 @@ body.admin-authenticated #login{display:none!important}
 .field-error{border-color:#dc2626!important;outline:2px solid #dc262622!important}
 @media(max-width:700px){.address-grid{grid-template-columns:1fr}}
 
+
+/* Dashboard navigation / stock filters */
+.stat.mx-clickable{cursor:pointer;transition:transform .15s,box-shadow .15s;border:1px solid #cbdcf0;text-align:left;color:inherit;font:inherit}.stat.mx-clickable:hover,.stat.mx-clickable:focus-visible{transform:translateY(-2px);box-shadow:0 10px 25px #0b63ce20;outline:2px solid #0b63ce55}.stat.mx-clickable small{display:block;color:#64748b;font-size:12px;margin-top:6px}.mx-inline-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:10px 0}.mx-inline-tools select,.mx-inline-tools input{width:auto;min-width:160px}.mx-thumb{width:70px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #dce5f1}.mx-settings-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid #edf0f5}.mx-settings-row input[type=file]{max-width:290px}.mx-status-note{padding:10px;background:#eaf4ff;border-radius:10px;margin:12px 0}
 </style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
@@ -77,13 +80,13 @@ body.admin-authenticated #login{display:none!important}
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="sales">💰 Sales Report</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 Banners</button><button data-p="settings">⚙ Settings</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
-<section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
-<div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
-<div class="stat"><b id="sLowStock">0</b>Low Stock</div>
-<div class="stat"><b id="sOutStock">0</b>Out of Stock</div>
-<div class="stat"><b id="sStockValue">৳0</b>Stock Cost Value</div>
+<section id="dashboard" class="panel active"><div class="stats"><button type="button" class="stat mx-clickable" data-stat-route="products"><b id="sProducts">0</b>Products<small>পণ্যের তালিকা →</small></button><button type="button" class="stat mx-clickable" data-stat-route="orders"><b id="sOrders">0</b>Orders<small>অনলাইন অর্ডার →</small></button><button type="button" class="stat mx-clickable" data-stat-route="sales"><b id="sSales">৳0</b>Sales<small>অনলাইন ও অফলাইন বিক্রয় →</small></button><button type="button" class="stat mx-clickable" data-stat-route="pending"><b id="sPending">0</b>Pending<small>Pending তালিকা →</small></button></div><div class="stats" style="margin-top:14px">
+<button type="button" class="stat mx-clickable" data-stat-route="inventory"><b id="sTotalStock">0</b>Total Stock<small>স্টক তালিকা →</small></button>
+<button type="button" class="stat mx-clickable" data-stat-route="low"><b id="sLowStock">0</b>Low Stock<small>কম স্টক পণ্য →</small></button>
+<button type="button" class="stat mx-clickable" data-stat-route="out"><b id="sOutStock">0</b>Out of Stock<small>স্টক শেষ পণ্য →</small></button>
+<button type="button" class="stat mx-clickable" data-stat-route="inventory"><b id="sStockValue">৳0</b>Stock Cost Value<small>স্টকের ক্রয়মূল্য →</small></button>
 </div>
 <div class="head"><h3>⚠ Stock Alerts</h3></div><div id="stockAlerts" class="card"></div>
 <div class="head"><h3>Recent Orders</h3></div><div class="tablewrap"><table><tbody id="recent"></tbody></table></div></section>
@@ -117,17 +120,18 @@ body.admin-authenticated #login{display:none!important}
 <div class="full actions"><button class="btn primary">Save Product</button><button class="btn" type="button" id="cancelProduct">Cancel</button></div>
 </form></div>
 <div class="tablewrap"><table><thead><tr><th>Image</th><th>Product</th><th>Code</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="productRows"></tbody></table></div></section>
-<section id="categories" class="panel"><div class="head"><h3>Category Management</h3></div><div class="card"><form id="catForm" class="formgrid"><div class="field"><label>নতুন Category</label><input id="catName" required></div><div><br><button class="btn primary">Add Category</button></div></form><div id="catChips" style="margin-top:20px"></div></div></section>
+<section id="categories" class="panel"><div class="head"><h3>Category Management</h3></div><div class="card"><form id="catForm" class="formgrid"><div class="field"><label>নতুন Category</label><input id="catName" required></div><div class="field"><label>Category Photo (optional)</label><input id="catImage" type="file" accept="image/png,image/jpeg,image/webp"></div><div><br><button class="btn primary">Add Category</button></div></form><div id="catChips" style="margin-top:20px"></div><p class="hint">ছবি পরিবর্তন করতে Category-এর Edit Image ব্যবহার করুন।</p></div></section>
 <section id="inventory" class="panel"><div class="head"><h3>Inventory / Stock</h3></div>
-<div class="notice">প্রতিটি Product-এর Size/Color Variant stock থেকে মোট stock হিসাব হয়। Low Stock limit অনুযায়ী Dashboard alert দেখাবে।</div>
+<div class="notice">প্রতিটি Product-এর Size/Color Variant stock থেকে মোট stock হিসাব হয়। Low Stock limit অনুযায়ী Dashboard alert দেখাবে।</div><div class="mx-inline-tools"><label>Stock Filter <select id="inventoryFilter"><option value="all">সব পণ্য</option><option value="low">Low Stock</option><option value="out">Out of Stock</option></select></label><input id="inventorySearch" placeholder="পণ্যের নাম / কোড খুঁজুন"></div>
 <div class="tablewrap"><table><thead><tr><th>Product</th><th>Code</th><th>Category</th><th>Stock</th><th>Alert At</th><th>Cost Value</th><th>Status</th><th>Action</th></tr></thead><tbody id="inventoryRows"></tbody></table></div>
 </section>
 <section id="orders" class="panel">
 <div class="head"><h3>Online Order Management</h3><span class="status">Website Orders</span></div>
-<div class="toolbar"><input id="orderSearch" placeholder="Order ID / Customer / Mobile search"><select id="orderStatusFilter"><option value="">All Status</option><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Cancelled</option><option>Returned</option></select></div>
-<div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div>
+<div class="toolbar"><input id="orderSearch" placeholder="Order ID / Customer / Mobile search"><select id="orderStatusFilter"><option value="">All Status</option><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Completed</option><option>Cancelled</option><option>Returned</option></select></div>
+<p id="orderLoadState" class="mx-status-note">Firebase থেকে অনলাইন অর্ডার লোড হচ্ছে...</p><div class="mx-inline-tools"><label>Source <select id="orderSourceFilter"><option value="online">Online Orders</option><option value="offline">Offline Sales</option></select></label></div><div class="tablewrap"><table><thead><tr><th>Order</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Action</th></tr></thead><tbody id="orderRows"></tbody></table></div>
 </section>
 
+<section id="sales" class="panel"><div class="head"><h3>Online & Offline Sales Report</h3></div><div class="mx-inline-tools"><label>Source <select id="salesSource"><option value="all">সব বিক্রয়</option><option value="online">Online</option><option value="offline">Offline POS</option></select></label><label>Status <select id="salesStatus"><option value="all">সব Status</option><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Shipped</option><option>Delivered</option><option>Completed</option><option>Cancelled</option><option>Returned</option></select></label></div><div id="salesSummary" class="notice"></div><div class="tablewrap"><table><thead><tr><th>Source / ID</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th>Details</th></tr></thead><tbody id="salesRows"></tbody></table></div></section>
 <section id="orderdetail" class="panel">
 <div class="head no-print"><h3>Online Order Details</h3><div class="actions"><button class="btn primary" id="orderPrintA4">🖨 Invoice A4</button><button class="btn primary" id="orderPrintA5">🖨 Invoice A5</button><button class="btn" id="backOrders">← Orders</button></div></div>
 <div id="orderDetailBox" class="card"></div>
@@ -184,6 +188,7 @@ body.admin-authenticated #login{display:none!important}
 <div id="memoPrint" class="memo"><p>Sale complete করলে Cash Memo এখানে তৈরি হবে।</p></div>
 </section>
 <section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
+<section id="banners" class="panel"><div class="head"><h3>Homepage Banner Slider</h3></div><div class="card"><p>প্রতিটি স্লাইডের ছবি বদলান। কোনো ছবি না দিলে বর্তমান ডিজাইন অপরিবর্তিত থাকবে।</p><div id="bannerAdminRows"></div><p id="bannerSaveMessage" class="hint"></p></div></section>
 <section id="settings" class="panel">
 <div class="head"><h3>Website Settings & Security</h3></div>
 <div class="card">
@@ -272,35 +277,52 @@ $("changeAdminPassword").onclick=async()=>{
  }
 };
 document.querySelectorAll(".menu button[data-p]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.p).classList.add("active");$("title").textContent=b.textContent.trim()});
+let offlineSales=[],categoryRecords=[];
 let started=false;function start(){if(started)return;started=true;
  onSnapshot(collection(db,"products"),s=>{products=s.docs.map(d=>({id:d.id,...d.data()}));renderProducts();stats()});
- onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));renderOrders();stats()});
+ onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));$("orderLoadState").textContent=`${orders.length}টি Online Order লোড হয়েছে।`;renderOrders();stats();renderSalesReport()},e=>{$("orderLoadState").textContent="Online Orders load হয়নি: "+(e.code||e.message);console.error("Online orders:",e)});
  onSnapshot(collection(db,"reviews"),s=>{reviews=s.docs.map(d=>({id:d.id,...d.data()}));renderReviews()});
- onSnapshot(collection(db,"categories"),s=>{const x=s.docs.map(d=>d.data().name).filter(Boolean);if(x.length)categories=x;renderCats()});
+ onSnapshot(collection(db,"categories"),s=>{categoryRecords=s.docs.map(d=>({id:d.id,...d.data()}));const x=categoryRecords.map(d=>d.name).filter(Boolean);if(x.length)categories=x;renderCats()},e=>console.warn("Categories:",e));
+ onSnapshot(collection(db,"sales"),s=>{offlineSales=s.docs.map(d=>({id:d.id,...d.data()}));stats();renderSalesReport()},e=>console.warn("Offline sales:",e));
+ loadBannerAdmin();
 }
 function stats(){
  $("sProducts").textContent=products.length;
- $("sOrders").textContent=orders.length;
- $("sPending").textContent=orders.filter(o=>o.status==="Pending").length;
- $("sSales").textContent=money(orders.filter(o=>o.status==="Delivered").reduce((a,o)=>a+Number(o.total||0),0));
- $("recent").innerHTML=orders.slice(0,5).map(o=>`<tr><td>${esc(o.orderCode||o.id)}</td><td>${esc(o.customerName)}</td><td>${esc(o.product)}</td><td>${money(o.total)}</td></tr>`).join("");
- const totalStock=products.reduce((a,p)=>a+Number(p.stock||0),0);
+ $("sOrders").textContent=orders.length+offlineSales.length;
+ $("sPending").textContent=orders.filter(o=>(o.status||"Pending")==="Pending").length;
+ const onlineCompleted=orders.filter(o=>["Delivered","Completed"].includes(o.status)).reduce((sum,o)=>sum+Number(o.total||0),0);
+ const offlineCompleted=offlineSales.filter(o=>o.status!=="Cancelled").reduce((sum,o)=>sum+Number(o.total||0),0);
+ $("sSales").textContent=money(onlineCompleted+offlineCompleted);
+ $("recent").innerHTML=[...orders].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,5).map(o=>`<tr><td><button class="btn" onclick="viewOrder('${o.id}')">${esc(orderCode(o))}</button></td><td>${esc(o.customerName||"—")}</td><td>${esc(orderItems(o).map(x=>x.name).join(", "))}</td><td>${money(o.total)}</td></tr>`).join("")||'<tr><td>কোনো Online Order নেই</td></tr>';
+ const totalStock=products.reduce((sum,p)=>sum+Number(p.stock||0),0);
  const low=products.filter(p=>Number(p.stock||0)>0&&Number(p.stock||0)<=Number(p.lowStockAt??5));
  const out=products.filter(p=>Number(p.stock||0)<=0);
- $("sTotalStock").textContent=totalStock;
- $("sLowStock").textContent=low.length;
- $("sOutStock").textContent=out.length;
- $("sStockValue").textContent=money(products.reduce((a,p)=>a+Number(p.stock||0)*Number(p.costPrice||0),0));
+ $("sTotalStock").textContent=totalStock;$("sLowStock").textContent=low.length;$("sOutStock").textContent=out.length;
+ $("sStockValue").textContent=money(products.reduce((sum,p)=>sum+Number(p.stock||0)*Number(p.costPrice||0),0));
  const alerts=[...out,...low].sort((a,b)=>Number(a.stock||0)-Number(b.stock||0));
  $("stockAlerts").innerHTML=alerts.length?alerts.map(p=>`<div style="display:flex;justify-content:space-between;gap:10px;padding:9px;border-bottom:1px solid #edf0f5"><span><b>${esc(p.name)}</b><br><small>${esc(p.code||"")}</small></span><span><b>${Number(p.stock||0)} pcs</b> • ${Number(p.stock||0)<=0?"Out of Stock":"Low Stock"} <button class="btn" onclick="editProduct('${p.id}')">Add Stock</button></span></div>`).join(""):"কোনো Low Stock alert নেই।";
  renderInventory();
 }
 function renderInventory(){
- const el=$("inventoryRows"); if(!el)return;
- el.innerHTML=products.map(p=>{const s=Number(p.stock||0),l=Number(p.lowStockAt??5),cv=s*Number(p.costPrice||0);const st=s<=0?"Out of Stock":s<=l?"Low Stock":"In Stock";return `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.code||"—")}</td><td>${esc(p.category||"—")}</td><td>${s}</td><td>${l}</td><td>${money(cv)}</td><td>${st}</td><td><button class="btn" onclick="editProduct('${p.id}')">Edit / Add Stock</button></td></tr>`}).join("");
+ const el=$("inventoryRows");if(!el)return;
+ const filter=$("inventoryFilter")?.value||"all",q=($("inventorySearch")?.value||"").toLowerCase();
+ const list=products.filter(p=>{const s=Number(p.stock||0),l=Number(p.lowStockAt??5);return(filter==="all"||(filter==="low"&&s>0&&s<=l)||(filter==="out"&&s<=0))&&(!q||[p.name,p.code,p.category].join(" ").toLowerCase().includes(q))});
+ el.innerHTML=list.map(p=>{const s=Number(p.stock||0),l=Number(p.lowStockAt??5),cv=s*Number(p.costPrice||0);const st=s<=0?"Out of Stock":s<=l?"Low Stock":"In Stock";return `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.code||"—")}</td><td>${esc(p.category||"—")}</td><td>${s}</td><td>${l}</td><td>${money(cv)}</td><td>${st}</td><td><button class="btn" onclick="editProduct('${p.id}')">Edit / Add Stock</button></td></tr>`}).join("")||'<tr><td colspan="8">এই Filter-এ কোনো পণ্য নেই।</td></tr>';
 }
-function renderCats(){$("pCategory").innerHTML=categories.map(c=>`<option>${esc(c)}</option>`).join("");$("catChips").innerHTML=categories.map(c=>`<span class="status" style="display:inline-block;margin:5px">${esc(c)} <button onclick="deleteCategory('${c}')" style="border:0;background:none;cursor:pointer">×</button></span>`).join("")}
-$("catForm").onsubmit=async e=>{e.preventDefault();const n=$("catName").value.trim();if(!n)return;await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n});$("catName").value=""};window.deleteCategory=async n=>{if(confirm("Category মুছবেন?"))await deleteDoc(doc(db,"categories",encodeURIComponent(n)))};
+$("inventoryFilter").onchange=renderInventory;$("inventorySearch").oninput=renderInventory;
+function goAdminPanel(panel){document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(panel).classList.add("active");document.querySelectorAll(".menu button[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p===panel));$("title").textContent=document.querySelector(`.menu button[data-p="${panel}"]`)?.textContent.trim()||panel;window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("[data-stat-route]").forEach(b=>b.onclick=()=>{const r=b.dataset.statRoute;if(["low","out","inventory"].includes(r)){$("inventoryFilter").value=r==="inventory"?"all":r;goAdminPanel("inventory");renderInventory()}else if(r==="pending"){$("orderSourceFilter").value="online";$("orderStatusFilter").value="Pending";goAdminPanel("orders");renderOrders()}else if(r==="orders"){$("orderSourceFilter").value="online";$("orderStatusFilter").value="";goAdminPanel("orders");renderOrders()}else if(r==="sales"){goAdminPanel("sales");renderSalesReport()}else goAdminPanel(r)});
+function renderCats(){
+ $("pCategory").innerHTML=categories.map(c=>`<option>${esc(c)}</option>`).join("");
+ $("catChips").innerHTML=categories.map(c=>{const record=categoryRecords.find(x=>x.name===c);return `<div class="mx-settings-row">${record?.image?`<img class="mx-thumb" src="${esc(record.image)}">`:""}<b>${esc(c)}</b><button class="btn" type="button" data-cat-image="${esc(c)}">Edit Image</button><button class="btn danger" type="button" data-cat-delete="${esc(c)}">Delete</button></div>`}).join("");
+ $("catChips").querySelectorAll("[data-cat-image]").forEach(b=>b.onclick=()=>editCategoryImage(b.dataset.catImage));
+ $("catChips").querySelectorAll("[data-cat-delete]").forEach(b=>b.onclick=()=>window.deleteCategory(b.dataset.catDelete));
+}
+$("catForm").onsubmit=async e=>{e.preventDefault();const n=$("catName").value.trim();if(!n)return;try{const file=$("catImage").files[0],image=file?await compressAdminImage(file,640):"";await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n,...(image?{image}:{}),updatedAt:serverTimestamp()},{merge:true});$("catName").value="";$("catImage").value=""}catch(err){alert("Category save হয়নি: "+err.message)}};
+async function editCategoryImage(n){const picker=document.createElement("input");picker.type="file";picker.accept="image/jpeg,image/png,image/webp";picker.onchange=async()=>{if(!picker.files[0])return;try{const image=await compressAdminImage(picker.files[0],640);await setDoc(doc(db,"categories",encodeURIComponent(n)),{name:n,image,updatedAt:serverTimestamp()},{merge:true});alert("Category image saved") }catch(e){alert("Image save হয়নি: "+e.message)}};picker.click()}
+window.deleteCategory=async n=>{if(confirm("Category মুছবেন?"))await deleteDoc(doc(db,"categories",encodeURIComponent(n)))};
+function compressAdminImage(file,max=900){return new Promise((resolve,reject)=>{if(!file.type.startsWith("image/"))return reject(new Error("Image file দিন"));const fr=new FileReader();fr.onerror=reject;fr.onload=()=>{const im=new Image();im.onerror=reject;im.onload=()=>{const scale=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement("canvas");c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);c.getContext("2d").drawImage(im,0,0,c.width,c.height);const data=c.toDataURL("image/jpeg",.7);if(data.length>850000)return reject(new Error("Image অনেক বড়; ছোট ছবি দিন"));resolve(data)};im.src=fr.result};fr.readAsDataURL(file)})}
+async function loadBannerAdmin(){try{const snap=await getDoc(doc(db,"siteSettings","homepage"));const data=snap.exists()?snap.data():{};$("bannerAdminRows").innerHTML=[0,1,2,3].map(n=>`<div class="mx-settings-row"><b>Slide ${n+1}</b>${data.banners?.[n]?`<img class="mx-thumb" src="${esc(data.banners[n])}">`:"<small>Default banner</small>"}<input type="file" accept="image/jpeg,image/png,image/webp" data-banner-file="${n}"><button type="button" class="btn primary" data-banner-save="${n}">Save Slide</button></div>`).join("");$("bannerAdminRows").querySelectorAll("[data-banner-save]").forEach(b=>b.onclick=async()=>{const n=Number(b.dataset.bannerSave),file=$("bannerAdminRows").querySelector(`[data-banner-file="${n}"]`).files[0];if(!file)return alert("ছবি নির্বাচন করুন");b.disabled=true;try{const image=await compressAdminImage(file,1200);const latest=await getDoc(doc(db,"siteSettings","homepage"));const banners=[...(latest.data()?.banners||[])];banners[n]=image;await setDoc(doc(db,"siteSettings","homepage"),{banners,updatedAt:serverTimestamp()},{merge:true});$("bannerSaveMessage").textContent=`Slide ${n+1} saved`;loadBannerAdmin()}catch(e){alert("Banner save হয়নি: "+e.message)}finally{b.disabled=false}})}catch(e){$("bannerSaveMessage").textContent="Banner settings load হয়নি: "+(e.code||e.message)}}
 function imageUrl(x){return typeof x==="string"?x:(x?.url||"")}
 function renderProducts(){
  $("productRows").innerHTML=products.map(p=>{const img=imageUrl((p.images||[])[0]);const reg=Number(p.regularPrice??p.price??0),off=p.offerPrice===null||p.offerPrice===undefined?null:Number(p.offerPrice);
@@ -337,7 +359,21 @@ function renderOrders(){
  <td><span class="status ${statusClass(st)}">${esc(st)}</span></td>
  <td class="actions"><button class="btn" onclick="viewOrder('${o.id}')">View / Manage</button></td></tr>`}).join(""):'<tr><td colspan="7">কোনো Order পাওয়া যায়নি।</td></tr>';
 }
+
+function renderSalesReport(){
+ const box=$("salesRows");if(!box)return;
+ const src=$("salesSource").value,st=$("salesStatus").value;
+ const online=orders.map(o=>({...o,_source:"online",_code:orderCode(o),_status:o.status||"Pending"}));
+ const offline=offlineSales.map(o=>({...o,_source:"offline",_code:o.saleId||o.id,_status:o.status||"Completed"}));
+ const list=[...online,...offline].filter(o=>(src==="all"||o._source===src)&&(st==="all"||o._status===st)).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+ $("salesSummary").textContent=`${list.length}টি রেকর্ড • মোট ${money(list.reduce((sum,o)=>sum+Number(o.total||0),0))} (নির্বাচিত ফিল্টার)`;
+ box.innerHTML=list.map(o=>{const items=o._source==="online"?orderItems(o):o.items||[];return `<tr><td><b>${o._source==="online"?"🌐 Online":"🏪 Offline"}</b><br>${esc(o._code)}</td><td>${esc(o.customerName||o.name||"—")}</td><td>${esc(items.map(x=>x.name).join(", ").slice(0,100))}</td><td>${money(o.total)}</td><td>${esc(o._status)}</td><td>${o._source==="online"?`<button class="btn primary" onclick="viewOrder('${o.id}')">View / Manage</button>`:`<button class="btn" onclick="viewOfflineSale('${o.id}')">View Details</button>`}</td></tr>`}).join("")||'<tr><td colspan="6">কোনো বিক্রয় পাওয়া যায়নি।</td></tr>';
+}
+window.viewOfflineSale=id=>{const o=offlineSales.find(x=>x.id===id);if(!o)return;const lines=(o.items||[]).map(x=>`${x.name} × ${x.qty}`).join("\n");alert(`Offline Sale: ${o.saleId||id}\nCustomer: ${o.customerName||"—"}\nMobile: ${o.customerMobile||"—"}\nProducts:\n${lines}\nTotal: ${money(o.total)}\nStatus: ${o.status||"Completed"}`)};
+
 $("orderSearch").oninput=renderOrders;$("orderStatusFilter").onchange=renderOrders;
+$("orderSourceFilter").onchange=()=>{if($("orderSourceFilter").value==="offline"){goAdminPanel("sales");$("salesSource").value="offline";renderSalesReport()}else renderOrders()};
+$("salesSource").onchange=renderSalesReport;$("salesStatus").onchange=renderSalesReport;
 
 window.viewOrder=id=>{selectedOrder=orders.find(x=>x.id===id);if(!selectedOrder)return;renderOrderDetail(selectedOrder);document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("orderdetail").classList.add("active");$("title").textContent="Online Order Details"};
 $("backOrders").onclick=()=>{document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("orders").classList.add("active");document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p==="orders"));$("title").textContent="🛒 Orders"};
@@ -349,23 +385,30 @@ function renderOrderDetail(o){
  <div><b>Customer:</b> ${esc(o.customerName||"—")}</div><div><b>Mobile:</b> ${esc(orderPhone(o)||"—")}</div>
  <div class="full"><b>Address:</b> ${esc(orderAddress(o)||"—")}</div><div><b>Payment:</b> ${esc(orderPayment(o))}</div><div><b>Total:</b> ${money(total)}</div>
  </div><div class="head"><h3>Change Status</h3></div><div class="actions">
- ${["Pending","Confirmed","Processing","Shipped","Delivered","Cancelled","Returned"].map(x=>`<button class="btn ${x===st?"primary":""}" onclick="changeOrderStatus('${o.id}','${x}')">${x}</button>`).join("")}
+ ${["Pending","Confirmed","Processing","Shipped","Delivered","Completed","Cancelled","Returned"].map(x=>`<button class="btn ${x===st?"primary":""}" onclick="changeOrderStatus('${o.id}','${x}')">${x}</button>`).join("")}
  </div><p class="hint">Confirmed করলে stock একবার deduct হবে। Cancelled/Returned করলে আগে deduct হওয়া stock একবার restore হবে।</p>`;
  renderOnlineInvoice(o);
 }
 async function changeStockForOrder(tx,o,direction){
- const its=orderItems(o);
- for(const line of its){
-   let p=null,pref=null;
-   if(line.productId){pref=doc(db,"products",line.productId);const ps=await tx.get(pref);if(ps.exists())p={id:ps.id,...ps.data()}}
-   if(!p){const found=products.find(x=>(line.code&&x.code===line.code)||x.name===line.name);if(!found)throw new Error("Product পাওয়া যায়নি: "+line.name);pref=doc(db,"products",found.id);const ps=await tx.get(pref);p={id:ps.id,...ps.data()}}
-   let vs=(p.variants&&p.variants.length)?p.variants.map(v=>({...v})):[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}];
-   let idx=vs.findIndex(v=>(!line.variantSku||(v.sku||"")===line.variantSku)&&(!line.size||(v.size||"")===line.size)&&(!line.color||(v.color||"")===line.color));
-   if(idx<0)idx=0;
-   const before=Number(vs[idx].stock||0),after=before+(direction*line.qty);
-   if(after<0)throw new Error(`${line.name} এর stock পর্যাপ্ত নেই। Available: ${before}`);
-   vs[idx].stock=after;tx.update(pref,{variants:vs,stock:vs.reduce((a,v)=>a+Number(v.stock||0),0),updatedAt:serverTimestamp()});
+ const lines=orderItems(o),refs=new Map();
+ for(const line of lines){
+  const found=line.productId?products.find(x=>x.id===line.productId):products.find(x=>(line.code&&x.code===line.code)||x.name===line.name);
+  if(!found)throw new Error("Product পাওয়া যায়নি: "+line.name);
+  refs.set(found.id,doc(db,"products",found.id));line._resolvedProductId=found.id;
  }
+ // Every transaction read must finish before the first write.
+ const snapshots=new Map();
+ for(const [id,ref] of refs){const snap=await tx.get(ref);if(!snap.exists())throw new Error("Product পাওয়া যায়নি: "+id);snapshots.set(id,snap.data())}
+ const changes=new Map();
+ for(const line of lines){
+  const id=line._resolvedProductId,p=snapshots.get(id);
+  let vs=changes.get(id);if(!vs){vs=(p.variants&&p.variants.length?p.variants:[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}]).map(v=>({...v}));changes.set(id,vs)}
+  let idx=vs.findIndex(v=>(!line.variantSku||(v.sku||"")===line.variantSku)&&(!line.size||(v.size||"")===line.size)&&(!line.color||(v.color||"")===line.color));if(idx<0)idx=0;
+  const next=Number(vs[idx].stock||0)+direction*line.qty;
+  if(next<0)throw new Error(`${line.name} এর stock পর্যাপ্ত নেই।`);
+  vs[idx].stock=next;
+ }
+ for(const [id,vs] of changes)tx.update(refs.get(id),{variants:vs,stock:vs.reduce((sum,v)=>sum+Number(v.stock||0),0),updatedAt:serverTimestamp()});
 }
 window.changeOrderStatus=async(id,newStatus)=>{
  const o=orders.find(x=>x.id===id);if(!o)return;
