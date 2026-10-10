@@ -169,7 +169,8 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="mxReturns">↩️ পণ্য ফেরত</button>
+<button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
@@ -428,6 +429,24 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <div class="field full"><button type="button" class="btn" id="mx12Preview">Preview discount</button> <button class="btn primary" id="mx12Apply">Apply redemption</button></div>
 </form><p id="mx12Message" class="hint">Preview before applying. Requires admin permissions on sales, customers, coupons, loyaltyEvents, and redemptions.</p></div>
 <div class="head"><h3>Redemption History</h3></div><div class="tablewrap"><table><thead><tr><th>Time</th><th>Sale</th><th>Customer</th><th>Type</th><th>Discount</th><th>Reference</th></tr></thead><tbody id="mx12Rows"></tbody></table></div></section>
+
+<section id="mxReturns" class="panel">
+ <div class="head"><h3>↩️ দোকানের পণ্য ফেরত</h3><span class="status">স্টক ফেরত ও হিসাব</span></div>
+ <div class="notice">পণ্য ফেরতের তথ্য ও স্টক একসঙ্গে Firebase-এ সেভ হবে। টাকা ফেরত দেওয়া বা ক্যাশ/লেজার সমন্বয় স্বয়ংক্রিয় নয়। আগের বিক্রির মূল বিল পরিবর্তন করা হবে না; রিপোর্টে ফেরতের টাকা আলাদাভাবে মিলিয়ে নিতে হবে।</div>
+ <div class="card"><div class="formgrid">
+  <div class="field full"><label>বিক্রির রসিদ খুঁজুন</label><input id="mxReturnSearch" placeholder="রসিদ নম্বর বা কাস্টমারের মোবাইল" autocomplete="off"></div>
+  <div class="field full"><label>বিক্রি নির্বাচন করুন</label><select id="mxReturnSale"><option value="">বিক্রি নির্বাচন করুন</option></select></div>
+  <div class="field full"><label>ফেরত দেওয়ার পণ্য</label><select id="mxReturnLine"><option value="">পণ্য নির্বাচন করুন</option></select></div>
+  <div class="field"><label>কতটি ফেরত</label><input id="mxReturnQty" type="number" min="1" step="1" value="1"></div>
+  <div class="field"><label>ফেরতের ধরন</label><select id="mxReturnType"><option value="return">পণ্য ফেরত</option><option value="exchange">পণ্য পরিবর্তন (এক্সচেঞ্জ)</option></select></div>
+  <div class="field"><label>টাকা ফেরতের মাধ্যম (শুধু রেকর্ড)</label><select id="mxReturnMethod"><option value="None">টাকা ফেরত নয়</option><option value="Cash">ক্যাশ</option><option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Bank">ব্যাংক</option></select></div>
+  <div class="field"><label>টাকা ফেরত (৳) — শুধু রেকর্ড</label><input id="mxReturnAmount" type="number" min="0" step="0.01" value="0"></div>
+  <div class="field full"><label>ফেরতের কারণ</label><input id="mxReturnReason" maxlength="250" placeholder="যেমন: সাইজ ঠিক হয়নি"></div>
+  <div class="field full"><label><input type="checkbox" id="mxReturnRestock" checked> পণ্যটি ভালো অবস্থায় আছে — স্টকে ফেরত যোগ হবে</label></div>
+ </div><p id="mxReturnPreview" class="hint">বিক্রি নির্বাচন করে ফেরতের হিসাব দেখুন।</p><button class="btn primary" type="button" id="mxReturnSave">ফেরতের রেকর্ড সেভ করুন</button><p id="mxReturnMessage" role="status" aria-live="polite"></p></div>
+ <div class="head"><h3>ফেরতের ইতিহাস</h3><button class="btn" type="button" id="mxReturnCSV">CSV ডাউনলোড</button></div>
+ <div class="tablewrap"><table><thead><tr><th>তারিখ</th><th>রসিদ</th><th>পণ্য</th><th>পরিমাণ</th><th>ধরন</th><th>টাকা ফেরত (রেকর্ড)</th><th>স্টক</th></tr></thead><tbody id="mxReturnRows"></tbody></table></div>
+</section>
 </main></div>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -1335,5 +1354,68 @@ const mxThemeLabels={heading:['🎨 অ্যাডমিন প্যানে�
 function mxThemeTranslate(){const en=typeof mxUILang!=='undefined'&&mxUILang==='en';document.querySelectorAll('[data-theme-i18n]').forEach(el=>{const pair=mxThemeLabels[el.dataset.themeI18n];if(pair)el.textContent=pair[en?1:0]});const select=document.getElementById('mxWorkRadius');if(select){const labels=en?['Small','Medium','Normal','Large']:['কম গোল','মাঝারি','স্বাভাবিক','বেশি গোল'];Array.from(select.options).forEach((o,i)=>o.textContent=labels[i])}}
 mxThemeApply();mxThemeTranslate();
 document.querySelectorAll('.mx-lang-btn').forEach(btn=>btn.addEventListener('click',()=>queueMicrotask(mxThemeTranslate)));
+
+
+// POS returns: atomic stock and return record; no automatic cash disbursement.
+let mxReturnSales=[],mxReturnRecords=[],mxReturnStarted=false;
+const mxReturnN=x=>{const n=Number(x);return Number.isFinite(n)?n:0};
+const mxReturnKey=(l,i)=>String(i);
+function mxReturnSale(){return mxReturnSales.find(s=>s.id===$('mxReturnSale').value)}
+function mxReturnAvailable(s,i){const l=s?.items?.[i];return l?Math.max(0,Math.floor(mxReturnN(l.qty)-mxReturnN(s.returnedQty?.[String(i)]))):0}
+function mxReturnRenderSales(){
+ const query=$('mxReturnSearch').value.trim().toLowerCase(),old=$('mxReturnSale').value;
+ const filtered=mxReturnSales.filter(s=>s.type==='offline'&&(s.status==='Completed'||s.status==='Partially Returned'||s.status==='Returned')&&(!query||[s.saleId,s.customerMobile,s.customerName].some(v=>String(v||'').toLowerCase().includes(query)))).slice(0,150);
+ $('mxReturnSale').innerHTML='<option value="">বিক্রি নির্বাচন করুন</option>'+filtered.map(s=>`<option value="${esc(s.id)}">${esc(s.saleId||s.id)} — ${esc(s.customerMobile||'')} — ${money(s.total)}</option>`).join('');
+ if(filtered.some(s=>s.id===old))$('mxReturnSale').value=old;
+ mxReturnRenderLines();
+}
+function mxReturnRenderLines(){
+ const s=mxReturnSale(),old=$('mxReturnLine').value;
+ $('mxReturnLine').innerHTML='<option value="">পণ্য নির্বাচন করুন</option>'+(s?.items||[]).map((l,i)=>{const available=mxReturnAvailable(s,i);return available?`<option value="${i}">${esc(l.name||'পণ্য')} / ${esc(l.size||'')} / ${esc(l.color||'')} — ফেরতযোগ্য ${available}টি</option>`:''}).join('');
+ if([...$('mxReturnLine').options].some(o=>o.value===old))$('mxReturnLine').value=old;
+ mxReturnPreview();
+}
+function mxReturnPreview(){const s=mxReturnSale(),i=Number($('mxReturnLine').value),l=$('mxReturnLine').value!==''?s?.items?.[i]:null,q=Number($('mxReturnQty').value),a=Number($('mxReturnAmount').value);$('mxReturnPreview').textContent=l?`সর্বোচ্চ ফেরত: ${mxReturnAvailable(s,i)}টি | পণ্যের বিক্রয়মূল্য: ${money(mxReturnN(l.price)*Math.max(0,q))} | ফেরত টাকা (রেকর্ড): ${money(a||0)}`:'পণ্য নির্বাচন করে ফেরতের হিসাব দেখুন।'}
+function mxReturnRenderHistory(){
+ $('mxReturnRows').innerHTML=[...mxReturnRecords].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,300).map(r=>`<tr><td>${esc(r.createdAt?.toDate?.().toLocaleString('en-BD')||'—')}</td><td>${esc(r.saleId||'')}</td><td>${esc(r.productName||'')}</td><td>${r.qty||0}</td><td>${r.type==='exchange'?'এক্সচেঞ্জ':'ফেরত'}</td><td>${money(r.refundAmount||0)} (${esc(r.refundMethod||'')})</td><td>${r.restock?'স্টকে যোগ':'যোগ হয়নি'}</td></tr>`).join('')||'<tr><td colspan="7">এখনো ফেরতের রেকর্ড নেই।</td></tr>';
+}
+function mxReturnStart(){if(mxReturnStarted)return;mxReturnStarted=true;
+ onSnapshot(collection(db,'sales'),snap=>{mxReturnSales=snap.docs.map(d=>({id:d.id,...d.data()}));mxReturnRenderSales()},e=>{$('mxReturnMessage').textContent='বিক্রি লোড হয়নি: '+(e.code||e.message)});
+ onSnapshot(collection(db,'posReturns'),snap=>{mxReturnRecords=snap.docs.map(d=>({id:d.id,...d.data()}));mxReturnRenderHistory()},e=>{$('mxReturnMessage').textContent='Firebase posReturns অনুমতি নেই: '+(e.code||e.message)});
+}
+const mxReturnOldStart=start;start=function(){mxReturnOldStart();mxReturnStart()};
+$('mxReturnSearch').addEventListener('input',mxReturnRenderSales);
+$('mxReturnSale').addEventListener('change',mxReturnRenderLines);
+$('mxReturnLine').addEventListener('change',mxReturnPreview);
+$('mxReturnQty').addEventListener('input',mxReturnPreview);
+$('mxReturnAmount').addEventListener('input',mxReturnPreview);
+$('mxReturnSave').onclick=async()=>{
+ const s=mxReturnSale(),lineIndex=Number($('mxReturnLine').value),line=$('mxReturnLine').value!==''?s?.items?.[lineIndex]:null;
+ const qty=Number($('mxReturnQty').value),refund=Number($('mxReturnAmount').value),method=$('mxReturnMethod').value,reason=$('mxReturnReason').value.trim(),restock=$('mxReturnRestock').checked,type=$('mxReturnType').value;
+ if(!s||!line||!Number.isSafeInteger(qty)||qty<1||qty>mxReturnAvailable(s,lineIndex)||!Number.isFinite(refund)||refund<0||refund>10000000||(!reason)){alert('বিক্রি, পণ্য, সঠিক পরিমাণ এবং ফেরতের কারণ দিন।');return}
+ if(refund>0&&method==='None'){alert('টাকা ফেরতের মাধ্যম নির্বাচন করুন।');return}
+ if(!confirm(`${qty}টি ${line.name} ফেরত রেকর্ড করবেন? ${restock?'স্টকে যোগ হবে।':'স্টকে যোগ হবে না।'} টাকা ফেরত স্বয়ংক্রিয় হবে না।`))return;
+ const btn=$('mxReturnSave');btn.disabled=true;$('mxReturnMessage').textContent='সেভ হচ্ছে...';
+ try{
+  const saleRef=doc(db,'sales',s.id),returnRef=doc(collection(db,'posReturns'));
+  const prodRef=restock?doc(db,'products',line.productId):null;
+  const movementRef=restock?doc(collection(db,'stockMovements')):null;
+  await runTransaction(db,async tx=>{
+   const saleSnap=await tx.get(saleRef);if(!saleSnap.exists())throw Error('বিক্রির রেকর্ড পাওয়া যায়নি');const sale=saleSnap.data();
+   if(sale.type!=='offline'||!Array.isArray(sale.items))throw Error('শুধু দোকানের বিক্রিতে ফেরত সম্ভব');
+   const original=sale.items[lineIndex];if(!original||original.productId!==line.productId||original.variantSku!==line.variantSku||original.size!==line.size||original.color!==line.color)throw Error('পণ্য পরিবর্তন হয়েছে; আবার নির্বাচন করুন');
+   const oldReturned={...(sale.returnedQty||{})},available=Math.floor(mxReturnN(original.qty)-mxReturnN(oldReturned[String(lineIndex)]));if(qty>available)throw Error('এই পরিমাণ আগে ফেরত হয়েছে বা বিক্রি পরিবর্তন হয়েছে');
+   let ps=null,vs=null,variantIndex=-1;
+   if(restock){ps=await tx.get(prodRef);if(!ps.exists())throw Error('পণ্য পাওয়া যায়নি');vs=productVariants(ps.data());variantIndex=vs.findIndex(v=>(v.sku||'')===(original.variantSku||'')&&(v.size||'')===(original.size||'')&&(v.color||'')===(original.color||''));if(variantIndex<0)throw Error('পণ্যের সাইজ/ভ্যারিয়েন্ট পাওয়া যায়নি');}
+   oldReturned[String(lineIndex)]=mxReturnN(oldReturned[String(lineIndex)])+qty;
+   const totalItems=sale.items.reduce((sum,l)=>sum+mxReturnN(l.qty),0),returnedItems=Object.values(oldReturned).reduce((sum,n)=>sum+mxReturnN(n),0);
+   tx.update(saleRef,{returnedQty:oldReturned,returnStatus:returnedItems>=totalItems?'Returned':'Partially Returned',lastReturnedAt:serverTimestamp()});
+   if(restock){vs[variantIndex]={...vs[variantIndex],stock:mxReturnN(vs[variantIndex].stock)+qty};tx.update(prodRef,{variants:vs,stock:vs.reduce((sum,v)=>sum+mxReturnN(v.stock),0),updatedAt:serverTimestamp()});tx.set(movementRef,{productId:line.productId,productName:line.name,change:qty,reason:'POS Return',linkedSaleId:s.saleId||s.id,linkedReturnId:returnRef.id,createdAt:serverTimestamp()})}
+   tx.set(returnRef,{saleDocId:s.id,saleId:s.saleId||s.id,customerMobile:s.customerMobile||'',lineIndex,productId:line.productId,productName:line.name,variantSku:line.variantSku||'',size:line.size||'',color:line.color||'',qty,type,restock,refundAmount:refund,refundMethod:method,refundStatus:refund>0?'Manual payment required':'No refund',reason,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||''});
+  });
+  $('mxReturnMessage').textContent='ফেরতের তথ্য ও স্টক সফলভাবে সেভ হয়েছে। টাকা ফেরত দিলে ক্যাশ/লেজারে আলাদা হিসাব রাখুন।';$('mxReturnQty').value=1;$('mxReturnAmount').value=0;$('mxReturnReason').value='';
+ }catch(e){console.error('POS return failed',e);$('mxReturnMessage').textContent='ফেরত সেভ হয়নি: '+(e.message||e.code)}finally{btn.disabled=false}
+};
+$('mxReturnCSV').onclick=()=>mxDownloadCSV('mehedi-pos-returns.csv',[['Date','Sale','Mobile','Product','Quantity','Type','Refund Amount (record)','Refund Method','Restocked','Reason'],...mxReturnRecords.map(r=>[r.createdAt?.toDate?.().toISOString()||'',r.saleId||'',r.customerMobile||'',r.productName||'',r.qty||0,r.type||'',r.refundAmount||0,r.refundMethod||'',r.restock?'Yes':'No',r.reason||''])]);
 
 </script></body></html>
