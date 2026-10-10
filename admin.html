@@ -81,22 +81,6 @@ body.admin-authenticated #login{display:none!important}
 @media print{body.mx-print-ledger *{visibility:hidden!important}body.mx-print-ledger #mxLedgerPrint,body.mx-print-ledger #mxLedgerPrint *{visibility:visible!important}body.mx-print-ledger #mxLedgerPrint{position:absolute;left:0;top:0;width:100%;padding:10mm;background:white}body.mx-print-ledger #mxLedgerPrint td,body.mx-print-ledger #mxLedgerPrint th{padding:6px;font-size:10px}}
 </style><style>.mx-a-bars{display:grid;gap:9px}.mx-a-bar{display:grid;grid-template-columns:minmax(90px,160px) 1fr minmax(80px,120px);align-items:center;gap:9px;font-size:13px}.mx-a-track{height:14px;border-radius:8px;background:#e9eef8;overflow:hidden}.mx-a-fill{height:100%;background:linear-gradient(90deg,#0b63ce,#4a9af5);border-radius:8px}@media(max-width:600px){.mx-a-bar{grid-template-columns:90px 1fr 75px;font-size:11px}}</style><style>
 .mx-lang-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid #cdd8e6;border-radius:10px;background:#f3f6fa}.mx-lang-btn{border:0;border-radius:7px;background:transparent;padding:7px 12px;cursor:pointer;font-weight:700;color:#30455d}.mx-lang-btn.active{background:#0a4a8a;color:#fff}.mx-pos-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.mx-login-language{margin:10px 0}.mx-lang-btn:focus-visible{outline:2px solid #267bff;outline-offset:2px}
-</style><style>
-/* Independent admin appearance controls: sidebar vs workspace. */
-#app{--mx-side-bg:#0a2d59;--mx-side-text:#dbeafe;--mx-side-active:#2563eb;--mx-work-bg:#f3f6fb;--mx-work-card:#ffffff;--mx-work-text:#172033;--mx-work-accent:#2563eb;--mx-work-radius:16px}
-#app .side{background:var(--mx-side-bg)!important;color:var(--mx-side-text)!important}
-#app .side .brand,#app .side .menu button{color:var(--mx-side-text)!important}
-#app .side .menu button.active,#app .side .menu button:hover{background:var(--mx-side-active)!important;color:#fff!important}
-#app .main{background:var(--mx-work-bg)!important;color:var(--mx-work-text)!important;min-width:0}
-#app .main .card,#app .main .stat,#app .main table{background:var(--mx-work-card)!important;color:var(--mx-work-text)!important;border-radius:var(--mx-work-radius)}
-#app .main .btn.primary{background:var(--mx-work-accent)!important}
-.mx-theme-group{border:1px solid #dce4f1;border-radius:14px;padding:16px;margin:14px 0;background:#f8faff}
-.mx-theme-group h4{margin:0 0 10px}
-.mx-theme-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
-.mx-theme-fields label{font-size:13px;font-weight:700;display:flex;flex-direction:column;gap:7px}
-.mx-theme-fields input[type=color]{width:100%;height:42px;padding:3px;cursor:pointer}
-.mx-theme-note{font-size:12px;color:#64748b;line-height:1.5}
-@media print{#app .main{background:white!important}}
 </style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
@@ -280,33 +264,6 @@ body.admin-authenticated #login{display:none!important}
  <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Method</th><th>Amount</th><th>Reference</th></tr></thead><tbody id="mxSupplierPaymentRows"><tr><td colspan="5">Loading...</td></tr></tbody></table></div>
  </section>
 <section id="settings" class="panel">
-<div class="card" id="mxThemeSettings" style="margin-top:14px">
- <h3 data-theme-i18n="heading">🎨 অ্যাডমিন প্যানেলের ডিজাইন</h3>
- <p class="mx-theme-note" data-theme-i18n="intro">নীল মেনু এবং সাদা কাজের জায়গার রং ও ডিজাইন আলাদাভাবে পরিবর্তন করুন। পরিবর্তন এই ব্রাউজারে সেভ থাকবে।</p>
- <div class="mx-theme-group">
-  <h4 data-theme-i18n="sidebar">🔵 বাম পাশের মেনু (Sidebar)</h4>
-  <div class="mx-theme-fields">
-   <label><span data-theme-i18n="sideBg">মেনুর ব্যাকগ্রাউন্ড</span><input type="color" id="mxSideBg" value="#0a2d59"></label>
-   <label><span data-theme-i18n="sideText">মেনুর লেখার রং</span><input type="color" id="mxSideText" value="#dbeafe"></label>
-   <label><span data-theme-i18n="sideActive">সিলেক্ট করা মেনুর রং</span><input type="color" id="mxSideActive" value="#2563eb"></label>
-  </div>
-  <button type="button" class="btn" id="mxResetSidebar" style="margin-top:12px" data-theme-i18n="resetSide">শুধু মেনুর ডিজাইন রিসেট</button>
- </div>
- <div class="mx-theme-group">
-  <h4 data-theme-i18n="workspace">⚪ ড্যাশবোর্ড ও কাজের পেজ (Main Content)</h4>
-  <div class="mx-theme-fields">
-   <label><span data-theme-i18n="workBg">পেজের ব্যাকগ্রাউন্ড</span><input type="color" id="mxWorkBg" value="#f3f6fb"></label>
-   <label><span data-theme-i18n="workCard">কার্ড ও টেবিলের রং</span><input type="color" id="mxWorkCard" value="#ffffff"></label>
-   <label><span data-theme-i18n="workText">পেজের লেখার রং</span><input type="color" id="mxWorkText" value="#172033"></label>
-   <label><span data-theme-i18n="workAccent">মূল বাটনের রং</span><input type="color" id="mxWorkAccent" value="#2563eb"></label>
-   <label><span data-theme-i18n="workRadius">কার্ডের কোণা</span><select id="mxWorkRadius"><option value="4px">কম গোল</option><option value="12px">মাঝারি</option><option value="16px" selected>স্বাভাবিক</option><option value="24px">বেশি গোল</option></select></label>
-  </div>
-  <button type="button" class="btn" id="mxResetWorkspace" style="margin-top:12px" data-theme-i18n="resetWork">শুধু পেজের ডিজাইন রিসেট</button>
- </div>
- <div class="actions"><button type="button" class="btn primary" id="mxSaveTheme" data-theme-i18n="save">ডিজাইন সেভ করুন</button><button type="button" class="btn" id="mxResetAllTheme" data-theme-i18n="resetAll">সব ডিজাইন রিসেট</button></div>
- <p id="mxThemeMsg" class="mx-theme-note" role="status"></p>
-</div>
-
 <div class="head"><h3>Website Settings & Security</h3></div>
 <div class="card">
   <h3>Admin Account</h3>
@@ -1202,27 +1159,5 @@ const mxClearCart=document.getElementById('mxClearCart');if(mxClearCart)mxClearC
  if(!confirm(mxUILang==='bn'?'কার্টের সব পণ্য মুছে ফেলবেন?':'Clear all products from cart?'))return;
  posCart=[];renderPosCart();
 };
-
-
-// Separate appearance controls. Browser-local settings only: no Firebase writes.
-const mxThemeDefaults={mxSideBg:'#0a2d59',mxSideText:'#dbeafe',mxSideActive:'#2563eb',mxWorkBg:'#f3f6fb',mxWorkCard:'#ffffff',mxWorkText:'#172033',mxWorkAccent:'#2563eb',mxWorkRadius:'16px'};
-const mxThemeVars={mxSideBg:'--mx-side-bg',mxSideText:'--mx-side-text',mxSideActive:'--mx-side-active',mxWorkBg:'--mx-work-bg',mxWorkCard:'--mx-work-card',mxWorkText:'--mx-work-text',mxWorkAccent:'--mx-work-accent',mxWorkRadius:'--mx-work-radius'};
-const mxThemeSideKeys=['mxSideBg','mxSideText','mxSideActive'];
-const mxThemeWorkKeys=['mxWorkBg','mxWorkCard','mxWorkText','mxWorkAccent','mxWorkRadius'];
-const mxThemeAllowedRadius=['4px','12px','16px','24px'];
-let mxThemeState={...mxThemeDefaults};
-try{const saved=JSON.parse(localStorage.getItem('mx-admin-theme-v1')||'{}');if(saved&&typeof saved==='object')for(const key of Object.keys(mxThemeDefaults)){const value=saved[key];if(key==='mxWorkRadius'?mxThemeAllowedRadius.includes(value):typeof value==='string'&&/^#[0-9a-fA-F]{6}$/.test(value))mxThemeState[key]=value}}catch(e){}
-function mxThemeApply(){const app=document.getElementById('app');if(!app)return;for(const [key,variable] of Object.entries(mxThemeVars)){app.style.setProperty(variable,mxThemeState[key]);const field=document.getElementById(key);if(field)field.value=mxThemeState[key]}}
-function mxThemeNotice(bn,en){const msg=document.getElementById('mxThemeMsg');if(msg)msg.textContent=(typeof mxUILang!=='undefined'&&mxUILang==='en')?en:bn}
-for(const key of Object.keys(mxThemeDefaults)){const field=document.getElementById(key);if(field)field.addEventListener('input',()=>{mxThemeState[key]=field.value;mxThemeApply();mxThemeNotice('পরিবর্তন দেখা যাচ্ছে। স্থায়ী রাখতে সেভ করুন।','Preview updated. Click Save to keep changes.')})}
-document.getElementById('mxSaveTheme')?.addEventListener('click',()=>{try{localStorage.setItem('mx-admin-theme-v1',JSON.stringify(mxThemeState));mxThemeNotice('ডিজাইন এই ব্রাউজারে সেভ হয়েছে।','Design saved in this browser.')}catch(e){mxThemeNotice('সেভ করা যায়নি। ব্রাউজারের স্টোরেজ পরীক্ষা করুন।','Could not save. Check browser storage.')}});
-function mxThemeReset(keys){for(const key of keys)mxThemeState[key]=mxThemeDefaults[key];mxThemeApply();try{localStorage.setItem('mx-admin-theme-v1',JSON.stringify(mxThemeState))}catch(e){}mxThemeNotice('নির্বাচিত অংশের ডিজাইন রিসেট হয়েছে।','Selected appearance settings reset.')}
-document.getElementById('mxResetSidebar')?.addEventListener('click',()=>mxThemeReset(mxThemeSideKeys));
-document.getElementById('mxResetWorkspace')?.addEventListener('click',()=>mxThemeReset(mxThemeWorkKeys));
-document.getElementById('mxResetAllTheme')?.addEventListener('click',()=>mxThemeReset(Object.keys(mxThemeDefaults)));
-const mxThemeLabels={heading:['🎨 অ্যাডমিন প্যানেলের ডিজাইন','🎨 Admin Panel Appearance'],intro:['নীল মেনু এবং সাদা কাজের জায়গার ডিজাইন আলাদাভাবে পরিবর্তন করুন। পরিবর্তন এই ব্রাউজারে সেভ থাকবে।','Customize sidebar and main content independently. Saved in this browser only.'],sidebar:['🔵 বাম পাশের মেনু (Sidebar)','🔵 Sidebar'],sideBg:['মেনুর ব্যাকগ্রাউন্ড','Sidebar background'],sideText:['মেনুর লেখার রং','Sidebar text color'],sideActive:['সিলেক্ট করা মেনুর রং','Active menu color'],resetSide:['শুধু মেনুর ডিজাইন রিসেট','Reset sidebar only'],workspace:['⚪ ড্যাশবোর্ড ও কাজের পেজ','⚪ Main content'],workBg:['পেজের ব্যাকগ্রাউন্ড','Page background'],workCard:['কার্ড ও টেবিলের রং','Card and table background'],workText:['পেজের লেখার রং','Page text color'],workAccent:['মূল বাটনের রং','Primary button color'],workRadius:['কার্ডের কোণা','Card corners'],resetWork:['শুধু পেজের ডিজাইন রিসেট','Reset main content only'],save:['ডিজাইন সেভ করুন','Save appearance'],resetAll:['সব ডিজাইন রিসেট','Reset all appearance']};
-function mxThemeTranslate(){const en=typeof mxUILang!=='undefined'&&mxUILang==='en';document.querySelectorAll('[data-theme-i18n]').forEach(el=>{const pair=mxThemeLabels[el.dataset.themeI18n];if(pair)el.textContent=pair[en?1:0]});const select=document.getElementById('mxWorkRadius');if(select){const labels=en?['Small','Medium','Normal','Large']:['কম গোল','মাঝারি','স্বাভাবিক','বেশি গোল'];Array.from(select.options).forEach((o,i)=>o.textContent=labels[i])}}
-mxThemeApply();mxThemeTranslate();
-document.querySelectorAll('.mx-lang-btn').forEach(btn=>btn.addEventListener('click',()=>queueMicrotask(mxThemeTranslate)));
 
 </script></body></html>
