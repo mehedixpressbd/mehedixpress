@@ -151,6 +151,10 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
     max-height:none !important; overflow:visible !important;
   }
 }
+</style><style>
+.mx-pos-customer-status{margin-top:8px;padding:9px 11px;border-radius:9px;background:#eaf3ff;color:#154275;font-size:13px;font-weight:650}
+.mx-pos-customer-history{margin-top:7px;padding:9px 11px;border-radius:9px;background:#eaf8ef;color:#19633b;font-size:13px;font-weight:650}
+#pos .posgrid .card{border-radius:14px}#pos .field label{font-weight:650}
 </style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
@@ -165,7 +169,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
@@ -223,7 +227,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 </section>
 
 <section id="pos" class="panel">
-<div class="head"><h3>Offline Sale / POS</h3><span class="status">Shared Product Stock</span></div>
+<div class="head"><h3>দোকান বিক্রি</h3><span class="status">Shared Product Stock</span></div>
 <div class="posgrid">
  <div>
   <div class="card">
@@ -231,23 +235,23 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
    <div id="posProductList" class="pos-products"></div>
   </div>
   <div class="card" style="margin-top:14px">
-   <h3>Customer Information</h3>
+   <h3>কাস্টমারের তথ্য</h3>
    <div class="formgrid">
-    <div class="field"><label>Customer Name *</label><input id="posCustomerName" required placeholder="কাস্টমারের পূর্ণ নাম"></div>
-    <div class="field"><label>Mobile *</label><input id="posCustomerMobile" type="tel" inputmode="numeric" maxlength="11" pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX" required><span class="phone-help">বাংলাদেশি ১১ সংখ্যার মোবাইল নম্বর দিন।</span></div>
-    <div class="field"><label>WhatsApp</label><input id="posCustomerWhatsApp" type="tel" inputmode="numeric" maxlength="11" pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX"></div>
+    <div class="field"><label>কাস্টমারের নাম (ঐচ্ছিক)</label><input id="posCustomerName" placeholder="নাম না জানলে খালি রাখুন"></div>
+    <div class="field"><label>মোবাইল নম্বর *</label><input id="posCustomerMobile" type="tel" inputmode="numeric" maxlength="11" pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX" required><span class="phone-help">নম্বর লিখলেই আগের কাস্টমার খুঁজবে।</span><div id="mxPosCustomerStatus" class="mx-pos-customer-status" role="status" aria-live="polite">নম্বর লিখে কাস্টমার খুঁজুন।</div><div id="mxPosCustomerHistory" class="mx-pos-customer-history" hidden></div></div>
+    <div class="field"><label>WhatsApp (ঐচ্ছিক)</label><input id="posCustomerWhatsApp" type="tel" inputmode="numeric" maxlength="11" pattern="01[3-9][0-9]{8}" placeholder="01XXXXXXXXX"></div>
     <div class="field"><label>Customer ID</label><input id="posCustomerId" placeholder="Auto if blank"></div>
-    <div class="field"><label>বিভাগ *</label><select id="posDivision" required><option value="">বিভাগ নির্বাচন করুন</option></select></div>
-    <div class="field"><label>জেলা *</label><select id="posDistrict" required><option value="">জেলা নির্বাচন করুন</option></select></div>
-    <div class="field"><label>উপজেলা / থানা *</label><select id="posUpazila" required><option value="">উপজেলা / থানা নির্বাচন করুন</option></select><input id="posUpazilaManual" type="text" hidden placeholder="আপনার উপজেলা / থানার নাম লিখুন" style="margin-top:7px"></div>
-    <div class="field"><label>এলাকা / গ্রাম *</label><input id="posArea" required placeholder="এলাকা / গ্রামের নাম"></div>
+    <div class="field"><label>বিভাগ (ঐচ্ছিক)</label><select id="posDivision" required><option value="">বিভাগ নির্বাচন করুন</option></select></div>
+    <div class="field"><label>জেলা (ঐচ্ছিক)</label><select id="posDistrict" required><option value="">জেলা নির্বাচন করুন</option></select></div>
+    <div class="field"><label>উপজেলা / থানা (ঐচ্ছিক)</label><select id="posUpazila" required><option value="">উপজেলা / থানা নির্বাচন করুন</option></select><input id="posUpazilaManual" type="text" hidden placeholder="আপনার উপজেলা / থানার নাম লিখুন" style="margin-top:7px"></div>
+    <div class="field"><label>এলাকা / গ্রাম (ঐচ্ছিক)</label><input id="posArea" placeholder="এলাকা / গ্রামের নাম"></div>
     <div class="field full"><label>বাড়ি / রোড / সম্পূর্ণ ঠিকানা</label><textarea id="posCustomerAddress" placeholder="বাড়ি, রোড, বাজার বা প্রয়োজনীয় বিস্তারিত ঠিকানা"></textarea></div>
    </div>
   </div>
  </div>
  <div>
   <div class="card">
-   <h3>Sale Cart</h3><div id="posCart"><p class="hint">Product থেকে Add to Cart করুন।</p></div>
+   <h3>বিক্রির কার্ট</h3><div id="posCart"><p class="hint">Product থেকে Add to Cart করুন।</p></div>
    <div class="formgrid" style="margin-top:12px">
     <div class="field"><label>Overall Discount (৳)</label><input id="posDiscount" type="number" min="0" value="0"></div>
     <div class="field"><label>Delivery Charge (৳)</label><input id="posDelivery" type="number" min="0" value="0"></div>
@@ -261,7 +265,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
     <div class="mx-pos-tools"><button type="button" class="btn" id="mxPayFull">💵 পুরো টাকা পেয়েছি</button><button type="button" class="btn" id="mxClearCart">🗑 কার্ট খালি করুন</button></div><div class="totalrow grand"><span>Grand Total</span><span id="posGrand">৳0</span></div>
     <div class="totalrow"><span>Due</span><b id="posDue">৳0</b></div>
    </div>
-   <button class="btn primary" id="completeSale" style="width:100%;margin-top:12px">Complete Sale & Generate Cash Memo</button>
+   <button class="btn primary" id="completeSale" style="width:100%;margin-top:12px">বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন</button>
   </div>
  </div>
 </div>
@@ -755,7 +759,7 @@ function initPosAddress(){
  const districtChanged=()=>{
    const list=district.value==="কুমিল্লা"?cumillaUpazilasPOS:[];
    fill(upazila,"উপজেলা / থানা নির্বাচন করুন",list);
-   if(manual){const useManual=!!district.value&&!list.length;manual.hidden=!useManual;manual.required=useManual;manual.value="";upazila.hidden=useManual;upazila.required=!useManual;}
+   if(manual){const useManual=!!district.value&&!list.length;manual.hidden=!useManual;manual.required=false;manual.value="";upazila.hidden=useManual;upazila.required=false;}
    if(district.value){$("posDelivery").value=district.value==="কুমিল্লা"?80:150;calcPos()}
  };
  division.onchange=()=>{fill(district,"জেলা নির্বাচন করুন",bdAddressPOS[division.value]||[]);districtChanged()};
@@ -816,22 +820,75 @@ async function findCustomerByMobile(mobile){
  const norm=mobile.replace(/\D/g,"");
  return snap.docs.map(d=>({id:d.id,...d.data()})).find(c=>String(c.mobile||"").replace(/\D/g,"")===norm)||null;
 }
+
+// POS customer lookup: only stored Firestore records, never third-party phone enrichment.
+let mxPosLookupSerial=0,mxPosLookupBusy=false,mxPosMatchedPhone="",mxPosOnlineMatch=null;
+const mxPosNormPhone=v=>{const d=String(v||"").replace(/\D/g,"");return d.startsWith("880")&&d.length===13?d.slice(2):d};
+function mxPosClearLookup(){mxPosLookupSerial++;mxPosLookupBusy=false;mxPosMatchedPhone="";mxPosOnlineMatch=null;$("mxPosCustomerStatus").textContent="নম্বর লিখে কাস্টমার খুঁজুন।";$("mxPosCustomerHistory").hidden=true;$("mxPosCustomerHistory").textContent=""}
+function mxPosSetSelect(id,value){const el=$(id);if(el&&value&&[...el.options].some(o=>o.value===value))el.value=value}
+function mxPosFill(c){
+ if(!c)return;
+ const value=(...keys)=>keys.map(k=>c[k]).find(v=>typeof v==="string"&&v.trim())||"";
+ for(const [id,keys] of Object.entries({posCustomerName:["name","fullName","displayName","customerName"],posCustomerWhatsApp:["whatsapp","whatsApp"],posCustomerId:["customerId"],posArea:["area","village"],posCustomerAddress:["address","fullAddress","streetAddress"]})){
+  const v=value(...keys);if(v)$(id).value=v;
+ }
+ const division=value("division"),district=value("district"),upazila=value("upazila","thana");
+ if(division){mxPosSetSelect("posDivision",division);$("posDivision").onchange?.()}
+ if(district){mxPosSetSelect("posDistrict",district);$("posDistrict").onchange?.()}
+ if(upazila){if(!$("posUpazilaManual").hidden)$("posUpazilaManual").value=upazila;else mxPosSetSelect("posUpazila",upazila)}
+}
+async function mxPosLookup(phone){
+ const normalized=mxPosNormPhone(phone),seq=++mxPosLookupSerial;
+ if(!validBdMobile(normalized)){mxPosClearLookup();return}
+ mxPosLookupBusy=true;$("mxPosCustomerStatus").textContent="🔎 আগের কাস্টমার খোঁজা হচ্ছে...";
+ try{
+  // Customer records are admin-only; online user profiles are read only by the authenticated admin.
+  const [customersSnap,usersResult,salesResult]=await Promise.all([
+   getDocs(collection(db,"customers")),
+   getDocs(collection(db,"users")).catch(e=>{console.warn("Online profile lookup unavailable",e.code||e);return null}),
+   getDocs(collection(db,"sales")).catch(e=>{console.warn("POS history unavailable",e.code||e);return null})
+  ]);
+  if(seq!==mxPosLookupSerial||mxPosNormPhone($("posCustomerMobile").value)!==normalized)return;
+  const customer=customersSnap.docs.map(d=>({id:d.id,...d.data()})).find(c=>mxPosNormPhone(c.mobile||c.phone)===normalized);
+  const online=usersResult?.docs.map(d=>({id:d.id,...d.data()})).find(c=>mxPosNormPhone(c.phone||c.mobile||c.phoneNumber)===normalized);
+  const match=customer||online;mxPosOnlineMatch=online||null;mxPosMatchedPhone=normalized;
+  if(match)mxPosFill(match);
+  const sales=salesResult?.docs.map(d=>d.data()).filter(v=>mxPosNormPhone(v.customerMobile||v.mobile)===normalized&&v.status==="Completed")||[];
+  const amount=sales.reduce((sum,v)=>sum+Number(v.total||0),0);
+  const history=$("mxPosCustomerHistory");history.hidden=false;
+  history.textContent=`আগের কেনাকাটা: ${sales.length} বার | মোট ${money(amount)}`;
+  $("mxPosCustomerStatus").textContent=customer?"✅ পুরোনো কাস্টমার — তথ্য অটোমেটিক এসেছে।":online?"✅ অনলাইন কাস্টমার — সংরক্ষিত তথ্য পাওয়া গেছে।":"🆕 নতুন কাস্টমার — বিক্রি সম্পন্ন করলে তালিকায় যুক্ত হবে।";
+ }catch(e){if(seq===mxPosLookupSerial){mxPosMatchedPhone="";$("mxPosCustomerStatus").textContent="⚠️ কাস্টমার খুঁজতে সমস্যা: "+(e.code||e.message);console.error("POS customer lookup",e)}}
+ finally{if(seq===mxPosLookupSerial)mxPosLookupBusy=false}
+}
+let mxPosPhoneTimer;
+$("posCustomerMobile").addEventListener("input",()=>{
+ clearTimeout(mxPosPhoneTimer);mxPosClearLookup();
+ const mobile=mxPosNormPhone($("posCustomerMobile").value);
+ // Prevent stale customer details from being used for another number.
+ for(const id of ["posCustomerName","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"])$(id).value="";
+ initPosAddress();
+ if(validBdMobile(mobile))mxPosPhoneTimer=setTimeout(()=>mxPosLookup(mobile),350);
+});
+$("posCustomerMobile").addEventListener("blur",()=>{clearTimeout(mxPosPhoneTimer);const mobile=mxPosNormPhone($("posCustomerMobile").value);if(validBdMobile(mobile)&&mxPosMatchedPhone!==mobile&&!mxPosLookupBusy)mxPosLookup(mobile)});
+
 $("completeSale").onclick=async()=>{
  if(!posCart.length){alert("Cart-এ Product যোগ করুন।");return}
  const name=$("posCustomerName").value.trim(),mobile=$("posCustomerMobile").value.trim(),wa=$("posCustomerWhatsApp").value.trim();
  const division=$("posDivision").value,district=$("posDistrict").value,upazila=($("posUpazilaManual")?.hidden===false?$("posUpazilaManual").value.trim():$("posUpazila").value),area=$("posArea").value.trim();
- if(!name){alert("Customer Name দিন।");return}
  if(!validBdMobile(mobile)){alert("সঠিক ১১ সংখ্যার বাংলাদেশি Mobile Number দিন। যেমন: 01XXXXXXXXX");$("posCustomerMobile").focus();return}
  if(wa&&!validBdMobile(wa)){alert("WhatsApp Number দিলে সঠিক ১১ সংখ্যার বাংলাদেশি নম্বর দিন।");$("posCustomerWhatsApp").focus();return}
- if(!division||!district||!upazila||!area){alert("বিভাগ, জেলা, উপজেলা/থানা এবং এলাকা নির্বাচন/লিখুন।");return}
- const t=calcPos();if(t.paid>t.grand+0.001){alert("পাওয়া টাকা মোট বিলের বেশি হতে পারবে না।");$("posPaid").focus();return}const btn=$("completeSale");btn.disabled=true;btn.textContent="Processing...";
+ const t=calcPos();if(mxPosLookupBusy){alert("কাস্টমারের তথ্য খোঁজা হচ্ছে, একটু অপেক্ষা করুন।");return}if(mxPosMatchedPhone!==mobile){await mxPosLookup(mobile)}
+ if(t.paid>t.grand+0.001){alert("পাওয়া টাকা মোট বিলের বেশি হতে পারবে না।");$("posPaid").focus();return}const btn=$("completeSale");btn.disabled=true;btn.textContent="Processing...";
  try{
    let customer=await findCustomerByMobile(mobile);
    const customerId=$("posCustomerId").value.trim()||customer?.customerId||nextCustomerId();
-   const customerData={customerId,name,mobile,whatsapp:wa,division,district,upazila,area,address:$("posCustomerAddress").value.trim(),updatedAt:serverTimestamp()};
+   const finalName=name||customer?.name||"নাম দেওয়া হয়নি";
+   const customerData={customerId,mobile,updatedAt:serverTimestamp()};
+   for(const [k,v] of Object.entries({name,whatsapp:wa,division,district,upazila,area,address:$("posCustomerAddress").value.trim()}))if(v)customerData[k]=v;
    let customerDocId=customer?.id;
    if(customerDocId) await updateDoc(doc(db,"customers",customerDocId),customerData);
-   else {const cr=await addDoc(collection(db,"customers"),{...customerData,source:"offline-pos",createdAt:serverTimestamp()});customerDocId=cr.id}
+   else {const cr=await addDoc(collection(db,"customers"),{...customerData,name:finalName,source:"offline-pos",createdAt:serverTimestamp()});customerDocId=cr.id}
 
    const saleId=nextSaleId(),lines=posCart.map(x=>({...x,lineTotal:Number((x.qty*x.price).toFixed(2)),costTotal:Number((x.qty*x.cost).toFixed(2))}));
    const saleRef=doc(collection(db,"sales"));
@@ -845,14 +902,14 @@ $("completeSale").onclick=async()=>{
        const newStock=vs.reduce((a,v)=>a+Number(v.stock||0),0);
        tx.update(pref,{variants:vs,stock:newStock,updatedAt:serverTimestamp()});
      }
-     tx.set(saleRef,{saleId,type:"offline",customerDocId,customerId,customerName:name,customerMobile:mobile,customerWhatsApp:customerData.whatsapp,division,district,upazila,area,customerAddress:customerData.address,items:lines,subtotal:t.sub,discount:t.dis,deliveryCharge:t.del,total:t.grand,paid:t.paid,due:t.due,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due",status:"Completed",totalCost:lines.reduce((a,x)=>a+x.costTotal,0),grossProfit:Number((t.sub-t.dis-lines.reduce((a,x)=>a+x.costTotal,0)).toFixed(2)),createdAt:serverTimestamp()});
+     tx.set(saleRef,{saleId,type:"offline",customerDocId,customerId,customerName:finalName,customerMobile:mobile,customerWhatsApp:wa||customer?.whatsapp||"",division:division||customer?.division||"",district:district||customer?.district||"",upazila:upazila||customer?.upazila||"",area:area||customer?.area||"",customerAddress:customerData.address||customer?.address||"",items:lines,subtotal:t.sub,discount:t.dis,deliveryCharge:t.del,total:t.grand,paid:t.paid,due:t.due,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due",status:"Completed",totalCost:lines.reduce((a,x)=>a+x.costTotal,0),grossProfit:Number((t.sub-t.dis-lines.reduce((a,x)=>a+x.costTotal,0)).toFixed(2)),createdAt:serverTimestamp()});
    });
    for(const line of lines){try{await addDoc(collection(db,"stockMovements"),{productId:line.productId,productName:line.name,change:-line.qty,reason:"Offline POS Sale",linkedSaleId:saleId,createdAt:serverTimestamp()})}catch(e){}}
-   lastMemo={saleId,date:new Date(),customerId,name,mobile,whatsapp:customerData.whatsapp,division,district,upazila,area,address:customerData.address,items:lines,...t,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due"};
-   renderMemo(lastMemo);posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
+   lastMemo={saleId,date:new Date(),customerId,name:finalName,mobile,whatsapp:wa||customer?.whatsapp||"",division:division||customer?.division||"",district:district||customer?.district||"",upazila:upazila||customer?.upazila||"",area:area||customer?.area||"",address:customerData.address||customer?.address||"",items:lines,...t,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due"};
+   renderMemo(lastMemo);posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();mxPosClearLookup();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
    document.querySelector('[data-p="pos"]').classList.remove("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("cashmemo").classList.add("active");$("title").textContent="Cash Memo / Invoice";
  }catch(e){console.error(e);alert("Sale complete হয়নি: "+(e.message||e.code))}
- finally{btn.disabled=false;btn.textContent="Complete Sale & Generate Cash Memo"}
+ finally{btn.disabled=false;btn.textContent="বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন"}
 };
 function renderMemo(m){
  const rows=m.items.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b><br><small>${esc([x.size,x.color,x.variantSku].filter(Boolean).join(" / "))}</small></td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.lineTotal)}</td></tr>`).join("");
@@ -873,7 +930,7 @@ function printMemoAs(size){
 $("printA4").onclick=()=>printMemoAs("A4");
 $("printA5").onclick=()=>printMemoAs("A5");
 window.addEventListener("afterprint",()=>document.body.classList.remove("print-a4","print-a5"));
-$("backToPos").onclick=()=>{document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("pos").classList.add("active");document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p==="pos"));$("title").textContent="🧾 Offline Sale / POS"};
+$("backToPos").onclick=()=>{document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("pos").classList.add("active");document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p==="pos"));$("title").textContent="🧾 দোকান বিক্রি"};
 const originalRenderProducts=renderProducts;
 renderProducts=function(){originalRenderProducts();renderPosProducts()};
 
@@ -1204,7 +1261,7 @@ const mx12OldStart=start;start=function(){mx12OldStart();mx12Start()};
 const mxUIWords={
 'Dashboard':'ড্যাশবোর্ড','Admin Panel':'অ্যাডমিন প্যানেল','Products':'পণ্য','Orders':'অর্ডার','Sales':'বিক্রি','Pending':'অপেক্ষায়','Total Stock':'মোট স্টক','Low Stock':'স্টক কম','Out of Stock':'স্টক শেষ','Stock Cost Value':'স্টকের ক্রয়মূল্য','Stock Alerts':'স্টক সতর্কতা','Recent Orders':'সাম্প্রতিক অর্ডার',
 'Categories':'ক্যাটাগরি','Inventory':'স্টক হিসাব','Offline Sale / POS':'দোকানের বিক্রি (POS)','Sales Report':'বিক্রির রিপোর্ট','Expenses':'খরচের হিসাব','Cash & Wallet Ledger':'ক্যাশ ও ওয়ালেট হিসাব','Purchases & Suppliers':'মাল কেনা ও সাপ্লায়ার','Business Analytics':'ব্যবসার বিশ্লেষণ','Reviews':'রিভিউ','Settings':'সেটিংস','Employees':'কর্মচারী','Attendance':'হাজিরা','Salary':'বেতন','Activity Log':'কাজের রেকর্ড','Campaigns & Coupons':'ক্যাম্পেইন ও কুপন','Loyalty Rewards':'রিওয়ার্ড পয়েন্ট','Customer CRM':'কাস্টমার তালিকা','Loyalty Points':'লয়্যালটি পয়েন্ট','Customer Due':'কাস্টমারের বকেয়া','Logout':'লগআউট',
-'Product Management':'পণ্যের হিসাব','Add Product':'নতুন পণ্য যোগ করুন','Product Search':'পণ্য খুঁজুন','Sale Cart':'বিক্রির কার্ট','Customer Name *':'কাস্টমারের নাম *','Mobile *':'মোবাইল *','WhatsApp':'হোয়াটসঅ্যাপ','Customer ID':'কাস্টমার আইডি','Overall Discount (৳)':'মোট ছাড় (৳)','Delivery Charge (৳)':'ডেলিভারি চার্জ (৳)','Payment Method':'টাকা দেওয়ার মাধ্যম','Paid Amount (৳)':'পেয়েছি (৳)','Subtotal':'পণ্যের মোট দাম','Discount':'ছাড়','Delivery':'ডেলিভারি','Grand Total':'সর্বমোট','Due':'বকেয়া','Cash':'নগদ টাকা','Bank':'ব্যাংক','Complete Sale & Generate Cash Memo':'বিক্রি শেষ করুন ও রসিদ তৈরি করুন',
+'Product Management':'পণ্যের হিসাব','Add Product':'নতুন পণ্য যোগ করুন','Product Search':'পণ্য খুঁজুন','Sale Cart':'বিক্রির কার্ট','Customer Name *':'কাস্টমারের নাম *','Mobile *':'মোবাইল *','WhatsApp':'হোয়াটসঅ্যাপ','Customer ID':'কাস্টমার আইডি','Overall Discount (৳)':'মোট ছাড় (৳)','Delivery Charge (৳)':'ডেলিভারি চার্জ (৳)','Payment Method':'টাকা দেওয়ার মাধ্যম','Paid Amount (৳)':'পেয়েছি (৳)','Subtotal':'পণ্যের মোট দাম','Discount':'ছাড়','Delivery':'ডেলিভারি','Grand Total':'সর্বমোট','Due':'বকেয়া','Cash':'নগদ টাকা','Bank':'ব্যাংক','বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন':'বিক্রি শেষ করুন ও রসিদ তৈরি করুন',
 'Cash Memo / Invoice':'ক্যাশ মেমো / রসিদ','Print A4':'A4 রসিদ প্রিন্ট','Print A5':'A5 রসিদ প্রিন্ট','Daily Sales Report':'দৈনিক বিক্রির রিপোর্ট','Online + Offline POS':'অনলাইন ও দোকানের বিক্রি','From':'শুরু','To':'শেষ','Source':'বিক্রির ধরন','All Sales':'সব বিক্রি','Online Orders':'অনলাইন অর্ডার','Offline POS':'দোকানের বিক্রি','Export CSV':'CSV ডাউনলোড','Search':'খুঁজুন','Save':'সেভ করুন','Cancel':'বাতিল','Date':'তারিখ','Amount':'টাকার পরিমাণ','Method':'মাধ্যম','Customer':'কাস্টমার','Customer Directory':'কাস্টমার তালিকা','Customer Tag':'কাস্টমারের ধরন','Internal Notes':'নিজের নোট','Save Customer Notes':'কাস্টমারের তথ্য সেভ করুন','Collection History':'টাকা আদায়ের ইতিহাস','Outstanding Sales':'বকেয়া বিক্রি','Record Due Collection':'বকেয়া টাকা জমা করুন','Collection Amount (৳)':'জমার টাকা (৳)','Reference / Note':'রেফারেন্স / নোট','Outstanding POS Sale':'বকেয়া বিক্রি নির্বাচন','Sale':'বিক্রি','Paid':'পরিশোধ','Total':'মোট','Notes':'নোট','New':'নতুন','Status':'অবস্থা','Actions':'কাজ','Price':'দাম','Quantity':'পরিমাণ','Stock':'স্টক','Profit':'লাভ','Cost':'ক্রয়মূল্য','Supplier':'সাপ্লায়ার','Supplier Due':'সাপ্লায়ারের বকেয়া','Product':'পণ্য','Login':'লগইন','Email':'ইমেইল','Password':'পাসওয়ার্ড','Forgot / Reset Password':'পাসওয়ার্ড ভুলে গেছেন?','Cash Memo':'ক্যাশ মেমো',
 'Coupon & Loyalty Redemption':'কুপন ও পয়েন্ট ব্যবহার','Campaign Management':'ক্যাম্পেইন পরিচালনা','Read-only analysis':'শুধু হিসাব দেখা যাবে','Add':'যোগ করুন','All':'সব','Regular':'সাধারণ','Wholesale':'পাইকারি','Inactive':'নিষ্ক্রিয়','Present':'উপস্থিত','Absent':'অনুপস্থিত','Leave':'ছুটি','Half Day':'অর্ধদিবস','Processing...':'কাজ চলছে...','No data':'কোনো তথ্য নেই'
 };
