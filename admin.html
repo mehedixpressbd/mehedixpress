@@ -97,6 +97,60 @@ body.admin-authenticated #login{display:none!important}
 .mx-theme-fields input[type=color]{width:100%;height:42px;padding:3px;cursor:pointer}
 .mx-theme-note{font-size:12px;color:#64748b;line-height:1.5}
 @media print{#app .main{background:white!important}}
+</style><style id="mx-independent-scroll-fix">
+/* FIX: Sidebar and main workspace scroll independently (desktop). */
+@media screen and (min-width: 851px) {
+  html, body { height:100%; overflow:hidden !important; }
+  #app.layout {
+    display:grid; grid-template-columns:240px minmax(0,1fr);
+    height:100vh; height:100dvh; min-height:0 !important;
+    overflow:hidden !important;
+  }
+  #app > .side {
+    height:100%; min-height:0; min-width:0;
+    overflow-y:auto !important; overflow-x:hidden !important;
+    overscroll-behavior-y:contain;
+    scrollbar-width:thin;
+  }
+  #app > .main {
+    height:100%; min-height:0; min-width:0;
+    overflow-y:auto !important; overflow-x:hidden !important;
+    overscroll-behavior-y:contain;
+    max-width:none;
+    margin:0;
+  }
+}
+/* Small screens: keep the menu horizontally scrollable, and scroll only the page below. */
+@media screen and (max-width: 850px) {
+  html, body { height:100%; overflow:hidden !important; }
+  #app.layout {
+    display:flex; flex-direction:column;
+    height:100vh; height:100dvh; min-height:0 !important;
+    overflow:hidden !important;
+  }
+  #app > .side {
+    flex:0 0 auto; height:auto; max-height:35vh; min-height:0;
+    overflow-y:auto !important; overflow-x:hidden !important;
+    overscroll-behavior:contain;
+  }
+  #app > .side .menu { overflow-x:auto; overflow-y:hidden; }
+  #app > .main {
+    flex:1 1 auto; height:auto; min-height:0; min-width:0;
+    overflow-y:auto !important; overflow-x:hidden !important;
+    overscroll-behavior-y:contain;
+    max-width:none; margin:0;
+  }
+}
+/* Login is unaffected: the login page remains fully accessible. */
+body:not(.admin-authenticated) { overflow-y:auto !important; }
+/* Printing requires normal page flow so invoices and reports are not clipped. */
+@media print {
+  html, body { height:auto !important; overflow:visible !important; }
+  #app.layout, #app > .main, #app > .side {
+    height:auto !important; min-height:0 !important;
+    max-height:none !important; overflow:visible !important;
+  }
+}
 </style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
