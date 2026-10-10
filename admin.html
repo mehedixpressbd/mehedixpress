@@ -79,7 +79,9 @@ body.admin-authenticated #login{display:none!important}
 @media(max-width:850px){.mx-ledger-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.mx-ledger-grid{grid-template-columns:1fr}}
 @media print{body.mx-print-ledger *{visibility:hidden!important}body.mx-print-ledger #mxLedgerPrint,body.mx-print-ledger #mxLedgerPrint *{visibility:visible!important}body.mx-print-ledger #mxLedgerPrint{position:absolute;left:0;top:0;width:100%;padding:10mm;background:white}body.mx-print-ledger #mxLedgerPrint td,body.mx-print-ledger #mxLedgerPrint th{padding:6px;font-size:10px}}
-</style><style>.mx-a-bars{display:grid;gap:9px}.mx-a-bar{display:grid;grid-template-columns:minmax(90px,160px) 1fr minmax(80px,120px);align-items:center;gap:9px;font-size:13px}.mx-a-track{height:14px;border-radius:8px;background:#e9eef8;overflow:hidden}.mx-a-fill{height:100%;background:linear-gradient(90deg,#0b63ce,#4a9af5);border-radius:8px}@media(max-width:600px){.mx-a-bar{grid-template-columns:90px 1fr 75px;font-size:11px}}</style></head><body>
+</style><style>.mx-a-bars{display:grid;gap:9px}.mx-a-bar{display:grid;grid-template-columns:minmax(90px,160px) 1fr minmax(80px,120px);align-items:center;gap:9px;font-size:13px}.mx-a-track{height:14px;border-radius:8px;background:#e9eef8;overflow:hidden}.mx-a-fill{height:100%;background:linear-gradient(90deg,#0b63ce,#4a9af5);border-radius:8px}@media(max-width:600px){.mx-a-bar{grid-template-columns:90px 1fr 75px;font-size:11px}}</style><style>
+.mx-lang-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid #cdd8e6;border-radius:10px;background:#f3f6fa}.mx-lang-btn{border:0;border-radius:7px;background:transparent;padding:7px 12px;cursor:pointer;font-weight:700;color:#30455d}.mx-lang-btn.active{background:#0a4a8a;color:#fff}.mx-pos-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.mx-login-language{margin:10px 0}.mx-lang-btn:focus-visible{outline:2px solid #267bff;outline-offset:2px}
+</style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
   <img src="assets/images/logo.png" alt="Mehedi Xpress" style="width:82px;height:82px;object-fit:contain;border-radius:18px" onerror="this.style.display='none'">
@@ -88,13 +90,13 @@ body.admin-authenticated #login{display:none!important}
 </div>
 <div class="field"><label>Email</label><input id="email" type="email" value="mehedixpress522@gmail.com" autocomplete="username" required></div><br>
 <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" required></div><br>
-<button class="btn primary" style="width:100%">Login</button>
+<div class="mx-lang-switch mx-login-language"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><button class="btn primary" style="width:100%">Login</button>
 <button type="button" class="btn" style="width:100%;margin-top:10px" onclick="resetAdminPassword()">Forgot / Reset Password</button>
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 Phase 12 Rewards</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
-<main class="main"><div class="top"><h2 id="title">Dashboard</h2><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 Offline Sale / POS</button><button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
+<main class="main"><div class="top"><h2 id="title">Dashboard</h2><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
 <div class="stat"><b id="sLowStock">0</b>Low Stock</div>
@@ -186,7 +188,7 @@ body.admin-authenticated #login{display:none!important}
     <div class="totalrow"><span>Subtotal</span><b id="posSubtotal">৳0</b></div>
     <div class="totalrow"><span>Discount</span><b id="posDiscountShow">- ৳0</b></div>
     <div class="totalrow"><span>Delivery</span><b id="posDeliveryShow">+ ৳0</b></div>
-    <div class="totalrow grand"><span>Grand Total</span><span id="posGrand">৳0</span></div>
+    <div class="mx-pos-tools"><button type="button" class="btn" id="mxPayFull">💵 পুরো টাকা পেয়েছি</button><button type="button" class="btn" id="mxClearCart">🗑 কার্ট খালি করুন</button></div><div class="totalrow grand"><span>Grand Total</span><span id="posGrand">৳0</span></div>
     <div class="totalrow"><span>Due</span><b id="posDue">৳0</b></div>
    </div>
    <button class="btn primary" id="completeSale" style="width:100%;margin-top:12px">Complete Sale & Generate Cash Memo</button>
@@ -214,8 +216,8 @@ body.admin-authenticated #login{display:none!important}
 <section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
 
 <section id="ledger" class="panel">
-<div class="head"><h3>💳 Phase 6 — Cash / bKash / Nagad / Bank Ledger</h3></div>
-<div class="mx-ledger-note">Opening balance দিতে <b>Opening Balance</b> এন্ট্রি ব্যবহার করুন। POS-এর <b>Paid Amount</b> এবং Phase 5-এর Expenses স্বয়ংক্রিয়ভাবে হিসাব হবে; সেগুলো আবার Manual Entry করবেন না। Online Order-এর payment ও POS-এর পরবর্তী due collection স্বয়ংক্রিয়ভাবে যুক্ত হয় না—বাস্তবে টাকা পাওয়ার পর Manual Money In করুন। এখানে দেখানো হিসাব রেকর্ডভিত্তিক, ব্যাংক বা বিকাশের যাচাইকৃত ব্যালেন্স নয়।</div>
+<div class="head"><h3>💳 ক্যাশ, বিকাশ, নগদ ও ব্যাংক হিসাব</h3></div>
+<div class="mx-ledger-note">Opening balance দিতে <b>Opening Balance</b> এন্ট্রি ব্যবহার করুন। POS-এর <b>Paid Amount</b> এবং খরচের হিসাবের স্বয়ংক্রিয়ভাবে হিসাব হবে; সেগুলো আবার Manual Entry করবেন না। Online Order-এর payment ও POS-এর পরবর্তী due collection স্বয়ংক্রিয়ভাবে যুক্ত হয় না—বাস্তবে টাকা পাওয়ার পর Manual Money In করুন। এখানে দেখানো হিসাব রেকর্ডভিত্তিক, ব্যাংক বা বিকাশের যাচাইকৃত ব্যালেন্স নয়।</div>
 <div class="card"><div class="mx-report-filters"><div class="field"><label>From</label><input type="date" id="mxLedgerFrom"></div><div class="field"><label>To</label><input type="date" id="mxLedgerTo"></div><div class="field"><label>Account</label><select id="mxLedgerAccount"><option value="all">All Accounts</option><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div></div>
 <div class="mx-report-actions"><button type="button" class="btn" id="mxLedgerToday">Today</button><button type="button" class="btn" id="mxLedgerMonth">This Month</button><button type="button" class="btn primary" id="mxLedgerCSV">⬇ Export CSV</button><button type="button" class="btn" id="mxLedgerPrintBtn">🖨 Print A4</button></div></div>
 <div class="mx-ledger-grid"><div class="stat"><b id="mxLedgerOpening">৳0</b>Opening Balance</div><div class="stat"><b id="mxLedgerIn">৳0</b>Money In</div><div class="stat"><b id="mxLedgerOut">৳0</b>Money Out</div><div class="stat"><b id="mxLedgerClosing">৳0</b>Closing Balance</div></div>
@@ -227,8 +229,8 @@ body.admin-authenticated #login{display:none!important}
 </section>
 
 <section id="purchases" class="panel">
- <div class="head"><h3>🚚 Phase 7 — Purchase Management & Supplier Ledger</h3></div>
- <div class="notice">Purchase save করলে নির্বাচিত Product Variant-এর stock বাড়বে এবং Supplier-এর বকেয়া হিসাব হবে। Supplier payment আলাদাভাবে লিখুন। Phase 6 Cash/Wallet Ledger-এ এই লেনদেন স্বয়ংক্রিয়ভাবে যোগ হয় না; প্রয়োজন হলে সেখানে একবার Money Out লিখুন। Product Cost Price স্বয়ংক্রিয়ভাবে পরিবর্তন হয় না।</div>
+ <div class="head"><h3>🚚 পণ্য কেনা ও সাপ্লায়ারের হিসাব</h3></div>
+ <div class="notice">Purchase save করলে নির্বাচিত Product Variant-এর stock বাড়বে এবং Supplier-এর বকেয়া হিসাব হবে। Supplier payment আলাদাভাবে লিখুন। ক্যাশ ও ওয়ালেট হিসাবে এই লেনদেন স্বয়ংক্রিয়ভাবে যোগ হয় না; প্রয়োজন হলে সেখানে একবার Money Out লিখুন। Product Cost Price স্বয়ংক্রিয়ভাবে পরিবর্তন হয় না।</div>
  <div class="card"><h3>➕ New Stock Purchase</h3><form id="mxPurchaseForm" class="formgrid">
  <div class="field"><label>Purchase Date *</label><input id="mxPurchaseDate" type="date" required></div>
  <div class="field"><label>Supplier Name *</label><input id="mxPurchaseSupplier" required maxlength="100" placeholder="Supplier / wholesaler name"></div>
@@ -274,7 +276,7 @@ body.admin-authenticated #login{display:none!important}
 </section>
 
 <section id="analytics" class="panel">
- <div class="head"><h3>📊 Phase 8 — Business Analytics</h3><span class="status">Read-only analysis</span></div>
+ <div class="head"><h3>📊 ব্যবসার বিশ্লেষণ</h3><span class="status">Read-only analysis</span></div>
  <div class="notice">Profit is an <b>estimate</b> from recorded delivered online sales, completed POS sales, known product costs and expenses. Refunds, unrecorded costs and incomplete payment details can affect accuracy. Purchases are inventory investments, not automatically counted as expenses.</div>
  <div class="card"><div class="formgrid"><div class="field"><label>From date</label><input type="date" id="mxAFrom"></div><div class="field"><label>To date</label><input type="date" id="mxATo"></div></div><div class="actions" style="margin-top:12px"><button class="btn" id="mxAMonth">This Month</button><button class="btn" id="mxAToday">Today</button><button class="btn primary" id="mxAExport">⬇ CSV Summary</button></div></div>
  <div class="stats" style="margin-top:14px"><div class="stat"><b id="mxARevenue">৳0</b>Sales Revenue</div><div class="stat"><b id="mxACost">৳0</b>Known COGS</div><div class="stat"><b id="mxAExpenses">৳0</b>Operating Expenses</div><div class="stat"><b id="mxAProfit">৳0</b>Estimated Net Profit</div></div>
@@ -315,7 +317,7 @@ body.admin-authenticated #login{display:none!important}
 <section id="mxLoyalty" class="panel"><div class="head"><h3>🎁 Loyalty Points</h3><button class="btn" id="mx10PointsCSV">Export CSV</button></div><div class="notice">Manual points adjustment only. No automatic purchase rewards, discounts or redemption at checkout. A negative adjustment cannot make the balance negative.</div><div class="card"><form id="mx10PointsForm" class="formgrid"><div class="field"><label>Customer</label><select id="mx10PointsCustomer" required></select></div><div class="field"><label>Adjustment (+ earn / - redeem)</label><input id="mx10PointsAmount" type="number" step="1" required placeholder="e.g. 10 or -5"></div><div class="field full"><label>Reason</label><input id="mx10PointsReason" maxlength="240" required placeholder="Manual bonus / redeemed reward"></div><div class="full"><button class="btn primary" id="mx10PointsSave">Record Points Adjustment</button></div></form></div><div class="head"><h3>Points History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Customer</th><th>Change</th><th>Reason</th></tr></thead><tbody id="mx10PointsRows"></tbody></table></div></section>
 <section id="mxDues" class="panel"><div class="head"><h3>💳 Customer Due & Collection</h3><button class="btn" id="mx10DueCSV">Export CSV</button></div><div class="notice">Only POS sales in the existing sales collection are included. Collections update that sale's paid/due amounts atomically. They do NOT create Cash/bKash Ledger entries automatically. Avoid entering the same receipt twice.</div><div class="stats" style="margin-bottom:14px"><div class="stat"><b id="mx10DueTotal">৳0</b>Outstanding POS Due</div><div class="stat"><b id="mx10DueCount">0</b>Unpaid POS Sales</div><div class="stat"><b id="mx10Collected">৳0</b>Recorded Collections</div></div><div class="card"><form id="mx10CollectForm" class="formgrid"><div class="field"><label>Outstanding POS Sale</label><select id="mx10DueSale" required></select></div><div class="field"><label>Collection Amount (৳)</label><input id="mx10CollectAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Method</label><select id="mx10CollectMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field"><label>Reference / Note</label><input id="mx10CollectNote" maxlength="240"></div><div class="full"><button class="btn primary" id="mx10CollectSave">Record Due Collection</button></div></form></div><div class="head"><h3>Outstanding Sales</h3></div><div class="tablewrap"><table><thead><tr><th>Sale</th><th>Customer</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mx10DueRows"></tbody></table></div><div class="head"><h3>Collection History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Sale</th><th>Customer</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead><tbody id="mx10CollectionRows"></tbody></table></div></section>
 
-<section id="mx12Redemption" class="panel"><div class="head"><h3>🎟 Phase 12 — Coupon & Loyalty Redemption</h3><button class="btn" id="mx12Export">Export CSV</button></div>
+<section id="mx12Redemption" class="panel"><div class="head"><h3>🎟 কুপন ও পয়েন্ট ব্যবহার</h3><button class="btn" id="mx12Export">Export CSV</button></div>
 <div class="notice">Admin-only redemption against existing, unpaid OFFLINE POS sales. Coupon and points reduce the remaining due and sale total, not cash received. Website checkout integration requires a trusted server endpoint to prevent coupon/points fraud. This page does not enable public checkout redemption.</div>
 <div class="card"><form id="mx12Form" class="formgrid">
 <div class="field"><label>Unpaid POS sale</label><select id="mx12Sale" required></select></div>
@@ -725,7 +727,7 @@ $("completeSale").onclick=async()=>{
  if(!validBdMobile(mobile)){alert("সঠিক ১১ সংখ্যার বাংলাদেশি Mobile Number দিন। যেমন: 01XXXXXXXXX");$("posCustomerMobile").focus();return}
  if(wa&&!validBdMobile(wa)){alert("WhatsApp Number দিলে সঠিক ১১ সংখ্যার বাংলাদেশি নম্বর দিন।");$("posCustomerWhatsApp").focus();return}
  if(!division||!district||!upazila||!area){alert("বিভাগ, জেলা, উপজেলা/থানা এবং এলাকা নির্বাচন/লিখুন।");return}
- const t=calcPos(),btn=$("completeSale");btn.disabled=true;btn.textContent="Processing...";
+ const t=calcPos();if(t.paid>t.grand+0.001){alert("পাওয়া টাকা মোট বিলের বেশি হতে পারবে না।");$("posPaid").focus();return}const btn=$("completeSale");btn.disabled=true;btn.textContent="Processing...";
  try{
    let customer=await findCustomerByMobile(mobile);
    const customerId=$("posCustomerId").value.trim()||customer?.customerId||nextCustomerId();
@@ -1099,5 +1101,63 @@ $('mx12Apply').onclick=async()=>{
 $('mx12Export').onclick=()=>mxDownloadCSV('mx-redemptions.csv',[['Time','Sale','Customer','Type','Discount','Reference'],...mx12Redemptions.map(r=>[r.createdAt?.toDate?.().toISOString()||'',r.saleId||r.saleDocId,r.customerName||'',r.type,r.discount,r.reference||''])]);
 function mx12Start(){if(mx12Started)return;mx12Started=true;onSnapshot(collection(db,'redemptions'),s=>{mx12Redemptions=s.docs.map(d=>({id:d.id,...d.data()}));mx12Refresh()},e=>{$('mx12Message').textContent='Firestore redemptions: '+(e.code||e.message)});onSnapshot(collection(db,'sales'),()=>setTimeout(mx12Refresh,0));onSnapshot(collection(db,'customers'),()=>setTimeout(mx12Refresh,0))}
 const mx12OldStart=start;start=function(){mx12OldStart();mx12Start()};
+
+
+/* Mehedi Xpress UI language: বাংলা default; only known interface labels are translated. */
+const mxUIWords={
+'Dashboard':'ড্যাশবোর্ড','Admin Panel':'অ্যাডমিন প্যানেল','Products':'পণ্য','Orders':'অর্ডার','Sales':'বিক্রি','Pending':'অপেক্ষায়','Total Stock':'মোট স্টক','Low Stock':'স্টক কম','Out of Stock':'স্টক শেষ','Stock Cost Value':'স্টকের ক্রয়মূল্য','Stock Alerts':'স্টক সতর্কতা','Recent Orders':'সাম্প্রতিক অর্ডার',
+'Categories':'ক্যাটাগরি','Inventory':'স্টক হিসাব','Offline Sale / POS':'দোকানের বিক্রি (POS)','Sales Report':'বিক্রির রিপোর্ট','Expenses':'খরচের হিসাব','Cash & Wallet Ledger':'ক্যাশ ও ওয়ালেট হিসাব','Purchases & Suppliers':'মাল কেনা ও সাপ্লায়ার','Business Analytics':'ব্যবসার বিশ্লেষণ','Reviews':'রিভিউ','Settings':'সেটিংস','Employees':'কর্মচারী','Attendance':'হাজিরা','Salary':'বেতন','Activity Log':'কাজের রেকর্ড','Campaigns & Coupons':'ক্যাম্পেইন ও কুপন','Loyalty Rewards':'রিওয়ার্ড পয়েন্ট','Customer CRM':'কাস্টমার তালিকা','Loyalty Points':'লয়্যালটি পয়েন্ট','Customer Due':'কাস্টমারের বকেয়া','Logout':'লগআউট',
+'Product Management':'পণ্যের হিসাব','Add Product':'নতুন পণ্য যোগ করুন','Product Search':'পণ্য খুঁজুন','Sale Cart':'বিক্রির কার্ট','Customer Name *':'কাস্টমারের নাম *','Mobile *':'মোবাইল *','WhatsApp':'হোয়াটসঅ্যাপ','Customer ID':'কাস্টমার আইডি','Overall Discount (৳)':'মোট ছাড় (৳)','Delivery Charge (৳)':'ডেলিভারি চার্জ (৳)','Payment Method':'টাকা দেওয়ার মাধ্যম','Paid Amount (৳)':'পেয়েছি (৳)','Subtotal':'পণ্যের মোট দাম','Discount':'ছাড়','Delivery':'ডেলিভারি','Grand Total':'সর্বমোট','Due':'বকেয়া','Cash':'নগদ টাকা','Bank':'ব্যাংক','Complete Sale & Generate Cash Memo':'বিক্রি শেষ করুন ও রসিদ তৈরি করুন',
+'Cash Memo / Invoice':'ক্যাশ মেমো / রসিদ','Print A4':'A4 রসিদ প্রিন্ট','Print A5':'A5 রসিদ প্রিন্ট','Daily Sales Report':'দৈনিক বিক্রির রিপোর্ট','Online + Offline POS':'অনলাইন ও দোকানের বিক্রি','From':'শুরু','To':'শেষ','Source':'বিক্রির ধরন','All Sales':'সব বিক্রি','Online Orders':'অনলাইন অর্ডার','Offline POS':'দোকানের বিক্রি','Export CSV':'CSV ডাউনলোড','Search':'খুঁজুন','Save':'সেভ করুন','Cancel':'বাতিল','Date':'তারিখ','Amount':'টাকার পরিমাণ','Method':'মাধ্যম','Customer':'কাস্টমার','Customer Directory':'কাস্টমার তালিকা','Customer Tag':'কাস্টমারের ধরন','Internal Notes':'নিজের নোট','Save Customer Notes':'কাস্টমারের তথ্য সেভ করুন','Collection History':'টাকা আদায়ের ইতিহাস','Outstanding Sales':'বকেয়া বিক্রি','Record Due Collection':'বকেয়া টাকা জমা করুন','Collection Amount (৳)':'জমার টাকা (৳)','Reference / Note':'রেফারেন্স / নোট','Outstanding POS Sale':'বকেয়া বিক্রি নির্বাচন','Sale':'বিক্রি','Paid':'পরিশোধ','Total':'মোট','Notes':'নোট','New':'নতুন','Status':'অবস্থা','Actions':'কাজ','Price':'দাম','Quantity':'পরিমাণ','Stock':'স্টক','Profit':'লাভ','Cost':'ক্রয়মূল্য','Supplier':'সাপ্লায়ার','Supplier Due':'সাপ্লায়ারের বকেয়া','Product':'পণ্য','Login':'লগইন','Email':'ইমেইল','Password':'পাসওয়ার্ড','Forgot / Reset Password':'পাসওয়ার্ড ভুলে গেছেন?','Cash Memo':'ক্যাশ মেমো',
+'Coupon & Loyalty Redemption':'কুপন ও পয়েন্ট ব্যবহার','Campaign Management':'ক্যাম্পেইন পরিচালনা','Read-only analysis':'শুধু হিসাব দেখা যাবে','Add':'যোগ করুন','All':'সব','Regular':'সাধারণ','Wholesale':'পাইকারি','Inactive':'নিষ্ক্রিয়','Present':'উপস্থিত','Absent':'অনুপস্থিত','Leave':'ছুটি','Half Day':'অর্ধদিবস','Processing...':'কাজ চলছে...','No data':'কোনো তথ্য নেই'
+};
+const mxUIReverse=Object.fromEntries(Object.entries(mxUIWords).map(([en,bn])=>[bn,en]));
+let mxUILang='bn';let mxUIUpdating=false;
+const mxUIEnglish=new WeakMap();
+function mxUIText(root=document){
+ if(mxUIUpdating)return;mxUIUpdating=true;
+ try{
+ const walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;
+ while((node=walk.nextNode())){
+  const parent=node.parentElement;if(!parent||parent.closest('script,style,textarea,option[data-dynamic],#memoPrint,#orderInvoicePrint,#posProductList,#posCart,#recent,#stockAlerts'))continue;
+  if(parent.closest('[contenteditable], [data-no-translate]'))continue;
+  const raw=node.nodeValue;const trimmed=raw.trim();if(!trimmed)continue;
+  const emoji=trimmed.match(/^(?:[\p{Extended_Pictographic}\u2600-\u27bf]\ufe0f?\s*)+/u)?.[0]||'';
+  const core=trimmed.slice(emoji.length).trim();
+  if(!mxUIWords[core]&&!mxUIReverse[core]&&!mxUIEnglish.has(node))continue;
+  const english=mxUIEnglish.get(node)||mxUIReverse[core]||core;
+  if(!mxUIWords[english])continue;
+  mxUIEnglish.set(node,english);
+  const next=emoji+(mxUILang==='bn'?mxUIWords[english]:english);
+  const translated=raw.replace(trimmed,next);if(node.nodeValue!==translated)node.nodeValue=translated;
+ }
+ document.querySelectorAll('input[placeholder],textarea[placeholder]').forEach(el=>{
+  if(!el.dataset.mxEnglishPlaceholder)el.dataset.mxEnglishPlaceholder=el.getAttribute('placeholder')||'';
+  const english=el.dataset.mxEnglishPlaceholder;
+  if(mxUIWords[english])el.placeholder=mxUILang==='bn'?mxUIWords[english]:english;
+ });
+ document.querySelectorAll('.mx-lang-btn').forEach(btn=>{btn.classList.toggle('active',btn.dataset.lang===mxUILang);btn.setAttribute('aria-pressed',String(btn.dataset.lang===mxUILang))});
+ document.documentElement.lang=mxUILang;
+ }finally{mxUIUpdating=false}
+}
+function mxUISetLang(lang){mxUILang=lang==='en'?'en':'bn';try{localStorage.setItem('mx-admin-language',mxUILang)}catch(e){}mxUIText()}
+document.querySelectorAll('.mx-lang-btn').forEach(btn=>btn.addEventListener('click',()=>mxUISetLang(btn.dataset.lang)));
+try{mxUILang=localStorage.getItem('mx-admin-language')==='en'?'en':'bn'}catch(e){}
+mxUIText();
+let mxUIPending=false;
+const mxUIObserver=new MutationObserver(()=>{if(mxUIUpdating||mxUIPending)return;mxUIPending=true;requestAnimationFrame(()=>{mxUIPending=false;mxUIText()})});
+mxUIObserver.observe(document.body,{subtree:true,childList:true,characterData:true});
+// POS helper actions (no Firestore writes until normal sale completion).
+const mxPayFull=document.getElementById('mxPayFull');if(mxPayFull)mxPayFull.onclick=()=>{
+ const total=Number((document.getElementById('posGrand')?.textContent||'').replace(/[^\d.]/g,''))||0;
+ document.getElementById('posPaid').value=total;
+ if(document.getElementById('posPayment').value==='Due')document.getElementById('posPayment').value='Cash';
+ calcPos();
+};
+const mxClearCart=document.getElementById('mxClearCart');if(mxClearCart)mxClearCart.onclick=()=>{
+ if(!posCart.length)return;
+ if(!confirm(mxUILang==='bn'?'কার্টের সব পণ্য মুছে ফেলবেন?':'Clear all products from cart?'))return;
+ posCart=[];renderPosCart();
+};
 
 </script></body></html>
