@@ -79,6 +79,26 @@ body.admin-authenticated #login{display:none!important}
 @media(max-width:850px){.mx-ledger-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:480px){.mx-ledger-grid{grid-template-columns:1fr}}
 @media print{body.mx-print-ledger *{visibility:hidden!important}body.mx-print-ledger #mxLedgerPrint,body.mx-print-ledger #mxLedgerPrint *{visibility:visible!important}body.mx-print-ledger #mxLedgerPrint{position:absolute;left:0;top:0;width:100%;padding:10mm;background:white}body.mx-print-ledger #mxLedgerPrint td,body.mx-print-ledger #mxLedgerPrint th{padding:6px;font-size:10px}}
+
+/* POS catalog, size/color stock and safe record correction */
+.mx-pos-catbar{display:flex;gap:7px;overflow-x:auto;padding:9px 0;scrollbar-width:thin}
+.mx-pos-catbar button{white-space:nowrap;border:1px solid #d9e5f3;background:white;color:#173960;border-radius:999px;padding:8px 13px;cursor:pointer;font-weight:700}
+.mx-pos-catbar button.active{background:#0b63ce;color:#fff;border-color:#0b63ce}
+#posProductList.mx-pos-catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;max-height:640px;overflow:auto;padding:8px 2px}
+.mx-pos-product{border:1px solid #dbe6f3;border-radius:15px;background:#fff;overflow:hidden;box-shadow:0 3px 12px #1231a00a;display:flex;flex-direction:column}
+.mx-pos-product img{width:100%;height:145px;object-fit:cover;background:#eef3fa}
+.mx-pos-product .mx-pos-cardbody{padding:10px;display:flex;flex-direction:column;gap:7px;flex:1}
+.mx-pos-product .mx-pos-cardbody b{font-size:13px;line-height:1.4}.mx-pos-product .mx-pos-cardbody .btn{margin-top:auto}
+.mx-pos-stocktags{display:flex;gap:4px;flex-wrap:wrap}.mx-pos-stocktags span{font-size:11px;background:#e9f4ff;color:#164676;border-radius:6px;padding:4px 6px}
+.mx-pos-stocktags span.empty{background:#fee2e2;color:#9b1c1c}
+.mx-pos-modal{position:fixed;inset:0;background:#0c203c99;z-index:9999;display:grid;place-items:center;padding:15px}
+.mx-pos-modal[hidden]{display:none!important}.mx-pos-dialog{background:#fff;border-radius:18px;padding:20px;width:min(620px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 70px #0004}
+.mx-pos-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin:14px 0}
+.mx-pos-options button{background:#f5f9ff;border:1px solid #c9d8ec;border-radius:11px;padding:12px;text-align:left;cursor:pointer}
+.mx-pos-options button:disabled{opacity:.48;cursor:not-allowed}.mx-pos-options button strong{display:block;margin-bottom:5px}
+.mx-history-tools{display:flex;gap:9px;align-items:end;flex-wrap:wrap;margin:12px 0}.mx-history-tools .field{min-width:160px}
+.mx-danger-note{background:#fff7ed;color:#92400e;padding:12px;border-radius:10px;font-size:13px}
+@media(max-width:600px){#posProductList.mx-pos-catalog{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.mx-pos-product img{height:112px}}
 </style><style>.mx-a-bars{display:grid;gap:9px}.mx-a-bar{display:grid;grid-template-columns:minmax(90px,160px) 1fr minmax(80px,120px);align-items:center;gap:9px;font-size:13px}.mx-a-track{height:14px;border-radius:8px;background:#e9eef8;overflow:hidden}.mx-a-fill{height:100%;background:linear-gradient(90deg,#0b63ce,#4a9af5);border-radius:8px}@media(max-width:600px){.mx-a-bar{grid-template-columns:90px 1fr 75px;font-size:11px}}</style><style>
 .mx-lang-switch{display:inline-flex;align-items:center;gap:3px;padding:3px;border:1px solid #cdd8e6;border-radius:10px;background:#f3f6fa}.mx-lang-btn{border:0;border-radius:7px;background:transparent;padding:7px 12px;cursor:pointer;font-weight:700;color:#30455d}.mx-lang-btn.active{background:#0a4a8a;color:#fff}.mx-pos-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.mx-login-language{margin:10px 0}.mx-lang-btn:focus-visible{outline:2px solid #267bff;outline-offset:2px}
 </style><style>
@@ -233,7 +253,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
  <div>
   <div class="card">
    <div class="field"><label>Product Search</label><input id="posSearch" placeholder="Product name / code / category"></div>
-   <div id="posProductList" class="pos-products"></div>
+   <div id="mxPosCategories" class="mx-pos-catbar"></div><div id="posProductList" class="pos-products mx-pos-catalog"></div>
   </div>
   <div class="card" style="margin-top:14px">
    <h3>কাস্টমারের তথ্য</h3>
@@ -277,13 +297,16 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <div id="memoPrint" class="memo"><p>Sale complete করলে Cash Memo এখানে তৈরি হবে।</p></div>
 </section>
 
+<div id="mxPosVariantModal" class="mx-pos-modal" hidden><div class="mx-pos-dialog" role="dialog" aria-modal="true" aria-labelledby="mxPosVariantTitle"><div class="head"><h3 id="mxPosVariantTitle">সাইজ ও রঙ নির্বাচন</h3><button class="btn" id="mxPosVariantClose" type="button">✕ বন্ধ করুন</button></div><div id="mxPosVariantContent"></div></div></div>
 <section id="reports" class="panel"><div class="head"><h3>📈 Daily Sales Report</h3><span class="status">Online + Offline POS</span></div>
 <div class="card"><div class="mx-report-filters"><div class="field"><label>From</label><input id="mxReportFrom" type="date"></div><div class="field"><label>To</label><input id="mxReportTo" type="date"></div><div class="field"><label>Source</label><select id="mxReportSource"><option value="all">All Sales</option><option value="offline">Offline POS</option><option value="online">Online Orders</option></select></div></div>
 <div class="mx-report-actions"><button type="button" class="btn" id="mxToday">Today</button><button type="button" class="btn" id="mxThisMonth">This Month</button><button type="button" class="btn primary" id="mxReportCSV">⬇ Export CSV</button><button type="button" class="btn" id="mxReportPrintBtn">🖨 Print A4</button></div>
 <p class="mx-muted">Online: শুধু Delivered অর্ডার। POS: Completed বিক্রয়। তারিখ ও হিসাব Firebase-এ সংরক্ষিত রেকর্ড থেকে নেওয়া হয়। অনলাইন Paid/Due তথ্য না থাকলে অনুমান করা হয় না।</p></div>
 <div class="mx-report-stats"><div class="stat"><b id="mxGrossSales">৳0</b>Sales Revenue</div><div class="stat"><b id="mxReceived">৳0</b>Recorded Received</div><div class="stat"><b id="mxOutstanding">৳0</b>Recorded Due</div><div class="stat"><b id="mxExpensesTotal">৳0</b>Expenses</div><div class="stat"><b id="mxCost">৳0</b>Known Product Cost</div><div class="stat"><b id="mxProfit">৳0</b>Estimated Net Profit</div><div class="stat"><b id="mxSaleCount">0</b>Sales / Orders</div><div class="stat"><b id="mxExpenseCount">0</b>Expense Entries</div></div>
 <div class="notice">Estimated profit = Sales − known product cost − expenses. যেসব অর্ডারের cost price নেই, সেগুলোর জন্য লাভ সম্পূর্ণ নির্ভুল নয়। Return/Refund সমন্বয়ের তথ্য এই রিপোর্টে স্বয়ংক্রিয়ভাবে অন্তর্ভুক্ত নয়।</div>
-<div class="head"><h3>Sales Details</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Source</th><th>ID</th><th>Customer</th><th>Amount</th><th>Received</th><th>Due</th><th>Cost</th></tr></thead><tbody id="mxSalesRows"></tbody></table></div>
+<div class="head"><h3>বিক্রির তালিকা ও ভুল রেকর্ড সংশোধন</h3></div>
+<div class="mx-history-tools"><label class="field">কত দিনের হিসাব<select id="mxHistoryDays"><option value="7">গত ৭ দিন</option><option value="30">গত ৩০ দিন</option><option value="all">সব তারিখ</option></select></label><label class="field">ধরন<select id="mxHistoryType"><option value="offline">দোকান বিক্রি</option><option value="all">সব বিক্রি</option><option value="online">অনলাইন</option></select></label><button type="button" class="btn danger" id="mxHistoryDeleteSelected">নির্বাচিত ভুল বিক্রি মুছুন</button></div>
+<div class="mx-danger-note">শুধু দোকান বিক্রির ভুল রেকর্ড মুছতে পারবেন। ডিলিট করলে সেই বিক্রির স্টক ফেরত যাবে। রিটার্ন বা পরবর্তী বকেয়া আদায় থাকলে ডিলিট বন্ধ থাকবে। একবারে সর্বোচ্চ ১০টি। অনলাইন অর্ডার এখানে ডিলিট করা যাবে না।</div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Source</th><th>ID</th><th>Customer</th><th>Amount</th><th>Received</th><th>Due</th><th>Cost</th><th>সংশোধন</th></tr></thead><tbody id="mxSalesRows"></tbody></table></div>
 <div id="mxReportPrint" style="display:none"></div></section>
 <section id="expenses" class="panel"><div class="head"><h3>💸 Expense Management</h3></div>
 <div class="card"><form id="mxExpenseForm" class="formgrid"><div class="field"><label>Date *</label><input id="mxExpenseDate" type="date" required></div><div class="field"><label>Category *</label><select id="mxExpenseCategory"><option>Shop Rent</option><option>Electricity</option><option>Staff</option><option>Transport</option><option>Packaging</option><option>Marketing</option><option>Internet</option><option>Other</option></select></div><div class="field"><label>Amount (৳) *</label><input id="mxExpenseAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Payment Method</label><select id="mxExpensePayment"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field full"><label>Description</label><input id="mxExpenseNote" maxlength="250" placeholder="খরচের বিবরণ"></div><div class="full"><button type="submit" class="btn primary" id="mxExpenseSave">+ Save Expense</button></div></form></div>
@@ -305,6 +328,8 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 
 <section id="purchases" class="panel">
  <div class="head"><h3>🚚 পণ্য কেনা ও সাপ্লায়ারের হিসাব</h3></div>
+<div class="mx-history-tools"><label class="field">কেনার হিসাব<select id="mxPurchaseHistoryDays"><option value="7">গত ৭ দিন</option><option value="30">গত ৩০ দিন</option><option value="all">সব তারিখ</option></select></label><button type="button" class="btn danger" id="mxPurchaseDeleteSelected">নির্বাচিত ভুল ক্রয় মুছুন</button></div>
+<div class="mx-danger-note">ভুল ক্রয় মুছলে কেনা পরিমাণ স্টক থেকে কমবে। পর্যাপ্ত স্টক না থাকলে ডিলিট হবে না। সাপ্লায়ারের পরবর্তী পরিশোধ থাকলে আগে হিসাব যাচাই করুন। সর্বোচ্চ ১০টি রেকর্ড।</div>
  <div class="notice">Purchase save করলে নির্বাচিত Product Variant-এর stock বাড়বে এবং Supplier-এর বকেয়া হিসাব হবে। Supplier payment আলাদাভাবে লিখুন। ক্যাশ ও ওয়ালেট হিসাবে এই লেনদেন স্বয়ংক্রিয়ভাবে যোগ হয় না; প্রয়োজন হলে সেখানে একবার Money Out লিখুন। Product Cost Price স্বয়ংক্রিয়ভাবে পরিবর্তন হয় না।</div>
  <div class="card"><h3>➕ New Stock Purchase</h3><form id="mxPurchaseForm" class="formgrid">
  <div class="field"><label>Purchase Date *</label><input id="mxPurchaseDate" type="date" required></div>
@@ -334,7 +359,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
  <div class="mx-report-stats"><div class="stat"><b id="mxPurchaseTotal">৳0</b>Total Purchases</div><div class="stat"><b id="mxPurchasePaidTotal">৳0</b>Total Paid</div><div class="stat"><b id="mxPurchaseDueTotal">৳0</b>Supplier Outstanding</div><div class="stat"><b id="mxPurchaseCount">0</b>Purchase Entries</div></div>
  <div class="tablewrap"><table><thead><tr><th>Supplier</th><th>Mobile</th><th>Purchases</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mxSupplierRows"><tr><td colspan="5">Loading...</td></tr></tbody></table></div>
  <div class="head"><h3>📦 Purchase History</h3><button class="btn" type="button" id="mxPurchaseCSV">⬇ Purchase CSV</button></div>
- <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Invoice</th><th>Product / Variant</th><th>Qty</th><th>Cost</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mxPurchaseRows"><tr><td colspan="9">Loading...</td></tr></tbody></table></div>
+ <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Invoice</th><th>Product / Variant</th><th>Qty</th><th>Cost</th><th>Total</th><th>Paid</th><th>Due</th><th>সংশোধন</th></tr></thead><tbody id="mxPurchaseRows"><tr><td colspan="9">Loading...</td></tr></tbody></table></div>
  <div class="head"><h3>💸 Supplier Payment History</h3></div>
  <div class="tablewrap"><table><thead><tr><th>Date</th><th>Supplier</th><th>Method</th><th>Amount</th><th>Reference</th></tr></thead><tbody id="mxSupplierPaymentRows"><tr><td colspan="5">Loading...</td></tr></tbody></table></div>
  </section>
@@ -430,14 +455,15 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 </form><p id="mx12Message" class="hint">Preview before applying. Requires admin permissions on sales, customers, coupons, loyaltyEvents, and redemptions.</p></div>
 <div class="head"><h3>Redemption History</h3></div><div class="tablewrap"><table><thead><tr><th>Time</th><th>Sale</th><th>Customer</th><th>Type</th><th>Discount</th><th>Reference</th></tr></thead><tbody id="mx12Rows"></tbody></table></div></section>
 
+<style>.mx-return-summary{padding:12px 14px;background:#eff6ff;border:1px solid #cfe1fa;border-radius:12px;line-height:1.85;color:#17375b}.mx-return-summary b{color:#0b438a}</style>
 <section id="mxReturns" class="panel">
  <div class="head"><h3>↩️ দোকানের পণ্য ফেরত</h3><span class="status">স্টক ফেরত ও হিসাব</span></div>
  <div class="notice">পণ্য ফেরতের তথ্য ও স্টক একসঙ্গে Firebase-এ সেভ হবে। টাকা ফেরত দেওয়া বা ক্যাশ/লেজার সমন্বয় স্বয়ংক্রিয় নয়। আগের বিক্রির মূল বিল পরিবর্তন করা হবে না; রিপোর্টে ফেরতের টাকা আলাদাভাবে মিলিয়ে নিতে হবে।</div>
  <div class="card"><div class="formgrid">
-  <div class="field full"><label>বিক্রির রসিদ খুঁজুন</label><input id="mxReturnSearch" placeholder="রসিদ নম্বর বা কাস্টমারের মোবাইল" autocomplete="off"></div>
+  <div class="field full"><label>কাস্টমারের মোবাইল নম্বর / রসিদ নম্বর</label><input id="mxReturnSearch" placeholder="01XXXXXXXXX — মোবাইল নম্বর দিলে সর্বশেষ বিক্রি আসবে" inputmode="tel" autocomplete="off"><small class="hint">সম্পূর্ণ মোবাইল নম্বর দিলে সর্বশেষ দোকানের বিক্রি ও পণ্য নিজে থেকেই দেখাবে। পুরোনো বিক্রি থাকলে নিচ থেকে পরিবর্তন করা যাবে।</small></div>
   <div class="field full"><label>বিক্রি নির্বাচন করুন</label><select id="mxReturnSale"><option value="">বিক্রি নির্বাচন করুন</option></select></div>
-  <div class="field full"><label>ফেরত দেওয়ার পণ্য</label><select id="mxReturnLine"><option value="">পণ্য নির্বাচন করুন</option></select></div>
-  <div class="field"><label>কতটি ফেরত</label><input id="mxReturnQty" type="number" min="1" step="1" value="1"></div>
+  <div class="field full" id="mxReturnCustomerInfo" aria-live="polite"></div><div class="field full"><label>ফেরত দেওয়ার পণ্য</label><select id="mxReturnLine"><option value="">পণ্য নির্বাচন করুন</option></select></div>
+  <div class="field full" id="mxReturnItemInfo" aria-live="polite"></div><div class="field"><label>কতটি ফেরত</label><input id="mxReturnQty" type="number" min="1" step="1" value="1"></div>
   <div class="field"><label>ফেরতের ধরন</label><select id="mxReturnType"><option value="return">পণ্য ফেরত</option><option value="exchange">পণ্য পরিবর্তন (এক্সচেঞ্জ)</option></select></div>
   <div class="field"><label>টাকা ফেরতের মাধ্যম (শুধু রেকর্ড)</label><select id="mxReturnMethod"><option value="None">টাকা ফেরত নয়</option><option value="Cash">ক্যাশ</option><option value="bKash">বিকাশ</option><option value="Nagad">নগদ</option><option value="Bank">ব্যাংক</option></select></div>
   <div class="field"><label>টাকা ফেরত (৳) — শুধু রেকর্ড</label><input id="mxReturnAmount" type="number" min="0" step="0.01" value="0"></div>
@@ -606,17 +632,26 @@ function renderOrderDetail(o){
  renderOnlineInvoice(o);
 }
 async function changeStockForOrder(tx,o,direction){
- const its=orderItems(o);
+ const its=orderItems(o),groups=new Map();
  for(const line of its){
-   let p=null,pref=null;
-   if(line.productId){pref=doc(db,"products",line.productId);const ps=await tx.get(pref);if(ps.exists())p={id:ps.id,...ps.data()}}
-   if(!p){const found=products.find(x=>(line.code&&x.code===line.code)||x.name===line.name);if(!found)throw new Error("Product পাওয়া যায়নি: "+line.name);pref=doc(db,"products",found.id);const ps=await tx.get(pref);p={id:ps.id,...ps.data()}}
-   let vs=(p.variants&&p.variants.length)?p.variants.map(v=>({...v})):[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}];
-   let idx=vs.findIndex(v=>(!line.variantSku||(v.sku||"")===line.variantSku)&&(!line.size||(v.size||"")===line.size)&&(!line.color||(v.color||"")===line.color));
-   if(idx<0)idx=0;
-   const before=Number(vs[idx].stock||0),after=before+(direction*line.qty);
-   if(after<0)throw new Error(`${line.name} এর stock পর্যাপ্ত নেই। Available: ${before}`);
-   vs[idx].stock=after;tx.update(pref,{variants:vs,stock:vs.reduce((a,v)=>a+Number(v.stock||0),0),updatedAt:serverTimestamp()});
+   const product=products.find(p=>p.id===line.productId||(line.code&&p.code===line.code)||p.name===line.name);
+   const pid=line.productId||product?.id;
+   if(!pid)throw new Error("অর্ডারের পণ্য পাওয়া যায়নি: "+line.name);
+   const arr=groups.get(pid)||[];arr.push(line);groups.set(pid,arr);
+ }
+ const refs=[...groups.keys()].map(id=>doc(db,"products",id)),snaps=[];
+ for(const r of refs)snaps.push(await tx.get(r));
+ for(let i=0;i<refs.length;i++){
+  const snap=snaps[i],ref=refs[i];if(!snap.exists())throw new Error("অর্ডারের পণ্য পাওয়া যায়নি: "+ref.id);
+  const vs=productVariants(snap.data()).map(v=>({...v}));
+  for(const line of groups.get(ref.id)){
+   const idx=vs.findIndex(v=>(!line.size||(v.size||"")===line.size)&&(!line.color||(v.color||"")===line.color)&&((line.size||line.color)||!(line.variantSku||line.sku)||(v.sku||"")===(line.variantSku||line.sku)||vs.length===1));
+   if(idx<0)throw new Error("অর্ডারের সাইজ/রঙ মিলছে না: "+line.name);
+   const after=Number(vs[idx].stock||0)+direction*Number(line.qty||0);
+   if(after<0)throw new Error("স্টক কম: "+line.name+" ("+[line.size,line.color].filter(Boolean).join(" / ")+")");
+   vs[idx].stock=after;
+  }
+  tx.update(ref,{variants:vs,stock:vs.reduce((a,v)=>a+Number(v.stock||0),0),updatedAt:serverTimestamp()});
  }
 }
 window.changeOrderStatus=async(id,newStatus)=>{
@@ -629,7 +664,7 @@ window.changeOrderStatus=async(id,newStatus)=>{
     const snap=await tx.get(ref);if(!snap.exists())throw new Error("Order পাওয়া যায়নি।");
     const live={id:snap.id,...snap.data()},deducted=live.stockDeducted===true,restored=live.stockRestored===true;
     let patch={status:newStatus,updatedAt:serverTimestamp()};
-    if(newStatus==="Confirmed"&&!deducted){await changeStockForOrder(tx,live,-1);patch.stockDeducted=true;patch.stockRestored=false;patch.stockDeductedAt=serverTimestamp()}
+    if(["Confirmed","Processing","Shipped","Delivered"].includes(newStatus)&&(!deducted||restored)){await changeStockForOrder(tx,live,-1);patch.stockDeducted=true;patch.stockRestored=false;patch.stockDeductedAt=serverTimestamp()}
     if((newStatus==="Cancelled"||newStatus==="Returned")&&deducted&&!restored){await changeStockForOrder(tx,live,1);patch.stockRestored=true;patch.stockRestoredAt=serverTimestamp()}
     tx.update(ref,patch);
   });
@@ -743,7 +778,7 @@ $("productForm").onsubmit=async e=>{
    discountPercent:reg>0&&sell<reg?Number((((reg-sell)/reg)*100).toFixed(2)):0,
    profitPerPiece:Number((sell-cost).toFixed(2)),markupPercent:cost>0?Number((((sell-cost)/cost)*100).toFixed(2)):0,
    lowStockAt:Math.max(0,Number($("pLowStockAt").value||5)),stock:totalStock,variants,details:$("pDetails").value.trim(),
-   images:existingImages.slice(0,5),active:$("pStatus").value==="active",status:$("pStatus").value,updatedAt:serverTimestamp()
+   images:existingImages.slice(0,5),active:$("pStatus").value==="active",published:$("pStatus").value==="active",status:$("pStatus").value,updatedAt:serverTimestamp()
   };
   let pid=id;
   if(id) await updateDoc(doc(db,"products",id),data);
@@ -793,29 +828,41 @@ initPosAddress();
 let posCart=[],lastMemo=null;
 function salePrice(p){return Number(p.offerPrice??p.price??p.regularPrice??0)}
 function productVariants(p){return (p.variants&&p.variants.length)?p.variants:[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}]}
+let mxPosCategory="সব পণ্য";
+function mxPosStock(p){return productVariants(p).reduce((n,v)=>n+Number(v.stock||0),0)}
+function mxPosLabel(v){return [v.size,v.color].filter(Boolean).join(" / ")||"সাধারণ"}
 function renderPosProducts(){
  const box=$("posProductList");if(!box)return;
- const q=$("posSearch").value.trim().toLowerCase();
- const list=products.filter(p=>p.active!==false&&Number(p.stock||0)>0&&(!q||[p.name,p.code,p.category].join(" ").toLowerCase().includes(q)));
- box.innerHTML=list.length?list.map(p=>`<div class="pos-item"><div><b>${esc(p.name)}</b><div class="hint">${esc(p.code||"")} • ${esc(p.category||"")} • Stock ${Number(p.stock||0)} • ${money(salePrice(p))}</div></div><button class="btn primary" onclick="posAddProduct('${p.id}')">Add</button></div>`).join(""):'<p class="hint">কোনো product পাওয়া যায়নি।</p>';
+ const q=$("posSearch").value.trim().toLocaleLowerCase();
+ const cats=["সব পণ্য",...new Set(products.filter(p=>p.active!==false).map(p=>p.category).filter(Boolean))];
+ if(!cats.includes(mxPosCategory))mxPosCategory="সব পণ্য";
+ const catBox=$("mxPosCategories");catBox.innerHTML=cats.map((c,i)=>`<button type="button" class="${c===mxPosCategory?'active':''}" data-cat="${i}">${esc(c)}</button>`).join("");
+ catBox.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{mxPosCategory=cats[Number(b.dataset.cat)];renderPosProducts()});
+ const list=products.filter(p=>p.active!==false&&(mxPosCategory==="সব পণ্য"||p.category===mxPosCategory)&&(!q||[p.name,p.code,p.category,...productVariants(p).flatMap(v=>[v.size,v.color])].join(" ").toLocaleLowerCase().includes(q)));
+ box.innerHTML=list.length?list.map(p=>{
+ const vs=productVariants(p),available=mxPosStock(p),img=imageUrl((p.images||[])[0])||imageUrl(p.image)||"";
+ const tags=vs.map(v=>`<span class="${Number(v.stock||0)<=0?'empty':''}">${esc(mxPosLabel(v))}: ${Math.max(0,Number(v.stock||0))} পিস</span>`).join("");
+ return `<article class="mx-pos-product">${img?`<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">`:'<div style="height:110px;background:#e9f1fb;display:grid;place-items:center">📦 ছবি নেই</div>'}<div class="mx-pos-cardbody"><b>${esc(p.name)}</b><small>${esc(p.category||'অন্যান্য')} · ${esc(p.code||'')}</small><strong>${money(salePrice(p))}</strong><div class="mx-pos-stocktags">${tags}</div><button type="button" class="btn primary" data-pos-pid="${esc(p.id)}" ${available<=0?'disabled':''}>${available>0?'সাইজ/রঙ দেখে যোগ করুন':'স্টক নেই'}</button></div></article>`
+ }).join(""):'<p class="hint">এই ক্যাটাগরিতে পণ্য পাওয়া যায়নি।</p>';
+ box.querySelectorAll('[data-pos-pid]').forEach(b=>b.onclick=()=>window.posAddProduct(b.dataset.posPid));
 }
 $("posSearch").oninput=renderPosProducts;
-
+$("mxPosVariantClose").onclick=()=>$("mxPosVariantModal").hidden=true;
+$("mxPosVariantModal").addEventListener("click",e=>{if(e.target===$("mxPosVariantModal"))$("mxPosVariantModal").hidden=true});
 window.posAddProduct=id=>{
  const p=products.find(x=>x.id===id);if(!p)return;
- const vs=productVariants(p).filter(v=>Number(v.stock||0)>0);
- let vi=0;
- if(vs.length>1){
-   const text=vs.map((v,i)=>`${i+1}. ${[v.size,v.color,v.sku].filter(Boolean).join(" / ")||"Default"} — Stock ${v.stock}`).join("\n");
-   const pick=prompt("Variant নির্বাচন করুন:\n"+text+"\n\nনাম্বার লিখুন:","1"); if(pick===null)return;
-   vi=Math.max(0,Math.min(vs.length-1,Number(pick)-1||0));
- }
- const v=vs[vi]||{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)};
- const key=p.id+"|"+(v.sku||"")+"|"+(v.size||"")+"|"+(v.color||"");
- const ex=posCart.find(x=>x.key===key);
- if(ex){if(ex.qty>=Number(v.stock||0)){alert("এই Variant-এর পর্যাপ্ত stock নেই।");return}ex.qty++}
- else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:salePrice(p),cost:Number(p.costPrice||0)});
- renderPosCart();
+ const vs=productVariants(p),box=$("mxPosVariantContent");
+ $("mxPosVariantTitle").textContent=p.name+" — সাইজ ও রঙের স্টক";
+ box.innerHTML=`<p class="hint">সাইজ/রঙ দেওয়া না থাকলে সাধারণ পণ্য হিসেবে দেখাবে। স্টক শূন্য হলে যোগ করা যাবে না।</p><div class="mx-pos-options">${vs.map((v,i)=>`<button type="button" data-vi="${i}" ${Number(v.stock||0)<=0?'disabled':''}><strong>${esc(mxPosLabel(v))}</strong>${Number(v.stock||0)} পিস আছে ${v.sku?`<small>· ${esc(v.sku)}</small>`:''}</button>`).join("")}</div>`;
+ box.querySelectorAll('[data-vi]').forEach(b=>b.onclick=()=>{
+  const v=vs[Number(b.dataset.vi)];if(!v||Number(v.stock||0)<=0)return;
+  const key=p.id+"|"+(v.sku||"")+"|"+(v.size||"")+"|"+(v.color||"");
+  const ex=posCart.find(x=>x.key===key);
+  if(ex){if(ex.qty>=Number(v.stock||0)){alert("এই সাইজ/রঙের পর্যাপ্ত স্টক নেই।");return}ex.qty++}
+  else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:salePrice(p),cost:Number(p.costPrice||0)});
+  $("mxPosVariantModal").hidden=true;renderPosCart();
+ });
+ $("mxPosVariantModal").hidden=false;
 };
 function renderPosCart(){
  const box=$("posCart");if(!box)return;
@@ -912,14 +959,19 @@ $("completeSale").onclick=async()=>{
    const saleId=nextSaleId(),lines=posCart.map(x=>({...x,lineTotal:Number((x.qty*x.price).toFixed(2)),costTotal:Number((x.qty*x.cost).toFixed(2))}));
    const saleRef=doc(collection(db,"sales"));
    await runTransaction(db,async tx=>{
-     for(const line of lines){
-       const pref=doc(db,"products",line.productId),ps=await tx.get(pref);if(!ps.exists())throw new Error("Product পাওয়া যায়নি: "+line.name);
-       const pd=ps.data(),vs=productVariants(pd),idx=vs.findIndex(v=>(v.sku||"")===(line.variantSku||"")&&(v.size||"")===(line.size||"")&&(v.color||"")===(line.color||""));
-       if(idx<0)throw new Error("Variant পাওয়া যায়নি: "+line.name);
-       if(Number(vs[idx].stock||0)<line.qty)throw new Error("Stock কম: "+line.name);
-       vs[idx]={...vs[idx],stock:Number(vs[idx].stock||0)-line.qty};
-       const newStock=vs.reduce((a,v)=>a+Number(v.stock||0),0);
-       tx.update(pref,{variants:vs,stock:newStock,updatedAt:serverTimestamp()});
+     const grouped=new Map();for(const line of lines){const a=grouped.get(line.productId)||[];a.push(line);grouped.set(line.productId,a)}
+     const refs=[...grouped.keys()].map(id=>doc(db,"products",id));const snaps=[];
+     for(const ref of refs)snaps.push(await tx.get(ref));
+     for(let i=0;i<refs.length;i++){
+       const ps=snaps[i],pref=refs[i];if(!ps.exists())throw new Error("পণ্য পাওয়া যায়নি: "+pref.id);
+       const vs=productVariants(ps.data()).map(v=>({...v}));
+       for(const line of grouped.get(pref.id)){
+         const idx=vs.findIndex(v=>(v.sku||"")===(line.variantSku||"")&&(v.size||"")===(line.size||"")&&(v.color||"")===(line.color||""));
+         if(idx<0)throw new Error("সাইজ/রঙ পাওয়া যায়নি: "+line.name);
+         if(Number(vs[idx].stock||0)<line.qty)throw new Error("স্টক কম: "+line.name+" ("+[line.size,line.color].filter(Boolean).join(" / ")+")");
+         vs[idx].stock=Number(vs[idx].stock||0)-line.qty;
+       }
+       tx.update(pref,{variants:vs,stock:vs.reduce((a,v)=>a+Number(v.stock||0),0),updatedAt:serverTimestamp()});
      }
      tx.set(saleRef,{saleId,type:"offline",customerDocId,customerId,customerName:finalName,customerMobile:mobile,customerWhatsApp:wa||customer?.whatsapp||"",division:division||customer?.division||"",district:district||customer?.district||"",upazila:upazila||customer?.upazila||"",area:area||customer?.area||"",customerAddress:customerData.address||customer?.address||"",items:lines,subtotal:t.sub,discount:t.dis,deliveryCharge:t.del,total:t.grand,paid:t.paid,due:t.due,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due",status:"Completed",totalCost:lines.reduce((a,x)=>a+x.costTotal,0),grossProfit:Number((t.sub-t.dis-lines.reduce((a,x)=>a+x.costTotal,0)).toFixed(2)),createdAt:serverTimestamp()});
    });
@@ -968,15 +1020,21 @@ function mxStart(){if(mxSalesReady)return;mxSalesReady=true;
  onSnapshot(collection(db,"expenses"),snap=>{mxExpenses=snap.docs.map(d=>({id:d.id,...d.data()}));mxExpensesReady=true;mxRenderAll()},e=>{console.error("Expense access:",e);$("mxExpenseRows").innerHTML='<tr><td colspan="6">Expenses read failed. Firebase rules/permissions check করুন।</td></tr>'});
 }
 const mxOrderCost=o=>{if(mxHas(o.totalCost))return mxNum(o.totalCost);if(Array.isArray(o.items)&&o.items.length&&o.items.every(i=>mxHas(i.costPrice)||mxHas(i.cost)||mxHas(i.costTotal)))return o.items.reduce((s,i)=>s+(mxHas(i.costTotal)?mxNum(i.costTotal):mxNum(i.costPrice??i.cost)*mxNum(i.qty??i.quantity??1)),0);return null};
-function mxAllRecords(){const pos=mxSales.filter(s=>(s.status||"Completed")==="Completed").map(s=>({date:mxAsDate(s.createdAt||s.date),source:"offline",code:s.saleId||s.id,name:s.customerName||"",total:mxNum(s.total),paid:mxHas(s.paid)?mxNum(s.paid):null,due:mxHas(s.due)?mxNum(s.due):null,cost:mxHas(s.totalCost)?mxNum(s.totalCost):null}));
- const online=orders.filter(o=>o.status==="Delivered").map(o=>({date:mxAsDate(o.deliveredAt||o.updatedAt||o.createdAt),source:"online",code:orderCode(o),name:o.customerName||"",total:mxNum(o.total),paid:mxHas(o.paid)?mxNum(o.paid):null,due:mxHas(o.due)?mxNum(o.due):null,cost:mxOrderCost(o)}));return [...pos,...online]}
+function mxAllRecords(){const pos=mxSales.filter(s=>(s.status||"Completed")==="Completed").map(s=>({date:mxAsDate(s.createdAt||s.date),source:"offline",docId:s.id,code:s.saleId||s.id,name:s.customerName||"",total:mxNum(s.total),paid:mxHas(s.paid)?mxNum(s.paid):null,due:mxHas(s.due)?mxNum(s.due):null,cost:mxHas(s.totalCost)?mxNum(s.totalCost):null}));
+ const online=orders.filter(o=>o.status==="Delivered").map(o=>({date:mxAsDate(o.deliveredAt||o.updatedAt||o.createdAt),source:"online",docId:o.id,code:orderCode(o),name:o.customerName||"",total:mxNum(o.total),paid:mxHas(o.paid)?mxNum(o.paid):null,due:mxHas(o.due)?mxNum(o.due):null,cost:mxOrderCost(o)}));return [...pos,...online]}
 function mxInRange(date,from,to){if(!date)return false;const day=mxDateLocal(date);return (!from||day>=from)&&(!to||day<=to)}
 function mxFiltered(){const from=$("mxReportFrom").value,to=$("mxReportTo").value,source=$("mxReportSource").value;return mxAllRecords().filter(r=>mxInRange(r.date,from,to)&&(source==="all"||r.source===source)).sort((a,b)=>b.date-a.date)}
 function mxFilteredExpenses(){const from=$("mxReportFrom").value,to=$("mxReportTo").value;return mxExpenses.filter(e=>{const day=String(e.date||"").slice(0,10);return day&&(!from||day>=from)&&(!to||day<=to)})}
 function mxReportData(){const sales=mxFiltered(),expenses=mxFilteredExpenses(),total=sales.reduce((n,x)=>n+x.total,0),knownCost=sales.reduce((n,x)=>n+(x.cost??0),0),expenseTotal=expenses.reduce((n,x)=>n+mxNum(x.amount),0);return {sales,expenses,total,knownCost,expenseTotal,profit:total-knownCost-expenseTotal,received:sales.reduce((n,x)=>n+(x.paid??0),0),due:sales.reduce((n,x)=>n+(x.due??0),0),missingCost:sales.filter(x=>x.cost===null).length,missingPayments:sales.filter(x=>x.paid===null||x.due===null).length}}
 function mxRenderReport(){const r=mxReportData();$("mxGrossSales").textContent=money(r.total);$("mxReceived").textContent=money(r.received);$("mxOutstanding").textContent=money(r.due);$("mxExpensesTotal").textContent=money(r.expenseTotal);$("mxCost").textContent=money(r.knownCost);$("mxProfit").textContent=money(r.profit)+(r.missingCost?" *":"");$("mxSaleCount").textContent=r.sales.length;$("mxExpenseCount").textContent=r.expenses.length;
- $("mxSalesRows").innerHTML=r.sales.length?r.sales.map(x=>`<tr><td>${esc(mxDateLocal(x.date))}</td><td>${x.source==="online"?"Online":"POS"}</td><td>${esc(x.code)}</td><td>${esc(x.name)}</td><td>${money(x.total)}</td><td>${x.paid===null?"—":money(x.paid)}</td><td>${x.due===null?"—":money(x.due)}</td><td>${x.cost===null?"—":money(x.cost)}</td></tr>`).join(""):'<tr><td colspan="8">এই সময়ের কোনো বিক্রয় পাওয়া যায়নি।</td></tr>';
+ $("mxSalesRows").innerHTML=r.sales.length?r.sales.map(x=>`<tr><td>${esc(mxDateLocal(x.date))}</td><td>${x.source==="online"?"অনলাইন":"অফলাইন"}</td><td>${esc(x.code)}</td><td>${esc(x.name)}</td><td>${money(x.total)}</td><td>${x.paid===null?"—":money(x.paid)}</td><td>${x.due===null?"—":money(x.due)}</td><td>${x.cost===null?"—":money(x.cost)}</td><td>${x.source==="offline"?`<label><input type="checkbox" class="mx-sale-check" value="${esc(x.docId)}" style="width:auto"> নির্বাচন</label><button type="button" class="btn danger" data-sale-delete="${esc(x.docId)}">ডিলিট</button>`:"—"}</td></tr>`).join(""):'<tr><td colspan="9">এই সময়ের কোনো বিক্রয় পাওয়া যায়নি।</td></tr>';
 }
+// History actions are bound after each report render.
+const mxOldRenderReport=mxRenderReport;
+mxRenderReport=function(){mxOldRenderReport();
+ const rows=$("mxSalesRows");
+ rows.querySelectorAll('[data-sale-delete]').forEach(b=>b.onclick=()=>mxDeleteSales([b.dataset.saleDelete]));
+};
 function mxRenderExpenses(){const sorted=[...mxExpenses].sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));$("mxExpenseRows").innerHTML=sorted.length?sorted.map(e=>`<tr><td>${esc(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.description||"")}</td><td>${esc(e.paymentMethod||"")}</td><td>${money(e.amount)}</td><td><button type="button" class="btn danger" data-expense-id="${esc(e.id)}">Delete</button></td></tr>`).join(""):'<tr><td colspan="6">কোনো খরচ যোগ করা হয়নি।</td></tr>';$("mxExpenseRows").querySelectorAll("[data-expense-id]").forEach(b=>b.onclick=async()=>{if(!confirm("এই খরচের রেকর্ড মুছে ফেলবেন?"))return;try{await deleteDoc(doc(db,"expenses",b.dataset.expenseId))}catch(e){alert("Delete failed: "+(e.message||e.code))}})}
 function mxRenderAll(){mxRenderReport();mxRenderExpenses()}
 ["mxReportFrom","mxReportTo","mxReportSource"].forEach(id=>$(id).addEventListener("change",mxRenderReport));
@@ -1060,9 +1118,11 @@ function mxP7Render(){mxP7Options();const totals=mxP7SupplierTotals();
  $("mxPurchaseDueTotal").textContent=money(totals.reduce((n,x)=>n+x.due,0));
  $("mxPurchaseCount").textContent=mxPurchases.length;
  $("mxSupplierRows").innerHTML=totals.length?totals.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.mobile||"")}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(x.due)}</td></tr>`).join(""):'<tr><td colspan="5">No suppliers yet.</td></tr>';
- $("mxPurchaseRows").innerHTML=[...mxPurchases].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.supplierName)}</td><td>${esc(x.invoice||"—")}</td><td>${esc(x.productName)}<br><small>${esc(x.variantLabel||"")}</small></td><td>${Number(x.qty||0)}</td><td>${money(x.unitCost)}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(mxP7Money(x.total-x.paid))}</td></tr>`).join("")||'<tr><td colspan="9">No purchases yet.</td></tr>';
+ $("mxPurchaseRows").innerHTML=[...mxPurchases].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.supplierName)}</td><td>${esc(x.invoice||"—")}</td><td>${esc(x.productName)}<br><small>${esc(x.variantLabel||"")}</small></td><td>${Number(x.qty||0)}</td><td>${money(x.unitCost)}</td><td>${money(x.total)}</td><td>${money(x.paid)}</td><td>${money(mxP7Money(x.total-x.paid))}</td><td><input type="checkbox" class="mx-purchase-check" value="${esc(x.id)}" style="width:auto"><button type="button" class="btn danger" data-purchase-delete="${esc(x.id)}">ডিলিট</button></td></tr>`).join("")||'<tr><td colspan="10">No purchases yet.</td></tr>';
  $("mxSupplierPaymentRows").innerHTML=[...mxSupplierPayments].sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.supplierName)}</td><td>${esc(x.method)}</td><td>${money(x.amount)}</td><td>${esc(x.note||"")}</td></tr>`).join("")||'<tr><td colspan="5">No payments yet.</td></tr>';
 }
+const mxP7RenderOriginal=mxP7Render;
+mxP7Render=function(){mxP7RenderOriginal();$("mxPurchaseRows").querySelectorAll('[data-purchase-delete]').forEach(b=>b.onclick=()=>mxDeletePurchases([b.dataset.purchaseDelete]));};
 function mxP7Start(){if(mxP7Started)return;mxP7Started=true;
  for(const [name,key] of [["purchases","mxPurchases"],["supplierPayments","mxSupplierPayments"],["suppliers","mxSuppliers"]]){
  onSnapshot(collection(db,name),snap=>{const list=snap.docs.map(d=>({id:d.id,...d.data()}));if(key==="mxPurchases")mxPurchases=list;else if(key==="mxSupplierPayments")mxSupplierPayments=list;else mxSuppliers=list;mxP7Render()},err=>{console.error("Phase 7 read",name,err);alert("Phase 7 "+name+" read permission failed. Firebase Rules check করুন।")});
@@ -1362,20 +1422,38 @@ const mxReturnN=x=>{const n=Number(x);return Number.isFinite(n)?n:0};
 const mxReturnKey=(l,i)=>String(i);
 function mxReturnSale(){return mxReturnSales.find(s=>s.id===$('mxReturnSale').value)}
 function mxReturnAvailable(s,i){const l=s?.items?.[i];return l?Math.max(0,Math.floor(mxReturnN(l.qty)-mxReturnN(s.returnedQty?.[String(i)]))):0}
+function mxReturnPhone(v){let x=String(v||'').replace(/[^0-9]/g,'');if(x.startsWith('880')&&x.length===13)x='0'+x.slice(3);if(x.startsWith('88')&&x.length===13)x=x.slice(2);return x}
+function mxReturnTime(s){const t=s.createdAt;return t?.toMillis?.()||((t?.seconds||0)*1000)||new Date(s.date||0).getTime()||0}
+function mxReturnCategory(l){const p=products.find(p=>p.id===l.productId);const c=l.category||l.categoryName||p?.category||p?.categoryName||'';return typeof c==='string'?c:''}
 function mxReturnRenderSales(){
- const query=$('mxReturnSearch').value.trim().toLowerCase(),old=$('mxReturnSale').value;
- const filtered=mxReturnSales.filter(s=>s.type==='offline'&&(s.status==='Completed'||s.status==='Partially Returned'||s.status==='Returned')&&(!query||[s.saleId,s.customerMobile,s.customerName].some(v=>String(v||'').toLowerCase().includes(query)))).slice(0,150);
- $('mxReturnSale').innerHTML='<option value="">বিক্রি নির্বাচন করুন</option>'+filtered.map(s=>`<option value="${esc(s.id)}">${esc(s.saleId||s.id)} — ${esc(s.customerMobile||'')} — ${money(s.total)}</option>`).join('');
+ const query=$('mxReturnSearch').value.trim(),norm=mxReturnPhone(query),old=$('mxReturnSale').value;
+ const exactPhone=/^01[3-9]\d{8}$/.test(norm)&&/^\+?[\d\s-]+$/.test(query);
+ const filtered=mxReturnSales.filter(s=>s.type==='offline'&&Array.isArray(s.items)&&s.items.length>0&&(!query||(exactPhone?mxReturnPhone(s.customerMobile)===norm:[s.saleId,s.customerMobile,s.customerName].some(v=>String(v||'').toLowerCase().includes(query.toLowerCase()))))).sort((a,b)=>mxReturnTime(b)-mxReturnTime(a)).slice(0,150);
+ $('mxReturnSale').innerHTML='<option value="">বিক্রি নির্বাচন করুন</option>'+filtered.map(s=>`<option value="${esc(s.id)}">${esc(s.saleId||s.id)} — ${esc(s.customerMobile||'')} — ${money(s.total)} (${new Date(mxReturnTime(s)||Date.now()).toLocaleDateString('en-GB')})</option>`).join('');
  if(filtered.some(s=>s.id===old))$('mxReturnSale').value=old;
+ else if(exactPhone&&filtered.length)$('mxReturnSale').value=filtered[0].id;
+ else $('mxReturnSale').value='';
+ $('mxReturnCustomerInfo').innerHTML=exactPhone&&!filtered.length?'<div class="mx-return-summary">এই নম্বরে দোকানের কোনো বিক্রি পাওয়া যায়নি। নম্বরটি যাচাই করুন।</div>':'';
  mxReturnRenderLines();
 }
 function mxReturnRenderLines(){
  const s=mxReturnSale(),old=$('mxReturnLine').value;
- $('mxReturnLine').innerHTML='<option value="">পণ্য নির্বাচন করুন</option>'+(s?.items||[]).map((l,i)=>{const available=mxReturnAvailable(s,i);return available?`<option value="${i}">${esc(l.name||'পণ্য')} / ${esc(l.size||'')} / ${esc(l.color||'')} — ফেরতযোগ্য ${available}টি</option>`:''}).join('');
+ $('mxReturnLine').innerHTML='<option value="">পণ্য নির্বাচন করুন</option>'+(s?.items||[]).map((l,i)=>{const available=mxReturnAvailable(s,i);return available?`<option value="${i}">${esc(l.name||'পণ্য')} — ${esc(mxReturnCategory(l)||'ক্যাটাগরি নেই')} — কেনা ${Math.floor(mxReturnN(l.qty))}টি, ফেরতযোগ্য ${available}টি</option>`:''}).join('');
  if([...$('mxReturnLine').options].some(o=>o.value===old))$('mxReturnLine').value=old;
- mxReturnPreview();
+ else if($('mxReturnLine').options.length===2)$('mxReturnLine').selectedIndex=1;
+ else $('mxReturnLine').value='';
+ $('mxReturnCustomerInfo').innerHTML=s?`<div class="mx-return-summary"><b>কাস্টমার:</b> ${esc(s.customerName||'নাম দেওয়া নেই')} &nbsp; <b>মোবাইল:</b> ${esc(s.customerMobile||'—')}<br><b>রসিদ:</b> ${esc(s.saleId||s.id)} &nbsp; <b>বিক্রির তারিখ:</b> ${esc(new Date(mxReturnTime(s)||Date.now()).toLocaleDateString('en-GB'))}<br><b>মোট কেনা পণ্য:</b> ${(s.items||[]).reduce((n,l)=>n+mxReturnN(l.qty),0)}টি &nbsp; <b>মোট বিল:</b> ${money(s.total)}<br><b>ঠিকানা:</b> ${esc([s.customerAddress,s.area,s.upazila,s.district,s.division].filter(Boolean).join(', ')||'সংরক্ষিত নেই')}</div>`:'';
+ mxReturnPreview(true);
 }
-function mxReturnPreview(){const s=mxReturnSale(),i=Number($('mxReturnLine').value),l=$('mxReturnLine').value!==''?s?.items?.[i]:null,q=Number($('mxReturnQty').value),a=Number($('mxReturnAmount').value);$('mxReturnPreview').textContent=l?`সর্বোচ্চ ফেরত: ${mxReturnAvailable(s,i)}টি | পণ্যের বিক্রয়মূল্য: ${money(mxReturnN(l.price)*Math.max(0,q))} | ফেরত টাকা (রেকর্ড): ${money(a||0)}`:'পণ্য নির্বাচন করে ফেরতের হিসাব দেখুন।'}
+function mxReturnPreview(resetQty=false){
+ const s=mxReturnSale(),v=$('mxReturnLine').value,i=Number(v),l=v!==''?s?.items?.[i]:null,a=Number($('mxReturnAmount').value);
+ if(!l){$('mxReturnItemInfo').innerHTML=s?'<div class="mx-return-summary">পণ্য নির্বাচন করুন। একাধিক পণ্য থাকলে যেটি ফেরত আসছে সেটি বেছে নিন।</div>':'';$('mxReturnPreview').textContent='পণ্য নির্বাচন করে ফেরতের হিসাব দেখুন।';return}
+ const available=mxReturnAvailable(s,i),original=Math.floor(mxReturnN(l.qty));$('mxReturnQty').max=String(available);
+ if(resetQty||!Number.isSafeInteger(Number($('mxReturnQty').value))||Number($('mxReturnQty').value)>available||Number($('mxReturnQty').value)<1)$('mxReturnQty').value=String(available);
+ const q=Number($('mxReturnQty').value);
+ $('mxReturnItemInfo').innerHTML=`<div class="mx-return-summary"><b>পণ্য:</b> ${esc(l.name||'—')}<br><b>ক্যাটাগরি:</b> ${esc(mxReturnCategory(l)||'সংরক্ষিত নেই')} &nbsp; <b>সাইজ:</b> ${esc(l.size||'—')} &nbsp; <b>রং:</b> ${esc(l.color||'—')}<br><b>কেনা হয়েছিল:</b> ${original}টি &nbsp; <b>আগে ফেরত:</b> ${original-available}টি &nbsp; <b>এখন ফেরতযোগ্য:</b> ${available}টি</div>`;
+ $('mxReturnPreview').textContent=`সর্বোচ্চ ফেরত: ${available}টি | নির্বাচিত পরিমাণ: ${q}টি | পণ্যের বিক্রয়মূল্য: ${money(mxReturnN(l.price)*Math.max(0,q))} | ফেরত টাকা (শুধু রেকর্ড): ${money(a||0)}`;
+}
 function mxReturnRenderHistory(){
  $('mxReturnRows').innerHTML=[...mxReturnRecords].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,300).map(r=>`<tr><td>${esc(r.createdAt?.toDate?.().toLocaleString('en-BD')||'—')}</td><td>${esc(r.saleId||'')}</td><td>${esc(r.productName||'')}</td><td>${r.qty||0}</td><td>${r.type==='exchange'?'এক্সচেঞ্জ':'ফেরত'}</td><td>${money(r.refundAmount||0)} (${esc(r.refundMethod||'')})</td><td>${r.restock?'স্টকে যোগ':'যোগ হয়নি'}</td></tr>`).join('')||'<tr><td colspan="7">এখনো ফেরতের রেকর্ড নেই।</td></tr>';
 }
@@ -1386,9 +1464,9 @@ function mxReturnStart(){if(mxReturnStarted)return;mxReturnStarted=true;
 const mxReturnOldStart=start;start=function(){mxReturnOldStart();mxReturnStart()};
 $('mxReturnSearch').addEventListener('input',mxReturnRenderSales);
 $('mxReturnSale').addEventListener('change',mxReturnRenderLines);
-$('mxReturnLine').addEventListener('change',mxReturnPreview);
-$('mxReturnQty').addEventListener('input',mxReturnPreview);
-$('mxReturnAmount').addEventListener('input',mxReturnPreview);
+$('mxReturnLine').addEventListener('change',()=>mxReturnPreview(true));
+$('mxReturnQty').addEventListener('input',()=>mxReturnPreview(false));
+$('mxReturnAmount').addEventListener('input',()=>mxReturnPreview(false));
 $('mxReturnSave').onclick=async()=>{
  const s=mxReturnSale(),lineIndex=Number($('mxReturnLine').value),line=$('mxReturnLine').value!==''?s?.items?.[lineIndex]:null;
  const qty=Number($('mxReturnQty').value),refund=Number($('mxReturnAmount').value),method=$('mxReturnMethod').value,reason=$('mxReturnReason').value.trim(),restock=$('mxReturnRestock').checked,type=$('mxReturnType').value;
@@ -1411,11 +1489,73 @@ $('mxReturnSave').onclick=async()=>{
    const totalItems=sale.items.reduce((sum,l)=>sum+mxReturnN(l.qty),0),returnedItems=Object.values(oldReturned).reduce((sum,n)=>sum+mxReturnN(n),0);
    tx.update(saleRef,{returnedQty:oldReturned,returnStatus:returnedItems>=totalItems?'Returned':'Partially Returned',lastReturnedAt:serverTimestamp()});
    if(restock){vs[variantIndex]={...vs[variantIndex],stock:mxReturnN(vs[variantIndex].stock)+qty};tx.update(prodRef,{variants:vs,stock:vs.reduce((sum,v)=>sum+mxReturnN(v.stock),0),updatedAt:serverTimestamp()});tx.set(movementRef,{productId:line.productId,productName:line.name,change:qty,reason:'POS Return',linkedSaleId:s.saleId||s.id,linkedReturnId:returnRef.id,createdAt:serverTimestamp()})}
-   tx.set(returnRef,{saleDocId:s.id,saleId:s.saleId||s.id,customerMobile:s.customerMobile||'',lineIndex,productId:line.productId,productName:line.name,variantSku:line.variantSku||'',size:line.size||'',color:line.color||'',qty,type,restock,refundAmount:refund,refundMethod:method,refundStatus:refund>0?'Manual payment required':'No refund',reason,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||''});
+   tx.set(returnRef,{productCategory:mxReturnCategory(line),originalPurchasedQty:mxReturnN(line.qty),saleDocId:s.id,saleId:s.saleId||s.id,customerMobile:s.customerMobile||'',lineIndex,productId:line.productId,productName:line.name,variantSku:line.variantSku||'',size:line.size||'',color:line.color||'',qty,type,restock,refundAmount:refund,refundMethod:method,refundStatus:refund>0?'Manual payment required':'No refund',reason,createdAt:serverTimestamp(),createdBy:auth.currentUser?.uid||''});
   });
   $('mxReturnMessage').textContent='ফেরতের তথ্য ও স্টক সফলভাবে সেভ হয়েছে। টাকা ফেরত দিলে ক্যাশ/লেজারে আলাদা হিসাব রাখুন।';$('mxReturnQty').value=1;$('mxReturnAmount').value=0;$('mxReturnReason').value='';
  }catch(e){console.error('POS return failed',e);$('mxReturnMessage').textContent='ফেরত সেভ হয়নি: '+(e.message||e.code)}finally{btn.disabled=false}
 };
 $('mxReturnCSV').onclick=()=>mxDownloadCSV('mehedi-pos-returns.csv',[['Date','Sale','Mobile','Product','Quantity','Type','Refund Amount (record)','Refund Method','Restocked','Reason'],...mxReturnRecords.map(r=>[r.createdAt?.toDate?.().toISOString()||'',r.saleId||'',r.customerMobile||'',r.productName||'',r.qty||0,r.type||'',r.refundAmount||0,r.refundMethod||'',r.restock?'Yes':'No',r.reason||''])]);
 
+
+// === Safe sales and purchases correction ===
+function mxRecordDay(value){if(!value)return "";if(typeof value==="string")return value.slice(0,10);return mxDateLocal(mxAsDate(value)||new Date(0))}
+function mxWithinDays(value,days){if(days==="all")return true;const d=mxRecordDay(value);if(!d)return false;const since=new Date();since.setHours(0,0,0,0);since.setDate(since.getDate()-Number(days)+1);return d>=mxDateLocal(since)}
+function mxFilterSaleHistory(){const days=$("mxHistoryDays").value,type=$("mxHistoryType").value;const today=mxDateLocal(new Date());const d=new Date();d.setDate(d.getDate()-(Number(days||7)-1));
+ $("mxReportFrom").value=days==="all"?"":mxDateLocal(d);$("mxReportTo").value=days==="all"?"":today;$("mxReportSource").value=type;mxRenderReport();}
+$("mxHistoryDays").onchange=mxFilterSaleHistory;$("mxHistoryType").onchange=mxFilterSaleHistory;
+$("mxHistoryDeleteSelected").onclick=()=>mxDeleteSales([...document.querySelectorAll('.mx-sale-check:checked')].map(x=>x.value));
+$("mxPurchaseDeleteSelected").onclick=()=>mxDeletePurchases([...document.querySelectorAll('.mx-purchase-check:checked')].map(x=>x.value));
+$("mxPurchaseHistoryDays").onchange=()=>mxP7Render();
+const mxPurchaseRenderWithFilter=mxP7Render;
+mxP7Render=function(){mxPurchaseRenderWithFilter();const days=$("mxPurchaseHistoryDays").value;for(const row of $("mxPurchaseRows").rows){const id=row.querySelector('.mx-purchase-check')?.value;if(id){const p=mxPurchases.find(x=>x.id===id);row.hidden=!mxWithinDays(p?.date,days)}}};
+async function mxDeleteSales(ids){
+ ids=[...new Set(ids)].filter(Boolean);if(!ids.length){alert("প্রথমে বিক্রি নির্বাচন করুন।");return}if(ids.length>10){alert("একবারে সর্বোচ্চ ১০টি বিক্রি নির্বাচন করুন।");return}
+ const records=ids.map(id=>mxSales.find(x=>x.id===id));if(records.some(x=>!x||x.status!=="Completed")){alert("শুধু সম্পন্ন দোকান বিক্রি ডিলিট করা যাবে।");return}
+ const detail=records.map(s=>`${s.saleId||s.id}: ${s.customerName||""} — ${money(s.total)}`).join("\n");
+ if(!confirm(`এই ${ids.length}টি বিক্রি ডিলিট করবেন? স্টক ফেরত যাবে।\n\n${detail}`))return;
+ if(prompt(`নিশ্চিত করতে DELETE লিখুন (${ids.length}টি বিক্রি):`,"")!=="DELETE")return;
+ let done=0;for(const sale of records){try{
+   // Prevent orphaned returns, subsequent collections and redemptions.
+   if(mxReturnRecords?.some(r=>r.saleId===sale.saleId||r.saleDocId===sale.id||r.saleId===sale.id))throw new Error("এই বিক্রিতে পণ্য ফেরত আছে");
+   if(mx10Collections.some(r=>r.saleId===sale.saleId||r.saleDocId===sale.id||r.saleId===sale.id))throw new Error("বকেয়া আদায়ের রেকর্ড আছে");
+   if(typeof mx12Redemptions!=="undefined"&&mx12Redemptions.some(r=>r.saleId===sale.saleId||r.saleDocId===sale.id||r.saleId===sale.id))throw new Error("এই বিক্রিতে কুপন/পয়েন্ট রিডেম্পশন আছে");
+   const lines=Array.isArray(sale.items)?sale.items:[];
+   await runTransaction(db,async tx=>{
+    const ref=doc(db,"sales",sale.id),ss=await tx.get(ref);if(!ss.exists())throw new Error("বিক্রির রেকর্ড পাওয়া যায়নি");
+    const s=ss.data();if(s.status!=="Completed")throw new Error("বিক্রির অবস্থা পরিবর্তন হয়েছে");
+    const qtyByProduct=new Map();for(const l of lines){if(!l.productId)throw new Error("পণ্যের ID নেই; নিরাপদে স্টক ফেরত দেওয়া যাচ্ছে না");const a=qtyByProduct.get(l.productId)||[];a.push(l);qtyByProduct.set(l.productId,a)}
+    const refs=[...qtyByProduct.keys()].map(id=>doc(db,"products",id));const snaps=[];for(const r of refs)snaps.push(await tx.get(r));
+    for(let i=0;i<refs.length;i++){
+      const ps=snaps[i];if(!ps.exists())throw new Error("পণ্য পাওয়া যায়নি; স্টক ঠিক করা যাচ্ছে না");
+      const vs=productVariants(ps.data()).map(v=>({...v}));for(const l of qtyByProduct.get(refs[i].id)){
+       const vi=vs.findIndex(v=>(v.sku||"")===(l.variantSku||"")&&(v.size||"")===(l.size||"")&&(v.color||"")===(l.color||""));
+       if(vi<0)throw new Error("পণ্যের সাইজ/রঙ আর মিলছে না");vs[vi].stock=Number(vs[vi].stock||0)+Number(l.qty||0);
+      }
+      tx.update(refs[i],{variants:vs,stock:vs.reduce((n,v)=>n+Number(v.stock||0),0),updatedAt:serverTimestamp()});
+    }
+    tx.delete(ref);
+   });done++;
+ }catch(e){alert(`বিক্রি ${sale.saleId||sale.id} ডিলিট হয়নি: ${e.message||e.code}`);break}}
+ alert(`${done}টি বিক্রি ডিলিট হয়েছে। স্টক সমন্বয় হয়েছে। পুরোনো stockMovements অডিট রেকর্ড মুছে ফেলা হয়নি।`);
+}
+async function mxDeletePurchases(ids){
+ ids=[...new Set(ids)].filter(Boolean);if(!ids.length){alert("প্রথমে ক্রয়ের রেকর্ড নির্বাচন করুন।");return}if(ids.length>10){alert("একবারে সর্বোচ্চ ১০টি ক্রয় নির্বাচন করুন।");return}
+ const records=ids.map(id=>mxPurchases.find(p=>p.id===id));if(records.some(p=>!p)){alert("ক্রয়ের রেকর্ড পাওয়া যায়নি।");return}
+ if(!confirm(`${ids.length}টি ক্রয়ের রেকর্ড ডিলিট করলে স্টক কমবে এবং সাপ্লায়ারের হিসাব পরিবর্তন হবে। নিশ্চিত?`))return;
+ if(prompt("নিশ্চিত করতে DELETE লিখুন:","")!=="DELETE")return;
+ let done=0;for(const p of records){try{
+  if(mxSupplierPayments.some(s=>s.supplierId===p.supplierId))throw new Error("এই সাপ্লায়ারের পরবর্তী পেমেন্ট আছে; আগে হিসাব মিলিয়ে নিন");
+  await runTransaction(db,async tx=>{
+   const r=doc(db,"purchases",p.id),pr=doc(db,"products",p.productId),ss=await tx.get(r),ps=await tx.get(pr);
+   if(!ss.exists()||!ps.exists())throw new Error("ক্রয় বা পণ্য পাওয়া যায়নি");const v=productVariants(ps.data()).map(x=>({...x}));
+   const pi=Number(p.variantIndex);let vi=Number.isInteger(pi)&&pi>=0&&pi<v.length&&[v[pi].size,v[pi].color,v[pi].sku].filter(Boolean).join(" / ")===(p.variantLabel||"")?pi:-1;
+   if(vi<0)vi=v.findIndex(x=>[x.size,x.color,x.sku].filter(Boolean).join(" / ")===(p.variantLabel||""));
+   if(vi<0)throw new Error("ক্রয়ের সাইজ/রঙ মিলছে না");
+   if(Number(v[vi].stock||0)<Number(p.qty||0))throw new Error("স্টকে পর্যাপ্ত পণ্য নেই; এই ক্রয় মুছলে স্টক ঋণাত্মক হবে");
+   v[vi].stock=Number(v[vi].stock||0)-Number(p.qty||0);
+   tx.update(pr,{variants:v,stock:v.reduce((n,x)=>n+Number(x.stock||0),0),updatedAt:serverTimestamp()});tx.delete(r);
+  });done++;
+ }catch(e){alert(`ক্রয় ${p.invoice||p.id} ডিলিট হয়নি: ${e.message||e.code}`);break}}
+ alert(`${done}টি ক্রয় ডিলিট হয়েছে। স্টক সমন্বয় হয়েছে।`);
+}
 </script></body></html>
