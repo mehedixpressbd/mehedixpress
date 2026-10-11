@@ -251,7 +251,59 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 </style><style id="mx-public-preview-style">
 .mx-public-preview{margin-top:13px;border:1px solid #d8e1ed;overflow:hidden;border-radius:14px;background:#fff;max-width:760px;color:#0b305e}.mx-preview-head{background:#002e67;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:9px;flex-wrap:wrap}.mx-preview-head span{font-size:12px}.mx-preview-body{padding:18px}.mx-preview-banner{background:#0569c9;color:#fff;text-align:center;border-radius:12px;padding:23px 10px;font-weight:bold}.mx-preview-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.mx-preview-cards>div{padding:13px 5px;border:1px solid #e0e6f0;text-align:center;border-radius:12px;background:#f6f9fc;font-size:13px}.mx-preview-button{background:#0569c9;color:white;border:0;padding:9px 19px;border-radius:9px;opacity:1}
 @media(max-width:500px){.mx-preview-cards{grid-template-columns:1fr}.mx-preview-head{font-size:12px}}
-</style></head><body>
+</style>
+<style id="mx-p20-pos-one-page">
+/* P20: POS workflow is a single scrollable page; no additional tab is required for receipt. */
+#pos .posgrid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px}
+#pos .posgrid>.card{min-width:0}
+#pos .posgrid .card{margin:0!important;min-width:0;padding:18px}
+#pos .mx-pos-step{display:inline-block;padding:5px 11px;background:#e8f3ff;border:1px solid #cfe1fa;color:#094b8d;border-radius:100px;font-size:12px;font-weight:800;margin-bottom:9px}
+#pos #posProductList{max-height:490px;overflow-y:auto}
+#pos .mx-pos-quickprice{display:grid;gap:5px;margin:10px 0}
+#pos .mx-pos-quickprice>label{font-size:12px;font-weight:700;color:#174669}
+#pos .mx-pos-quickprice>div{display:grid;grid-template-columns:54px 1fr 54px;align-items:center;gap:4px}
+#pos .mx-pos-quickprice input{min-width:0;text-align:center;padding:8px 3px;font-weight:800}
+#pos .mx-pos-quickprice button{padding:7px 1px;background:#e7f1fb;color:#085094}
+#pos .mx-pos-quickprice small{font-size:11px;color:#64748b}
+#pos .mx-pos-cart-head,#pos .mx-pos-cart-line{display:grid;grid-template-columns:minmax(150px,1.65fr) minmax(120px,1fr) minmax(170px,1.2fr) 95px 50px;align-items:center;gap:12px;min-width:0}
+#pos .mx-pos-cart-head{font-weight:800;font-size:12px;color:#51708c;background:#f4f9ff;padding:9px 6px;border-radius:8px}
+#pos .mx-pos-cart-line{padding:14px 6px;border-bottom:1px solid #dbe6f1}
+#pos .mx-pos-control{display:grid;grid-template-columns:30px minmax(42px,1fr) 30px;gap:3px;align-items:center}
+#pos .mx-pos-control.price{grid-template-columns:40px minmax(60px,1fr) 40px}
+#pos .mx-pos-control button{padding:8px 0;background:#eaf3fb;color:#0b4f8e}
+#pos .mx-pos-control input{text-align:center;padding:8px 3px;min-width:0}
+#pos .mx-pos-cart-line .removeLine{width:38px;padding:9px 3px}
+#pos .mx-pos-memo-area{margin-top:16px!important;background:#f8fbff;border:1px solid #cbdfee;scroll-margin-top:25px}
+#pos .mx-pos-memo-title{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px}
+#pos .mx-pos-memo-title h3{margin:0 0 5px}
+#pos .mx-pos-memo-state{border-radius:9px;background:#eaf4ff;color:#144b82;padding:10px 13px;margin-bottom:10px;font-size:13px}
+#pos .mx-pos-invoice-preview{min-width:0;overflow:visible}
+#pos .mx-pos-invoice-preview .mx-memo-copy{position:relative;isolation:isolate;background:white;padding:20px;margin:15px auto;max-width:850px;border:1px solid #d7e3ef;overflow:hidden}
+#pos .mx-pos-invoice-preview .mx-memo-copy>*:not(.mx-memo-watermark){position:relative;z-index:1}
+#pos .mx-pos-invoice-preview .mx-memo-watermark{position:absolute;left:50%;top:50%;width:min(60%,380px);height:auto;transform:translate(-50%,-50%);opacity:.07;z-index:0;pointer-events:none}
+#pos .mx-pos-invoice-preview .mx-memo-copy-tag{display:inline-block;background:#eaf4ff;color:#074a87;border:1px solid #b7d8f5;border-radius:50px;padding:5px 12px;margin:0 0 12px;font-size:12px;font-weight:800}
+#pos .mx-pos-invoice-preview table{width:100%;border-collapse:collapse}
+#pos .mx-pos-invoice-preview th,#pos .mx-pos-invoice-preview td{padding:8px 5px;border-bottom:1px solid #e1e9f1}
+#pos .mx-pos-draft{background:#fff;padding:18px;border:1px solid #d9e5ee;border-radius:12px}
+#pos .mx-pos-draft-tag{color:#9a3412;background:#fff1dd;font-size:12px;padding:8px;border-radius:8px}
+#pos .mx-pos-draft-summary{display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:flex-end;padding:12px 0}
+#pos .mx-pos-draft-summary span{white-space:nowrap}
+.mx-sz-row-actions{display:grid;gap:5px;min-width:135px}
+.mx-sz-row-actions>.mx-sz-quick-count{width:100%;padding:7px;text-align:center}
+.mx-sz-quick-buttons{display:flex;flex-direction:column;gap:5px}
+.mx-sz-quick-add{background:#e1f7e8;color:#17603b}.mx-sz-quick-sub{background:#fff0e6;color:#a94512}
+@media(max-width:850px){#pos .mx-pos-cart-head{display:none!important}#pos .mx-pos-cart-line{grid-template-columns:1fr 1fr;gap:10px}#pos .mx-pos-cart-line>div:first-child{grid-column:1/-1}#pos .mx-pos-cart-line .lineTotal{grid-column:1/-1}#pos .mx-pos-cart-line .removeLine{grid-column:1/-1;width:100%}}
+@media(max-width:450px){#pos .mx-pos-cart-line{grid-template-columns:1fr}#pos .mx-pos-cart-line>div:first-child,#pos .mx-pos-cart-line .lineTotal,#pos .mx-pos-cart-line .removeLine{grid-column:1}}
+@media print{
+ body.mx-print-pos-memo #cashmemo{display:block!important;position:static!important;margin:0!important;padding:0!important;visibility:visible!important}
+ body.mx-print-pos-memo #pos{display:none!important}
+ body.mx-print-pos-memo #cashmemo .head{display:none!important}
+ body.mx-print-pos-memo #memoPrint{display:block!important;visibility:visible!important}
+ body.mx-print-pos-memo #memoPrint *{visibility:visible!important}
+ body.mx-print-pos-memo #mxPosMemoArea{display:none!important}
+}
+</style>
+</head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
   <img src="assets/images/logo.png" alt="Mehedi Xpress" style="width:82px;height:82px;object-fit:contain;border-radius:18px" onerror="this.style.display='none'">
@@ -387,6 +439,11 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
    <div class="mx-memo-shortcuts"><button class="btn" type="button" id="mxOpenCashMemo">🧾 সর্বশেষ ক্যাশ মেমো দেখুন</button><button class="btn" type="button" id="mxFindCashMemo">🔎 পুরোনো ক্যাশ মেমো খুঁজুন</button></div><p class="hint">বিক্রি সম্পন্ন হলে ক্যাশ মেমো তৈরি হবে। এখান থেকে পরে আবার দেখা ও প্রিন্ট করা যাবে।</p>
   </div>
  </div>
+</div>
+<div id="mxPosMemoArea" class="card mx-pos-memo-area">
+ <div class="mx-pos-memo-title"><div><h3>🧾 ক্যাশ মেমো — দোকান বিক্রির একই পেজে</h3><p class="hint">পণ্য ও কাস্টমার তথ্যের পর এখানে খসড়া হিসাব দেখাবে। বিক্রি সফল হলে গ্রাহক ও দোকান—দুই কপি সম্পূর্ণ রসিদ দেখাবে।</p></div><div class="actions"><button type="button" class="btn primary" id="mxPosPrintA4" disabled>🖨 A4 × ২ কপি</button><button type="button" class="btn primary" id="mxPosPrintA5" disabled>🖨 A5 × ২ কপি</button></div></div>
+ <div id="mxPosMemoState" class="mx-pos-memo-state">প্রথমে একটি পণ্য নির্বাচন করুন।</div>
+ <div id="mxPosInvoicePreview" class="mx-pos-invoice-preview"></div>
 </div>
 </section>
 
@@ -1054,7 +1111,28 @@ function digitsOnlyInput(el){el?.addEventListener("input",()=>{el.value=el.value
 digitsOnlyInput($("posCustomerMobile"));digitsOnlyInput($("posCustomerWhatsApp"));
 initPosAddress();
 
+// P20: one-page order sequence; keep all original control IDs, Firestore paths and handlers.
+const mxPosGrid = $('pos').querySelector('.posgrid');
+const mxPosCatalogCard = $('posProductList').closest('.card');
+const mxPosCartCard = $('posCart').closest('.card');
+const mxPosCustomerCard = $('posCustomerName').closest('.card');
+mxPosGrid.replaceChildren(mxPosCatalogCard, mxPosCartCard, mxPosCustomerCard);
+mxPosCatalogCard.insertAdjacentHTML('afterbegin','<div class="mx-pos-step">ধাপ ১ · ক্যাটাগরি ও পণ্য নির্বাচন</div>');
+mxPosCartCard.insertAdjacentHTML('afterbegin','<div class="mx-pos-step">ধাপ ২ · পরিমাণ ও দর ঠিক করুন</div>');
+mxPosCustomerCard.insertAdjacentHTML('afterbegin','<div class="mx-pos-step">ধাপ ৩ · কাস্টমার তথ্য ও বিক্রি সম্পন্ন</div>');
 let posCart=[],lastMemo=null;
+let mxPosMemoFinalized=false;
+function mxPosRenderDraft(){
+ if(mxPosMemoFinalized)return;
+ const el=$('mxPosInvoicePreview'),message=$('mxPosMemoState'),prA4=$('mxPosPrintA4'),prA5=$('mxPosPrintA5');
+ prA4.disabled=true;prA5.disabled=true;
+ if(!posCart.length){el.innerHTML='';message.textContent='প্রথমে পণ্য যোগ করুন। বিক্রি সংরক্ষণ হওয়ার আগে এটি শুধু খসড়া।';return}
+ const t=calcPos();
+ const rows=posCart.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.name)} <small>${esc([x.size,x.color].filter(Boolean).join(' / '))}</small></td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.qty*x.price)}</td></tr>`).join('');
+ el.innerHTML=`<div class="mx-pos-draft"><div class="mx-pos-draft-tag">খসড়া ক্যাশ মেমো — এখনো বিক্রি সংরক্ষণ হয়নি, প্রিন্ট বন্ধ</div><h3>MEHEDI XPRESS</h3><p>নাম: ${esc($('posCustomerName').value||'—')} · মোবাইল: ${esc($('posCustomerMobile').value||'—')}</p><table><thead><tr><th>নং</th><th>পণ্য ও সাইজ</th><th>পিস</th><th>দর</th><th>মোট</th></tr></thead><tbody>${rows}</tbody></table><div class="mx-pos-draft-summary"><span>পণ্যের মোট: <b>${money(t.sub)}</b></span><span>অতিরিক্ত ছাড়: <b>${money(t.dis)}</b></span><span>ডেলিভারি: <b>${money(t.del)}</b></span><span>মোট বিল: <b>${money(t.grand)}</b></span><span>জমা: <b>${money(t.paid)}</b></span><span>বাকি: <b>${money(t.due)}</b></span></div></div>`;
+ message.textContent='খসড়া হিসাব পরিবর্তন হচ্ছে। আসল বিক্রি সম্পন্ন করার পর Memo ID সহ দুই কপি রসিদ পাওয়া যাবে।';
+}
+
 function salePrice(p){return Number(p.offerPrice??p.price??p.regularPrice??0)}
 function productVariants(p){return (p.variants&&p.variants.length)?p.variants:[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}]}
 let mxPosCategory="সব পণ্য";
@@ -1096,9 +1174,14 @@ function renderPosProducts(){
  box.innerHTML=list.length?list.map(p=>{
   const vs=productVariants(p),available=mxPosStock(p),img=imageUrl((p.images||[])[0])||imageUrl(p.image)||'';
   const tags=vs.map(v=>`<span class="${Number(v.stock||0)<=0?'empty':''}">${esc(mxPosLabel(v))}: ${Math.max(0,Number(v.stock||0))} পিস</span>`).join('');
-  return `<article class="mx-pos-product">${img?`<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">`:'<div style="height:145px;background:#e9f1fb;display:grid;place-items:center">📦 ছবি নেই</div>'}<div class="mx-pos-cardbody"><b>${esc(p.name)}</b><small>${esc(p.category||'অন্যান্য')} · ${esc(p.code||'')}</small><strong>${money(salePrice(p))}</strong><div class="mx-pos-stocktags">${tags}</div><button type="button" class="btn primary" data-pos-pid="${esc(p.id)}" ${available<=0?'disabled':''}>${available>0?'সাইজ/রঙ দেখে যোগ করুন':'স্টক নেই'}</button></div></article>`;
+  return `<article class="mx-pos-product">${img?`<img src="${esc(img)}" alt="${esc(p.name)}" loading="lazy" onerror="this.style.display='none'">`:'<div style="height:145px;background:#e9f1fb;display:grid;place-items:center">📦 ছবি নেই</div>'}<div class="mx-pos-cardbody"><b>${esc(p.name)}</b><small>${esc(p.category||'অন্যান্য')} · ${esc(p.code||'')}</small><strong>${money(salePrice(p))}</strong><div class="mx-pos-stocktags">${tags}</div><div class="mx-pos-quickprice"><label>এই বিক্রির দর (৳)</label><div><button class="btn" type="button" data-mx-pricedelta="-10" data-product-price-id="${esc(p.id)}" aria-label="দাম ১০ টাকা কমান">−10</button><input type="number" min="0" step="1" data-mx-quickprice="${esc(p.id)}" value="${salePrice(p)}" aria-label="এই বিক্রির এক পিসের দর"><button class="btn" type="button" data-mx-pricedelta="10" data-product-price-id="${esc(p.id)}" aria-label="দাম ১০ টাকা বাড়ান">+10</button></div><small>শুধু এই বিক্রির জন্য, মূল পণ্যের দাম বদলাবে না।</small></div><button type="button" class="btn primary" data-pos-pid="${esc(p.id)}" ${available<=0?'disabled':''}>${available>0?'সাইজ/রঙ দেখে যোগ করুন':'স্টক নেই'}</button></div></article>`;
  }).join(''):`<div class="mx-pos-empty">🔎 এই ${mxPosCategory==='সব পণ্য'?'সার্চে':'ক্যাটাগরিতে'} কোনো পণ্য পাওয়া যায়নি। অন্য ক্যাটাগরি অথবা সব পণ্য বেছে দেখুন।</div>`;
  box.querySelectorAll('[data-pos-pid]').forEach(b=>b.onclick=()=>window.posAddProduct(b.dataset.posPid));
+ box.querySelectorAll('[data-mx-pricedelta]').forEach(b=>b.onclick=()=>{
+  const input=[...box.querySelectorAll('[data-mx-quickprice]')].find(x=>x.dataset.mxQuickprice===b.dataset.productPriceId);
+  if(!input)return;const old=Number(input.value);if(!Number.isFinite(old))return;
+  input.value=Math.max(0,Number((old+Number(b.dataset.mxPricedelta)).toFixed(2)));
+ });
  requestAnimationFrame(mxPosUpdateScrollButtons);
 }
 $('mxPosCategories').addEventListener('scroll',mxPosUpdateScrollButtons,{passive:true});
@@ -1113,26 +1196,32 @@ $("mxPosVariantModal").addEventListener("click",e=>{if(e.target===$("mxPosVarian
 window.posAddProduct=id=>{
  const p=products.find(x=>x.id===id);if(!p)return;
  const vs=productVariants(p),box=$("mxPosVariantContent");
+ const priceInput=[...$('posProductList').querySelectorAll('[data-mx-quickprice]')].find(x=>x.dataset.mxQuickprice===id);
+ const chosenPrice=priceInput?Number(priceInput.value):salePrice(p);
+ if(!Number.isFinite(chosenPrice)||chosenPrice<0||chosenPrice>100000000){alert('সঠিক বিক্রয়মূল্য লিখুন।');return}
  $("mxPosVariantTitle").textContent=p.name+" — সাইজ ও রঙের স্টক";
  box.innerHTML=`<p class="hint">সাইজ/রঙ দেওয়া না থাকলে সাধারণ পণ্য হিসেবে দেখাবে। স্টক শূন্য হলে যোগ করা যাবে না।</p><div class="mx-pos-options">${vs.map((v,i)=>`<button type="button" data-vi="${i}" ${Number(v.stock||0)<=0?'disabled':''}><strong>${esc(mxPosLabel(v))}</strong>${Number(v.stock||0)} পিস আছে ${v.sku?`<small>· ${esc(v.sku)}</small>`:''}</button>`).join("")}</div>`;
  box.querySelectorAll('[data-vi]').forEach(b=>b.onclick=()=>{
   const v=vs[Number(b.dataset.vi)];if(!v||Number(v.stock||0)<=0)return;
   const key=p.id+"|"+(v.sku||"")+"|"+(v.size||"")+"|"+(v.color||"");
   const ex=posCart.find(x=>x.key===key);
-  if(ex){if(ex.qty>=Number(v.stock||0)){alert("এই সাইজ/রঙের পর্যাপ্ত স্টক নেই।");return}ex.qty++}
-  else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:salePrice(p),originalPrice:salePrice(p),cost:Number(p.costPrice||0)});
+  if(ex){if(ex.qty>=Number(v.stock||0)){alert("এই সাইজ/রঙের পর্যাপ্ত স্টক নেই।");return}ex.qty++;ex.price=chosenPrice;}
+  else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:chosenPrice,originalPrice:salePrice(p),cost:Number(p.costPrice||0)});
+  mxPosMemoFinalized=false;
   $("mxPosVariantModal").hidden=true;renderPosCart();
  });
  $("mxPosVariantModal").hidden=false;
 };
 function renderPosCart(){
- const box=$("posCart");if(!box)return;
- box.innerHTML=posCart.length?posCart.map((x,i)=>`<div class="pos-cart-row"><div><b>${esc(x.name)}</b><div class="hint">${esc([x.size,x.color,x.variantSku].filter(Boolean).join(" / "))}</div></div><input type="number" min="1" max="${x.available}" value="${x.qty}" onchange="posQty(${i},this.value)"><input type="number" min="0" value="${x.price}" onchange="posPrice(${i},this.value)"><b class="lineTotal">${money(x.qty*x.price)}</b><button class="btn danger removeLine" onclick="posRemove(${i})">×</button></div>`).join(""):'<p class="hint">Product থেকে Add করুন।</p>';
- calcPos();
+ const box=$('posCart');if(!box)return;
+ box.innerHTML=posCart.length?`<div class="mx-pos-cart-head"><span>পণ্য ও সাইজ</span><span>পরিমাণ</span><span>দর (৳)</span><span>মোট</span><span>মুছুন</span></div>`+posCart.map((x,i)=>`<div class="pos-cart-row mx-pos-cart-line"><div><b>${esc(x.name)}</b><div class="hint">${esc([x.size,x.color,x.variantSku].filter(Boolean).join(' / ')||'সাধারণ সাইজ')}</div><small>আগের দর: ${money(x.originalPrice)}</small></div><div class="mx-pos-control"><button class="btn" type="button" onclick="posQtyDelta(${i},-1)">−</button><input type="number" min="1" step="1" max="${x.available}" value="${x.qty}" aria-label="পিস" onchange="posQty(${i},this.value)"><button class="btn" type="button" onclick="posQtyDelta(${i},1)">+</button></div><div class="mx-pos-control price"><button class="btn" type="button" onclick="posPriceDelta(${i},-10)">−10</button><input type="number" min="0" step="1" value="${x.price}" aria-label="বিক্রির দর" onchange="posPrice(${i},this.value)"><button class="btn" type="button" onclick="posPriceDelta(${i},10)">+10</button></div><b class="lineTotal">${money(x.qty*x.price)}</b><button class="btn danger removeLine" type="button" onclick="posRemove(${i})">×</button></div>`).join(''):'<p class="hint">উপরের Product থেকে সাইজ বেছে Add করুন।</p>';
+ calcPos();mxPosRenderDraft();
 }
-window.posQty=(i,v)=>{posCart[i].qty=Math.max(1,Math.min(posCart[i].available,Number(v||1)));renderPosCart()};
-window.posPrice=(i,v)=>{posCart[i].price=Math.max(0,Number(v||0));renderPosCart()};
-window.posRemove=i=>{posCart.splice(i,1);renderPosCart()};
+window.posQty=(i,v)=>{const x=posCart[i];if(!x)return;const n=Number(v);if(!Number.isSafeInteger(n)||n<1){alert('পিসের পরিমাণ পূর্ণ সংখ্যা দিন।');renderPosCart();return}x.qty=Math.min(x.available,n);mxPosMemoFinalized=false;renderPosCart()};
+window.posQtyDelta=(i,d)=>{const x=posCart[i];if(x)window.posQty(i,x.qty+d)};
+window.posPrice=(i,v)=>{const x=posCart[i];if(!x)return;const n=Number(v);if(!Number.isFinite(n)||n<0||n>100000000){alert('বিক্রির দাম সঠিক নয়।');renderPosCart();return}x.price=Number(n.toFixed(2));mxPosMemoFinalized=false;renderPosCart()};
+window.posPriceDelta=(i,d)=>{const x=posCart[i];if(x)window.posPrice(i,Math.max(0,x.price+d))};
+window.posRemove=i=>{posCart.splice(i,1);mxPosMemoFinalized=false;renderPosCart()};
 function calcPos(){
  const sub=posCart.reduce((a,x)=>a+x.qty*x.price,0),dis=Math.max(0,Number($("posDiscount")?.value||0)),del=Math.max(0,Number($("posDelivery")?.value||0)),grand=Math.max(0,sub-dis+del),paid=Math.max(0,Number($("posPaid")?.value||0)),due=Math.max(0,grand-paid);
  const reference=posCart.reduce((a,x)=>a+Math.max(Number(x.originalPrice??x.price),Number(x.price))*x.qty,0);
@@ -1141,7 +1230,8 @@ function calcPos(){
  $("posSubtotal").textContent=money(sub);$("posDiscountShow").textContent="- "+money(dis);$("posDeliveryShow").textContent="+ "+money(del);$("posGrand").textContent=money(grand);$("posDue").textContent=money(due);
  return{sub,dis,del,grand,paid,due};
 }
-["posDiscount","posDelivery","posPaid"].forEach(id=>$(id).oninput=calcPos);
+['posDiscount','posDelivery','posPaid'].forEach(id=>$(id).oninput=()=>{calcPos();mxPosMemoFinalized=false;mxPosRenderDraft()});
+['posCustomerName','posCustomerMobile','posCustomerWhatsApp','posCustomerAddress','posArea','posCustomerId'].forEach(id=>$(id).addEventListener('input',()=>{if(posCart.length){mxPosMemoFinalized=false;mxPosRenderDraft()}}));
 
 function nextCustomerId(){return "MXC-"+Date.now().toString().slice(-8)}
 function nextSaleId(){const d=new Date(),ds=d.toISOString().slice(0,10).replaceAll("-","");return "MXS-"+ds+"-"+Date.now().toString().slice(-6)}
@@ -1166,6 +1256,7 @@ function mxPosFill(c){
  if(division){mxPosSetSelect("posDivision",division);$("posDivision").onchange?.()}
  if(district){mxPosSetSelect("posDistrict",district);$("posDistrict").onchange?.()}
  if(upazila){if(!$("posUpazilaManual").hidden)$("posUpazilaManual").value=upazila;else mxPosSetSelect("posUpazila",upazila)}
+ if(posCart.length)mxPosRenderDraft();
 }
 async function mxPosLookup(phone){
  const normalized=mxPosNormPhone(phone),seq=++mxPosLookupSerial;
@@ -1208,7 +1299,8 @@ $("completeSale").onclick=async()=>{
  const division=$("posDivision").value,district=$("posDistrict").value,upazila=($("posUpazilaManual")?.hidden===false?$("posUpazilaManual").value.trim():$("posUpazila").value),area=$("posArea").value.trim();
  if(!validBdMobile(mobile)){alert("সঠিক ১১ সংখ্যার বাংলাদেশি Mobile Number দিন। যেমন: 01XXXXXXXXX");$("posCustomerMobile").focus();return}
  if(wa&&!validBdMobile(wa)){alert("WhatsApp Number দিলে সঠিক ১১ সংখ্যার বাংলাদেশি নম্বর দিন।");$("posCustomerWhatsApp").focus();return}
- const t=calcPos();if(mxPosLookupBusy){alert("কাস্টমারের তথ্য খোঁজা হচ্ছে, একটু অপেক্ষা করুন।");return}if(mxPosMatchedPhone!==mobile){await mxPosLookup(mobile)}
+ const t=calcPos();if(t.dis>t.sub){alert('ডিসকাউন্ট পণ্যের মোট মূল্যের বেশি হতে পারবে না।');return}
+ if(mxPosLookupBusy){alert("কাস্টমারের তথ্য খোঁজা হচ্ছে, একটু অপেক্ষা করুন।");return}if(mxPosMatchedPhone!==mobile){await mxPosLookup(mobile)}
  if(t.paid>t.grand+0.001){alert("পাওয়া টাকা মোট বিলের বেশি হতে পারবে না।");$("posPaid").focus();return}const btn=$("completeSale");btn.disabled=true;btn.textContent="Processing...";
  try{
    let customer=await findCustomerByMobile(mobile);
@@ -1241,8 +1333,11 @@ $("completeSale").onclick=async()=>{
    });
    for(const line of lines){try{await addDoc(collection(db,"stockMovements"),{productId:line.productId,productName:line.name,change:-line.qty,reason:"Offline POS Sale",linkedSaleId:saleId,createdAt:serverTimestamp()})}catch(e){}}
    lastMemo={saleId,date:new Date(),customerId,name:finalName,mobile,whatsapp:wa||customer?.whatsapp||"",division:division||customer?.division||"",district:district||customer?.district||"",upazila:upazila||customer?.upazila||"",area:area||customer?.area||"",address:customerData.address||customer?.address||"",items:lines,...t,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due"};
-   renderMemo(lastMemo);posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();mxPosClearLookup();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
-   document.querySelector('[data-p="pos"]').classList.remove("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("cashmemo").classList.add("active");$("title").textContent="Cash Memo / Invoice";
+   renderMemo(lastMemo);mxPosMemoFinalized=true;posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();mxPosClearLookup();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
+   document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+   $('pos').classList.add('active');document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('active',x.dataset.p==='pos'));
+   $('title').textContent='🧾 দোকান বিক্রি — ক্যাশ মেমো সম্পন্ন';
+   $('mxPosMemoArea').scrollIntoView({behavior:'smooth',block:'start'});
  }catch(e){console.error(e);alert("Sale complete হয়নি: "+(e.message||e.code))}
  finally{btn.disabled=false;btn.textContent="বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন"}
 };
@@ -1265,11 +1360,16 @@ function renderMemo(m){
  <div class="memo-foot"><div><span class="mx-customer-sign-line">____________________</span><br>গ্রাহকের স্বাক্ষর</div><div><span class="mx-auto-mark">Mehedi Hasan</span><br><span class="mx-mark-label">স্বয়ংক্রিয় নাম-চিহ্ন · ${esc(date.toLocaleDateString('en-BD'))}</span><br>মেহেদী এক্সপ্রেস — অনুমোদিত</div></div>
  <div class="memo-note">আমাদের সঙ্গে কেনাকাটা করার জন্য ধন্যবাদ। • সারা দেশে Cash on Delivery</div></article>`;
  // A single print action prints both copies, each with the same immutable Sale ID and figures.
- $("memoPrint").innerHTML=html('গ্রাহক কপি • CUSTOMER COPY')+html('দোকান কপি • SHOP COPY');
+ $('memoPrint').innerHTML=html('গ্রাহক কপি • CUSTOMER COPY')+html('দোকান কপি • SHOP COPY');
+ mxPosMemoFinalized=true;
+ $('mxPosInvoicePreview').innerHTML=$('memoPrint').innerHTML;
+ $('mxPosMemoState').textContent='✅ বিক্রি সম্পন্ন হয়েছে। একই Memo ID সহ দুই কপি রসিদ প্রস্তুত।';
+ $('mxPosPrintA4').disabled=false;$('mxPosPrintA5').disabled=false;
 }
 function printMemoAs(size){
  document.body.classList.remove("print-a4","print-a5");
  document.body.classList.add(size==="A5"?"print-a5":"print-a4");
+ document.body.classList.add('mx-print-pos-memo');
  let style=document.getElementById("dynamicPrintPage");
  if(!style){style=document.createElement("style");style.id="dynamicPrintPage";document.head.appendChild(style)}
  style.textContent=size==="A5"?"@page { size: A5 portrait; margin: 8mm; }":"@page { size: A4 portrait; margin: 8mm; }";
@@ -1277,7 +1377,9 @@ function printMemoAs(size){
 }
 $("printA4").onclick=()=>printMemoAs("A4");
 $("printA5").onclick=()=>printMemoAs("A5");
-window.addEventListener("afterprint",()=>document.body.classList.remove("print-a4","print-a5"));
+window.addEventListener('afterprint',()=>document.body.classList.remove('print-a4','print-a5','mx-print-pos-memo'));
+$('mxPosPrintA4').onclick=()=>{if(mxPosMemoFinalized)printMemoAs('A4')};
+$('mxPosPrintA5').onclick=()=>{if(mxPosMemoFinalized)printMemoAs('A5')};
 
 // Keep cash memo accessible directly from the shop sales screen.
 function mxShowCashMemo(){
@@ -1287,7 +1389,11 @@ function mxShowCashMemo(){
  $("title").textContent="🧾 ক্যাশ মেমো";
  $("cashmemo").scrollIntoView({block:"start",behavior:"smooth"});
 }
-$("mxOpenCashMemo").addEventListener("click",mxShowCashMemo);
+$('mxOpenCashMemo').addEventListener('click',()=>{
+ const area=$('mxPosMemoArea');
+ area.scrollIntoView({block:'start',behavior:'smooth'});
+ if(!mxPosMemoFinalized)alert('এই সেশনে সম্পন্ন ক্যাশ মেমো নেই। পুরোনো রসিদ খুঁজতে "পুরোনো ক্যাশ মেমো খুঁজুন" চাপুন।');
+});
 $("mxFindCashMemo").addEventListener("click",()=>{
  const link=document.querySelector('[data-p="reports"]');
  if(link){link.click();const target=document.getElementById("mxReceiptSearch");if(target){target.scrollIntoView({block:"center",behavior:"smooth"});target.focus();}}
@@ -1928,11 +2034,50 @@ function mxSzUpdateTotal(){
 }
 function mxSzAddModalRow(v={},origin=-1){
  const tr=document.createElement('tr');tr.dataset.origin=String(origin);
- tr.innerHTML=`<td><input class="mx-sz-size" type="text" placeholder="M / L / XL / 22" value="${esc(mxSzStr(v.size))}" ${origin>=0?'readonly title="পুরোনো সাইজের পরিচয় সুরক্ষিত; নতুন সাইজ যোগ করুন"':''} aria-label="সাইজ"></td><td><input class="mx-sz-color" type="text" placeholder="যেমন: Red" value="${esc(mxSzStr(v.color))}" ${origin>=0?'readonly title="পুরোনো রঙের পরিচয় সুরক্ষিত; নতুন রঙ যোগ করুন"':''} aria-label="রঙ"></td><td><input class="mx-sz-num" type="number" min="0" step="1" required value="${Math.max(0,Number(v.stock||0))}" aria-label="স্টক পিস"></td><td><input class="mx-sz-sku" type="text" placeholder="অপশনাল" value="${esc(mxSzStr(v.sku))}" ${origin>=0?'readonly title="পুরোনো SKU-এর পরিচয় সুরক্ষিত"':''} aria-label="ভ্যারিয়েন্ট SKU"></td><td><button class="btn danger mx-sz-remove" type="button" ${origin>=0?'disabled title="আগের সাইজ/রঙের ইতিহাস রাখার জন্য মুছে ফেলা বন্ধ"':''}>${origin>=0?'পুরোনো':'মুছুন'}</button></td>`;
+ tr.innerHTML=`<td><input class="mx-sz-size" type="text" placeholder="M / L / XL / 22" value="${esc(mxSzStr(v.size))}" ${origin>=0?'readonly title="পুরোনো সাইজের পরিচয় সুরক্ষিত; নতুন সাইজ যোগ করুন"':''} aria-label="সাইজ"></td><td><input class="mx-sz-color" type="text" placeholder="যেমন: Red" value="${esc(mxSzStr(v.color))}" ${origin>=0?'readonly title="পুরোনো রঙের পরিচয় সুরক্ষিত; নতুন রঙ যোগ করুন"':''} aria-label="রঙ"></td><td><input class="mx-sz-num" type="number" min="0" step="1" required value="${Math.max(0,Number(v.stock||0))}" aria-label="স্টক পিস"></td><td><input class="mx-sz-sku" type="text" placeholder="অপশনাল" value="${esc(mxSzStr(v.sku))}" ${origin>=0?'readonly title="পুরোনো SKU-এর পরিচয় সুরক্ষিত"':''} aria-label="ভ্যারিয়েন্ট SKU"></td><td><div class="mx-sz-row-actions"><button class="btn danger mx-sz-remove" type="button" ${origin>=0?'disabled title="আগের সাইজ/রঙের ইতিহাস রাখার জন্য মুছে ফেলা বন্ধ"':''}>${origin>=0?'পুরোনো':'মুছুন'}</button>${origin>=0?`<input class="mx-sz-quick-count" type="number" min="1" step="1" value="1" aria-label="কত পিস যোগ বা কমাবেন"><div class="mx-sz-quick-buttons"><button type="button" class="btn mx-sz-quick-add">＋ যোগ ও সেভ</button><button type="button" class="btn mx-sz-quick-sub">− কমিয়ে সেভ</button></div>`:''}</div></td>`;
  tr.querySelector('.mx-sz-remove').onclick=()=>{tr.remove();mxSzUpdateTotal()};
+ if(origin>=0){
+  tr.querySelector('.mx-sz-quick-add').onclick=()=>mxSzQuickAdjust(tr,origin,1);
+  tr.querySelector('.mx-sz-quick-sub').onclick=()=>mxSzQuickAdjust(tr,origin,-1);
+ }
  tr.querySelectorAll('input').forEach(inp=>inp.addEventListener('input',mxSzUpdateTotal));
  $('mxSizeStockRows').appendChild(tr);mxSzUpdateTotal();
 }
+
+// P20 one-click per-size stock changes, persisted immediately with an audit trail.
+async function mxSzQuickAdjust(row,origin,sign){
+ const id=mxSzEditingId,amt=Number(row.querySelector('.mx-sz-quick-count').value);
+ if(!id||!Number.isSafeInteger(amt)||amt<1||amt>100000){alert('যোগ বা কমানোর পিস ১ থেকে ১০০০০০ হতে হবে।');return}
+ if(JSON.stringify(mxSzModalData())!==JSON.stringify(mxSzOriginalVariants)){
+  alert('সাইজ/স্টক ফর্মে সেভ না-করা পরিবর্তন আছে। আগে নিচে “সাইজ ও স্টক সেভ করুন” চাপুন।');return;
+ }
+ const expected=mxSzOriginalVariants[origin];if(!expected)return;
+ const delta=sign*amt,btns=[...row.querySelectorAll('button')];btns.forEach(b=>b.disabled=true);
+ $('mxSizeStockStatus').textContent='Firebase-এ সাইজের স্টক আপডেট হচ্ছে…';
+ try{
+  await runTransaction(db,async tx=>{
+   const ref=doc(db,'products',id),snap=await tx.get(ref);if(!snap.exists())throw Error('পণ্যটি আর নেই।');
+   const current=snap.data();const variants=mxSzCurrentVariants(current),selected=variants[origin];
+   if(!selected||[selected.size,selected.color,selected.sku].join('|')!==[expected.size,expected.color,expected.sku].join('|'))throw Error('সাইজ বদলে গেছে। নতুন করে খুলুন।');
+   const newStock=Number(selected.stock||0)+delta;
+   if(!Number.isSafeInteger(newStock)||newStock<0)throw Error('এই সাইজে এত পিস নেই বা সংখ্যা খুব বড়।');
+   const before=variants.reduce((a,v)=>a+Number(v.stock||0),0);
+   variants[origin]={...selected,stock:newStock};const after=before+delta;
+   tx.update(ref,{variants,stock:after,updatedAt:serverTimestamp()});
+   tx.set(doc(collection(db,'stockMovements')),{productId:id,productName:current.name||'',variantSku:selected.sku||'',size:selected.size||'',color:selected.color||'',before,after,change:delta,reason:'POS quick size stock adjustment',createdBy:auth.currentUser?.uid||'',createdAt:serverTimestamp()});
+  });
+  const snap=await getDoc(doc(db,'products',id));
+  if(snap.exists()){
+   const i=products.findIndex(p=>p.id===id);if(i>=0)products[i]={...snap.data(),id};
+   window.mxOpenSizeStock(id);
+  }else mxSzClose();
+  $('mxSizeStockStatus').textContent='✅ '+mxSzStr(expected.size||expected.color||'সাধারণ')+' সাইজের স্টক '+(sign>0?'যোগ':'কমিয়ে')+' Firebase-এ সেভ হয়েছে।';
+  $('mxSizeStockStatus').className='mx-sz-status success';
+  renderPosProducts();
+ }catch(err){$('mxSizeStockStatus').textContent='সেভ হয়নি: '+(err.message||err.code);$('mxSizeStockStatus').className='mx-sz-status error'}
+ finally{btns.forEach(b=>b.disabled=false)}
+}
+
 function mxSzAddSizes(sizes,target='modal'){
  const container=target==='modal'?$('mxSizeStockRows'):$('variantRows');
  if(!container)return;
