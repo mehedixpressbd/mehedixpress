@@ -226,35 +226,32 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 #posProductList.mx-pos-catalog{max-height:min(66vh,760px);min-height:250px;overflow-y:auto!important;overscroll-behavior:contain;align-content:start}
 .mx-pos-empty{padding:20px;background:#f5f8fc;border:1px dashed #b9cee6;border-radius:12px;grid-column:1/-1;text-align:center}
 @media(max-width:550px){.mx-pos-scroll-button{width:34px;height:34px;flex-basis:34px}.mx-pos-category-thumb{width:23px;height:23px;flex-basis:23px}.mx-pos-catalog-toolbar label{width:100%}#mxPosCategoryJump{flex:1}}
-</style><style id="mx-inline-cashmemo-style">
-#pos .mx-pos-inline-memo{min-width:0;max-width:100%;padding:16px}
-#pos .mx-pos-inline-memo .head{margin:0 0 8px}
-#pos .mx-pos-inline-memo .head h3{font-size:17px}
-.mx-memo-state{background:#edf5ff;color:#15467b;border:1px solid #cfe1f5;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.6}
-.mx-memo-state.saved{background:#ebf9ee;color:#17623a;border-color:#b8e8c5}
-.mx-memo-shortcuts .btn:disabled{opacity:.48;cursor:not-allowed}
-.mx-memo-view{overflow-x:auto;border:1px solid #dbe5ee;border-radius:12px;background:white}
-#pos #memoPrint{width:100%;max-width:none;padding:13px;font-size:11px}
-#pos #memoPrint .memo-head{grid-template-columns:45px minmax(0,1fr);gap:7px}
-#pos #memoPrint .memo-logo{width:42px;height:42px}
-#pos #memoPrint .memo-brand h1{font-size:17px}
-#pos #memoPrint .memo-brand p{font-size:9px}
-#pos #memoPrint .memo-meta{grid-column:1/-1;text-align:left;font-size:10px}
-#pos #memoPrint table th,#pos #memoPrint table td{padding:5px;font-size:10px}
-#pos #memoPrint .memo-customer{gap:4px 8px;padding:8px 0;font-size:10px}
-#pos #memoPrint .memo-foot{margin-top:18px}
-.mx-memo-draft-tag{color:#9a3412;background:#fff7ed;border:1px dashed #fdba74;border-radius:9px;padding:8px;font-weight:800;margin-bottom:8px}
+</style><style id="mxCashMemoRestoreStyle">.mx-memo-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.mx-memo-shortcuts>.btn{flex:1;min-width:165px}#cashmemo .head{flex-wrap:wrap}#cashmemo .memo{overflow-x:auto}@media(max-width:650px){.mx-memo-shortcuts>.btn{width:100%}}</style><style id="mx-pos-memo-v19">
+#memoPrint{max-width:100%;width:100%;padding:0;background:transparent;overflow:visible!important}
+#memoPrint .mx-memo-copy{position:relative;isolation:isolate;max-width:850px;margin:0 auto 22px;padding:25px;background:white;color:#142234;border:1px solid #d4deea;box-shadow:0 4px 18px #08234a0b;overflow:hidden;min-height:550px}
+#memoPrint .mx-memo-copy>*:not(.mx-memo-watermark){position:relative;z-index:1}
+#memoPrint .mx-memo-watermark{pointer-events:none;position:absolute;z-index:0;left:50%;top:50%;transform:translate(-50%,-50%);width:min(65%,390px);height:auto;opacity:.08;object-fit:contain}
+#memoPrint .mx-memo-copy-tag{display:inline-block;padding:5px 11px;background:#ecf4fe;border:1px solid #d5e7fa;border-radius:20px;color:#0c4e91;font-size:11px;font-weight:800;margin-bottom:12px}
+#memoPrint table{width:100%;border-collapse:collapse}#memoPrint table td,#memoPrint table th{border-bottom:1px solid #e0e6ec;padding:9px 6px;text-align:left}
+#memoPrint .mx-auto-mark{font-family:"Brush Script MT","Segoe Script",cursive;font-size:28px;font-weight:700;letter-spacing:.5px;color:#183663;display:inline-block;transform:rotate(-5deg);border-bottom:1px solid #586a86;padding:2px 8px}
+#memoPrint .mx-mark-label{font-size:10px;color:#516177}
 @media print{
- #pos .mx-pos-inline-memo{padding:0!important;border:0!important;box-shadow:none!important}
- #pos #memoPrint{position:absolute!important;left:0!important;top:0!important;width:100%!important;max-width:none!important;padding:0!important;font-size:12pt!important}
- body.print-a4 #pos #memoPrint{width:194mm!important;padding:10mm!important;font-size:12pt!important}
- body.print-a5 #pos #memoPrint{width:132mm!important;padding:7mm!important;font-size:9.5pt!important}
- body.print-a5 #pos #memoPrint .memo-logo{width:55px!important;height:55px!important}
- body.print-a5 #pos #memoPrint .memo-brand h1{font-size:22px!important}
- body.print-a5 #pos #memoPrint .memo-brand p,body.print-a5 #pos #memoPrint .memo-meta{font-size:9px!important}
- body.print-a5 #pos #memoPrint table{font-size:9px!important}
+ body.print-a4 #memoPrint,body.print-a5 #memoPrint{position:static!important;width:100%!important;min-height:0!important;height:auto!important;overflow:visible!important;padding:0!important;margin:0!important;background:#fff!important}
+ body.print-a4 #memoPrint .mx-memo-copy,body.print-a5 #memoPrint .mx-memo-copy{width:100%;max-width:none;min-height:0;box-shadow:none;border:none;padding:4mm 3mm;margin:0;break-inside:auto;page-break-inside:auto;break-after:page;page-break-after:always;display:block}
+ #memoPrint .mx-memo-copy:last-child{break-after:auto!important;page-break-after:auto!important}
+ #memoPrint .mx-memo-watermark{opacity:.09!important}
+ #memoPrint .memo-head,#memoPrint .memo-customer,#memoPrint .memo-summary,#memoPrint .memo-foot{break-inside:avoid;page-break-inside:avoid}
+ body.print-a5 #memoPrint .mx-memo-copy{font-size:9px!important;padding:2mm 1mm!important}
+ body.print-a5 #memoPrint .memo-foot,body.print-a5 #memoPrint .memo-note{font-size:8px!important}
+ body.print-a5 #memoPrint .memo-head{gap:4px!important}
+ body.print-a5 #memoPrint .memo-logo{width:48px!important;height:48px!important}
+ body.print-a5 #memoPrint .mx-auto-mark{font-size:20px!important}
+ body.print-a5 #memoPrint table td,body.print-a5 #memoPrint table th{padding:3px!important}
 }
-</style><style id="mxCashMemoRestoreStyle">.mx-memo-shortcuts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.mx-memo-shortcuts>.btn{flex:1;min-width:165px}#cashmemo .head{flex-wrap:wrap}#cashmemo .memo{overflow-x:auto}@media(max-width:650px){.mx-memo-shortcuts>.btn{width:100%}}</style></head><body>
+</style><style id="mx-public-preview-style">
+.mx-public-preview{margin-top:13px;border:1px solid #d8e1ed;overflow:hidden;border-radius:14px;background:#fff;max-width:760px;color:#0b305e}.mx-preview-head{background:#002e67;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:9px;flex-wrap:wrap}.mx-preview-head span{font-size:12px}.mx-preview-body{padding:18px}.mx-preview-banner{background:#0569c9;color:#fff;text-align:center;border-radius:12px;padding:23px 10px;font-weight:bold}.mx-preview-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.mx-preview-cards>div{padding:13px 5px;border:1px solid #e0e6f0;text-align:center;border-radius:12px;background:#f6f9fc;font-size:13px}.mx-preview-button{background:#0569c9;color:white;border:0;padding:9px 19px;border-radius:9px;opacity:1}
+@media(max-width:500px){.mx-preview-cards{grid-template-columns:1fr}.mx-preview-head{font-size:12px}}
+</style></head><body>
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
   <img src="assets/images/logo.png" alt="Mehedi Xpress" style="width:82px;height:82px;object-fit:contain;border-radius:18px" onerror="this.style.display='none'">
@@ -268,7 +265,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <p id="loginMsg" style="line-height:1.5"></p>
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
-<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="mxReturns">↩️ পণ্য ফেরত</button>
+<div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="cashmemo">🖨 ক্যাশ মেমো</button><button data-p="mxReturns">↩️ পণ্য ফেরত</button>
 <button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 হেডার ও ব্যানারের ছবি</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><h2 id="title">Dashboard</h2><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
 <section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
@@ -321,7 +318,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
    <div class="full"><button class="btn primary" type="submit">+ ক্যাটাগরি যোগ করুন</button></div>
   </form>
   <div class="head"><h3>সংরক্ষিত সব ক্যাটাগরি</h3><span id="mxCategoryCount" class="hint"></span></div>
-  <div id="catChips"></div><p class="hint">প্রত্যেকটি ক্যাটাগরির পাশে “ছবি বদলান” আছে। ছবিটি Firebase categories ডকুমেন্টেই সংরক্ষিত হবে।</p>
+  <div id="catChips"></div><p class="notice">নতুন ক্যাটাগরি যোগ করলে পুরোনো ৯টি ডিফল্ট ক্যাটাগরি এবং পণ্য-সংযুক্ত ক্যাটাগরি বজায় থাকবে। ভুল করে পুরোনো ছবি হারালে আগের রেকর্ড/ছবি ব্যাকআপ থেকে ফিরিয়ে আনতে হবে।</p><p class="hint">প্রত্যেকটি ক্যাটাগরির পাশে “ছবি বদলান” আছে। ছবিটি Firebase categories ডকুমেন্টেই সংরক্ষিত হবে।</p>
  </div>
 </section>
 <section id="inventory" class="panel"><div class="head"><h3>Inventory / Stock</h3></div>
@@ -369,15 +366,6 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
     <div class="field full"><label>বাড়ি / রোড / সম্পূর্ণ ঠিকানা</label><textarea id="posCustomerAddress" placeholder="বাড়ি, রোড, বাজার বা প্রয়োজনীয় বিস্তারিত ঠিকানা"></textarea></div>
    </div>
   </div>
-  <div id="cashmemo" class="card mx-pos-inline-memo" style="margin-top:14px" aria-label="দোকান বিক্রির ক্যাশ মেমো">
-   <div class="head no-print"><h3>🧾 ক্যাশ মেমো — একই বিক্রির তথ্য</h3></div>
-   <p id="mxMemoStatus" class="mx-memo-state" role="status" aria-live="polite">পণ্য কার্টে যোগ করলে এখানেই ক্যাশ মেমোর খসড়া দেখাবে। আবার তথ্য লিখতে হবে না।</p>
-   <div class="mx-memo-shortcuts no-print">
-    <button class="btn primary" id="printA4" type="button" disabled>🖨 ক্যাশ মেমো A4 প্রিন্ট</button>
-    <button class="btn primary" id="printA5" type="button" disabled>🖨 ক্যাশ মেমো A5 প্রিন্ট</button>
-   </div>
-   <div class="mx-memo-view"><div id="memoPrint" class="memo"><p class="hint">পণ্য ও কাস্টমারের তথ্য দিলেই এখানে ক্যাশ মেমো তৈরি হবে।</p></div></div>
-  </div>
  </div>
  <div>
   <div class="card">
@@ -390,18 +378,22 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
    </div>
    <div class="totals">
     <div class="totalrow"><span>Subtotal</span><b id="posSubtotal">৳0</b></div>
-    <div class="totalrow"><span>Discount</span><b id="posDiscountShow">- ৳0</b></div>
+    <div class="totalrow"><span>আসল রেট থেকে কমানো</span><b id="posRateSavings">৳0</b></div><div class="totalrow"><span>Discount</span><b id="posDiscountShow">- ৳0</b></div><div class="totalrow"><span>মোট ছাড়ের হার (মূল রেট ধরে)</span><b id="posDiscountPercent">0%</b></div>
     <div class="totalrow"><span>Delivery</span><b id="posDeliveryShow">+ ৳0</b></div>
     <div class="mx-pos-tools"><button type="button" class="btn" id="mxPayFull">💵 পুরো টাকা পেয়েছি</button><button type="button" class="btn" id="mxClearCart">🗑 কার্ট খালি করুন</button></div><div class="totalrow grand"><span>Grand Total</span><span id="posGrand">৳0</span></div>
     <div class="totalrow"><span>Due</span><b id="posDue">৳0</b></div>
    </div>
    <button class="btn primary" id="completeSale" style="width:100%;margin-top:12px">বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন</button>
-   <div class="mx-memo-shortcuts"><button class="btn" type="button" id="mxOpenCashMemo">🧾 নিচে একই বিক্রির ক্যাশ মেমো দেখুন</button><button class="btn" type="button" id="mxFindCashMemo">🔎 পুরোনো ক্যাশ মেমো খুঁজুন</button></div><p class="hint">ক্যাশ মেমো বাম পাশে কাস্টমারের তথ্যের ঠিক নিচে তৈরি হবে। কোনো দ্বিতীয় ফর্ম পূরণ করতে হবে না। বিক্রি সম্পন্ন হওয়ার পরে প্রিন্ট করা যাবে।</p>
+   <div class="mx-memo-shortcuts"><button class="btn" type="button" id="mxOpenCashMemo">🧾 সর্বশেষ ক্যাশ মেমো দেখুন</button><button class="btn" type="button" id="mxFindCashMemo">🔎 পুরোনো ক্যাশ মেমো খুঁজুন</button></div><p class="hint">বিক্রি সম্পন্ন হলে ক্যাশ মেমো তৈরি হবে। এখান থেকে পরে আবার দেখা ও প্রিন্ট করা যাবে।</p>
   </div>
  </div>
 </div>
 </section>
 
+<section id="cashmemo" class="panel">
+<div class="head no-print"><h3>🧾 ক্যাশ মেমো / বিক্রির রসিদ</h3><div class="actions"><button class="btn primary" id="printA4">🖨 A4 × ২ কপি</button><button class="btn primary" id="printA5">🖨 A5 × ২ কপি</button><button class="btn" id="backToPos">← POS</button></div></div>
+<div id="memoPrint" class="memo"><p>Sale complete করলে Cash Memo এখানে তৈরি হবে।</p></div>
+</section>
 
 
 <!-- Existing and new product sizes can be edited without overwriting price/images -->
@@ -409,7 +401,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
  <div class="mx-sz-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="mxSizeStockTitle">
   <div class="head"><div><h3 id="mxSizeStockTitle">পণ্যের সাইজ ও স্টক ঠিক করুন</h3><div id="mxSizeStockMeta" class="hint"></div></div><button id="mxSizeStockClose" type="button" class="btn">✕ বন্ধ</button></div>
   <div id="mxSizeStockLegacy" class="mx-sz-warning" hidden></div>
-  <div class="mx-sz-editor-note">M / L / XL / XXL ও রঙ অনুযায়ী কত পিস আছে, লিখে <b>সেভ</b> করুন। যেমন M-এ আগে ৫০ পিস থাকলে নতুন ১০০ পিস আসার পরে <b>১৫০</b> লিখুন। সেভের আগে অন্য বিক্রিতে কিছু পিস কমে গেলে তা নষ্ট না করে আপনার যোগ করা ১০০ পিস বর্তমান স্টকে যুক্ত হবে। ০ লিখেও সেভ করা যাবে (বিক্রিতে স্টক থাকলে ঋণাত্মক হবে না)। আগের <b>সাইজ ছাড়া</b> পিস নতুন সাইজে ভাগ করার সময় সেই সারি থেকে সংখ্যাটা কমান।</div>
+  <div class="mx-sz-editor-note">যে সাইজ বা রঙ রাখবেন, শুধু সেটাই দোকান বিক্রিতে দেখাবে। M = ৫ পিস, L = ৬ পিস এভাবে লিখুন। আগের <b>সাইজ ছাড়া</b> স্টক থাকলে সেখান থেকে পিস কমিয়ে নতুন সাইজে ভাগ করুন; পুরোনো পিস নিজে থেকে যোগ হবে না।</div>
   <div class="mx-sz-presets">
    <button id="mxSzAdult" type="button">＋ M / L / XL / XXL</button>
    <button id="mxSzExtended" type="button">＋ XS / S / 3XL / 4XL</button>
@@ -431,11 +423,11 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <div class="head"><h3>🧾 পুরোনো রসিদ খুঁজুন ও আবার প্রিন্ট করুন</h3></div>
 <div class="card"><div class="formgrid"><div class="field full"><label>রসিদ নম্বর / কাস্টমারের মোবাইল / নাম</label><input id="mxReceiptSearch" placeholder="রসিদ নম্বর অথবা 01XXXXXXXXX লিখুন" autocomplete="off"></div></div><p class="hint">এখানে শুধু আগে সম্পন্ন হওয়া দোকান বিক্রির রসিদ দেখানো হয়। কোনো নতুন বিক্রি বা স্টক পরিবর্তন হবে না।</p><div id="mxReceiptMatches" class="mx-receipt-results" aria-live="polite">খোঁজার জন্য রসিদ নম্বর বা মোবাইল লিখুন।</div></div>
 <div class="head"><h3>বিক্রির তালিকা ও ভুল রেকর্ড সংশোধন</h3></div>
-<div class="mx-history-tools"><label class="field">কত দিনের হিসাব<select id="mxHistoryDays"><option value="7">গত ৭ দিন</option><option value="30">গত ৩০ দিন</option><option value="all">সব তারিখ</option></select></label><label class="field">ধরন<select id="mxHistoryType"><option value="offline">দোকান বিক্রি</option><option value="all">সব বিক্রি</option><option value="online">অনলাইন</option></select></label><button type="button" class="btn danger" id="mxHistoryDeleteSelected">নির্বাচিত ভুল বিক্রি মুছুন</button></div>
+<div class="mx-history-tools"><label class="field">কত দিনের হিসাব<select id="mxHistoryDays"><option value="7">গত ৭ দিন</option><option value="30">গত ৩০ দিন</option><option value="all">সব তারিখ</option></select></label><label class="field">ধরন<select id="mxHistoryType"><option value="offline">দোকান বিক্রি</option><option value="all">সব বিক্রি</option><option value="online">অনলাইন</option></select></label><button type="button" class="btn danger" id="mxHistoryDeleteSelected">নির্বাচিত ভুল বিক্রি মুছুন (সতর্কতা)</button></div>
 <div class="mx-danger-note">শুধু দোকান বিক্রির ভুল রেকর্ড মুছতে পারবেন। ডিলিট করলে সেই বিক্রির স্টক ফেরত যাবে। রিটার্ন বা পরবর্তী বকেয়া আদায় থাকলে ডিলিট বন্ধ থাকবে। একবারে সর্বোচ্চ ১০টি। অনলাইন অর্ডার এখানে ডিলিট করা যাবে না।</div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Source</th><th>ID</th><th>Customer</th><th>Amount</th><th>Received</th><th>Due</th><th>Cost</th><th>সংশোধন</th></tr></thead><tbody id="mxSalesRows"></tbody></table></div>
 <div id="mxReportPrint" style="display:none"></div></section>
 <section id="expenses" class="panel"><div class="head"><h3>💸 Expense Management</h3></div>
-<div class="card"><form id="mxExpenseForm" class="formgrid"><div class="field"><label>Date *</label><input id="mxExpenseDate" type="date" required></div><div class="field"><label>Category *</label><select id="mxExpenseCategory"><option>Shop Rent</option><option>Electricity</option><option>Staff</option><option>Transport</option><option>Packaging</option><option>Marketing</option><option>Internet</option><option>Other</option></select></div><div class="field"><label>Amount (৳) *</label><input id="mxExpenseAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Payment Method</label><select id="mxExpensePayment"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field full"><label>Description</label><input id="mxExpenseNote" maxlength="250" placeholder="খরচের বিবরণ"></div><div class="full"><button type="submit" class="btn primary" id="mxExpenseSave">+ Save Expense</button></div></form></div>
+<div class="card"><form id="mxExpenseForm" class="formgrid"><div class="field"><label>Date *</label><input id="mxExpenseDate" type="date" required></div><div class="field"><label>Category *</label><select id="mxExpenseCategory"><option value="Shop Rent">দোকান ভাড়া</option><option value="Electricity">বিদ্যুৎ বিল</option><option value="Staff">কর্মী ও শ্রমিক</option><option value="Transport">যাতায়াত / পরিবহন</option><option value="Packaging">প্যাকেজিং</option><option value="Marketing">বিজ্ঞাপন / মার্কেটিং</option><option value="Internet">ইন্টারনেট</option><option value="Other">অন্যান্য খরচ</option></select></div><div class="field"><label>Amount (৳) *</label><input id="mxExpenseAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Payment Method</label><select id="mxExpensePayment"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field full"><label>Description</label><input id="mxExpenseNote" maxlength="250" placeholder="খরচের বিবরণ"></div><div class="full"><button type="submit" class="btn primary" id="mxExpenseSave">+ Save Expense</button></div></form></div>
 <div class="head"><h3>Expense History</h3><button type="button" class="btn" id="mxExpenseCSV">⬇ Export CSV</button></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Payment</th><th>Amount</th><th>Action</th></tr></thead><tbody id="mxExpenseRows"></tbody></table></div></section>
 <section id="reviews" class="panel"><div class="head"><h3>Product Reviews</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Product</th><th>Rating</th><th>Comment</th><th>Action</th></tr></thead><tbody id="reviewRows"></tbody></table></div></section>
 
@@ -502,6 +494,26 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
  </div>
 </section>
 <section id="settings" class="panel">
+<!-- P19: non-destructive public storefront preset editor. Stored in existing siteSettings/homepage. -->
+<div class="card" id="mxStorefrontThemeEditor" style="margin-top:14px">
+ <h3>🎨 পাবলিক ওয়েবসাইট — ডিজাইন সেন্টার (প্রথম ধাপ)</h3>
+ <p class="hint">এখান থেকে কাস্টমার ওয়েবসাইটের রং, ব্যাকগ্রাউন্ড, কার্ডের কোণা ও অ্যাকসেন্ট থিম বদলান। এটি এখন preset + live preview; পুরো drag-and-drop page builder নয়। প্রিভিউ দেখে Save করলে Firebase-এ যাবে।</p>
+ <div class="formgrid">
+  <div class="field"><label>ডিজাইন নমুনা</label><select id="mxPublicPreset"><option value="classic">Classic Blue — বর্তমান স্টাইল</option><option value="midnight">Midnight Sports — নেভি</option><option value="emerald">Emerald Fresh — সবুজ</option><option value="sunset">Sunset Energy — কমলা</option><option value="custom">নিজের রং — Custom</option></select></div>
+  <div class="field"><label>মূল রং</label><input type="color" id="mxPublicPrimary" value="#0569c9"></div>
+  <div class="field"><label>হেডার / গাঢ় রং</label><input type="color" id="mxPublicHeader" value="#002e67"></div>
+  <div class="field"><label>হাইলাইট / অ্যাকসেন্ট</label><input type="color" id="mxPublicAccent" value="#55ed00"></div>
+  <div class="field"><label>পেজ ব্যাকগ্রাউন্ড</label><input type="color" id="mxPublicBackground" value="#ffffff"></div>
+  <div class="field"><label>কার্ডের কোণা</label><select id="mxPublicRadius"><option value="8">কম গোল</option><option value="14">মাঝারি</option><option value="18" selected>স্বাভাবিক</option><option value="26">বেশি গোল</option></select></div>
+ </div>
+ <div id="mxPublicThemePreview" class="mx-public-preview" aria-label="পাবলিক ওয়েবসাইটের নমুনা">
+  <div class="mx-preview-head"><b>MEHEDI XPRESS</b><span>🔍 Search · Account · 🛒</span></div>
+  <div class="mx-preview-body"><div class="mx-preview-banner">Sports • Fashion • Custom Print</div><div class="mx-preview-cards"><div>⚽ ফুটবল জার্সি</div><div>🏏 ক্রিকেট জার্সি</div><div>👕 টি-শার্ট</div></div><button type="button" class="mx-preview-button" disabled>পণ্য দেখুন</button></div>
+ </div>
+ <div class="actions" style="margin-top:12px"><button class="btn primary" type="button" id="mxPublicThemeSave">✓ পাবলিক ডিজাইন সেভ</button><button class="btn" type="button" id="mxPublicThemeReset">↶ আগের স্টাইল রিসেট</button></div>
+ <p class="hint" id="mxPublicThemeMsg" role="status" aria-live="polite">বর্তমান ডিজাইন অপরিবর্তিত আছে।</p>
+</div>
+
 <div class="card" id="mxThemeSettings" style="margin-top:14px">
  <h3 data-theme-i18n="heading">🎨 অ্যাডমিন প্যানেলের ডিজাইন</h3>
  <p class="mx-theme-note" data-theme-i18n="intro">নীল মেনু এবং সাদা কাজের জায়গার রং ও ডিজাইন আলাদাভাবে পরিবর্তন করুন। পরিবর্তন এই ব্রাউজারে সেভ থাকবে।</p>
@@ -561,7 +573,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 
 <section id="mxCampaigns" class="panel"><div class="head"><h3>📣 Discount Coupons & Campaigns</h3><button class="btn" id="mx11CouponCSV">Export Coupons CSV</button></div>
 <div class="notice">Coupon codes and campaigns are admin-managed records only. Customer checkout/POS does not automatically validate or apply coupons yet. Do not advertise a coupon as usable at checkout until checkout integration is implemented.</div>
-<div class="card"><h3>Create Coupon</h3><form id="mx11CouponForm" class="formgrid">
+<div class="card"><h3>কুপন তৈরির নিয়ম</h3><p class="hint">Discount Value: Percentage হলে শতকরা হার (যেমন 10 = ১০%), Fixed হলে সরাসরি টাকা (যেমন 50 = ৳৫০)। Maximum Discount: শতকরা কুপনে সর্বোচ্চ কত টাকা ছাড় দেওয়া যাবে (০ দিলে সীমা নেই)। Minimum Order: কমপক্ষে কত টাকার অর্ডারে প্রযোজ্য। Total Redemption Limit: মোট কতবার ব্যবহার করা যাবে; এটি কুপনের সংখ্যা-সীমা, পণ্যের সংখ্যা নয়। Active = চালু, Paused = বন্ধ। Public checkout-এ কুপন প্রয়োগ এখনো চালু নয়।</p><form id="mx11CouponForm" class="formgrid">
 <div class="field"><label>Coupon Code *</label><input id="mx11Code" required maxlength="32" pattern="[A-Za-z0-9_-]{3,32}" placeholder="MXWELCOME10"></div>
 <div class="field"><label>Discount Type</label><select id="mx11Type"><option value="percent">Percentage (%)</option><option value="fixed">Fixed (৳)</option></select></div>
 <div class="field"><label>Discount Value *</label><input id="mx11Value" type="number" min="0.01" step="0.01" required></div>
@@ -580,7 +592,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 <div class="head"><h3>Eligible POS Sales Preview</h3></div><div class="tablewrap"><table><thead><tr><th>Sale ID</th><th>Customer</th><th>Amount</th><th>Points</th><th>Eligibility</th></tr></thead><tbody id="mx11RewardRows"></tbody></table></div></section>
 <section id="mxCRM" class="panel"><div class="head"><h3>🤝 Customer CRM</h3><button class="btn" id="mx10CustomerCSV">Export CSV</button></div><div class="notice">Existing POS customers are shown here. CRM notes and tags are saved in the same customers collection. Mobile numbers are private customer data: admin-only access required.</div><div class="card"><div class="formgrid"><div class="field"><label>Search customer / phone</label><input id="mx10Search" placeholder="Name / mobile / customer ID"></div><div class="field"><label>Customer</label><select id="mx10Customer"><option value="">Select customer</option></select></div><div class="field"><label>Customer Tag</label><select id="mx10Tag"><option>Regular</option><option>VIP</option><option>Wholesale</option><option>New</option><option>Inactive</option></select></div><div class="field full"><label>Internal Notes</label><textarea id="mx10Notes" maxlength="1500" placeholder="Only admin can view"></textarea></div><div class="full"><button class="btn primary" id="mx10SaveCRM">Save Customer Notes</button><p id="mx10CRMMsg" class="hint"></p></div></div></div><div class="head"><h3>Customer Directory</h3></div><div class="tablewrap"><table><thead><tr><th>Customer</th><th>Mobile</th><th>Location</th><th>Tag</th><th>Points</th><th>POS Sales</th></tr></thead><tbody id="mx10CustomerRows"></tbody></table></div></section>
 <section id="mxLoyalty" class="panel"><div class="head"><h3>🎁 Loyalty Points</h3><button class="btn" id="mx10PointsCSV">Export CSV</button></div><div class="notice">Manual points adjustment only. No automatic purchase rewards, discounts or redemption at checkout. A negative adjustment cannot make the balance negative.</div><div class="card"><form id="mx10PointsForm" class="formgrid"><div class="field"><label>Customer</label><select id="mx10PointsCustomer" required></select></div><div class="field"><label>Adjustment (+ earn / - redeem)</label><input id="mx10PointsAmount" type="number" step="1" required placeholder="e.g. 10 or -5"></div><div class="field full"><label>Reason</label><input id="mx10PointsReason" maxlength="240" required placeholder="Manual bonus / redeemed reward"></div><div class="full"><button class="btn primary" id="mx10PointsSave">Record Points Adjustment</button></div></form></div><div class="head"><h3>Points History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Customer</th><th>Change</th><th>Reason</th></tr></thead><tbody id="mx10PointsRows"></tbody></table></div></section>
-<section id="mxDues" class="panel"><div class="head"><h3>💳 Customer Due & Collection</h3><button class="btn" id="mx10DueCSV">Export CSV</button></div><div class="notice">Only POS sales in the existing sales collection are included. Collections update that sale's paid/due amounts atomically. They do NOT create Cash/bKash Ledger entries automatically. Avoid entering the same receipt twice.</div><div class="stats" style="margin-bottom:14px"><div class="stat"><b id="mx10DueTotal">৳0</b>Outstanding POS Due</div><div class="stat"><b id="mx10DueCount">0</b>Unpaid POS Sales</div><div class="stat"><b id="mx10Collected">৳0</b>Recorded Collections</div></div><div class="card"><form id="mx10CollectForm" class="formgrid"><div class="field"><label>Outstanding POS Sale</label><select id="mx10DueSale" required></select></div><div class="field"><label>Collection Amount (৳)</label><input id="mx10CollectAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Method</label><select id="mx10CollectMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field"><label>Reference / Note</label><input id="mx10CollectNote" maxlength="240"></div><div class="full"><button class="btn primary" id="mx10CollectSave">Record Due Collection</button></div></form></div><div class="head"><h3>Outstanding Sales</h3></div><div class="tablewrap"><table><thead><tr><th>Sale</th><th>Customer</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mx10DueRows"></tbody></table></div><div class="head"><h3>Collection History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Sale</th><th>Customer</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead><tbody id="mx10CollectionRows"></tbody></table></div></section>
+<section id="mxDues" class="panel"><div class="head"><h3>💳 Customer Due & Collection</h3><button class="btn" id="mx10DueCSV">Export CSV</button></div><div class="notice">Only POS sales in the existing sales collection are included. Collections update that sale's paid/due amounts atomically. They do NOT create Cash/bKash Ledger entries automatically. Avoid entering the same receipt twice.</div><div class="stats" style="margin-bottom:14px"><div class="stat"><b id="mx10DueTotal">৳0</b>Outstanding POS Due</div><div class="stat"><b id="mx10DueCount">0</b>Unpaid POS Sales</div><div class="stat"><b id="mx10Collected">৳0</b>Recorded Collections</div></div><div class="card"><form id="mx10CollectForm" class="formgrid"><div class="field"><label>Outstanding POS Sale</label><select id="mx10DueSale" required></select></div><div class="field"><label>Collection Amount (৳)</label><input id="mx10CollectAmount" type="number" min="0.01" step="0.01" required></div><div class="field"><label>Method</label><select id="mx10CollectMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field"><label>Reference / Note</label><input id="mx10CollectNote" maxlength="240"></div><div class="full"><button class="btn primary" id="mx10CollectSave">Record Due Collection</button></div></form></div><div class="head"><h3>👥 গ্রাহকভিত্তিক বাকি খাতা (মোবাইল নম্বর)</h3></div><div class="card"><p class="hint">গ্রাহকের নাম বা মোবাইল ক্লিক করে বিক্রি, রসিদ, জমা ও বাকি দেখুন। রেকর্ড ডিলিট হয় না।</p><div id="mxDueCustomerGroups" class="tablewrap"></div><div id="mxDueCustomerDetail" aria-live="polite"></div></div><div class="head"><h3>Outstanding Sales</h3></div><div class="tablewrap"><table><thead><tr><th>Sale</th><th>Customer</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead><tbody id="mx10DueRows"></tbody></table></div><div class="head"><h3>Collection History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Sale</th><th>Customer</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead><tbody id="mx10CollectionRows"></tbody></table></div></section>
 
 <section id="mx12Redemption" class="panel"><div class="head"><h3>🎟 কুপন ও পয়েন্ট ব্যবহার</h3><button class="btn" id="mx12Export">Export CSV</button></div>
 <div class="notice">Admin-only redemption against existing, unpaid OFFLINE POS sales. Coupon and points reduce the remaining due and sale total, not cash received. Website checkout integration requires a trusted server endpoint to prevent coupon/points fraud. This page does not enable public checkout redemption.</div>
@@ -688,15 +700,18 @@ $("changeAdminPassword").onclick=async()=>{
  }
 };
 document.querySelectorAll(".menu button[data-p]").forEach(b=>b.onclick=()=>{document.querySelectorAll(".menu button").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$(b.dataset.p).classList.add("active");$("title").textContent=b.textContent.trim()});
+const mxBaseCategories=[...categories]; // Never discard these when first Firebase category is created.
 let mxAdminCategoryRecords=[];
 let started=false;function start(){if(started)return;started=true;
- onSnapshot(collection(db,"products"),s=>{products=s.docs.map(d=>({id:d.id,...d.data()}));renderProducts();stats()});
+ onSnapshot(collection(db,"products"),s=>{products=s.docs.map(d=>({id:d.id,...d.data()}));categories=[...new Set([...mxBaseCategories,...mxAdminCategoryRecords.map(c=>String(c.name||'').trim()).filter(Boolean),...products.map(p=>String(p.category||'').trim()).filter(Boolean)])];renderCats();renderProducts();stats()});
  onSnapshot(collection(db,"orders"),s=>{orders=s.docs.map(d=>({id:d.id,...d.data()}));renderOrders();stats()});
  onSnapshot(collection(db,"reviews"),s=>{reviews=s.docs.map(d=>({id:d.id,...d.data()}));renderReviews()});
  onSnapshot(collection(db,"categories"),s=>{
    mxAdminCategoryRecords=s.docs.map(d=>({id:d.id,...d.data()}));
    const stored=mxAdminCategoryRecords.map(c=>String(c.name||'').trim()).filter(Boolean);
-   categories=stored.length?[...new Set(stored)]:categories;
+   // Never replace the whole category directory with just newly-created Firestore docs.
+   const fromProducts=products.map(p=>String(p.category||'').trim()).filter(Boolean);
+   categories=[...new Set([...mxBaseCategories,...stored,...fromProducts])];
    renderCats();renderPosProducts();
   },err=>console.error('Category list:',err));
 }
@@ -1040,7 +1055,6 @@ digitsOnlyInput($("posCustomerMobile"));digitsOnlyInput($("posCustomerWhatsApp")
 initPosAddress();
 
 let posCart=[],lastMemo=null;
-let mxMemoState="empty";
 function salePrice(p){return Number(p.offerPrice??p.price??p.regularPrice??0)}
 function productVariants(p){return (p.variants&&p.variants.length)?p.variants:[{sku:p.code||"",size:"",color:"",stock:Number(p.stock||0)}]}
 let mxPosCategory="সব পণ্য";
@@ -1106,7 +1120,7 @@ window.posAddProduct=id=>{
   const key=p.id+"|"+(v.sku||"")+"|"+(v.size||"")+"|"+(v.color||"");
   const ex=posCart.find(x=>x.key===key);
   if(ex){if(ex.qty>=Number(v.stock||0)){alert("এই সাইজ/রঙের পর্যাপ্ত স্টক নেই।");return}ex.qty++}
-  else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:salePrice(p),cost:Number(p.costPrice||0)});
+  else posCart.push({key,productId:p.id,name:p.name,code:p.code||"",variantSku:v.sku||"",size:v.size||"",color:v.color||"",available:Number(v.stock||0),qty:1,price:salePrice(p),originalPrice:salePrice(p),cost:Number(p.costPrice||0)});
   $("mxPosVariantModal").hidden=true;renderPosCart();
  });
  $("mxPosVariantModal").hidden=false;
@@ -1121,8 +1135,10 @@ window.posPrice=(i,v)=>{posCart[i].price=Math.max(0,Number(v||0));renderPosCart(
 window.posRemove=i=>{posCart.splice(i,1);renderPosCart()};
 function calcPos(){
  const sub=posCart.reduce((a,x)=>a+x.qty*x.price,0),dis=Math.max(0,Number($("posDiscount")?.value||0)),del=Math.max(0,Number($("posDelivery")?.value||0)),grand=Math.max(0,sub-dis+del),paid=Math.max(0,Number($("posPaid")?.value||0)),due=Math.max(0,grand-paid);
+ const reference=posCart.reduce((a,x)=>a+Math.max(Number(x.originalPrice??x.price),Number(x.price))*x.qty,0);
+ const rateSavings=Math.max(0,reference-sub);const saved=rateSavings+Math.min(dis,sub);
+ $("posRateSavings").textContent=money(rateSavings);$("posDiscountPercent").textContent=(reference?100*saved/reference:0).toFixed(1)+'%';
  $("posSubtotal").textContent=money(sub);$("posDiscountShow").textContent="- "+money(dis);$("posDeliveryShow").textContent="+ "+money(del);$("posGrand").textContent=money(grand);$("posDue").textContent=money(due);
- mxMemoRefreshDraft({sub,dis,del,grand,paid,due});
  return{sub,dis,del,grand,paid,due};
 }
 ["posDiscount","posDelivery","posPaid"].forEach(id=>$(id).oninput=calcPos);
@@ -1173,17 +1189,15 @@ async function mxPosLookup(phone){
   history.textContent=`আগের কেনাকাটা: ${sales.length} বার | মোট ${money(amount)}`;
   $("mxPosCustomerStatus").textContent=customer?"✅ পুরোনো কাস্টমার — তথ্য অটোমেটিক এসেছে।":online?"✅ অনলাইন কাস্টমার — সংরক্ষিত তথ্য পাওয়া গেছে।":"🆕 নতুন কাস্টমার — বিক্রি সম্পন্ন করলে তালিকায় যুক্ত হবে।";
  }catch(e){if(seq===mxPosLookupSerial){mxPosMatchedPhone="";$("mxPosCustomerStatus").textContent="⚠️ কাস্টমার খুঁজতে সমস্যা: "+(e.code||e.message);console.error("POS customer lookup",e)}}
- finally{if(seq===mxPosLookupSerial){mxPosLookupBusy=false;mxMemoRefreshDraft()}}
+ finally{if(seq===mxPosLookupSerial)mxPosLookupBusy=false}
 }
 let mxPosPhoneTimer;
 $("posCustomerMobile").addEventListener("input",()=>{
- clearTimeout(mxPosPhoneTimer);
- const hadMatchedCustomer=!!mxPosMatchedPhone;
- mxPosClearLookup();
+ clearTimeout(mxPosPhoneTimer);mxPosClearLookup();
  const mobile=mxPosNormPhone($("posCustomerMobile").value);
- // Clear only previously auto-filled customer data, not manual data entered for a new customer.
- if(hadMatchedCustomer){for(const id of ["posCustomerName","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"])$(id).value="";initPosAddress()}
-
+ // Prevent stale customer details from being used for another number.
+ for(const id of ["posCustomerName","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"])$(id).value="";
+ initPosAddress();
  if(validBdMobile(mobile))mxPosPhoneTimer=setTimeout(()=>mxPosLookup(mobile),350);
 });
 $("posCustomerMobile").addEventListener("blur",()=>{clearTimeout(mxPosPhoneTimer);const mobile=mxPosNormPhone($("posCustomerMobile").value);if(validBdMobile(mobile)&&mxPosMatchedPhone!==mobile&&!mxPosLookupBusy)mxPosLookup(mobile)});
@@ -1227,43 +1241,33 @@ $("completeSale").onclick=async()=>{
    });
    for(const line of lines){try{await addDoc(collection(db,"stockMovements"),{productId:line.productId,productName:line.name,change:-line.qty,reason:"Offline POS Sale",linkedSaleId:saleId,createdAt:serverTimestamp()})}catch(e){}}
    lastMemo={saleId,date:new Date(),customerId,name:finalName,mobile,whatsapp:wa||customer?.whatsapp||"",division:division||customer?.division||"",district:district||customer?.district||"",upazila:upazila||customer?.upazila||"",area:area||customer?.area||"",address:customerData.address||customer?.address||"",items:lines,...t,paymentMethod:$("posPayment").value,paymentStatus:t.due<=0?"Paid":t.paid>0?"Partial":"Due"};
-   mxMemoState='final';renderMemo(lastMemo);posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();mxPosClearLookup();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
-   $("pos").classList.add("active");document.querySelectorAll('[data-p]').forEach(x=>x.classList.toggle('active',x.dataset.p==='pos'));$("title").textContent="🧾 দোকান বিক্রি";
-   $("cashmemo").scrollIntoView({block:'start',behavior:'smooth'});
+   renderMemo(lastMemo);posCart=[];renderPosCart();["posCustomerName","posCustomerMobile","posCustomerWhatsApp","posCustomerId","posArea","posCustomerAddress"].forEach(id=>$(id).value="");initPosAddress();mxPosClearLookup();$("posDiscount").value=0;$("posDelivery").value=0;$("posPaid").value=0;
+   document.querySelector('[data-p="pos"]').classList.remove("active");document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("cashmemo").classList.add("active");$("title").textContent="Cash Memo / Invoice";
  }catch(e){console.error(e);alert("Sale complete হয়নি: "+(e.message||e.code))}
  finally{btn.disabled=false;btn.textContent="বিক্রি সম্পন্ন করুন ও রসিদ তৈরি করুন"}
 };
-function renderMemo(m,isDraft=false){
- const rows=m.items.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b><br><small>${esc([x.size,x.color,x.variantSku].filter(Boolean).join(" / "))}</small></td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.lineTotal)}</td></tr>`).join("");
- $("memoPrint").innerHTML=`${isDraft?'<div class="mx-memo-draft-tag">খসড়া — বিক্রি এখনো সম্পন্ন হয়নি · প্রিন্ট করার আগে বিক্রি সম্পন্ন করুন</div>':''}<div class="memo-head"><img class="memo-logo" src="assets/images/logo.png" alt="Mehedi Xpress"><div class="memo-brand"><h1>MEHEDI XPRESS</h1><p><b>Sports • Fashion • Custom Print</b></p><p>খেলাধুলার সামগ্রী, ফ্যাশন ও কাস্টম প্রিন্টিং সেবা</p><p>দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা</p><p>Contact / WhatsApp: +8801612961523</p></div><div class="memo-meta"><b>CASH MEMO / INVOICE</b><br>Sale ID: ${esc(m.saleId)}<br>Date: ${m.date.toLocaleString("en-BD")}<br>Sale Type: Offline / Shop</div></div>
- <div class="memo-customer"><div><b>Customer:</b> ${esc(m.name)}</div><div><b>Customer ID:</b> ${esc(m.customerId)}</div><div><b>Mobile:</b> ${esc(m.mobile)}</div><div><b>WhatsApp:</b> ${esc(m.whatsapp||"—")}</div><div style="grid-column:1/-1"><b>Address:</b> ${esc([m.area,m.upazila,m.district,m.division,m.address].filter(Boolean).join(", ")||"—")}</div></div>
- <table><thead><tr><th>#</th><th>Product / Variant</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead><tbody>${rows}</tbody></table>
- <div class="memo-summary"><div class="totalrow"><span>Subtotal</span><b>${money(m.sub)}</b></div><div class="totalrow"><span>Discount</span><b>- ${money(m.dis)}</b></div><div class="totalrow"><span>Delivery Charge</span><b>+ ${money(m.del)}</b></div><div class="totalrow grand"><span>Grand Total</span><span>${money(m.grand)}</span></div><div class="totalrow"><span>Paid</span><b>${money(m.paid)}</b></div><div class="totalrow"><span>Due</span><b>${money(m.due)}</b></div><div class="totalrow"><span>Payment</span><b>${esc(m.paymentMethod)} • ${esc(m.paymentStatus)}</b></div></div>
- <div class="memo-foot"><div>____________________<br>Customer Signature</div><div>____________________<br>Authorized Signature<br>Mehedi Xpress</div></div><div class="memo-note">আমাদের সাথে কেনাকাটা করার জন্য ধন্যবাদ। • Cash on Delivery nationwide</div>`;
- $('printA4').disabled=isDraft;$('printA5').disabled=isDraft;
- $('mxMemoStatus').classList.toggle('saved',!isDraft);
- $('mxMemoStatus').textContent=isDraft?'📝 কার্ট, সাইজ, পরিমাণ, কাস্টমার ও পেমেন্টের তথ্য থেকে খসড়া তৈরি হচ্ছে। সেভ হলে এখানেই চূড়ান্ত ক্যাশ মেমো দেখাবে।':`✅ বিক্রি সম্পন্ন: ${m.saleId}। আবার তথ্য লিখতে হবে না। এখান থেকেই A4/A5 প্রিন্ট করুন।`;
+function renderMemo(m){
+ const list=Array.isArray(m.items)?m.items:[];
+ const rows=list.map((x,i)=>`<tr><td>${i+1}</td><td><b>${esc(x.name)}</b><br><small>${esc([x.size,x.color,x.variantSku].filter(Boolean).join(' / '))}</small></td><td>${Number(x.qty)||0}</td><td>${money(x.price)}</td><td>${money(x.lineTotal??Number(x.qty||0)*Number(x.price||0))}</td></tr>`).join('');
+ const original=list.reduce((sum,x)=>sum+Math.max(Number(x.price||0),Number(x.originalPrice??x.price??0))*Number(x.qty||0),0);
+ const rateReduction=Math.max(0,original-Number(m.sub||0));const overallReduction=Math.min(Math.max(0,Number(m.dis||0)),Number(m.sub||0));
+ const savings=rateReduction+overallReduction;
+ const percent=original?Number((100*savings/original).toFixed(1)):0;
+ const date=m.date instanceof Date?m.date:new Date(m.date||Date.now());
+ const dateText=Number.isFinite(date.getTime())?date.toLocaleString('en-BD'):'—';
+ const html=label=>`<article class="mx-memo-copy">
+ <img class="mx-memo-watermark" src="assets/images/logo.png" alt="" aria-hidden="true">
+ <div class="mx-memo-copy-tag">${label}</div>
+ <div class="memo-head"><img class="memo-logo" src="assets/images/logo.png" alt="Mehedi Xpress"><div class="memo-brand"><h1>MEHEDI XPRESS</h1><p><b>Sports • Fashion • Custom Print</b></p><p>খেলাধুলার সামগ্রী, ফ্যাশন ও কাস্টম প্রিন্টিং সেবা</p><p>দক্ষিণ বাঙ্গরা বাজার বাসস্ট্যান্ডের উত্তর পাশে, বাঙ্গরা বাজার থানা, মুরাদনগর, কুমিল্লা</p><p>Contact / WhatsApp: +8801612961523</p></div><div class="memo-meta"><b>ক্যাশ মেমো / CASH MEMO</b><br>Memo ID: ${esc(m.saleId||'—')}<br>Date: ${esc(dateText)}<br>Shop Sale</div></div>
+ <div class="memo-customer"><div><b>গ্রাহকের নাম:</b> ${esc(m.name)}</div><div><b>Customer ID:</b> ${esc(m.customerId)}</div><div><b>মোবাইল:</b> ${esc(m.mobile)}</div><div><b>WhatsApp:</b> ${esc(m.whatsapp||'—')}</div><div style="grid-column:1/-1"><b>ঠিকানা:</b> ${esc([m.area,m.upazila,m.district,m.division,m.address].filter(Boolean).join(', ')||'—')}</div></div>
+ <table><thead><tr><th>নং</th><th>পণ্য / সাইজ / রঙ</th><th>পরিমাণ</th><th>দর</th><th>মোট</th></tr></thead><tbody>${rows}</tbody></table>
+ <div class="memo-summary"><div class="totalrow"><span>মূল রেটে পণ্যের মূল্য</span><b>${money(original)}</b></div><div class="totalrow"><span>দর কমিয়ে ছাড়</span><b>− ${money(rateReduction)}</b></div><div class="totalrow"><span>পণ্যের মোট</span><b>${money(m.sub)}</b></div><div class="totalrow"><span>অতিরিক্ত ডিসকাউন্ট</span><b>− ${money(m.dis)}</b></div><div class="totalrow"><span>মোট ছাড়</span><b>${money(savings)} (${percent}%)</b></div><div class="totalrow"><span>ডেলিভারি চার্জ</span><b>+ ${money(m.del)}</b></div><div class="totalrow grand"><span>সর্বমোট বিল</span><span>${money(m.grand)}</span></div><div class="totalrow"><span>পরিশোধ</span><b>${money(m.paid)}</b></div><div class="totalrow"><span>বাকি টাকা</span><b>${money(m.due)}</b></div><div class="totalrow"><span>পেমেন্ট মাধ্যম</span><b>${esc(m.paymentMethod||'')} • ${esc(m.paymentStatus||'')}</b></div></div>
+ <div class="memo-foot"><div><span class="mx-customer-sign-line">____________________</span><br>গ্রাহকের স্বাক্ষর</div><div><span class="mx-auto-mark">Mehedi Hasan</span><br><span class="mx-mark-label">স্বয়ংক্রিয় নাম-চিহ্ন · ${esc(date.toLocaleDateString('en-BD'))}</span><br>মেহেদী এক্সপ্রেস — অনুমোদিত</div></div>
+ <div class="memo-note">আমাদের সঙ্গে কেনাকাটা করার জন্য ধন্যবাদ। • সারা দেশে Cash on Delivery</div></article>`;
+ // A single print action prints both copies, each with the same immutable Sale ID and figures.
+ $("memoPrint").innerHTML=html('গ্রাহক কপি • CUSTOMER COPY')+html('দোকান কপি • SHOP COPY');
 }
-function mxMemoRefreshDraft(t=null){
- // A completed sale remains available until a *new* item is put in the cart.
- if(!posCart.length){
-  if(mxMemoState==='final')return;
-  mxMemoState='empty';$('mxMemoStatus').classList.remove('saved');
-  $('mxMemoStatus').textContent='পণ্য কার্টে যোগ করলে এখানেই ক্যাশ মেমোর খসড়া দেখাবে। আবার তথ্য লিখতে হবে না।';
-  $('memoPrint').innerHTML='<p class="hint">পণ্য ও কাস্টমারের তথ্য দিলেই এখানে ক্যাশ মেমো তৈরি হবে।</p>';
-  $('printA4').disabled=true;$('printA5').disabled=true;return;
- }
- mxMemoState='draft';
- if(!t){const sub=posCart.reduce((n,x)=>n+x.qty*x.price,0),dis=Math.max(0,Number($('posDiscount').value||0)),del=Math.max(0,Number($('posDelivery').value||0)),paid=Math.max(0,Number($('posPaid').value||0)),grand=Math.max(0,sub-dis+del);t={sub,dis,del,paid,grand,due:Math.max(0,grand-paid)}}
- const val=id=>$(id)?.value?.trim()||'';
- const m={saleId:'খসড়া',date:new Date(),customerId:val('posCustomerId')||'—',name:val('posCustomerName')||'—',mobile:val('posCustomerMobile')||'—',whatsapp:val('posCustomerWhatsApp'),division:val('posDivision'),district:val('posDistrict'),upazila:val('posUpazilaManual')||val('posUpazila'),area:val('posArea'),address:val('posCustomerAddress'),items:posCart.map(x=>({...x,lineTotal:x.qty*x.price})),...t,paymentMethod:val('posPayment'),paymentStatus:t.due<=0?'Paid':t.paid>0?'Partial':'Due'};
- renderMemo(m,true);
-}
-['posCustomerName','posCustomerMobile','posCustomerWhatsApp','posCustomerId','posDivision','posDistrict','posUpazila','posUpazilaManual','posArea','posCustomerAddress','posPayment'].forEach(id=>{
- const el=$(id);if(el){el.addEventListener('input',()=>mxMemoRefreshDraft());el.addEventListener('change',()=>mxMemoRefreshDraft())}
-});
 function printMemoAs(size){
- if(mxMemoState!=='final'){alert('ক্যাশ মেমো প্রিন্ট করার আগে দোকান বিক্রি সম্পন্ন করুন।');return}
  document.body.classList.remove("print-a4","print-a5");
  document.body.classList.add(size==="A5"?"print-a5":"print-a4");
  let style=document.getElementById("dynamicPrintPage");
@@ -1275,17 +1279,21 @@ $("printA4").onclick=()=>printMemoAs("A4");
 $("printA5").onclick=()=>printMemoAs("A5");
 window.addEventListener("afterprint",()=>document.body.classList.remove("print-a4","print-a5"));
 
-// The memo is part of the POS customer form, not a second page or sale.
+// Keep cash memo accessible directly from the shop sales screen.
 function mxShowCashMemo(){
- const posLink=document.querySelector('[data-p="pos"]');
- if(!$('pos').classList.contains('active'))posLink?.click();
- $('cashmemo').scrollIntoView({block:'start',behavior:'smooth'});
+ document.querySelectorAll(".panel").forEach(el=>el.classList.remove("active"));
+ $("cashmemo").classList.add("active");
+ document.querySelectorAll("[data-p]").forEach(el=>el.classList.toggle("active",el.dataset.p==="cashmemo"));
+ $("title").textContent="🧾 ক্যাশ মেমো";
+ $("cashmemo").scrollIntoView({block:"start",behavior:"smooth"});
 }
-$('mxOpenCashMemo').addEventListener('click',mxShowCashMemo);
-$('mxFindCashMemo').addEventListener('click',()=>{
+$("mxOpenCashMemo").addEventListener("click",mxShowCashMemo);
+$("mxFindCashMemo").addEventListener("click",()=>{
  const link=document.querySelector('[data-p="reports"]');
- if(link){link.click();const target=$('mxReceiptSearch');if(target){target.scrollIntoView({block:'center',behavior:'smooth'});target.focus()}}
+ if(link){link.click();const target=document.getElementById("mxReceiptSearch");if(target){target.scrollIntoView({block:"center",behavior:"smooth"});target.focus();}}
+ else mxShowCashMemo();
 });
+$("backToPos").onclick=()=>{document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));$("pos").classList.add("active");document.querySelectorAll("[data-p]").forEach(x=>x.classList.toggle("active",x.dataset.p==="pos"));$("title").textContent="🧾 দোকান বিক্রি"};
 const originalRenderProducts=renderProducts;
 renderProducts=function(){originalRenderProducts();renderPosProducts()};
 
@@ -1511,6 +1519,27 @@ function mx10Render(){
  $('mx10DueRows').innerHTML=outstanding.length?outstanding.map(s=>`<tr><td>${esc(s.saleId||s.id)}</td><td>${esc(s.customerName||'')}<br><small>${esc(s.customerMobile||'')}</small></td><td>${money(s.total)}</td><td>${money(s.paid)}</td><td>${money(mx10Due(s))}</td></tr>`).join(''):'<tr><td colspan="5">No outstanding POS dues.</td></tr>';
  $('mx10PointsRows').innerHTML=mx10PointEvents.length?[...mx10PointEvents].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,500).map(p=>`<tr><td>${mx10Timestamp(p.createdAt)?.toLocaleString('en-BD')||'—'}</td><td>${esc(p.customerName||mx10CustomerName(p.customerId))}</td><td>${Number(p.delta)>0?'+':''}${Number(p.delta||0)}</td><td>${esc(p.reason||'')}</td></tr>`).join(''):'<tr><td colspan="4">No point adjustments.</td></tr>';
  $('mx10CollectionRows').innerHTML=mx10Collections.length?[...mx10Collections].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).slice(0,500).map(c=>`<tr><td>${mx10Timestamp(c.createdAt)?.toLocaleString('en-BD')||'—'}</td><td>${esc(c.saleId||c.saleDocId)}</td><td>${esc(c.customerName||'')}</td><td>${money(c.amount)}</td><td>${esc(c.method||'')}</td><td>${esc(c.note||'')}</td></tr>`).join(''):'<tr><td colspan="6">No collections yet.</td></tr>';
+ mxDueCustomerDashboard();
+}
+function mxDueCustomerDashboard(){
+ const groupBox=$('mxDueCustomerGroups'),detail=$('mxDueCustomerDetail');if(!groupBox||!detail)return;
+ const groups=new Map();
+ for(const sale of mx10Sales.filter(s=>s.type==='offline')){
+  const phone=mxPosNormPhone(sale.customerMobile||''),key=phone||('customer:'+String(sale.customerDocId||sale.customerId||sale.id));
+  if(!groups.has(key))groups.set(key,{key,phone,name:sale.customerName||'নাম নেই',sales:[]});
+  groups.get(key).sales.push(sale);
+ }
+ const entries=[...groups.values()].map(g=>({...g,total:g.sales.reduce((n,s)=>n+Number(s.total||0),0),paid:g.sales.reduce((n,s)=>n+Number(s.paid||0),0),due:g.sales.reduce((n,s)=>n+mx10Due(s),0)})).sort((a,b)=>b.due-a.due);
+ groupBox.innerHTML='<table><thead><tr><th>কাস্টমার</th><th>বিক্রি</th><th>মোট বিল</th><th>পেয়েছি</th><th>বাকি</th><th>বিস্তারিত</th></tr></thead><tbody>'+entries.map((g,i)=>`<tr><td>${esc(g.name)}<br><small>${esc(g.phone||'মোবাইল নেই')}</small></td><td>${g.sales.length}</td><td>${money(g.total)}</td><td>${money(g.paid)}</td><td><b>${money(g.due)}</b></td><td><button class="btn" type="button" data-mx-due-group="${i}">ইতিহাস দেখুন</button></td></tr>`).join('')+'</tbody></table>';
+ groupBox.querySelectorAll('[data-mx-due-group]').forEach(b=>b.onclick=()=>{
+  const g=entries[Number(b.dataset.mxDueGroup)];if(!g)return;
+  const sales=[...g.sales].sort((a,b)=>(mx10Timestamp(b.createdAt)?.getTime()||0)-(mx10Timestamp(a.createdAt)?.getTime()||0));
+  const matchingIds=new Set(sales.map(s=>s.id));const matchingCodes=new Set(sales.map(s=>s.saleId));
+  const collections=mx10Collections.filter(c=>matchingIds.has(c.saleDocId)||matchingCodes.has(c.saleId));
+  detail.innerHTML=`<h4>📒 ${esc(g.name)} — ${esc(g.phone||'মোবাইল নেই')}</h4><p>বিল ${money(g.total)} · জমা ${money(g.paid)} · বাকি <b>${money(g.due)}</b></p><div class="tablewrap"><table><thead><tr><th>তারিখ</th><th>রসিদ</th><th>পণ্য ও পরিমাণ</th><th>বিল</th><th>পেয়েছি</th><th>বাকি</th><th>অ্যাকশন</th></tr></thead><tbody>${sales.map(s=>`<tr><td>${esc(mx10Timestamp(s.createdAt)?.toLocaleDateString('en-BD')||'—')}</td><td>${esc(s.saleId||s.id)}</td><td>${(Array.isArray(s.items)?s.items:[]).map(x=>`${esc(x.name||'পণ্য')} × ${Number(x.qty||0)}`).join('<br>')}</td><td>${money(s.total)}</td><td>${money(s.paid)}</td><td>${money(mx10Due(s))}</td><td><button class="btn" type="button" data-mx-due-receipt="${esc(s.id)}">রসিদ</button> ${mx10Due(s)>0?`<button class="btn" type="button" data-mx-collect-sale="${esc(s.id)}">বাকি জমা</button>`:''}</td></tr>`).join('')}</tbody></table></div><h4>💵 পরবর্তী টাকা জমার ইতিহাস</h4><div class="tablewrap"><table><thead><tr><th>তারিখ</th><th>রসিদ</th><th>টাকা</th><th>মাধ্যম</th><th>নোট</th></tr></thead><tbody>${collections.map(c=>`<tr><td>${esc(mx10Timestamp(c.createdAt)?.toLocaleString('en-BD')||'—')}</td><td>${esc(c.saleId||'')}</td><td>${money(c.amount)}</td><td>${esc(c.method||'')}</td><td>${esc(c.note||'')}</td></tr>`).join('')||'<tr><td colspan="5">বাকি আদায়ের আলাদা রেকর্ড নেই। প্রথম বিক্রিতে দেওয়া টাকা বিক্রির সারিতেই দেখানো আছে।</td></tr>'}</tbody></table></div>`;
+  detail.querySelectorAll('[data-mx-due-receipt]').forEach(b=>b.onclick=()=>mxReceiptOpen(b.dataset.mxDueReceipt));
+  detail.querySelectorAll('[data-mx-collect-sale]').forEach(b=>b.onclick=()=>{$('mx10DueSale').value=b.dataset.mxCollectSale;$('mx10CollectAmount').focus()});
+ });
 }
 function mx10Start(){if(mx10Started)return;mx10Started=true;
  for(const [name,key] of [['customers','mx10Customers'],['sales','mx10Sales'],['loyaltyEvents','mx10PointEvents'],['customerCollections','mx10Collections']])onSnapshot(collection(db,name),snap=>{const rows=snap.docs.map(d=>({id:d.id,...d.data()}));if(key==='mx10Customers')mx10Customers=rows;else if(key==='mx10Sales')mx10Sales=rows;else if(key==='mx10PointEvents')mx10PointEvents=rows;else mx10Collections=rows;mx10Render()},e=>{console.error('Phase 10 read',name,e);$('mx10CRMMsg').textContent='Firestore '+name+' permission/error: '+(e.code||e.message)});
@@ -1864,9 +1893,12 @@ function mxReceiptOpen(id){
  if(!Array.isArray(s.items)||!s.items.length){alert('এই পুরোনো বিক্রিতে পণ্যের তথ্য নেই।');return}
  const lines=s.items.map(x=>({...x,qty:Number(x.qty||0),price:Number(x.price||0),lineTotal:Number(x.lineTotal??(Number(x.qty||0)*Number(x.price||0)))}));
  const m={saleId:s.saleId||s.id,date:mxAsDate(s.createdAt||s.date)||new Date(),customerId:s.customerId||'',name:s.customerName||'নাম দেওয়া হয়নি',mobile:s.customerMobile||'',whatsapp:s.customerWhatsApp||'',division:s.division||'',district:s.district||'',upazila:s.upazila||'',area:s.area||'',address:s.customerAddress||'',items:lines,sub:Number(s.subtotal||0),dis:Number(s.discount||0),del:Number(s.deliveryCharge||0),grand:Number(s.total||0),paid:Number(s.paid||0),due:Number(s.due||0),paymentMethod:s.paymentMethod||'',paymentStatus:s.paymentStatus||''};
- mxMemoState='final';lastMemo=m;renderMemo(m);
- document.querySelector('[data-p="pos"]').click();
- $('cashmemo').scrollIntoView({block:'start',behavior:'smooth'});
+ renderMemo(m);
+ document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+ $('cashmemo').classList.add('active');
+ document.querySelectorAll('[data-p]').forEach(x=>x.classList.remove('active'));
+ $('title').textContent='পুরোনো বিক্রির রসিদ';
+ const area=document.querySelector('.mx-main')||document.querySelector('main');if(area)area.scrollTop=0;
 }
 $('mxReceiptSearch').addEventListener('input',mxReceiptMatches);
 const mxReceiptPreviousRender=mxRenderAll;
@@ -1964,36 +1996,15 @@ $('mxSizeStockSave').onclick=async()=>{
  try{
   await runTransaction(db,async tx=>{
    const pref=doc(db,'products',id),pSnap=await tx.get(pref);if(!pSnap.exists())throw Error('পণ্যটি আর নেই।');
-   const current=pSnap.data(),live=mxSzCurrentVariants(current),prev=mxSzOriginalVariants;
-   const key=v=>[mxSzStr(v.size).toUpperCase(),mxSzStr(v.color).toUpperCase(),mxSzStr(v.sku).toUpperCase()].join('|');
-   const liveByKey=new Map(live.map((v,i)=>[key(v),i]));
-   const previousByKey=new Map(prev.map(v=>[key(v),v]));
-   if(liveByKey.size!==live.length)throw Error('এই পণ্যে একই সাইজ/রঙের একাধিক স্টক পাওয়া গেছে। পণ্যের মূল তথ্য পরীক্ষা করুন।');
-   // Quantities the admin enters represent the quantities at the time the editor opened.
-   // Apply ONLY the difference as a stock adjustment, preserving concurrent POS/online sales.
-   const merged=live.map(v=>({...v}));
-   for(const entered of vs){
-    const k=key(entered),was=previousByKey.get(k),wasQty=was?Number(was.stock||0):0;
-    const adjustment=Number(entered.stock)-wasQty;
-    if(was&&!liveByKey.has(k))throw Error('একটি পুরোনো সাইজ/রঙ বদলে গেছে। নতুন করে সাইজ এডিট খুলুন।');
-    const i=liveByKey.get(k);
-    if(i===undefined){
-     if(!was){merged.push({...entered,stock:adjustment});liveByKey.set(k,merged.length-1)}
-    }else{
-     // An explicit change from a positive quantity to 0 means close out that size's stock.
-     // Otherwise preserve any sales/purchases that happened while the editor was open.
-     const nextQty=Number(entered.stock)===0&&wasQty>0?0:Number(merged[i].stock||0)+adjustment;
-     if(nextQty<0)throw Error(`${entered.size||'সাইজ ছাড়া'} ${entered.color||''} সাইজে এখন ${merged[i].stock} পিস আছে। তার চেয়ে বেশি স্টক কমানো যাবে না। নতুন করে খুলে সংখ্যা মিলিয়ে নিন।`);
-     merged[i]={...merged[i],stock:nextQty};
-    }
+   const current=pSnap.data();if(mxSzSignature(current)!==mxSzOpenSignature)throw Error('এই পণ্যের স্টক বা সাইজ অন্য কোথাও পরিবর্তন হয়েছে। বন্ধ করে আবার খুলুন—তাহলেই নতুন স্টক পাবেন।');
+   tx.update(pref,{variants:vs,stock:newTotal,updatedAt:serverTimestamp()});
+   {
+    const ref=doc(collection(db,'stockMovements'));
+    const label=v=>({size:v.size||'',color:v.color||'',sku:v.sku||'',stock:Number(v.stock||0)});
+    tx.set(ref,{productId:id,productName:current.name||old.name,before:oldTotal,after:newTotal,change:newTotal-oldTotal,beforeVariants:mxSzOriginalVariants.map(label),afterVariants:vs.map(label),reason:'Admin size-wise stock correction',createdBy:auth.currentUser?.uid||'',createdAt:serverTimestamp()});
    }
-   const liveTotal=live.reduce((a,v)=>a+Number(v.stock||0),0),mergedTotal=merged.reduce((a,v)=>a+Number(v.stock||0),0);
-   tx.update(pref,{variants:merged,stock:mergedTotal,updatedAt:serverTimestamp()});
-   const ref=doc(collection(db,'stockMovements'));
-   const label=v=>({size:v.size||'',color:v.color||'',sku:v.sku||'',stock:Number(v.stock||0)});
-   tx.set(ref,{productId:id,productName:current.name||old.name,before:liveTotal,after:mergedTotal,change:mergedTotal-liveTotal,beforeVariants:live.map(label),afterVariants:merged.map(label),reason:'Admin size-wise stock adjustment (concurrent-safe)',createdBy:auth.currentUser?.uid||'',createdAt:serverTimestamp()});
   });
-  $('mxSizeStockModal').hidden=true;mxSzEditingId='';alert('সাইজ ও স্টকের পরিবর্তন সেভ হয়েছে। দোকান বিক্রির পণ্য কার্ডে আপডেট দেখাবে।');
+  $('mxSizeStockModal').hidden=true;mxSzEditingId='';alert('সাইজ ও স্টক সেভ হয়েছে। দোকান বিক্রিতে নতুন সাইজ এবং পিস দেখা যাবে।');
  }catch(e){$('mxSizeStockStatus').textContent='সেভ হয়নি: '+(e.message||e.code);$('mxSizeStockStatus').className='mx-sz-status error'}
  finally{btn.disabled=false}
 };
@@ -2032,4 +2043,35 @@ $('productForm').onsubmit=async e=>{
  if(err){e.preventDefault();alert(err);return}
  return mxSzOldProductSubmit(e);
 };
+
+// P19 public storefront theme editor; reads/writes only siteSettings/homepage.
+const mxPublicPresets={
+ classic:{primary:'#0569c9',header:'#002e67',accent:'#55ed00',background:'#ffffff',radius:18},
+ midnight:{primary:'#3066ba',header:'#111b38',accent:'#f8c647',background:'#f5f6fb',radius:14},
+ emerald:{primary:'#087e66',header:'#074e42',accent:'#9ae66e',background:'#f5fff9',radius:18},
+ sunset:{primary:'#ed703c',header:'#6a2349',accent:'#ffcb52',background:'#fff9f4',radius:26}
+};
+function mxPublicReadForm(){return{primary:$('mxPublicPrimary').value,header:$('mxPublicHeader').value,accent:$('mxPublicAccent').value,background:$('mxPublicBackground').value,radius:Number($('mxPublicRadius').value)}}
+function mxPublicFillForm(theme){
+ const t={...mxPublicPresets.classic,...(theme||{})};
+ for(const [id,key] of Object.entries({mxPublicPrimary:'primary',mxPublicHeader:'header',mxPublicAccent:'accent',mxPublicBackground:'background'}))if(/^#[0-9a-f]{6}$/i.test(t[key]))$(id).value=t[key];
+ $('mxPublicRadius').value=[8,14,18,26].includes(Number(t.radius))?String(t.radius):'18';mxPublicPreview();
+}
+function mxPublicPreview(){const t=mxPublicReadForm(),root=$('mxPublicThemePreview');
+ root.style.borderRadius=t.radius+'px';root.style.background=t.background;
+ root.querySelector('.mx-preview-head').style.background=t.header;
+ root.querySelector('.mx-preview-banner').style.background=t.primary;
+ root.querySelector('.mx-preview-button').style.background=t.primary;
+ root.querySelectorAll('.mx-preview-cards>div').forEach(c=>{c.style.borderRadius=t.radius+'px';c.style.borderColor=t.accent;c.style.background=t.background});
+}
+$('mxPublicPreset').addEventListener('change',()=>{const key=$('mxPublicPreset').value;if(mxPublicPresets[key])mxPublicFillForm(mxPublicPresets[key])});
+for(const id of ['mxPublicPrimary','mxPublicHeader','mxPublicAccent','mxPublicBackground','mxPublicRadius'])$(id).addEventListener('input',()=>{$('mxPublicPreset').value='custom';mxPublicPreview()});
+$('mxPublicThemeSave').onclick=async()=>{
+ const t=mxPublicReadForm();const b=$('mxPublicThemeSave');b.disabled=true;
+ try{await setDoc(doc(db,'siteSettings','homepage'),{storefrontTheme:t,updatedAt:serverTimestamp()},{merge:true});$('mxPublicThemeMsg').textContent='✓ পাবলিক ওয়েবসাইটের থিম সংরক্ষিত হয়েছে। পেজ রিফ্রেশ করে দেখুন।'}
+ catch(e){$('mxPublicThemeMsg').textContent='সেভ হয়নি: '+(e.code||e.message)}finally{b.disabled=false}
+};
+$('mxPublicThemeReset').onclick=()=>{$('mxPublicPreset').value='classic';mxPublicFillForm(mxPublicPresets.classic);$('mxPublicThemeMsg').textContent='Classic প্রিভিউ হয়েছে। ওয়েবসাইটে প্রয়োগ করতে Save চাপুন।'};
+async function mxPublicLoadCurrentTheme(){try{const snap=await getDoc(doc(db,'siteSettings','homepage'));const t=snap.data()?.storefrontTheme;if(t)mxPublicFillForm(t);else mxPublicFillForm(mxPublicPresets.classic)}catch(err){console.warn('Public theme preview load',err)}}
+mxPublicLoadCurrentTheme();
 </script></body></html>
