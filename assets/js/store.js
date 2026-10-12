@@ -664,7 +664,6 @@ async function loadStore() {
     renderProducts();
     renderNewProducts();
     renderPopularProducts();
-    mxLoadLivePopularityScores().catch(error => console.warn("Popularity review load", error));
     renderWishlistSection();
     renderCart();
   } catch (error) {
@@ -1112,25 +1111,13 @@ function renderNewProducts() {
    delivered orders + reviews + star rating
    ========================================================= */
 
-
-// Read-only review totals: a review makes the reviewed product eligible for Popular Products.
-// No product writes or rating inflation; only existing Firestore reviews are counted.
-async function mxLoadLivePopularityScores(){
- const snap=await getDocs(collection(db,'reviews'));const totals=new Map();
- snap.docs.forEach(d=>{const r=d.data(),id=String(r.productId||''),rating=Number(r.rating);
-  if(!id||!Number.isInteger(rating)||rating<1||rating>5)return;
-  const v=totals.get(id)||{count:0,total:0};v.count++;v.total+=rating;totals.set(id,v);
- });
- products.forEach(p=>{const v=totals.get(p.id);p.mxLiveReviewCount=v?.count||0;p.mxLiveAverage=v?Number((v.total/v.count).toFixed(2)):0;});
- renderPopularProducts();
-}
 function renderPopularProducts() {
   const host = $("#popularGrid");
   if (!host) return;
 
   const score = product => {
-    const rating = Number(product.mxLiveAverage ?? product.ratingAverage ?? product.rating ?? 0);
-    const reviews = Number(product.mxLiveReviewCount ?? product.reviewCount ?? 0);
+    const rating = Number(product.ratingAverage || product.rating || 0);
+    const reviews = Number(product.reviewCount || 0);
     const delivered = Number(product.deliveredSales || product.soldCount || 0);
 
     if (rating <= 0 && reviews <= 0 && delivered <= 0) return 0;
@@ -3540,7 +3527,7 @@ async function mxLoadReviews(productId, host) {
     host.innerHTML=`<div class="mx-review-summary"><div>${mxStars(avg)} <b>${rows.length?avg.toFixed(1):"0.0"}</b></div><span>${rows.length} ${uiText("টি রিভিউ","reviews")}</span></div>
       <form id="mxReviewForm" class="mx-review-form"><h4>${uiText("পণ্যের রিভিউ দিন","Write a Review")}</h4><label>${uiText("রেটিং","Rating")}</label><select class="field" name="rating" required><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option><option value="2">★★☆☆☆ 2</option><option value="1">★☆☆☆☆ 1</option></select><input class="field" name="name" placeholder="${uiText("আপনার নাম","Your name")}" required><textarea class="field" name="comment" rows="3" placeholder="${uiText("আপনার মতামত লিখুন","Write your review")}" required></textarea><button class="btn primary" type="submit">${uiText("রিভিউ জমা দিন","SUBMIT REVIEW")}</button></form>
       <div class="mx-review-list">${rows.length?rows.slice(0,10).map(r=>`<div class="mx-review-item">${mxStars(r.rating)}<b>${escapeHtml(r.name||uiText("কাস্টমার","Customer"))}</b><p>${escapeHtml(r.comment||"")}</p></div>`).join(""):`<p>${uiText("এখনো কোনো রিভিউ নেই।","No reviews yet.")}</p>`}</div>`;
-    $("#mxReviewForm")?.addEventListener("submit",async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));if(!user){alert(uiText("রিভিউ দিতে আগে লগইন করুন।","Please sign in to write a review."));showAccount();openModal($("#accountModal"));return;}try{await addDoc(collection(db,"reviews"),{productId,name:f.name,comment:f.comment,rating:Number(f.rating),userId:user.uid,createdAt:serverTimestamp()});alert(uiText("রিভিউ জমা হয়েছে।","Review submitted."));mxLoadReviews(productId,host);mxLoadLivePopularityScores().catch(console.warn);}catch(err){alert(uiText("রিভিউ জমা দেওয়া যায়নি।","Could not submit review.")+" "+err.message);}});
+    $("#mxReviewForm")?.addEventListener("submit",async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));try{await addDoc(collection(db,"reviews"),{productId,name:f.name,comment:f.comment,rating:Number(f.rating),userId:user?.uid||"",createdAt:serverTimestamp()});alert(uiText("রিভিউ জমা হয়েছে।","Review submitted."));mxLoadReviews(productId,host);}catch(err){alert(uiText("রিভিউ জমা দেওয়া যায়নি।","Could not submit review.")+" "+err.message);}});
   }catch(e){host.innerHTML=`<p>${uiText("রিভিউ লোড করা যায়নি।","Reviews could not be loaded.")}</p>`;}
 }
 
@@ -3588,23 +3575,6 @@ function mxPaymentEnhance(){const method=$("#paymentMethod"),info=$("#mobilePaym
 document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>{mxEnhanceCartOrderButton();mxPaymentEnhance();initAddressSelectors(true);},0);},{once:true});
 
 
-
-/* Public theme is administrator-managed via siteSettings/homepage; preset editor is not a page builder. */
-function mxApplyStorefrontTheme(v){
- if(!v||typeof v!=='object')return;
- const rules={primary:'--blue',header:'--navy',accent:'--green',background:'--mx-page-bg'};
- for(const [key,variable] of Object.entries(rules)){
-  const value=v[key];if(typeof value==='string'&&/^#[0-9a-fA-F]{6}$/.test(value))document.documentElement.style.setProperty(variable,value);
- }
- const r=Number(v.radius);if([8,14,18,26].includes(r))document.documentElement.style.setProperty('--radius',r+'px');
- if(typeof v.background==='string'&&/^#[0-9a-fA-F]{6}$/.test(v.background))document.body.style.backgroundColor=v.background;
- // Scoped accents and header; do not rewrite layout, branding, images, or product markup.
- let style=document.getElementById('mx-managed-storefront-theme');if(!style){style=document.createElement('style');style.id='mx-managed-storefront-theme';document.head.appendChild(style)}
- const primary=/^#[0-9a-fA-F]{6}$/.test(v.primary||'')?v.primary:'#0569c9';
- const header=/^#[0-9a-fA-F]{6}$/.test(v.header||'')?v.header:'#002e67';
- style.textContent=`.mx-topbar{background:linear-gradient(110deg,${header},${primary})!important}.mx-header{--navy:${header}}`;
-}
-
 /* Admin-managed homepage media: keeps existing static visuals as fallback. */
 async function mxLoadManagedHomepage(){
  try{
@@ -3612,7 +3582,6 @@ async function mxLoadManagedHomepage(){
   const records=catSnap.docs.map(d=>d.data());
   const cards=document.querySelectorAll(".mx-category-grid .mx-category-card");
   cards.forEach(card=>{const title=card.querySelector(".mx-category-content b")?.textContent?.trim().toLowerCase();if(!title)return;const cls=card.className;const aliases={"mx-cat-football-jersey":["ফুটবল জার্সি"],"mx-cat-cricket-jersey":["ক্রিকেট জার্সি"],"mx-cat-kids-jersey":["কিডস জার্সি"],"mx-cat-tshirt":["টি-শার্ট ও পোলো"],"mx-cat-shorts":["শর্টস ও ট্রাউজার"],"mx-cat-football":["ফুটবল ও ক্রিকেট সামগ্রী"],"mx-cat-cricket":["ফুটবল ও ক্রিকেট সামগ্রী"],"mx-cat-badminton":["ব্যাডমিন্টন"],"mx-cat-custom-jersey":["কাস্টম প্রিন্ট"],"mx-cat-custom-print":["কাস্টম প্রিন্ট"]};const names=Object.entries(aliases).filter(([key])=>cls.split(" ").includes(key)).flatMap(([,names])=>names);const match=records.find(r=>[title,...names].some(n=>String(r.name||"").trim().toLowerCase()===n.toLowerCase()));if(match?.image){card.style.backgroundImage=`linear-gradient(180deg,transparent,#061a3577),url("${match.image}")`;card.style.backgroundSize="cover";card.style.backgroundPosition="center"}});
-  if(siteSnap.exists())mxApplyStorefrontTheme(siteSnap.data().storefrontTheme);
   const banners=siteSnap.exists()?siteSnap.data().banners:[];
   if(Array.isArray(banners))document.querySelectorAll("#bannerTrack .mx-banner-slide img.mx-hero-banner-image").forEach((img,n)=>{if(typeof banners[n]==="string"&&banners[n])img.src=banners[n]});
  }catch(err){console.warn("Homepage managed images unavailable; defaults retained",err)}
