@@ -25,9 +25,11 @@
   <link rel="stylesheet" href="assets/css/mx-reference-full.css?v=p22-20261012">
   <!-- P25 public design is loaded last; the existing store.js/Firebase logic remains untouched. -->
   <link rel="stylesheet" href="assets/css/mx-p24-live-public.css?v=p25-20261012">
+  <!-- P26: Full page-structure styling, P24 reference integration -->
+  <link rel="stylesheet" href="assets/css/mx-p26-pages.css?v=p26-20261012">
 </head>
 
-<body class="mx-p22-public mx-p25-public">
+<body class="mx-p22-public mx-p25-public mx-p26-public">
 <a class="mx-p22-skip" href="#products">সরাসরি পণ্যে যান</a>
 
 <!-- =====================================================
@@ -144,6 +146,9 @@
       class="mx-logo"
       aria-label="Mehedi Xpress Home"
     >
+
+      <span class="mx-p25-wordmark">MEHEDI<strong>XPRESS</strong></span>
+      <small class="mx-p25-brand-sub">SPORTS · FASHION · CUSTOM PRINT</small>
 
       <div class="mx-logo-image">
         <img
@@ -717,6 +722,11 @@
 
 <section class="mx-products-section mx-all-products-section" id="products">
   <div class="mx-container">
+    <div class="mx-p26-catalog-hero" aria-label="Mehedi Xpress Collection">
+      <div class="mx-p26-catalog-hero-copy"><span>SPORTS · FASHION · CUSTOM PRINT</span><h2>আপনার পছন্দের জার্সি ও স্পোর্টসওয়্যার</h2><p>সকল পণ্য দেখুন, ক্যাটাগরি বেছে নিন এবং পছন্দের সাইজ অর্ডার করুন।</p><a href="#products">পণ্য দেখুন →</a></div>
+      <img src="assets/images/mx-p26-catalog-cover.jpg" loading="lazy" alt="Mehedi Xpress jerseys and sportswear">
+    </div>
+
 
     <div class="mx-all-products-head">
       <div class="mx-products-title">
@@ -1239,63 +1249,21 @@
      CART MODAL
 ===================================================== -->
 
-<div
-  class="modal"
-  id="cart"
->
-
-  <div class="modal-card">
-
-    <button
-      type="button"
-      class="modal-close"
-      data-close-cart
-      aria-label="Close Cart"
-    >
-      ×
-    </button>
-
-
-    <div class="modal-title">
-
-      <span>SHOPPING CART</span>
-
-      <h2>
-        আপনার Cart
-      </h2>
-
-    </div>
-
-
-    <div id="cartItems"></div>
-
-
-    <div class="mx-cart-summary">
-
-      <span>
-        Subtotal
-      </span>
-
-      <strong id="subtotal">
-        ৳0
-      </strong>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="btn primary"
-      id="checkout"
-      style="width:100%;"
-    >
-      CHECKOUT
-    </button>
-
+<div class="modal mx-p26-page-modal" id="cart" aria-label="Shopping cart">
+ <div class="modal-card mx-p26-cart-page">
+  <button type="button" class="modal-close" data-close-cart aria-label="Close Cart">×</button>
+  <div class="mx-p26-page-heading"><span class="mx-p26-kicker">MEHEDI XPRESS / CART</span><h2>আপনার শপিং কার্ট</h2><p>পণ্য, সাইজ ও পরিমাণ দেখে অর্ডার নিশ্চিত করুন।</p></div>
+  <div class="mx-p26-cart-layout">
+   <section class="mx-p26-cart-list" aria-label="Cart items"><h3>নির্বাচিত পণ্য</h3><div id="cartItems"></div></section>
+   <aside class="mx-p26-cart-aside"><h3>অর্ডার সামারি</h3>
+    <div class="mx-p26-price-line"><span>নির্বাচিত পণ্যের মূল্য</span><strong id="subtotal">৳0</strong></div>
+    <p class="mx-p26-summary-note">ডেলিভারি চার্জ ও পেমেন্টের তথ্য Checkout-এ যাচাই করুন।</p>
+    <button type="button" class="btn primary" id="checkout">অর্ডার করতে এগিয়ে যান →</button>
+    <p class="mx-p26-trust-note">✓ নিরাপদ অর্ডার · COD / bKash / Nagad</p>
+   </aside>
   </div>
-
+ </div>
 </div>
-
 
 <!-- =====================================================
      PRODUCT DETAIL MODAL
@@ -1400,231 +1368,78 @@
 
 
     <div class="mx-p22-checkout-progress"><span class="active">① কার্ট</span><span class="active">② ঠিকানা ও পেমেন্ট</span><span>③ অর্ডার নিশ্চিত</span></div>
-<form id="checkoutForm">
-
-      <label>
-        আপনার নাম
-      </label>
-
-      <input
-        class="field"
-        name="name"
-        id="checkoutName"
-        type="text"
-        placeholder="আপনার পুরো নাম"
-        required
-      >
-
-
-      <br><br>
-
-
-      <label>
-        মোবাইল নম্বর
-      </label>
-
-      <input
-        class="field"
-        name="phone"
-        id="checkoutPhone"
-        type="tel"
-        placeholder="01XXXXXXXXX"
-        required
-      >
-
-
-      <br><br>
-
-
-      <label>
-        বিভাগ
-      </label>
-
-      <select
-        class="field"
-        name="division"
-        id="division"
-        required
-      >
-        <option value="">
+<form id="checkoutForm" class="mx-p26-checkout-layout">
+ <section class="mx-p26-checkout-form">
+  <h3>ডেলিভারি তথ্য</h3><p>সঠিক তথ্য দিন, যাতে অর্ডার পৌঁছাতে সমস্যা না হয়।</p>
+  <div class="mx-p26-checkout-fields"><label class="mx-p26-field"><span>আপনার নাম</span><input class="field" id="checkoutName" name="name" placeholder="আপনার পুরো নাম" required="" type="text"/></label>
+<label class="mx-p26-field"><span>মোবাইল নম্বর</span><input class="field" id="checkoutPhone" name="phone" placeholder="01XXXXXXXXX" required="" type="tel"/></label>
+<label class="mx-p26-field"><span>বিভাগ</span><select class="field" id="division" name="division" required="">
+<option value="">
           বিভাগ নির্বাচন করুন
         </option>
-      </select>
-
-
-      <br><br>
-
-
-      <label>
-        জেলা
-      </label>
-
-      <select
-        class="field"
-        name="district"
-        id="district"
-        required
-      >
-        <option value="">
+</select></label>
+<label class="mx-p26-field"><span>জেলা</span><select class="field" id="district" name="district" required="">
+<option value="">
           জেলা নির্বাচন করুন
         </option>
-      </select>
-
-
-      <br><br>
-
-
-      <label>
-        উপজেলা / থানা
-      </label>
-
-      <select
-        class="field"
-        name="upazila"
-        id="upazila"
-        required
-      >
-        <option value="">
+</select></label>
+<label class="mx-p26-field"><span>উপজেলা / থানা</span><select class="field" id="upazila" name="upazila" required="">
+<option value="">
           উপজেলা / থানা নির্বাচন করুন
         </option>
-      </select>
-
-
-      <br><br>
-
-
-      <label>
-        এলাকা / গ্রাম
-      </label>
-
-      <input
-        class="field"
-        name="area"
-        id="checkoutArea"
-        type="text"
-        placeholder="এলাকা / গ্রাম"
-        required
-      >
-
-
-      <br><br>
-
-
-      <label>
-        সম্পূর্ণ ঠিকানা
-      </label>
-
-      <textarea
-        class="field"
-        name="address"
-        id="checkoutAddress"
-        rows="3"
-        placeholder="বাড়ি / রোড / বাজার / পরিচিত স্থান"
-        required
-      ></textarea>
-
-
-      <br><br>
-
-
-      <label>
-        Payment Method
-      </label>
-
-      <select
-        class="field"
-        name="paymentMethod"
-        id="paymentMethod"
-        required
-      >
-
-        <option value="cod">
+</select></label>
+<label class="mx-p26-field"><span>এলাকা / গ্রাম</span><input class="field" id="checkoutArea" name="area" placeholder="এলাকা / গ্রাম" required="" type="text"/></label>
+<label class="mx-p26-field mx-p26-full"><span>সম্পূর্ণ ঠিকানা</span><textarea class="field" id="checkoutAddress" name="address" placeholder="বাড়ি / রোড / বাজার / পরিচিত স্থান" required="" rows="3"></textarea></label></div>
+  <h3 class="mx-p26-payment-title">পেমেন্ট</h3>
+  <div class="mx-p26-checkout-fields"><label class="mx-p26-field mx-p26-full"><span>পেমেন্ট পদ্ধতি</span><select class="field" id="paymentMethod" name="paymentMethod" required="">
+<option value="cod">
           Cash on Delivery
         </option>
-
-        <option value="bkash">
+<option value="bkash">
           bKash
         </option>
-
-        <option value="nagad">
+<option value="nagad">
           Nagad
         </option>
-
-      </select>
-
-
-      <div
-        id="mobilePaymentInfo"
-        style="
-          display:none;
-          margin-top:15px;
-        "
-      >
-
-        <div
-          style="
+</select></label></div>
+  <div id="mobilePaymentInfo" style="display:none">
+<div style="
             padding:14px;
             background:#f4f8fc;
             border-radius:10px;
             margin-bottom:12px;
-          "
-        >
-
-          <b>
+          ">
+<b>
             Send Money Number:
           </b>
-
-          <br>
-
-          <strong
-            style="
+<br/>
+<strong style="
               color:#f51231;
               font-size:20px;
-            "
-          >
+            ">
             01820693313
           </strong>
-
-          <p
-            style="
+<p style="
               margin:7px 0 0;
               font-size:13px;
-            "
-          >
+            ">
             শুধুমাত্র Send Money করবেন।
             Mobile Recharge করবেন না।
           </p>
-
-        </div>
-
-
-        <label>
+</div>
+<label>
           Transaction ID
         </label>
-
-        <input
-          class="field"
-          name="transactionId"
-          id="transactionId"
-          type="text"
-          placeholder="Transaction ID লিখুন"
-        >
-
-      </div>
-
-
-      <br><br>
-
-
-      <button
-        type="submit"
-        class="btn primary"
-        style="width:100%;"
-      >
-        CONFIRM ORDER
-      </button>
-
-    </form>
+<input class="field" id="transactionId" name="transactionId" placeholder="Transaction ID লিখুন" type="text"/>
+</div>
+ </section>
+ <aside class="mx-p26-checkout-summary">
+  <h3>অর্ডার নিশ্চিত করুন</h3><p>Submit করার আগে পণ্য, পরিমাণ ও ঠিকানা মিলিয়ে নিন।</p>
+  <div class="mx-p26-safe-card"><b>নিরাপদ পেমেন্ট</b><span>Cash on Delivery · bKash · Nagad</span></div>
+  <p class="mx-p26-summary-note">আসল অর্ডারের পরিমাণ, চার্জ ও স্টক বিদ্যমান Firebase Checkout প্রক্রিয়া অনুযায়ী গণনা হবে।</p>
+  <button type="submit" class="btn primary">CONFIRM ORDER →</button>
+ </aside>
+</form>
 
   </div>
 
