@@ -977,7 +977,82 @@ body.mx-p29-admin #orderdetail #orderDetailBox{background:#fff!important;border:
 @media(max-width:390px){body.mx-p29-admin .mx-p29-product-filterbox{grid-template-columns:1fr}body.mx-p29-admin .mx-p29-product-filterbox label{grid-column:1/-1}body.mx-p29-admin #products .mx-p29-product-workspace{min-width:0}}
 /* Print remains under the original P20/P28 rules. Hide P29 visual-only controls. */
 @media print { body.mx-p29-admin .mx-p29-orders-overview,body.mx-p29-admin .mx-p29-status-filters,body.mx-p29-admin .mx-p29-product-filterbox,body.mx-p29-admin .mx-p29-report-note{display:none!important} }
-</style></head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin">
+</style>
+<style id="mx-p30-scroll-restoration">
+/* MEHEDI XPRESS P30 — RESTORE PAGE SCROLL (SCREEN ONLY)
+   Fixes legacy independent-scroll rules conflicting with P28/P29 full-page layout.
+   Does not change Firebase, inventory, POS, receipts, reports or print rules. */
+@media screen {
+  html {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+    scroll-behavior: auto;
+  }
+  body.mx-admin-root {
+    height: auto !important;
+    min-height: 100dvh !important;
+    overflow-x: clip !important;
+    overflow-y: auto !important;
+  }
+  body.mx-admin-root #app.layout {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    align-items: start !important;
+  }
+  body.mx-admin-root #app > .main {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+    overscroll-behavior: auto !important;
+  }
+  body.mx-admin-root #app > .side {
+    position: sticky !important;
+    top: 0 !important;
+    align-self: start !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  body.mx-admin-root #app .tablewrap,
+  body.mx-admin-root #app .mx-p29-responsive-table {
+    overflow-x: auto !important;
+    max-width: 100%;
+  }
+}
+@media screen and (max-width: 760px) {
+  body.mx-admin-root #app.layout {
+    display: block !important;
+    min-height: 100dvh !important;
+  }
+  body.mx-admin-root #app > .side {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    align-self: auto !important;
+  }
+  body.mx-admin-root #app > .main {
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  body.mx-admin-root.mx-p22-menu-open #app > .side .menu {
+    max-height: 65dvh !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+}
+/* @media print intentionally NOT overridden: keep previous cash memo and invoice rules. */
+</style>
+</head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
 <img alt="Mehedi Xpress" onerror="this.style.display='none'" src="assets/images/logo.png" style="width:82px;height:82px;object-fit:contain;border-radius:18px"/>
@@ -3039,4 +3114,12 @@ mxPublicLoadCurrentTheme();
   });
   refreshProductCategories(fromRows('productRows'));
   filterProducts();updateOrderOverview();syncStatus();
-})();</script></body></html>
+})();</script><script id="mx-p30-navigation-scroll">
+/* P30 UI-only: when changing admin sections, return the document to the top. */
+document.addEventListener('click', function(event) {
+  const target = event.target.closest('#app .menu button[data-p], #app button[data-mx-goto]');
+  if (!target) return;
+  requestAnimationFrame(function() { window.scrollTo({ top: 0, behavior: 'instant' }); });
+});
+</script>
+</body></html>
