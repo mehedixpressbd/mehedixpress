@@ -1406,6 +1406,43 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
  #mxP36SlipPrint .mx-p36-foot{padding-top:14px;border-top:1px dashed #a1b3bb;margin-top:25px;white-space:pre-line}
 }
 </style>
+<style id="mx-p37-board-css">
+/* P37 readonly Custom Order Operations Board. Scope all rules locally. */
+#mxP37Board{margin:16px 0;padding:17px;border:1px solid #dbe9ef;border-radius:16px;background:linear-gradient(135deg,#f7fbfe,#ecf7f6);color:#18384a;box-shadow:0 5px 18px rgba(7,49,71,.06);min-width:0}
+#mxP37Board *,#mxP37Board *::before,#mxP37Board *::after{box-sizing:border-box}
+#mxP37Board .mx37-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;margin-bottom:13px}
+#mxP37Board h3{font-size:21px;margin:0;color:#073448;font-weight:850}
+#mxP37Board .mx37-muted{color:#567482;font-size:12px;margin:4px 0;line-height:1.5}
+#mxP37Board .mx37-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+#mxP37Board .mx37-stat{background:#fff;border:1px solid #dce9ee;border-radius:11px;padding:12px;min-width:0}
+#mxP37Board .mx37-stat small{display:block;font-size:12px;font-weight:700;color:#5b7884}
+#mxP37Board .mx37-stat strong{font-size:26px;color:#0b5463;font-weight:900;line-height:1.35}
+#mxP37Board .mx37-stat.warn strong{color:#ae4a1c}
+#mxP37Board .mx37-stat.danger strong{color:#ad3232}
+#mxP37Board .mx37-tools{display:grid;grid-template-columns:minmax(130px,1fr) minmax(130px,1fr) minmax(160px,1.2fr) auto;gap:10px;margin:14px 0}
+#mxP37Board label{display:grid;gap:5px;min-width:0;font-size:12px;font-weight:750;color:#3d6270}
+#mxP37Board input,#mxP37Board select{width:100%;min-width:0;border:1px solid #ccdde6;border-radius:8px;padding:9px 10px;background:#fff;color:#123c4c;font-size:13px}
+#mxP37Board button{background:#078d93;color:#fff;border:0;border-radius:8px;font-weight:800;font-size:12px;padding:9px 12px;cursor:pointer;min-height:39px}
+#mxP37Board button.secondary{background:#e1eff2;color:#155666}
+#mxP37Board button:focus-visible,#mxP37Board input:focus-visible,#mxP37Board select:focus-visible{outline:3px solid #28b7be60;outline-offset:1px}
+#mxP37Board .mx37-actions{align-self:end;display:flex;gap:7px;flex-wrap:wrap}
+#mxP37Board .mx37-tablewrap{overflow:auto;max-height:460px;background:white;border:1px solid #dae6ec;border-radius:10px}
+#mxP37Board table{border-collapse:collapse;width:100%;min-width:740px;box-shadow:none!important;border:0!important}
+#mxP37Board th,#mxP37Board td{padding:11px;border-bottom:1px solid #ebf0f3;text-align:left;vertical-align:middle;white-space:normal;font-size:12px;color:#274653;overflow-wrap:anywhere}
+#mxP37Board th{background:#e9f3f5!important;position:sticky;top:0;color:#234859!important;z-index:1}
+#mxP37Board td b{display:block;font-weight:800;color:#113d4e}
+#mxP37Board td small{display:block;color:#607b87;margin-top:3px}
+#mxP37Board .mx37-badge{display:inline-block;padding:4px 7px;border-radius:15px;background:#e6f3f6;color:#24606b;font-weight:700}
+#mxP37Board .mx37-badge.overdue{background:#ffe8e8;color:#963536}
+#mxP37Board .mx37-badge.soon{background:#fff1db;color:#8a5519}
+#mxP37Board .mx37-progress{width:90px;height:7px;border-radius:6px;background:#e4edf0;overflow:hidden;margin-top:5px}
+#mxP37Board .mx37-progress span{display:block;height:100%;background:linear-gradient(90deg,#0d9697,#35be9f)}
+#mxP37Board .mx37-empty{text-align:center;padding:22px;color:#557684}
+#mxP37Board #mxP37Message{font-size:12px;color:#366473;margin-top:9px;min-height:17px}
+@media(max-width:950px){#mxP37Board .mx37-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#mxP37Board .mx37-tools{grid-template-columns:repeat(2,minmax(0,1fr))}#mxP37Board .mx37-actions{align-self:end}}
+@media(max-width:530px){#mxP37Board{padding:11px}#mxP37Board .mx37-tools{grid-template-columns:1fr}#mxP37Board .mx37-stats{gap:7px}#mxP37Board .mx37-stat{padding:10px}#mxP37Board .mx37-stat strong{font-size:22px}#mxP37Board h3{font-size:18px}}
+@media print{#mxP37Board{display:none!important}}
+</style>
 </head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin mx-p33-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
@@ -1760,6 +1797,18 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
 <div class="mx-p33-warning"><b>অর্ডার পরিচালনা — আলাদা হিসাব</b><span>এই বিভাগটি কাস্টম অর্ডারের কোটেশন ও উৎপাদন ট্র্যাক করে। এখানে নতুন রেকর্ড করলে POS বিক্রি, স্টক, Cash Ledger বা Customer Due স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে না।</span></div>
 <div class="mx-p34-note" role="note"><b>🧾 P34 · কোটেশন ও ডিজাইন রেফারেন্স</b><span>অর্ডার তালিকার ‘বিস্তারিত / কোটেশন’ বাটনে ক্লিক করে A4/A5 কোটেশন প্রিন্ট করুন এবং ডিজাইনের অতিরিক্ত লিংক রাখুন। প্রস্তাবিত অগ্রিম/বাকি শুধু কোটেশনের হিসাব; কোনো নগদ অর্থপ্রাপ্তি বা বকেয়া খাতায় এন্ট্রি নয়।</span></div>
 <div class="mx-p33-statgrid"><div class="mx-p33-stat"><small>মোট কাস্টম অর্ডার</small><strong id="mxP33Total">—</strong></div><div class="mx-p33-stat"><small>অপেক্ষমাণ অনুমোদন</small><strong id="mxP33Pending">—</strong></div><div class="mx-p33-stat"><small>প্রোডাকশনে</small><strong id="mxP33Production">—</strong></div><div class="mx-p33-stat"><small>ডেলিভারি সম্পন্ন</small><strong id="mxP33Delivered">—</strong></div></div>
+<section id="mxP37Board" aria-label="Custom Order Operations Board">
+ <div class="mx37-head"><div><h3>📋 P37 · Custom Order Operations Board</h3><p class="mx37-muted">ডেডলাইন, উৎপাদন ও হ্যান্ডওভার এক নজরে · এটি শুধু দেখার বোর্ড, নিজে কোনো অর্ডার/হিসাব পরিবর্তন করে না।</p></div><span class="mx37-muted">ডেডলাইন গণনা আপনার ডিভাইসের স্থানীয় তারিখ অনুযায়ী</span></div>
+ <div class="mx37-stats"><div class="mx37-stat"><small>মোট অর্ডার</small><strong id="mxP37Total">0</strong></div><div class="mx37-stat danger"><small>ডেডলাইন পেরিয়েছে</small><strong id="mxP37Overdue">0</strong></div><div class="mx37-stat warn"><small>আগামী ৭ দিনে ডেডলাইন</small><strong id="mxP37Soon">0</strong></div><div class="mx37-stat"><small>হ্যান্ডওভার বাকি (Ready)</small><strong id="mxP37Handoff">0</strong></div></div>
+ <div class="mx37-tools">
+  <label>অর্ডার পরিস্থিতি<select id="mxP37Filter"><option value="all">সব অর্ডার</option><option value="overdue">ডেডলাইন পেরিয়েছে</option><option value="soon">আগামী ৭ দিন</option><option value="production">উৎপাদনে</option><option value="ready">হ্যান্ডওভার বাকি</option><option value="completed">সম্পন্ন / Delivered</option></select></label>
+  <label>ক্রম<select id="mxP37Sort"><option value="deadline">নিকটবর্তী ডেডলাইন</option><option value="newest">নতুন অর্ডার আগে</option><option value="progress">কম অগ্রগতি আগে</option></select></label>
+  <label>নাম / নম্বর / অর্ডার ID<input id="mxP37Search" type="search" placeholder="অর্ডার খুঁজুন" maxlength="150"></label>
+  <div class="mx37-actions"><button id="mxP37Clear" type="button" class="secondary">ফিল্টার রিসেট</button><button id="mxP37CSV" type="button">CSV Export</button></div>
+ </div>
+ <div class="mx37-tablewrap" tabindex="0" aria-label="Custom orders table; scroll horizontally on narrow screens"><table><thead><tr><th>অর্ডার ও কাস্টমার</th><th>পণ্য ও পিস</th><th>ডেডলাইন</th><th>উৎপাদন</th><th>ডেলিভারি</th><th>বিস্তারিত</th></tr></thead><tbody id="mxP37Rows"><tr><td colspan="6" class="mx37-empty">অর্ডার লোড হচ্ছে…</td></tr></tbody></table></div>
+ <p id="mxP37Message" role="status" aria-live="polite">কোনো অর্ডারের পুরোনো ডেডলাইন বা উৎপাদন ইতিহাস অনুমান করে দেখানো হবে না।</p>
+</section>
 <div class="mx-p33-cols">
  <div class="card mx-p33-formbox"><div class="mx-p33-card-title"><h3>＋ নতুন কাস্টম অর্ডার / কোটেশন</h3><small>শুধু অ্যাডমিন অনুমোদিত</small></div>
  <form id="mxP33Form" class="mx-p33-fields">
@@ -3706,8 +3755,8 @@ function render(){
 ['mxP33Search','mxP33StatusFilter'].forEach(id=>el(id).addEventListener('input',render));
 onAuthStateChanged(auth,u=>{
  authorized=Boolean(u&&u.uid===uid);
- if(unsubscribe){unsubscribe();unsubscribe=null}current=[];if(!authorized){rows.replaceChildren();render();return}
- unsubscribe=onSnapshot(collection(db,'customOrders'),snapshot=>{current=snapshot.docs.map(d=>({id:d.id,...d.data()}));render()},error=>{
+ if(unsubscribe){unsubscribe();unsubscribe=null}current=[];if(!authorized){rows.replaceChildren();render();document.dispatchEvent(new CustomEvent('mx:p37-orders',{detail:{orders:[]}}));return}
+ unsubscribe=onSnapshot(collection(db,'customOrders'),snapshot=>{current=snapshot.docs.map(d=>({id:d.id,...d.data()}));render();document.dispatchEvent(new CustomEvent('mx:p37-orders',{detail:{orders:current}}))},error=>{
   el('mxP33Message').textContent='Custom Orders পড়া যায়নি: '+(error.code||error.message)+'. Firestore Rules-এ customOrders অনুমতি Publish হয়েছে কি না দেখুন।';render()})
 });
 form.addEventListener('submit',async e=>{
@@ -4071,6 +4120,60 @@ import {getFirestore,doc,getDoc,runTransaction,Timestamp,serverTimestamp} from '
  }
  el('mxP36Print').addEventListener('click',printSlip);
  window.addEventListener('afterprint',()=>document.body.classList.remove('mx-p36-print'));
+})();
+</script>
+<script id="mx-p37-operations-board" type="text/javascript">
+/* P37 read-only UI. Uses already-authorized P33 snapshot events; no new Firestore write/read subscription. */
+(()=>{'use strict';
+ const $=id=>document.getElementById(id),root=$('mxP37Board');if(!root)return;
+ let orders=[],shown=[];
+ const filters=['all','overdue','soon','production','ready','completed'];
+ const raw=v=>String(v??'');
+ const money=v=>'৳'+(Number.isFinite(Number(v))?Number(v):0).toLocaleString('en-BD',{maximumFractionDigits:2});
+ const localDay=()=>{const t=new Date();return new Date(t.getFullYear(),t.getMonth(),t.getDate()).getTime()};
+ const parseDay=v=>{if(typeof v!=='string'||!/^(\d{4})-(\d{2})-(\d{2})$/.test(v))return null;
+  const [y,m,d]=v.split('-').map(Number),dt=new Date(y,m-1,d);return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d?dt.getTime():null};
+ const code=o=>raw(o.code||'MXCO-'+raw(o.id).slice(0,8).toUpperCase());
+ const finished=o=>['Delivered','Cancelled'].includes(o.status)||o.deliveryTracking?.status==='Handed Over';
+ const difference=o=>{const t=parseDay(o.deadline);return t===null?null:Math.round((t-localDay())/86400000)};
+ const overdue=o=>{const n=difference(o);return !finished(o)&&n!==null&&n<0};
+ const soon=o=>{const n=difference(o);return !finished(o)&&n!==null&&n>=0&&n<=7};
+ const ready=o=>o.status==='Ready'&&o.deliveryTracking?.status!=='Handed Over';
+ const progress=o=>{const total=Number(o.quantity),done=Number(o.productionProgress?.completedQty);return Number.isFinite(total)&&total>0&&Number.isFinite(done)&&done>=0?Math.min(100,Math.max(0,done/total*100)):0};
+ const cell=(tr,tag,text='',cls='')=>{const t=document.createElement(tag);t.textContent=raw(text);if(cls)t.className=cls;tr.append(t);return t};
+ const time=o=>{const x=o.createdAt;return typeof x?.toMillis==='function'?x.toMillis():typeof x?.toDate==='function'?x.toDate().getTime():0};
+ function selected(){const filter=$('mxP37Filter').value,query=$('mxP37Search').value.trim().toLocaleLowerCase();const sort=$('mxP37Sort').value;
+  const result=orders.filter(o=>{
+   if(query&&! [code(o),o.customerName,o.phone,o.product,o.kind,o.trackingId,o.deliveryTracking?.trackingId].some(v=>raw(v).toLocaleLowerCase().includes(query)))return false;
+   if(filter==='overdue')return overdue(o);if(filter==='soon')return soon(o);if(filter==='production')return o.status==='In Production';if(filter==='ready')return ready(o);if(filter==='completed')return o.status==='Delivered';return true});
+  result.sort((a,b)=>sort==='newest'?time(b)-time(a):sort==='progress'?progress(a)-progress(b):(parseDay(a.deadline)??Infinity)-(parseDay(b.deadline)??Infinity));return result;
+ }
+ function render(){shown=selected();$('mxP37Total').textContent=orders.length;$('mxP37Overdue').textContent=orders.filter(overdue).length;
+  $('mxP37Soon').textContent=orders.filter(soon).length;$('mxP37Handoff').textContent=orders.filter(ready).length;
+  const tbody=$('mxP37Rows');tbody.replaceChildren();if(!shown.length){const tr=document.createElement('tr');const td=cell(tr,'td','কোনো অর্ডার পাওয়া যায়নি।','mx37-empty');td.colSpan=6;tbody.append(tr)}
+  for(const o of shown){const tr=document.createElement('tr'),first=cell(tr,'td');cell(first,'b',code(o));cell(first,'small',`${raw(o.customerName||'—')} · ${raw(o.phone||'—')}`);
+   const p=cell(tr,'td');cell(p,'b',raw(o.product||'—'));cell(p,'small',`${raw(o.quantity||0)} পিস · ${money(o.quotedTotal)}`);
+   const due=cell(tr,'td'),day=difference(o),badge=cell(due,'span',day===null?'তারিখ নেই':day<0?(finished(o)?'সর্বশেষ লক্ষ্য: '+raw(o.deadline):`${Math.abs(day)} দিন দেরি`):day===0?'আজ ডেডলাইন':`${day} দিন বাকি`,'mx37-badge'+(overdue(o)?' overdue':soon(o)?' soon':''));badge.title=o.deadline||'ডেডলাইন নেই';
+   const pr=cell(tr,'td');cell(pr,'b',`${progress(o).toFixed(0)}%`);cell(pr,'small',raw(o.productionProgress?.stage||'শুরু হয়নি'));const bar=cell(pr,'div','','mx37-progress');const span=cell(bar,'span');span.style.width=`${progress(o)}%`;
+   const sh=cell(tr,'td');cell(sh,'b',raw(o.deliveryTracking?.status||'বুকিং হয়নি'));cell(sh,'small',raw(o.status||'—'));
+   const ctl=cell(tr,'td');const btn=cell(ctl,'button','বিস্তারিত দেখুন');btn.type='button';btn.dataset.p37Order=o.id;btn.setAttribute('aria-label',`${code(o)} বিস্তারিত`);tbody.append(tr)
+  }
+  $('mxP37Message').textContent=`${shown.length}টি দেখানো হচ্ছে (মোট ${orders.length}) · এটি শুধুই অপারেশনাল তালিকা; কোনো আর্থিক হিসাব পরিবর্তন হয়নি।`;
+ }
+ for(const id of ['mxP37Filter','mxP37Sort','mxP37Search'])$(id).addEventListener('input',render);
+ $('mxP37Clear').addEventListener('click',()=>{$('mxP37Filter').value='all';$('mxP37Sort').value='deadline';$('mxP37Search').value='';render()});
+ root.addEventListener('click',e=>{const btn=e.target.closest('button[data-p37-order]');if(!btn)return;
+  const id=btn.dataset.p37Order;$('mxP33Search').value='';$('mxP33StatusFilter').value='';$('mxP33Search').dispatchEvent(new Event('input',{bubbles:true}));
+  queueMicrotask(()=>queueMicrotask(()=>{const row=[...document.querySelectorAll('#mxP33Rows tr[data-mx-p34-id]')].find(x=>x.dataset.mxP34Id===id);const open=row?.querySelector('[data-mx-p34-open]');if(open){open.click()}else{$('mxP37Message').textContent='বিস্তারিত খুলতে পারিনি। নিচের তালিকা থেকে আবার চেষ্টা করুন।'}}));
+ });
+ function csvCell(v){let s=raw(v);if(/^[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+ $('mxP37CSV').addEventListener('click',()=>{if(!shown.length){$('mxP37Message').textContent='রপ্তানির জন্য কোনো অর্ডার নেই।';return}
+  const head=['ID','Customer','Phone','Product','Quantity','Quote','Deadline','Order Status','Completed Qty','Production Stage','Delivery Status','Tracking ID'];
+  const items=shown.map(o=>[code(o),o.customerName,o.phone,o.product,o.quantity,o.quotedTotal,o.deadline,o.status,o.productionProgress?.completedQty,o.productionProgress?.stage,o.deliveryTracking?.status,o.deliveryTracking?.trackingId]);
+  const csv='\ufeff'+[head,...items].map(row=>row.map(csvCell).join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='MX-Custom-Order-Operations.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ });
+ document.addEventListener('mx:p37-orders',e=>{orders=Array.isArray(e.detail?.orders)?e.detail.orders:[];render()});
+ render();
 })();
 </script>
 </body></html>
