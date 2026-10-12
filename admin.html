@@ -1218,7 +1218,50 @@ body.mx-p32-admin #app #mxStorefrontThemeEditor input[type="color"]::-webkit-col
 @media(max-width:980px){body.mx-p32-admin #app .mx-p32-preset-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){body.mx-p32-admin #app .mx-p32-stats{grid-template-columns:repeat(2,minmax(0,1fr))}body.mx-p32-admin #app .mx-p32-stats .mx-p32-metric:last-child{grid-column:1/-1}body.mx-p32-admin #app #mxDues .stats{grid-template-columns:1fr!important}body.mx-p32-admin #app :is(#mxCRM,#mxDues,#settings) .card{padding:12px!important}body.mx-p32-admin #app .mx-p32-tools{padding:10px}body.mx-p32-admin #app .mx-p32-tool-field{flex:1 1 100%;min-width:0}}
 </style>
-</head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin">
+<style id="mx-p33-custom-order-marketing">
+/* P33 visual layer: isolated Custom Orders and Campaigns; no old POS, print, or Firebase handlers modified */
+body.mx-p33-admin #app #mxCustomOrders{--p33-navy:#092c42;--p33-teal:#089c9c;--p33-orange:#ff6b24;--p33-line:#dae7ee;min-width:0}
+body.mx-p33-admin #app #mxCustomOrders .mx-p28-section-header,body.mx-p33-admin #app #mxCampaigns .mx-p28-section-header{background:linear-gradient(110deg,#082a42,#12606c)!important;color:#fff!important;border-radius:13px!important;padding:20px 23px!important;margin-bottom:15px!important}
+body.mx-p33-admin #app #mxCustomOrders .mx-p28-section-header :is(span,h3,p),body.mx-p33-admin #app #mxCampaigns .mx-p28-section-header :is(span,h3,p){color:#fff!important}
+body.mx-p33-admin #app #mxCustomOrders .mx-p33-warning{background:#fff9ed;color:#8c521b;border:1px solid #ffe1b4;border-radius:10px;padding:12px 16px;margin:12px 0 16px;display:grid;gap:4px;font-size:12px}
+body.mx-p33-admin #app .mx-p33-statgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0 18px}
+body.mx-p33-admin #app .mx-p33-stat{background:#fff;border:1px solid #dce8ee;border-left:4px solid #079d9a;border-radius:11px;padding:15px;min-width:0;display:grid;gap:5px}
+body.mx-p33-admin #app .mx-p33-stat:nth-child(2){border-left-color:#ffad57}body.mx-p33-admin #app .mx-p33-stat:nth-child(3){border-left-color:#428bd1}body.mx-p33-admin #app .mx-p33-stat:nth-child(4){border-left-color:#46b97e}
+body.mx-p33-admin #app .mx-p33-stat small{color:#687e8d;font-size:12px}body.mx-p33-admin #app .mx-p33-stat strong{font-size:26px;color:#123d51}
+body.mx-p33-admin #app #mxCustomOrders .mx-p33-cols{display:grid;grid-template-columns:minmax(300px,.87fr) minmax(0,1.13fr);gap:16px;align-items:start}
+body.mx-p33-admin #app #mxCustomOrders .card{border:1px solid #dce8ee!important;border-radius:12px!important;box-shadow:0 4px 16px #092c4410!important;min-width:0!important}
+body.mx-p33-admin #app .mx-p33-card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+body.mx-p33-admin #app .mx-p33-card-title h3{font-size:16px;color:#12344a;margin:0}body.mx-p33-admin #app .mx-p33-card-title small{font-size:11px;color:#658092}
+body.mx-p33-admin #app .mx-p33-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+body.mx-p33-admin #app .mx-p33-fields label{font-size:12px;font-weight:700;color:#415e71;min-width:0;display:grid;gap:5px}
+body.mx-p33-admin #app .mx-p33-fields :is(input,select,textarea){font-size:13px!important;min-width:0!important;width:100%!important;border:1px solid #d4e2ea!important;border-radius:8px!important;padding:10px!important;background:#fff!important;color:#233b50!important}
+body.mx-p33-admin #app .mx-p33-span{grid-column:1/-1!important}
+body.mx-p33-admin #app .mx-p33-total{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px;background:#eff8f7;border:1px solid #c6e5e0;border-radius:9px;font-size:12px;color:#2e5e5c}
+body.mx-p33-admin #app .mx-p33-total strong{font-size:22px;color:#007c79}
+body.mx-p33-admin #app .mx-p33-filter{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+body.mx-p33-admin #app .mx-p33-filter :is(input,select){flex:1 1 170px;max-width:100%!important;min-width:0!important;min-height:42px;border:1px solid #d7e4ea;border-radius:8px;padding:9px}
+body.mx-p33-admin #app .mx-p33-tablewrap{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch;border:1px solid #e3ebef;border-radius:9px}
+body.mx-p33-admin #app .mx-p33-tablewrap table{min-width:670px!important;width:100%!important;border:0!important}
+body.mx-p33-admin #app .mx-p33-tablewrap th{background:#eff5f8!important;font-size:12px!important;color:#4e6478!important;padding:11px!important;white-space:nowrap}
+body.mx-p33-admin #app .mx-p33-tablewrap td{font-size:12px!important;color:#273f52!important;padding:11px!important;border-bottom:1px solid #e8eef2!important}
+body.mx-p33-admin #app .mx-p33-status{border:1px solid #d1dfe6!important;border-radius:7px!important;font-size:12px!important;min-width:145px!important;max-width:100%!important;padding:8px!important}
+body.mx-p33-admin #app .mx-p33-id{font-weight:800;color:#077c7c;display:block;white-space:nowrap}
+body.mx-p33-admin #app #mxCampaigns .card{border:1px solid #dce8ee!important;border-radius:12px!important;box-shadow:0 3px 14px #092c4410!important}
+body.mx-p33-admin #app #mxCampaigns .tablewrap{max-width:100%!important;overflow-x:auto!important}
+body.mx-p33-admin #app #mxCampaigns table{min-width:690px!important}
+body.mx-p33-admin #app .mx-p33-promo-preview{border:1px solid #cee5e3;background:#f2faf9;padding:13px 16px;border-radius:10px;margin:14px 0 18px;display:grid;gap:10px}
+body.mx-p33-admin #app .mx-p33-promo-preview strong{color:#194c4b;font-size:14px}
+body.mx-p33-admin #app .mx-p33-promo-preview .mx-p33-mini-controls{display:flex;gap:9px;align-items:end;flex-wrap:wrap}
+body.mx-p33-admin #app .mx-p33-promo-preview .mx-p33-mini-controls label{display:grid;gap:4px;flex:1 1 200px;font-size:12px;color:#536e77;font-weight:700}
+body.mx-p33-admin #app .mx-p33-promo-preview input{max-width:100%!important;font-size:13px!important;min-height:39px!important;background:#fff!important}
+body.mx-p33-admin #app .mx-p33-promo-preview output{display:block;font-size:12px;color:#27645d}
+body.mx-p33-admin #app #mxCampaigns .mx-p33-coupon-search{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 15px}
+body.mx-p33-admin #app #mxCampaigns .mx-p33-coupon-search :is(input,select){flex:1 1 180px;min-width:0;max-width:100%!important;font-size:13px!important}
+@media(max-width:1150px){body.mx-p33-admin #app #mxCustomOrders .mx-p33-cols{grid-template-columns:1fr}}
+@media(max-width:850px){body.mx-p33-admin #app .mx-p33-statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){body.mx-p33-admin #app .mx-p33-fields{grid-template-columns:1fr}body.mx-p33-admin #app .mx-p33-fields label{grid-column:1/-1}body.mx-p33-admin #app #mxCustomOrders .card{padding:12px!important}body.mx-p33-admin #app .mx-p33-stat{padding:10px}body.mx-p33-admin #app .mx-p33-stat strong{font-size:20px}}
+</style>
+</head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin mx-p33-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
 <img alt="Mehedi Xpress" onerror="this.style.display='none'" src="assets/images/logo.png" style="width:82px;height:82px;object-fit:contain;border-radius:18px"/>
@@ -1233,7 +1276,7 @@ body.mx-p32-admin #app #mxStorefrontThemeEditor input[type="color"]::-webkit-col
 <small style="display:block;text-align:center;margin-top:16px">Public Sign Up disabled • Admin account is created once in Firebase Authentication</small>
 </form></section>
 <div class="layout" id="app" style="display:none"><aside class="side"><div class="brand"><span class="mx-p28-brand-title">MEHEDI <b>XPRESS</b></span><small>SPORTS • FASHION • CUSTOM PRINT</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="cashmemo">🖨 ক্যাশ মেমো</button><button data-p="mxReturns">↩️ পণ্য ফেরত</button>
-<button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash &amp; Wallet Ledger</button><button data-p="purchases">🚚 Purchases &amp; Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 হেডার ও ব্যানারের ছবি</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns &amp; Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
+<button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash &amp; Wallet Ledger</button><button data-p="purchases">🚚 Purchases &amp; Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 হেডার ও ব্যানারের ছবি</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCustomOrders">🎨 Custom Orders</button><button data-p="mxCampaigns">📣 Campaigns &amp; Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
 <main class="main"><div class="top"><div class="mx-p22-top-left"><button aria-expanded="false" aria-label="মেনু খুলুন বা বন্ধ করুন" class="mx-p22-menu-toggle" id="mxP22MenuToggle" type="button">☰</button><div><span class="mx-p22-breadcrumb">MEHEDI XPRESS / ADMIN MANAGEMENT</span><h2 id="title">Dashboard</h2></div></div><label class="mx-p22-admin-search"><span>⌕</span><input aria-label="অ্যাডমিন মেনু অনুসন্ধান" id="mxP22MenuSearch" placeholder="মেনু খুঁজুন: POS, Orders, Products..." type="search"/></label><div class="mx-lang-switch"><button class="mx-lang-btn" data-lang="bn" type="button">বাংলা</button><button class="mx-lang-btn" data-lang="en" type="button">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a><span class="mx-p28-admin-pill">● Admin Panel</span></div>
 <section class="panel active" id="dashboard">
 <div class="mx-p28-hero"><div class="mx-p28-hero-copy"><span>MEHEDI XPRESS · BUSINESS COMMAND CENTER</span><h2>আপনার স্পোর্টস ব্যবসা<br/>এক জায়গায় পরিচালনা করুন</h2><p>লাইভ প্রোডাক্ট, অর্ডার, স্টক ও দোকান বিক্রির কাজ দ্রুত পরিচালনা করুন।</p><button class="mx-p28-hero-btn" data-mx-goto="pos" type="button">দোকান বিক্রি শুরু করুন →</button></div></div>
@@ -1566,8 +1609,39 @@ body.mx-p32-admin #app #mxStorefrontThemeEditor input[type="color"]::-webkit-col
 <section class="panel" id="mxAttendance"><div class="mx-p28-pending-info">এই বিভাগটি এখনই নতুন করে উন্নয়ন করা হচ্ছে না। আগের রেকর্ড অপরিবর্তিত রয়েছে।</div><div class="head"><h3>📅 Staff Attendance</h3><button class="btn" id="mxAttCSV">Export CSV</button></div><div class="card"><form class="formgrid" id="mxAttForm"><div class="field"><label>Employee</label><select id="mxAttEmployee" required=""></select></div><div class="field"><label>Date</label><input id="mxAttDate" required="" type="date"/></div><div class="field"><label>Status</label><select id="mxAttStatus"><option>Present</option><option>Absent</option><option>Leave</option><option>Half Day</option></select></div><div class="field"><label>Note</label><input id="mxAttNote" maxlength="240" placeholder="Optional"/></div><div class="full"><button class="btn primary" id="mxAttSave">Save / Update Attendance</button></div></form><p class="hint">One attendance record per employee per day. Updating an existing date replaces its previous status.</p></div><div class="head"><h3>Attendance Records</h3></div><div class="toolbar"><input id="mxAttFrom" type="date"/><input id="mxAttTo" type="date"/></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Employee</th><th>Status</th><th>Note</th></tr></thead><tbody id="mxAttRows"></tbody></table></div></section>
 <section class="panel" id="mxPayroll"><div class="mx-p28-pending-info">এই বিভাগটি এখনই নতুন করে উন্নয়ন করা হচ্ছে না। আগের রেকর্ড অপরিবর্তিত রয়েছে।</div><div class="head"><h3>💵 Salary &amp; Payroll</h3><button class="btn" id="mxPayCSV">Export CSV</button></div><div class="notice">Salary payments are recorded here only. They are NOT automatically posted to Expense Management or Cash/bKash Ledger. Record them there separately if needed, and avoid double counting.</div><div class="card"><form class="formgrid" id="mxPayForm"><div class="field"><label>Employee</label><select id="mxPayEmployee" required=""></select></div><div class="field"><label>Salary Month</label><input id="mxPayMonth" required="" type="month"/></div><div class="field"><label>Amount Paid (৳)</label><input id="mxPayAmount" min="0.01" required="" step="0.01" type="number"/></div><div class="field"><label>Payment Date</label><input id="mxPayDate" required="" type="date"/></div><div class="field"><label>Method</label><select id="mxPayMethod"><option>Cash</option><option>bKash</option><option>Nagad</option><option>Bank</option></select></div><div class="field"><label>Reference / Note</label><input id="mxPayNote" maxlength="240"/></div><div class="full"><button class="btn primary" id="mxPaySave">Record Salary Payment</button></div></form></div><div class="head"><h3>Salary Summary</h3></div><div class="tablewrap"><table><thead><tr><th>Employee</th><th>Month</th><th>Base Salary</th><th>Paid</th><th>Remaining*</th></tr></thead><tbody id="mxPaySummary"></tbody></table></div><div class="head"><h3>Salary Payment History</h3></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Employee</th><th>Month</th><th>Amount</th><th>Method</th><th>Reference</th></tr></thead><tbody id="mxPayRows"></tbody></table></div><p class="hint">*Remaining is base monthly salary minus recorded payments; no overtime, bonuses, deductions, prorating or tax is calculated.</p></section>
 <section class="panel" id="mxActivity"><div class="head"><h3>🛡 Admin Activity Log</h3><button class="btn" id="mxLogCSV">Export CSV</button></div><div class="notice">Phase 9 actions only: employee, attendance and salary writes. This is NOT a complete audit of previous phases or Firebase console changes.</div><div class="tablewrap"><table><thead><tr><th>Time</th><th>Action</th><th>Record</th><th>Admin UID</th></tr></thead><tbody id="mxLogRows"></tbody></table></div></section>
+
+<section class="panel" id="mxCustomOrders" aria-label="Custom orders">
+<div class="mx-p28-section-header"><span>MEHEDI XPRESS · CUSTOM PRINT STUDIO</span><h3>কাস্টম জার্সি ও প্রিন্ট অর্ডার</h3><p>কাস্টমার, সাইজ, ডিজাইন, কোটেশন এবং উৎপাদনের অবস্থা এক জায়গায়।</p></div>
+<div class="mx-p33-warning"><b>অর্ডার পরিচালনা — আলাদা হিসাব</b><span>এই বিভাগটি কাস্টম অর্ডারের কোটেশন ও উৎপাদন ট্র্যাক করে। এখানে নতুন রেকর্ড করলে POS বিক্রি, স্টক, Cash Ledger বা Customer Due স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে না।</span></div>
+<div class="mx-p33-statgrid"><div class="mx-p33-stat"><small>মোট কাস্টম অর্ডার</small><strong id="mxP33Total">—</strong></div><div class="mx-p33-stat"><small>অপেক্ষমাণ অনুমোদন</small><strong id="mxP33Pending">—</strong></div><div class="mx-p33-stat"><small>প্রোডাকশনে</small><strong id="mxP33Production">—</strong></div><div class="mx-p33-stat"><small>ডেলিভারি সম্পন্ন</small><strong id="mxP33Delivered">—</strong></div></div>
+<div class="mx-p33-cols">
+ <div class="card mx-p33-formbox"><div class="mx-p33-card-title"><h3>＋ নতুন কাস্টম অর্ডার / কোটেশন</h3><small>শুধু অ্যাডমিন অনুমোদিত</small></div>
+ <form id="mxP33Form" class="mx-p33-fields">
+  <label>কাস্টমারের নাম *<input id="mxP33Name" maxlength="120" required placeholder="কাস্টমারের নাম"/></label>
+  <label>মোবাইল নম্বর *<input id="mxP33Phone" maxlength="20" required pattern="01[3-9][0-9]{8}" inputmode="tel" placeholder="01XXXXXXXXX"/></label>
+  <label>অর্ডারের ধরন *<select id="mxP33Kind"><option>Custom Jersey</option><option>Custom T-Shirt</option><option>Mug Print</option><option>Crest / Badge</option><option>Other Custom Print</option></select></label>
+  <label>পণ্য / টিমের নাম *<input id="mxP33Product" maxlength="140" required placeholder="যেমন: Club Football Jersey"/></label>
+  <label>সাইজ ও পরিমাণের বিবরণ<input id="mxP33Size" maxlength="160" placeholder="M: 5, L: 5, XL: 2"/></label>
+  <label>মোট পিস *<input id="mxP33Qty" type="number" min="1" max="10000" step="1" required value="1"/></label>
+  <label>প্রতি পিস কোটেশন (৳) *<input id="mxP33Unit" type="number" min="0" max="1000000" step="0.01" required value="0"/></label>
+  <label>প্রয়োজনের তারিখ<input id="mxP33Deadline" type="date"/></label>
+  <label class="mx-p33-span">ডিজাইনের লিংক (ঐচ্ছিক)<input id="mxP33Design" maxlength="600" type="url" placeholder="https://..."/></label>
+  <label class="mx-p33-span">প্রিন্ট নির্দেশনা<textarea id="mxP33Notes" maxlength="1200" rows="3" placeholder="নাম/নম্বর/লোগো/কালার/ডেলিভারি নির্দেশনা"></textarea></label>
+  <div class="mx-p33-total mx-p33-span"><span>কোটেশনের মোট মূল্য</span><strong id="mxP33Estimate">৳0</strong></div>
+  <div class="mx-p33-span"><button class="btn primary" id="mxP33Save" type="submit">অর্ডার খসড়া সংরক্ষণ</button><button class="btn" type="reset">ফর্ম পরিষ্কার</button><p class="hint" role="status" id="mxP33Message">নতুন Custom Orders চালু করতে ZIP-এর অতিরিক্ত Firestore Rule Publish করতে হবে।</p></div>
+ </form></div>
+ <div class="card mx-p33-listbox"><div class="mx-p33-card-title"><h3>কাস্টম অর্ডার তালিকা</h3><button class="btn" id="mxP33Csv" type="button">CSV Export</button></div>
+ <div class="mx-p33-filter"><input id="mxP33Search" type="search" placeholder="নাম / মোবাইল / অর্ডার ID" aria-label="Search custom orders"/><select id="mxP33StatusFilter" aria-label="Filter custom orders"><option value="">সব স্ট্যাটাস</option><option>Pending Approval</option><option>Approved</option><option>In Production</option><option>Ready</option><option>Delivered</option><option>Cancelled</option></select></div>
+ <p class="hint" id="mxP33Count">সর্বশেষ সংরক্ষিত অর্ডার এখানে দেখা যাবে।</p>
+ <div class="mx-p33-tablewrap"><table><thead><tr><th>অর্ডার</th><th>কাস্টমার</th><th>পণ্য ও সাইজ</th><th>কোটেশন</th><th>স্ট্যাটাস / পরিবর্তন</th></tr></thead><tbody id="mxP33Rows"><tr><td colspan="5">অর্ডার লোড হচ্ছে…</td></tr></tbody></table></div>
+ </div>
+</div>
+</section>
 <section class="panel" id="mxCampaigns"><div class="mx-p28-section-header"><span>MARKETING</span><h3>কুপন ও ক্যাম্পেইন</h3><p>ছাড় ও কুপন সেটিংস পরিচালনা করুন।</p></div><div class="head"><h3>📣 Discount Coupons &amp; Campaigns</h3><button class="btn" id="mx11CouponCSV">Export Coupons CSV</button></div>
 <div class="notice">Coupon codes and campaigns are admin-managed records only. Customer checkout/POS does not automatically validate or apply coupons yet. Do not advertise a coupon as usable at checkout until checkout integration is implemented.</div>
+
+<div class="mx-p33-statgrid" aria-label="Coupon statistics"><div class="mx-p33-stat"><small>মোট কুপন</small><strong id="mxP33CouponTotal">0</strong></div><div class="mx-p33-stat"><small>Active</small><strong id="mxP33CouponActive">0</strong></div><div class="mx-p33-stat"><small>Paused</small><strong id="mxP33CouponPaused">0</strong></div><div class="mx-p33-stat"><small>রেকর্ড করা ব্যবহার</small><strong id="mxP33CouponUsed">0</strong></div></div>
+<div class="mx-p33-promo-preview"><strong>কুপনের ছাড়ের প্রিভিউ (কোনো অর্ডারে প্রয়োগ হবে না)</strong><div class="mx-p33-mini-controls"><label>অর্ডার মূল্য (৳)<input type="number" id="mxP33PreviewTotal" min="0" step="0.01" value="1000"/></label><button id="mxP33PreviewBtn" class="btn" type="button">ছাড় হিসাব দেখুন</button></div><output id="mxP33CouponPreview" aria-live="polite">মূল্য লিখে Preview চাপুন।</output></div>
 <div class="card"><h3>কুপন তৈরির নিয়ম</h3><p class="hint">Discount Value: Percentage হলে শতকরা হার (যেমন 10 = ১০%), Fixed হলে সরাসরি টাকা (যেমন 50 = ৳৫০)। Maximum Discount: শতকরা কুপনে সর্বোচ্চ কত টাকা ছাড় দেওয়া যাবে (০ দিলে সীমা নেই)। Minimum Order: কমপক্ষে কত টাকার অর্ডারে প্রযোজ্য। Total Redemption Limit: মোট কতবার ব্যবহার করা যাবে; এটি কুপনের সংখ্যা-সীমা, পণ্যের সংখ্যা নয়। Active = চালু, Paused = বন্ধ। Public checkout-এ কুপন প্রয়োগ এখনো চালু নয়।</p><form class="formgrid" id="mx11CouponForm">
 <div class="field"><label>Coupon Code *</label><input id="mx11Code" maxlength="32" pattern="[A-Za-z0-9_-]{3,32}" placeholder="MXWELCOME10" required=""/></div>
 <div class="field"><label>Discount Type</label><select id="mx11Type"><option value="percent">Percentage (%)</option><option value="fixed">Fixed (৳)</option></select></div>
@@ -1578,7 +1652,9 @@ body.mx-p32-admin #app #mxStorefrontThemeEditor input[type="color"]::-webkit-col
 <div class="field"><label>Start Date *</label><input id="mx11StartDate" required="" type="date"/></div><div class="field"><label>End Date *</label><input id="mx11EndDate" required="" type="date"/></div>
 <div class="field"><label>Status</label><select id="mx11CouponStatus"><option value="active">Active</option><option value="paused">Paused</option></select></div>
 <div class="full"><button class="btn primary" id="mx11SaveCoupon">Save Coupon</button><p class="hint" id="mx11CouponMsg"></p></div></form></div>
-<div class="head"><h3>Coupon Directory</h3></div><div class="tablewrap"><table><thead><tr><th>Code</th><th>Discount</th><th>Min Order</th><th>Validity</th><th>Limit</th><th>Status</th><th>Action</th></tr></thead><tbody id="mx11CouponRows"></tbody></table></div>
+<div class="head"><h3>Coupon Directory</h3></div>
+<div class="mx-p33-coupon-search"><input id="mxP33CouponSearch" type="search" placeholder="কুপন কোড খুঁজুন" aria-label="Search coupons"/><select id="mxP33CouponFilter" aria-label="Filter coupons"><option value="">সব কুপন</option><option value="active">Active</option><option value="paused">Paused</option></select></div>
+<div class="tablewrap"><table><thead><tr><th>Code</th><th>Discount</th><th>Min Order</th><th>Validity</th><th>Limit</th><th>Status</th><th>Action</th></tr></thead><tbody id="mx11CouponRows"></tbody></table></div>
 <div class="card" style="margin-top:18px"><h3>Promotional Campaign</h3><form class="formgrid" id="mx11CampaignForm"><div class="field"><label>Campaign Name</label><input id="mx11CampaignName" maxlength="100" required=""/></div><div class="field"><label>Channel</label><select id="mx11Channel"><option>Facebook</option><option>Website</option><option>Messenger</option><option>WhatsApp</option><option>In-store</option></select></div><div class="field"><label>Start Date</label><input id="mx11CampFrom" required="" type="date"/></div><div class="field"><label>End Date</label><input id="mx11CampTo" required="" type="date"/></div><div class="field full"><label>Message / Offer Details</label><textarea id="mx11CampaignText" maxlength="2000" required=""></textarea></div><div class="full"><button class="btn primary" id="mx11SaveCampaign">Save Campaign Draft</button></div></form></div>
 <div class="head"><h3>Campaign History</h3><button class="btn" id="mx11CampaignCSV">Export CSV</button></div><div class="tablewrap"><table><thead><tr><th>Campaign</th><th>Channel</th><th>Dates</th><th>Message</th><th>Status</th><th>Action</th></tr></thead><tbody id="mx11CampaignRows"></tbody></table></div></section>
 <section class="panel" id="mxRewards"><div class="head"><h3>🎯 Loyalty Reward Automation</h3><button class="btn" id="mx11RewardCSV">Export Reward History</button></div>
@@ -3410,6 +3486,91 @@ document.addEventListener('click', function(event) {
   desktop?.addEventListener('click',()=>setMode('desktop'));mobile?.addEventListener('click',()=>setMode('mobile'));
   byId('mxP32BannerShortcut')?.addEventListener('click',()=>gotoAdmin('banners'));
   byId('mxP32CategoryShortcut')?.addEventListener('click',()=>gotoAdmin('categories'));
+})();
+</script>
+<script id="mx-p33-custom-orders-module" type="module">
+import {getApps,getApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+import {getFirestore,collection,onSnapshot,addDoc,updateDoc,doc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+const uid='3Z0MLHObZOay8OFFnhreMvbg0e53';
+const el=id=>document.getElementById(id), money=n=>'৳'+Number(n||0).toLocaleString('en-BD',{maximumFractionDigits:2});
+const form=el('mxP33Form'),rows=el('mxP33Rows'),states=['Pending Approval','Approved','In Production','Ready','Delivered','Cancelled'];
+const auth=getAuth(getApps().length?getApp():undefined), db=getFirestore(getApp());
+let current=[],unsubscribe=null,authorized=false;
+function n(v){return Number.isFinite(Number(v))?Number(v):0}
+function estimate(){const qty=n(el('mxP33Qty').value),price=n(el('mxP33Unit').value);el('mxP33Estimate').textContent=money(qty*price)}
+for(const id of ['mxP33Qty','mxP33Unit'])el(id).addEventListener('input',estimate);
+form.addEventListener('reset',()=>setTimeout(estimate,0));
+function textCell(tr,val){const td=document.createElement('td');td.textContent=String(val??'');tr.append(td);return td}
+function render(){
+ const filtered=current.filter(o=>(!el('mxP33StatusFilter').value||o.status===el('mxP33StatusFilter').value)&&
+  [o.code,o.customerName,o.phone,o.product,o.kind].some(v=>String(v||'').toLocaleLowerCase().includes(el('mxP33Search').value.trim().toLocaleLowerCase())));
+ for(const [id,c] of [['mxP33Total',current.length],['mxP33Pending',current.filter(o=>o.status==='Pending Approval').length],['mxP33Production',current.filter(o=>o.status==='In Production').length],['mxP33Delivered',current.filter(o=>o.status==='Delivered').length]])el(id).textContent=c;
+ el('mxP33Count').textContent='মোট '+current.length+'টি · দেখানো হচ্ছে '+filtered.length+'টি';
+ rows.replaceChildren();
+ if(!filtered.length){const tr=document.createElement('tr');const td=textCell(tr,'কোনো কাস্টম অর্ডার পাওয়া যায়নি।');td.colSpan=5;rows.append(tr);return}
+ for(const order of filtered){
+  const tr=document.createElement('tr'),idCell=textCell(tr,'');const strong=document.createElement('strong');strong.className='mx-p33-id';strong.textContent=order.code||('MXCO-'+order.id.slice(0,8).toUpperCase());idCell.append(strong);
+  const date=document.createElement('small');date.textContent=order.createdAt?.toDate?.().toLocaleDateString('en-BD')||'—';idCell.append(date);
+  textCell(tr,(order.customerName||'')+'\n'+(order.phone||''));textCell(tr,(order.product||'')+' · '+(order.kind||'')+'\n'+(order.sizeDetails||'')+' · '+(order.quantity||0)+' pcs');
+  textCell(tr,money(order.quotedTotal));const td=document.createElement('td');td.style.minWidth='156px';const select=document.createElement('select');select.className='mx-p33-status';select.setAttribute('aria-label','Change custom order status');
+  for(const st of states){const opt=document.createElement('option');opt.value=st;opt.textContent=st;select.append(opt)}select.value=states.includes(order.status)?order.status:states[0];
+  select.addEventListener('change',async()=>{if(!authorized){select.value=order.status;return}select.disabled=true;
+   try{await updateDoc(doc(db,'customOrders',order.id),{status:select.value,updatedAt:serverTimestamp()})}
+   catch(e){select.value=order.status;el('mxP33Message').textContent='স্ট্যাটাস সেভ হয়নি: '+(e.code||e.message)}finally{select.disabled=false}});
+  td.append(select);if(order.designUrl){const a=document.createElement('a');a.href=order.designUrl;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' · ডিজাইন';td.append(a)}tr.append(td);rows.append(tr)
+ }
+}
+['mxP33Search','mxP33StatusFilter'].forEach(id=>el(id).addEventListener('input',render));
+onAuthStateChanged(auth,u=>{
+ authorized=Boolean(u&&u.uid===uid);
+ if(unsubscribe){unsubscribe();unsubscribe=null}current=[];if(!authorized){rows.replaceChildren();render();return}
+ unsubscribe=onSnapshot(collection(db,'customOrders'),snapshot=>{current=snapshot.docs.map(d=>({id:d.id,...d.data()}));render()},error=>{
+  el('mxP33Message').textContent='Custom Orders পড়া যায়নি: '+(error.code||error.message)+'. Firestore Rules-এ customOrders অনুমতি Publish হয়েছে কি না দেখুন।';render()})
+});
+form.addEventListener('submit',async e=>{
+ e.preventDefault();if(!authorized){el('mxP33Message').textContent='Admin Login প্রয়োজন।';return}
+ const qty=n(el('mxP33Qty').value),unit=n(el('mxP33Unit').value),phone=el('mxP33Phone').value.trim(),designUrl=el('mxP33Design').value.trim();
+ if(!Number.isSafeInteger(qty)||qty<1||qty>10000||unit<0||unit>1000000||!Number.isFinite(unit)||!/^01[3-9][0-9]{8}$/.test(phone)){
+  el('mxP33Message').textContent='পিস, দাম বা মোবাইল নম্বর সঠিক নয়।';return}
+ if(designUrl&&!(designUrl.startsWith('https://')||designUrl.startsWith('http://'))){el('mxP33Message').textContent='ডিজাইন লিংকটি HTTP/HTTPS হতে হবে।';return}
+ const data={customerName:el('mxP33Name').value.trim(),phone,kind:el('mxP33Kind').value,product:el('mxP33Product').value.trim(),sizeDetails:el('mxP33Size').value.trim(),
+ quantity:qty,unitQuote:unit,quotedTotal:Math.round(qty*unit*100)/100,deadline:el('mxP33Deadline').value,designUrl,notes:el('mxP33Notes').value.trim(),status:'Pending Approval',source:'Admin Custom Order',
+ createdAt:serverTimestamp(),updatedAt:serverTimestamp(),createdBy:uid};
+ if(!data.customerName||!data.product){el('mxP33Message').textContent='নাম ও পণ্য লিখতে হবে।';return}
+ const button=el('mxP33Save');button.disabled=true;el('mxP33Message').textContent='সেভ হচ্ছে…';
+ try{const ref=await addDoc(collection(db,'customOrders'),data);el('mxP33Message').textContent='খসড়া সংরক্ষিত · ID: MXCO-'+ref.id.slice(0,8).toUpperCase()+'। বিক্রি/স্টক পরিবর্তিত হয়নি।';form.reset();estimate()}
+ catch(err){el('mxP33Message').textContent='সেভ হয়নি: '+(err.code||err.message)+'. Rules Publish হয়েছে কি না দেখুন।'}finally{button.disabled=false}
+});
+function csvCell(value){let s=String(value??'');if(/^[=+@\-\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+el('mxP33Csv').addEventListener('click',()=>{if(!authorized)return;const head=['ID','Customer','Phone','Kind','Product','Size','Qty','Unit Quote','Total','Deadline','Status'];const lines=[head,...current.map(o=>[o.code||o.id,o.customerName,o.phone,o.kind,o.product,o.sizeDetails,o.quantity,o.unitQuote,o.quotedTotal,o.deadline,o.status])].map(a=>a.map(csvCell).join(','));
+ const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MX-Custom-Orders.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+estimate();render();
+</script>
+<script id="mx-p33-coupon-preview">
+/* READ-ONLY coupon calculator. Never applies discount or mutates Firebase. */
+(()=>{
+const el=id=>document.getElementById(id), table=el('mx11CouponRows'),form=el('mx11CouponForm');
+if(!table||!form)return;
+function summary(){
+ const data=[...table.querySelectorAll('tr')].filter(tr=>tr.cells.length===7);
+ const total=data.length,active=data.filter(tr=>tr.cells[5].textContent.trim().toLowerCase()==='active').length;
+ el('mxP33CouponTotal').textContent=total;el('mxP33CouponActive').textContent=active;el('mxP33CouponPaused').textContent=total-active;
+ // Historic redemptions are not available in this table; do not fabricate count.
+ el('mxP33CouponUsed').textContent='—';
+ const search=el('mxP33CouponSearch').value.trim().toLowerCase(),filter=el('mxP33CouponFilter').value;
+ for(const tr of data){const ok=(!search||tr.cells[0].textContent.toLowerCase().includes(search))&&(!filter||tr.cells[5].textContent.trim().toLowerCase()===filter);tr.hidden=!ok;tr.style.display=ok?'':'none'}
+}
+let scheduled=false;new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;summary()})}).observe(table,{childList:true,subtree:false});
+for(const id of ['mxP33CouponSearch','mxP33CouponFilter'])el(id).addEventListener('input',summary);
+el('mxP33PreviewBtn').addEventListener('click',()=>{
+ const money=v=>'৳'+Number(v).toLocaleString('en-BD',{maximumFractionDigits:2}),sub=Number(el('mxP33PreviewTotal').value),value=Number(el('mx11Value').value),cap=Number(el('mx11Cap').value||0),min=Number(el('mx11Min').value||0),type=el('mx11Type').value;
+ const o=el('mxP33CouponPreview');if(!Number.isFinite(sub)||sub<0||!Number.isFinite(value)||value<=0){o.textContent='অর্ডারের দাম ও Discount Value লিখুন।';return}
+ if(sub<min){o.textContent='এই অর্ডারে Minimum Order পূরণ হয়নি (৳'+min+').';return}
+ if(type==='percent'&&value>100){o.textContent='শতকরা ছাড় ১০০%-এর বেশি হতে পারবে না।';return}
+ const raw=type==='percent'?sub*value/100:value,discount=Math.min(sub,raw,type==='percent'&&cap>0?cap:Infinity);
+ o.textContent='সম্ভাব্য ছাড় '+money(discount)+' · ছাড়ের পর '+money(sub-discount)+' (শুধু Preview; আসল Checkout/POS-এ প্রয়োগ হয়নি)।'
+});summary();
 })();
 </script>
 </body></html>
