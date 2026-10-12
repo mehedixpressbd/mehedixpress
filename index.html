@@ -21,9 +21,12 @@
   >
   <!-- P21: shared design system; existing store.js/Firebase untouched -->
   <link rel="stylesheet" href="assets/css/mx-unified-theme.css?v=p21-20261012">
+  <!-- P22: Full sample-reference desktop/tablet/mobile layout -->
+  <link rel="stylesheet" href="assets/css/mx-reference-full.css?v=p22-20261012">
 </head>
 
-<body>
+<body class="mx-p22-public">
+<a class="mx-p22-skip" href="#products">সরাসরি পণ্যে যান</a>
 
 <!-- =====================================================
      TOP BAR
@@ -362,7 +365,7 @@
 
       <img
         class="mx-hero-banner-image"
-        src="assets/images/hero-main.png"
+        src="assets/images/mx-p22-hero-main.jpg"
         alt="Mehedi Xpress Sports Collection"
       >
 
@@ -384,7 +387,7 @@
 
       <img
         class="mx-hero-banner-image"
-        src="assets/images/hero-jersey.png"
+        src="assets/images/mx-p22-hero-jersey.jpg"
         alt="Mehedi Xpress Football Jersey Collection"
       >
 
@@ -406,7 +409,7 @@
 
       <img
         class="mx-hero-banner-image"
-        src="assets/images/hero-cricket.png"
+        src="assets/images/mx-p22-hero-cricket.jpg"
         alt="Mehedi Xpress Cricket Collection"
       >
 
@@ -428,7 +431,7 @@
 
       <img
         class="mx-hero-banner-image"
-        src="assets/images/hero-print.png"
+        src="assets/images/mx-p22-hero-print.jpg"
         alt="Mehedi Xpress Custom Printing"
       >
 
@@ -470,6 +473,13 @@
   ></div>
 
 </section>
+<div class="mx-p22-trust-strip mx-container" aria-label="স্টোর সুবিধা">
+  <div><span class="mx-p22-trust-icon">▣</span><p><strong>Quality Sportswear</strong><small>জার্সি, ফ্যাশন ও খেলাধুলার সামগ্রী</small></p></div>
+  <div><span class="mx-p22-trust-icon">🚚</span><p><strong>Nationwide Delivery</strong><small>সারা বাংলাদেশে হোম ডেলিভারি</small></p></div>
+  <div><span class="mx-p22-trust-icon">✎</span><p><strong>Custom Printing</strong><small>জার্সি, টি-শার্ট, মগ ও আরও অনেক কিছু</small></p></div>
+  <div><span class="mx-p22-trust-icon">☎</span><p><strong>Customer Support</strong><small>অর্ডার ও প্রিন্টিং সহায়তা</small></p></div>
+</div>
+
 
 
 <!-- =====================================================
@@ -737,15 +747,21 @@
       </div>
     </div>
 
-    <div class="mx-shop-category-wrap">
-      <div class="mx-shop-category-label" id="shopCategoryLabel">ক্যাটাগরি</div>
-      <div class="mx-category-filter" id="cats">
-        <button type="button" class="active" data-category="">সব পণ্য</button>
+    <div class="mx-p22-shop-layout">
+      <aside class="mx-p22-filter-sidebar" aria-label="পণ্য ফিল্টার">
+        <div class="mx-p22-sidebar-title">☷ ফিল্টার ও ক্যাটাগরি</div>
+        <div class="mx-shop-category-wrap">
+          <div class="mx-shop-category-label" id="shopCategoryLabel">ক্যাটাগরি নির্বাচন করুন</div>
+          <div class="mx-category-filter" id="cats">
+            <button type="button" class="active" data-category="">সব পণ্য</button>
+          </div>
+        </div>
+        <div class="mx-p22-support-box"><span>✓</span><div><b>নিরাপদ কেনাকাটা</b><small>Cash on Delivery • bKash • Nagad</small></div></div>
+      </aside>
+      <div class="mx-p22-shop-results">
+        <div class="mx-p22-results-bar"><span>✦ আপনার পছন্দের স্পোর্টস ও ফ্যাশন কালেকশন</span><span>MEHEDI XPRESS</span></div>
+        <div class="mx-product-grid" id="grid"><div class="mx-loading">পণ্য লোড হচ্ছে...</div></div>
       </div>
-    </div>
-
-    <div class="mx-product-grid" id="grid">
-      <div class="mx-loading">পণ্য লোড হচ্ছে...</div>
     </div>
 
   </div>
@@ -1381,7 +1397,8 @@
     </div>
 
 
-    <form id="checkoutForm">
+    <div class="mx-p22-checkout-progress"><span class="active">① কার্ট</span><span class="active">② ঠিকানা ও পেমেন্ট</span><span>③ অর্ডার নিশ্চিত</span></div>
+<form id="checkoutForm">
 
       <label>
         আপনার নাম
@@ -2415,5 +2432,6 @@
 </script>
 
 
+<script defer src="assets/js/mx-design-interactions.js?v=p22-20261012"></script>
 </body>
 </html>
