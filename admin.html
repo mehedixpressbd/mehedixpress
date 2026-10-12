@@ -1052,7 +1052,122 @@ body.mx-p29-admin #orderdetail #orderDetailBox{background:#fff!important;border:
 }
 /* @media print intentionally NOT overridden: keep previous cash memo and invoice rules. */
 </style>
-</head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin">
+<style id="mx-p31-sales-visual">
+/* MEHEDI XPRESS P31 — ADMIN SALES, PAYMENTS & REPORTS VISUAL INTEGRATION
+   Scoped to authenticated admin DOM. No business functions or print logic changed.
+   Based on user's P24 desktop/mobile admin design reference. */
+@media screen {
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports){--p31-ink:#19364d;--p31-line:#dbe6ed;--p31-teal:#079e9a;--p31-soft:#f3f8fb;--p31-orange:#ff681e;min-width:0!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(.card,.stat,.tablewrap){box-shadow:0 3px 14px rgba(13,48,70,.055)!important;border:1px solid var(--p31-line)!important;border-radius:12px!important;background:#fff!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(.mx-p22-section-intro,.mx-p28-section-header){padding:19px 22px!important;border-radius:13px!important;background:linear-gradient(110deg,#082b41 0%,#0f5361 100%)!important;color:#fff!important;margin:0 0 16px!important;box-shadow:none!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(.mx-p22-section-intro,.mx-p28-section-header) :is(h2,h3,p,span){color:#fff!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(.mx-p22-section-intro,.mx-p28-section-header) span:first-child{color:#55ede1!important;font-size:11px!important;letter-spacing:.06em}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .head{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:10px!important;margin:17px 0 9px!important;flex-wrap:wrap!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .head h3{margin:0!important;font-size:17px!important;color:var(--p31-ink)!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .card{min-width:0!important;padding:18px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .field label{font-size:12px!important;font-weight:750!important;color:#415b6a!important;margin-bottom:5px!important;display:block}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(input:not([type="checkbox"]):not([type="radio"]),select,textarea){font-size:13px!important;max-width:100%!important;background:#fff!important;border:1px solid #d7e4eb!important;color:#203f54!important;border-radius:8px!important;min-height:39px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(input,select,textarea):focus{outline:2px solid #079e9a33!important;border-color:#059f9c!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) button.btn{border-radius:8px!important;min-height:35px!important;font-size:12px!important;white-space:normal;line-height:1.25}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) button.btn.primary{background:var(--p31-orange)!important;color:#fff!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .hint{color:#6b8190!important;font-size:11px!important}
+ /* POS: preserve original product, variant, customer and invoice element IDs. */
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid{display:grid!important;grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr)!important;gap:16px!important;align-items:start!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid>div{min-width:0!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid>div>.card{margin:0 0 15px!important;border-top:3px solid #079e9a!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid>div:nth-child(2)>.card{border-top-color:var(--p31-orange)!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posSearch{width:100%!important;min-height:45px!important;padding:10px 12px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-nav{display:flex!important;gap:9px!important;align-items:center!important;margin:10px 0!important;min-width:0!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catbar{display:flex!important;gap:7px!important;overflow-x:auto!important;max-width:100%!important;min-width:0!important;scrollbar-width:thin;scroll-snap-type:x proximity;padding-bottom:4px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catbar button{display:inline-flex!important;align-items:center!important;gap:5px!important;flex:0 0 auto!important;min-height:34px!important;max-width:220px!important;padding:6px 11px!important;border:1px solid #deeaef!important;border-radius:7px!important;background:#f3f8fa!important;color:#325568!important;font-size:12px!important;font-weight:700!important;scroll-snap-align:start}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catbar button.active{background:#079e9a!important;border-color:#079e9a!important;color:#fff!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-category-thumb{width:22px!important;height:22px!important;border-radius:5px!important;object-fit:cover!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catalog-toolbar{display:flex!important;align-items:end!important;flex-wrap:wrap!important;gap:8px!important;margin:9px 0!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catalog-toolbar select{max-width:230px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important;gap:10px!important;max-height:570px!important;overflow-y:auto!important;overflow-x:hidden!important;padding:3px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-product{border:1px solid #dce7eb!important;border-radius:9px!important;min-width:0!important;overflow:hidden!important;box-shadow:none!important;background:#fff!important;display:flex!important;flex-direction:column!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-product img{width:100%!important;aspect-ratio:1/1!important;height:auto!important;max-height:145px!important;object-fit:contain!important;background:#edf3f6!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-cardbody{min-width:0!important;padding:8px!important;display:flex!important;flex-direction:column!important;gap:5px!important;flex:1!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-cardbody b{font-size:11px!important;line-height:1.45!important;overflow-wrap:anywhere!important;color:#18364b!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-cardbody button{font-size:11px!important;max-width:100%!important;white-space:normal!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posCart{max-width:100%!important;overflow-x:auto!important;scrollbar-width:thin}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-cart-head,body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-cart-line{min-width:620px!important;grid-template-columns:minmax(150px,1.55fr) minmax(115px,1fr) minmax(150px,1.3fr) 74px 36px!important;gap:6px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-cart-head{background:#f2f7f9!important;border-radius:6px!important;padding:9px 8px!important;color:#4b6372!important;font-size:11px!important;font-weight:800!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-cart-line{border-bottom:1px solid #e5edf1!important;padding:9px 8px!important;align-items:center!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-control{display:flex!important;align-items:center!important;min-width:0!important;gap:2px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-control input{min-width:0!important;width:100%!important;max-width:72px!important;text-align:center!important;padding:2px!important;min-height:32px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-control.price input{max-width:72px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-control button{padding:5px!important;min-width:24px!important;min-height:29px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .totals{background:#f5fafb!important;border:1px solid #e2edef!important;padding:13px!important;border-radius:9px!important;margin:12px 0!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posGrand{color:#ff641a!important;font-weight:900!important;font-size:24px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #completeSale{width:100%!important;padding:12px!important;font-size:14px!important;min-height:47px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #mxPosMemoArea{border-top:4px solid #079e9a!important;margin-top:6px!important;padding:18px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-memo-title{display:flex!important;justify-content:space-between!important;gap:10px!important;flex-wrap:wrap!important;align-items:flex-start!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-invoice-preview{max-width:100%!important;overflow-x:auto!important}
+ /* Payments & expenses: styled as readable transaction manager, never mock balances. */
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-report-filters,body.mx-admin-root.mx-p31-admin #app #reports .mx-report-filters{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#reports) .mx-report-actions{display:flex!important;flex-wrap:wrap!important;gap:7px!important;margin-top:12px!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:11px!important;margin:16px 0!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid .stat{background:linear-gradient(150deg,#fff,#f0f9fb)!important;border-top:3px solid #089d9b!important;min-height:105px!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid .stat:nth-child(2){border-top-color:#377dcc!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid .stat:nth-child(3){border-top-color:#ffae5c!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid .stat:nth-child(4){border-top-color:#ff641a!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid .stat b{font-size:22px!important;color:#173b51!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger #mxLedgerAccountBalances{padding:12px 15px!important}
+ body.mx-admin-root.mx-p31-admin #app #expenses #mxExpenseForm{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+ body.mx-admin-root.mx-p31-admin #app #expenses #mxExpenseForm>.full{grid-column:1/-1!important}
+ body.mx-admin-root.mx-p31-admin #app #expenses #mxExpenseSave{min-width:160px!important;padding:10px 16px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#expenses,#reports) .tablewrap{overflow-x:auto!important;max-width:100%!important;padding:0!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#expenses,#reports) table{width:100%!important;min-width:680px!important;border-collapse:separate!important;border-spacing:0!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#expenses,#reports) th{background:#f0f6f8!important;color:#426075!important;text-align:left!important;font-size:11px!important;padding:11px 12px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#expenses,#reports) td{padding:11px 12px!important;color:#203d50!important;border-bottom:1px solid #eaf0f3!important;font-size:12px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#expenses,#reports) tbody tr:hover{background:#f6fbfb!important}
+ /* Reports: headline totals + mobile responsive summary; retain real Firebase figures. */
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:11px!important;margin:16px 0!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat{min-height:110px!important;display:flex!important;flex-direction:column!important;gap:8px!important;justify-content:center!important;border-left:4px solid #079e9a!important;line-height:1.3!important;font-size:12px!important;color:#637a8c!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat:nth-child(4n+2){border-left-color:#4b90dc!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat:nth-child(4n+3){border-left-color:#ffa348!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat:nth-child(4n){border-left-color:#ff6b46!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat b{font-size:22px!important;color:#19374e!important;line-height:1.2!important;overflow-wrap:anywhere!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-p29-report-note{background:#eaf9f5!important;border:1px solid #cdeae3!important;border-radius:10px!important;color:#23544d!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-history-tools{display:flex!important;align-items:center!important;gap:9px!important;flex-wrap:wrap!important;margin:12px 0!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-danger-note{border-radius:9px!important}
+}
+@media screen and (max-width:1260px){
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid{grid-template-columns:minmax(0,1fr) minmax(350px,1fr)!important}
+}
+@media screen and (max-width:1020px){
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid{grid-template-columns:minmax(0,1fr)!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList{grid-template-columns:repeat(4,minmax(0,1fr))!important;max-height:450px!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media screen and (max-width:760px){
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) :is(.mx-p22-section-intro,.mx-p28-section-header){padding:14px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#pos,#expenses,#ledger,#reports) .card{padding:12px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-height:none!important;overflow:visible!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid{display:block!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-catalog-toolbar{align-items:stretch!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .mx-pos-cart-line{min-width:620px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#reports) .mx-report-filters{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.mx-admin-root.mx-p31-admin #app #expenses #mxExpenseForm{grid-template-columns:1fr!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media screen and (max-width:430px){
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList{gap:7px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos .posgrid>div>.card{margin-bottom:11px!important}
+ body.mx-admin-root.mx-p31-admin #app #pos #posProductList .mx-pos-cardbody{padding:6px!important}
+ body.mx-admin-root.mx-p31-admin #app :is(#ledger,#reports) .mx-report-filters{grid-template-columns:1fr!important}
+ body.mx-admin-root.mx-p31-admin #app #ledger .mx-ledger-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat{min-height:105px!important;padding:12px!important}
+ body.mx-admin-root.mx-p31-admin #app #reports .mx-report-stats .stat b{font-size:18px!important}
+}
+/* Printing intentionally relies on existing P20-P30 @media print rules. */
+
+</style>
+</head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
 <img alt="Mehedi Xpress" onerror="this.style.display='none'" src="assets/images/logo.png" style="width:82px;height:82px;object-fit:contain;border-radius:18px"/>
@@ -2829,297 +2944,4 @@ async function mxSzQuickAdjust(row,origin,sign){
   $('mxSizeStockStatus').textContent='✅ '+mxSzStr(expected.size||expected.color||'সাধারণ')+' সাইজের স্টক '+(sign>0?'যোগ':'কমিয়ে')+' Firebase-এ সেভ হয়েছে।';
   $('mxSizeStockStatus').className='mx-sz-status success';
   renderPosProducts();
- }catch(err){$('mxSizeStockStatus').textContent='সেভ হয়নি: '+(err.message||err.code);$('mxSizeStockStatus').className='mx-sz-status error'}
- finally{btns.forEach(b=>b.disabled=false)}
-}
-
-function mxSzAddSizes(sizes,target='modal'){
- const container=target==='modal'?$('mxSizeStockRows'):$('variantRows');
- if(!container)return;
- const sizeClass=target==='modal'?'.mx-sz-size':'.vSize';
- const colorClass=target==='modal'?'.mx-sz-color':'.vColor';
- const known=new Set([...container.querySelectorAll('tr')].map(tr=>mxSzStr(tr.querySelector(sizeClass)?.value).toUpperCase()+'|'+mxSzStr(tr.querySelector(colorClass)?.value).toUpperCase()));
- for(const size of sizes){const key=size.toUpperCase()+'|';if(known.has(key))continue;
-  if(target==='modal')mxSzAddModalRow({size,color:'',stock:0});
-  else addVariantRow({size,color:'',stock:0});known.add(key);
- }
- if(target==='modal')mxSzUpdateTotal();else updateVariantTotal();
-}
-window.mxOpenSizeStock=(id)=>{
- const p=products.find(x=>x.id===id);if(!p){alert('পণ্য পাওয়া যায়নি।');return}
- mxSzEditingId=id;mxSzOpenSignature=mxSzSignature(p);mxSzOriginalVariants=mxSzCurrentVariants(p);
- $('mxSizeStockTitle').textContent=p.name+' — সাইজ ও স্টক';
- $('mxSizeStockMeta').textContent=`ক্যাটাগরি: ${p.category||'—'} · পণ্য কোড: ${p.code||p.sku||'—'}`;
- $('mxSizeStockStatus').textContent='';$('mxSizeStockStatus').className='mx-sz-status';
- const legacy=(!Array.isArray(p.variants)||!p.variants.length)&&Number(p.stock||0)>0;
- $('mxSizeStockLegacy').hidden=!legacy;
- $('mxSizeStockLegacy').textContent=legacy?`এই পুরোনো পণ্যের ${Number(p.stock||0)} পিস এখন “সাইজ ছাড়া” রয়েছে। নতুন সাইজ বানিয়ে সেই পিসগুলো ভাগ করতে চাইলে “সাইজ ছাড়া” সারির সংখ্যা কমিয়ে দিন। যেমন মোট ১১ পিস হলে M=৫, L=৬, সাইজ ছাড়া=০।`:'';
- const rows=$('mxSizeStockRows');rows.innerHTML='';
- mxSzOriginalVariants.forEach((v,i)=>mxSzAddModalRow(v,i));
- $('mxSizeStockModal').hidden=false;mxSzUpdateTotal();
-};
-function mxSzClose(){if($('mxSizeStockSave').disabled)return;$('mxSizeStockModal').hidden=true;mxSzEditingId='';}
-$('mxSizeStockClose').onclick=mxSzClose;
-$('mxSizeStockCancel').onclick=mxSzClose;
-$('mxSizeStockModal').addEventListener('click',e=>{if(e.target===$('mxSizeStockModal'))mxSzClose()});
-$('mxSzAdult').onclick=()=>mxSzAddSizes(mxSzSizesAdult);
-$('mxSzExtended').onclick=()=>mxSzAddSizes(['XS','S','3XL','4XL']);
-$('mxSzKids').onclick=()=>mxSzAddSizes(mxSzSizesKids);
-$('mxSzNewRow').onclick=()=>mxSzAddModalRow({stock:0});
-$('mxSzFormAdult').onclick=()=>mxSzAddSizes(mxSzSizesAdult,'form');
-$('mxSzFormKids').onclick=()=>mxSzAddSizes(mxSzSizesKids,'form');
-function mxSzValidateVariants(vs){
- if(!vs.length)return 'অন্তত একটি সাইজ/স্টক সারি রাখুন।';
- const seen=new Set();for(const v of vs){
-  if(String(v.stock).trim()===''||!mxSzFiniteInt(v.stock))return 'স্টক সংখ্যা ০ বা ধনাত্মক পূর্ণ সংখ্যা হতে হবে।';
-  const k=[mxSzStr(v.size).toUpperCase(),mxSzStr(v.color).toUpperCase(),mxSzStr(v.sku).toUpperCase()].join('|');
-  if(seen.has(k))return 'একই সাইজ, রঙ ও SKU-এর একাধিক সারি আছে। আগে মিলিয়ে নিন।';seen.add(k);
- }
- return '';
-}
-function mxSzModalData(){
- return [...$('mxSizeStockRows').querySelectorAll('tr')].map(r=>{
-  const oldIndex=Number(r.dataset.origin);const old=oldIndex>=0?mxSzOriginalVariants[oldIndex]:{};
-  const input=r.querySelector('.mx-sz-num').value.trim();
-  return {...old,size:mxSzStr(r.querySelector('.mx-sz-size').value),color:mxSzStr(r.querySelector('.mx-sz-color').value),sku:mxSzStr(r.querySelector('.mx-sz-sku').value),stock:input===''?NaN:Number(input)};
- });
-}
-$('mxSizeStockSave').onclick=async()=>{
- const id=mxSzEditingId,old=products.find(p=>p.id===id),vs=mxSzModalData(),err=mxSzValidateVariants(vs);
- if(!id||!old){alert('পণ্যটি খুঁজে পাওয়া যাচ্ছে না।');return}
- if(err){$('mxSizeStockStatus').textContent=err;$('mxSizeStockStatus').className='mx-sz-status error';return}
- const oldTotal=mxSzOriginalVariants.reduce((n,v)=>n+Number(v.stock||0),0),newTotal=vs.reduce((n,v)=>n+Number(v.stock||0),0);
- if(JSON.stringify(vs)===JSON.stringify(mxSzOriginalVariants)){alert('কোনো পরিবর্তন হয়নি।');return}
- if(oldTotal!==newTotal&&!confirm(`আগের মোট স্টক ${oldTotal} পিস, নতুন মোট ${newTotal} পিস। ${newTotal>oldTotal?`স্টক ${newTotal-oldTotal} পিস বাড়বে`:`স্টক ${oldTotal-newTotal} পিস কমবে`}। এটি কি সঠিক?`))return;
- const btn=$('mxSizeStockSave');btn.disabled=true;
- $('mxSizeStockStatus').textContent='Firestore-এ সেভ হচ্ছে…';$('mxSizeStockStatus').className='mx-sz-status';
- try{
-  await runTransaction(db,async tx=>{
-   const pref=doc(db,'products',id),pSnap=await tx.get(pref);if(!pSnap.exists())throw Error('পণ্যটি আর নেই।');
-   const current=pSnap.data();if(mxSzSignature(current)!==mxSzOpenSignature)throw Error('এই পণ্যের স্টক বা সাইজ অন্য কোথাও পরিবর্তন হয়েছে। বন্ধ করে আবার খুলুন—তাহলেই নতুন স্টক পাবেন।');
-   tx.update(pref,{variants:vs,stock:newTotal,updatedAt:serverTimestamp()});
-   {
-    const ref=doc(collection(db,'stockMovements'));
-    const label=v=>({size:v.size||'',color:v.color||'',sku:v.sku||'',stock:Number(v.stock||0)});
-    tx.set(ref,{productId:id,productName:current.name||old.name,before:oldTotal,after:newTotal,change:newTotal-oldTotal,beforeVariants:mxSzOriginalVariants.map(label),afterVariants:vs.map(label),reason:'Admin size-wise stock correction',createdBy:auth.currentUser?.uid||'',createdAt:serverTimestamp()});
-   }
-  });
-  $('mxSizeStockModal').hidden=true;mxSzEditingId='';alert('সাইজ ও স্টক সেভ হয়েছে। দোকান বিক্রিতে নতুন সাইজ এবং পিস দেখা যাবে।');
- }catch(e){$('mxSizeStockStatus').textContent='সেভ হয়নি: '+(e.message||e.code);$('mxSizeStockStatus').className='mx-sz-status error'}
- finally{btn.disabled=false}
-};
-// Visible actions in product management + inventory. This preserves all existing actions.
-function mxSzDecorateTable(tableId){
- const root=$(tableId);if(!root)return;
- [...root.querySelectorAll('tr')].forEach((row,i)=>{
-  const p=products[i];if(!p)return;
-  const cells=row.querySelectorAll('td');if(cells.length<7)return;
-  const stockCell=cells[tableId==='productRows'?5:3],actionCell=cells[cells.length-1];
-  const box=document.createElement('div');box.className='mx-sz-pillbox';
-  mxSzHintRows(p).forEach(t=>{const b=document.createElement('span');b.className='mx-sz-pill'+(/: 0 পিস$/.test(t)?' zero':'');b.textContent=t;box.appendChild(b)});
-  stockCell.appendChild(box);
-  const btn=document.createElement('button');btn.type='button';btn.className='btn mx-sz-edit';btn.textContent='📏 সাইজ/স্টক ঠিক করুন';btn.onclick=()=>window.mxOpenSizeStock(p.id);actionCell.appendChild(btn);
- });
-}
-const mxSzPreviousProducts=renderProducts;
-renderProducts=function(){mxSzPreviousProducts();mxSzDecorateTable('productRows')};
-const mxSzPreviousInventory=renderInventory;
-renderInventory=function(){mxSzPreviousInventory();mxSzDecorateTable('inventoryRows')};
-// Quick edit directly in the shop product cards.
-const mxSzPreviousPosProducts=renderPosProducts;
-renderPosProducts=function(){
- mxSzPreviousPosProducts();
- $('posProductList').querySelectorAll('[data-pos-pid]').forEach(b=>{
-  const id=b.dataset.posPid,card=b.closest('.mx-pos-product'),body=card?.querySelector('.mx-pos-cardbody');if(!body)return;
-  const edit=document.createElement('button');edit.type='button';edit.className='btn mx-sz-edit';edit.textContent='📏 সাইজ/স্টক ঠিক করুন';edit.onclick=()=>window.mxOpenSizeStock(id);body.appendChild(edit);
- });
-};
-// Before saving in the full product editor, reject fractional, negative or duplicated size rows.
-const mxSzOldProductSubmit=$('productForm').onsubmit;
-$('productForm').onsubmit=async e=>{
- const rows=[...$('variantRows').querySelectorAll('tr')];
- const vs=rows.map(r=>({size:r.querySelector('.vSize').value,color:r.querySelector('.vColor').value,sku:r.querySelector('.vSku').value,stock:r.querySelector('.vStock').value.trim()}));
- const err=mxSzValidateVariants(vs);
- if(err){e.preventDefault();alert(err);return}
- return mxSzOldProductSubmit(e);
-};
-
-// P19 public storefront theme editor; reads/writes only siteSettings/homepage.
-const mxPublicPresets={
- classic:{primary:'#0569c9',header:'#002e67',accent:'#55ed00',background:'#ffffff',radius:18},
- midnight:{primary:'#3066ba',header:'#111b38',accent:'#f8c647',background:'#f5f6fb',radius:14},
- emerald:{primary:'#087e66',header:'#074e42',accent:'#9ae66e',background:'#f5fff9',radius:18},
- sunset:{primary:'#ed703c',header:'#6a2349',accent:'#ffcb52',background:'#fff9f4',radius:26}
-};
-function mxPublicReadForm(){return{primary:$('mxPublicPrimary').value,header:$('mxPublicHeader').value,accent:$('mxPublicAccent').value,background:$('mxPublicBackground').value,radius:Number($('mxPublicRadius').value)}}
-function mxPublicFillForm(theme){
- const t={...mxPublicPresets.classic,...(theme||{})};
- for(const [id,key] of Object.entries({mxPublicPrimary:'primary',mxPublicHeader:'header',mxPublicAccent:'accent',mxPublicBackground:'background'}))if(/^#[0-9a-f]{6}$/i.test(t[key]))$(id).value=t[key];
- $('mxPublicRadius').value=[8,14,18,26].includes(Number(t.radius))?String(t.radius):'18';mxPublicPreview();
-}
-function mxPublicPreview(){const t=mxPublicReadForm(),root=$('mxPublicThemePreview');
- root.style.borderRadius=t.radius+'px';root.style.background=t.background;
- root.querySelector('.mx-preview-head').style.background=t.header;
- root.querySelector('.mx-preview-banner').style.background=t.primary;
- root.querySelector('.mx-preview-button').style.background=t.primary;
- root.querySelectorAll('.mx-preview-cards>div').forEach(c=>{c.style.borderRadius=t.radius+'px';c.style.borderColor=t.accent;c.style.background=t.background});
-}
-$('mxPublicPreset').addEventListener('change',()=>{const key=$('mxPublicPreset').value;if(mxPublicPresets[key])mxPublicFillForm(mxPublicPresets[key])});
-for(const id of ['mxPublicPrimary','mxPublicHeader','mxPublicAccent','mxPublicBackground','mxPublicRadius'])$(id).addEventListener('input',()=>{$('mxPublicPreset').value='custom';mxPublicPreview()});
-$('mxPublicThemeSave').onclick=async()=>{
- const t=mxPublicReadForm();const b=$('mxPublicThemeSave');b.disabled=true;
- try{await setDoc(doc(db,'siteSettings','homepage'),{storefrontTheme:t,updatedAt:serverTimestamp()},{merge:true});$('mxPublicThemeMsg').textContent='✓ পাবলিক ওয়েবসাইটের থিম সংরক্ষিত হয়েছে। পেজ রিফ্রেশ করে দেখুন।'}
- catch(e){$('mxPublicThemeMsg').textContent='সেভ হয়নি: '+(e.code||e.message)}finally{b.disabled=false}
-};
-$('mxPublicThemeReset').onclick=()=>{$('mxPublicPreset').value='classic';mxPublicFillForm(mxPublicPresets.classic);$('mxPublicThemeMsg').textContent='Classic প্রিভিউ হয়েছে। ওয়েবসাইটে প্রয়োগ করতে Save চাপুন।'};
-async function mxPublicLoadCurrentTheme(){try{const snap=await getDoc(doc(db,'siteSettings','homepage'));const t=snap.data()?.storefrontTheme;if(t)mxPublicFillForm(t);else mxPublicFillForm(mxPublicPresets.classic)}catch(err){console.warn('Public theme preview load',err)}}
-mxPublicLoadCurrentTheme();
-</script><script data-mx-embedded="P22 menu actions">/* P22 UI ONLY. No Firebase, order, stock, pricing or receipt business operations. */
-(function(){
-  'use strict';
-  const app = document.getElementById('app');
-  if (!app) return;  // storefront uses the existing store.js, which remains authoritative.
-  const menu = app.querySelector('.side .menu');
-  const search = document.getElementById('mxP22MenuSearch');
-  const toggle = document.getElementById('mxP22MenuToggle');
-  const items = menu ? Array.from(menu.querySelectorAll('button[data-p]')) : [];
-  const groupNames = new Map([
-    ['dashboard','OVERVIEW'],['products','STORE MANAGEMENT'],['orders','SALES & ORDERS'],
-    ['reports','FINANCE & REPORTS'],['settings','SETTINGS & CONTENT'],['mxEmployees','TEAM (DEFERRED)'],
-    ['mxCampaigns','LOYALTY & MARKETING'],['mxCRM','CUSTOMER MANAGEMENT']
-  ]);
-  // Use non-clickable labels; preserve the original buttons and their listeners unchanged.
-  if (menu && !menu.dataset.mxP22Enhanced) {
-    items.forEach(btn=>{
-      const group = groupNames.get(btn.dataset.p);
-      if (group) {
-        const caption=document.createElement('div');
-        caption.className='mx-p22-menu-heading';caption.textContent=group;
-        menu.insertBefore(caption,btn);
-      }
-    });
-    menu.dataset.mxP22Enhanced='yes';
-  }
-  function updateHeadings(){
-    if (!menu)return;
-    menu.querySelectorAll('.mx-p22-menu-heading').forEach(h=>{
-      let item=h.nextElementSibling,found=false;
-      while (item && !item.classList.contains('mx-p22-menu-heading')) {
-        if(item.matches('button[data-p]') && !item.hidden){found=true;break;}
-        item=item.nextElementSibling;
-      }
-      h.hidden=!found;
-    });
-  }
-  if(search){
-    search.addEventListener('input',()=>{
-      const q=search.value.trim().toLocaleLowerCase();
-      items.forEach(b=>{b.hidden=!!q && !((b.textContent||'')+' '+(b.dataset.p||'')).toLocaleLowerCase().includes(q);});
-      updateHeadings();
-      if(q && window.matchMedia('(max-width:760px)').matches){document.body.classList.add('mx-p22-menu-open');}
-    });
-    search.addEventListener('keydown',e=>{
-      if(e.key!=='Enter')return;
-      const matched=items.find(b=>!b.hidden);
-      if(matched){e.preventDefault();matched.click();search.blur();}
-    });
-  }
-  if(toggle){toggle.addEventListener('click',()=>{
-    const active=document.body.classList.toggle('mx-p22-menu-open');
-    toggle.setAttribute('aria-expanded',String(active));
-  });}
-  items.forEach(btn=>btn.addEventListener('click',()=>{
-    if(window.matchMedia('(max-width:760px)').matches){
-      document.body.classList.remove('mx-p22-menu-open');
-      toggle?.setAttribute('aria-expanded','false');
-    }
-  }));
-  document.querySelectorAll('[data-mx-goto]').forEach(btn=>btn.addEventListener('click',()=>{
-    const target=menu?.querySelector('button[data-p="'+btn.dataset.mxGoto+'"]');
-    if(target){target.click();app.querySelector('.main')?.scrollTo({top:0,behavior:'smooth'});}
-  }));
-})();
-</script>
-<script data-mx-embedded="P28 live counters">/* P28 VIEW ONLY: updates live order chart based on existing dashboard counts; never writes Firebase. */
-(()=>{
- const q=id=>document.getElementById(id);
- const total=q('sOrders'),pending=q('sPending'),ring=q('mxP28OrderRing');
- if(!total||!pending||!ring)return;
- const read=v=>Number(String(v?.textContent||'0').replace(/[^\d]/g,''))||0;
- const update=()=>{
-   const n=read(total),p=Math.max(0,Math.min(n,read(pending))),percent=n?Math.round((p/n)*100):0;
-   ring.style.background=`conic-gradient(#07a69d 0% ${percent}%,#deebf0 ${percent}% 100%)`;
-   q('mxP28PendingPercent').textContent=n?percent+'%':'0%';
-   q('mxP28PendingCount').textContent=String(p);
-   q('mxP28OtherCount').textContent=String(Math.max(0,n-p));
- };
- const obs=new MutationObserver(update);obs.observe(total,{childList:true,characterData:true,subtree:true});obs.observe(pending,{childList:true,characterData:true,subtree:true});update();
-})();</script><script id="mx-p29-readonly-ui">/* MEHEDI XPRESS P29: PRESENTATION ONLY. No Firestore writes or authentication handling. */
-(() => {
-  'use strict';
-  const $ = id => document.getElementById(id);
-  const fromRows = id => [...($(id)?.querySelectorAll('tr') || [])].filter(r=>r.children.length > 1);
-  const statusSelect = $('orderStatusFilter');
-  const statusButtons = [...document.querySelectorAll('[data-mx-p29-status]')];
-  function syncStatus(){
-    const current = statusSelect?.value || '';
-    statusButtons.forEach(b => {const on=b.dataset.mxP29Status===current; b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
-  }
-  statusButtons.forEach(button=>button.addEventListener('click',()=>{
-    if(!statusSelect) return;
-    statusSelect.value=button.dataset.mxP29Status;
-    statusSelect.dispatchEvent(new Event('change',{bubbles:true}));
-    syncStatus();
-  }));
-  statusSelect?.addEventListener('change', syncStatus);
-  const updateOrderOverview=()=>{
-    const rows=fromRows('orderRows');
-    const total=$('mxP29OrderTotal'),pending=$('mxP29OrderPending'),delivered=$('mxP29OrderDelivered');
-    if(total) total.textContent=String(rows.length);
-    if(pending) pending.textContent=String(rows.filter(r=>r.children[5]?.textContent?.trim().toLowerCase().includes('pending')).length);
-    if(delivered) delivered.textContent=String(rows.filter(r=>r.children[5]?.textContent?.trim().toLowerCase().includes('delivered')).length);
-  };
-  const prodSearch=$('mxP29ProductSearch'),prodCategory=$('mxP29ProductCategory'),prodStatus=$('mxP29ProductStatus'),prodCount=$('mxP29ProductsVisible');
-  const norm=s=>String(s??'').toLocaleLowerCase().trim();
-  function refreshProductCategories(rows){
-    if(!prodCategory)return;
-    const prev=prodCategory.value;
-    const categories=[...new Set(rows.map(r=>r.children[3]?.textContent.trim()||'').filter(Boolean))].sort((a,b)=>a.localeCompare(b));
-    prodCategory.replaceChildren(new Option('সব ক্যাটাগরি',''),...categories.map(c=>new Option(c,c)));
-    prodCategory.value=categories.includes(prev)?prev:'';
-  }
-  function filterProducts(){
-    const rows=fromRows('productRows');const q=norm(prodSearch?.value),cat=norm(prodCategory?.value),status=norm(prodStatus?.value);
-    let shown=0;
-    rows.forEach(row=>{
-      const cells=[...row.children];
-      const searchable=[cells[1],cells[2],cells[3]].map(x=>norm(x?.textContent)).join(' ');
-      const catText=norm(cells[3]?.textContent),statusText=norm(cells[6]?.textContent);
-      let state=true;
-      if(status==='active')state=!/disabled|inactive|out of stock|hidden|লুকানো/i.test(statusText);
-      else if(status==='disabled')state=/disabled|inactive|out of stock|hidden|লুকানো/i.test(statusText);
-      const show=(!q||searchable.includes(q))&&(!cat||catText===cat)&&state;
-      row.hidden=!show;row.style.display=show?'':'none';if(show)shown++;
-    });
-    if(prodCount)prodCount.textContent=`${shown} / ${rows.length} পণ্য`;
-  }
-  const productRows=$('productRows');
-  const orderRows=$('orderRows');
-  const observe=(node,fn)=>node && new MutationObserver(fn).observe(node,{childList:true,subtree:true,characterData:true});
-  observe(orderRows,updateOrderOverview);
-  observe(productRows,()=>{refreshProductCategories(fromRows('productRows'));filterProducts()});
-  [prodSearch,prodCategory,prodStatus].forEach(el=>el?.addEventListener('input',filterProducts));
-  $('mxP29ProductClear')?.addEventListener('click',()=>{
-    if(prodSearch)prodSearch.value='';if(prodCategory)prodCategory.value='';if(prodStatus)prodStatus.value='';filterProducts();
-  });
-  refreshProductCategories(fromRows('productRows'));
-  filterProducts();updateOrderOverview();syncStatus();
-})();</script><script id="mx-p30-navigation-scroll">
-/* P30 UI-only: when changing admin sections, return the document to the top. */
-document.addEventListener('click', function(event) {
-  const target = event.target.closest('#app .menu button[data-p], #app button[data-mx-goto]');
-  if (!target) return;
-  requestAnimationFrame(function() { window.scrollTo({ top: 0, behavior: 'instant' }); });
-});
-</script>
-</body></html>
+ }catch(err){$('mxSizeStockStatus').textContent='সেভ হয়নি: '+(err.message||err.code);$('mxSizeStockStatus').class
