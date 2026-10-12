@@ -1365,6 +1365,47 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
 }
 </style>
 
+<style id="mx-p36-production-style">
+/* P36: Custom Orders production and logistics; no existing POS or print rule modified. */
+#mxP36Panel{display:grid;gap:14px;border-top:1px solid #dbe7ed;padding-top:18px;margin-top:17px;min-width:0}
+#mxP36Panel .mx-p36-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#mxP36Panel .mx-p36-card{background:#fff;border:1px solid #dbe6ed;border-radius:13px;padding:17px;min-width:0;box-shadow:0 3px 12px #0c3a4a0b}
+#mxP36Panel h3{margin:0 0 7px;color:#0a344c;font-size:16px}
+#mxP36Panel .mx-p36-caption{margin:0 0 12px;font-size:12px;color:#5b7381;line-height:1.6}
+#mxP36Panel label{display:grid;gap:6px;font-size:12px;font-weight:750;color:#34566a;margin:0}
+#mxP36Panel .mx-p36-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+#mxP36Panel .mx-p36-full{grid-column:1/-1}
+#mxP36Panel input,#mxP36Panel select,#mxP36Panel textarea{min-width:0;width:100%;background:white;color:#143446;padding:10px;border-radius:8px;border:1px solid #c9dce5;font-size:13px}
+#mxP36Panel input:focus,#mxP36Panel select:focus,#mxP36Panel textarea:focus{outline:2px solid #0bb9a428;border-color:#088f92}
+#mxP36Panel textarea{min-height:78px;resize:vertical}
+#mxP36Panel .mx-p36-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+#mxP36Panel button{border:0;background:#048f91;color:white;font-weight:750;font-size:12px;border-radius:8px;padding:10px 13px;cursor:pointer}
+#mxP36Panel button.secondary{background:#e9f3f5;color:#235063}
+#mxP36Panel button:disabled{cursor:wait;opacity:.55}
+#mxP36Panel .mx-p36-meter{height:12px;background:#eaf0f4;border-radius:20px;overflow:hidden;margin:9px 0}
+#mxP36Panel .mx-p36-fill{height:100%;width:0;background:linear-gradient(90deg,#009b99,#26c6a6);transition:width .2s}
+#mxP36Panel .mx-p36-figure{color:#0d5462;font-size:13px;font-weight:750}
+#mxP36Panel .mx-p36-hist{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px;max-height:275px;overflow:auto}
+#mxP36Panel .mx-p36-hist li{padding:10px;border:1px solid #e1eaef;border-left:3px solid #099a99;border-radius:7px;overflow-wrap:anywhere;font-size:12px;background:#f8fbfc}
+#mxP36Panel .mx-p36-hist strong{display:block;color:#153d50}
+#mxP36Panel .mx-p36-hist small{display:block;color:#65808c;margin-top:3px}
+#mxP36Panel .mx-p36-alert{border:1px solid #efd8b4;border-radius:9px;padding:11px;background:#fff8ed;color:#80551e;font-size:12px;line-height:1.6}
+#mxP36Panel #mxP36Message{min-height:18px;font-size:13px;font-weight:750;color:#06757d}
+#mxP36SlipPrint{display:none}
+@media(max-width:730px){#mxP36Panel .mx-p36-grid{grid-template-columns:1fr}#mxP36Panel .mx-p36-card{padding:12px}}
+@media(max-width:410px){#mxP36Panel .mx-p36-fields{grid-template-columns:1fr}#mxP36Panel .mx-p36-full{grid-column:auto}}
+@media print{
+ body.mx-p36-print *{visibility:hidden!important}
+ body.mx-p36-print #mxP36SlipPrint,body.mx-p36-print #mxP36SlipPrint *{visibility:visible!important}
+ body.mx-p36-print #mxP36SlipPrint{display:block!important;position:absolute!important;inset:0 auto auto 0!important;width:100%!important;background:#fff!important;color:#142b3b!important;margin:0!important;padding:0!important;font:12px Arial,sans-serif!important}
+ #mxP36SlipPrint .mx-p36-print-head{border-bottom:3px solid #065866;padding-bottom:12px;display:flex;justify-content:space-between;gap:10px}
+ #mxP36SlipPrint h1{font-size:21px;color:#103b50!important}
+ #mxP36SlipPrint h2{font-size:18px;margin:16px 0!important;color:#103b50!important}
+ #mxP36SlipPrint table{border-collapse:collapse;width:100%;margin:12px 0}
+ #mxP36SlipPrint th,#mxP36SlipPrint td{border:1px solid #96afb9;padding:9px;vertical-align:top;overflow-wrap:anywhere}
+ #mxP36SlipPrint .mx-p36-foot{padding-top:14px;border-top:1px dashed #a1b3bb;margin-top:25px;white-space:pre-line}
+}
+</style>
 </head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin mx-p33-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
@@ -3903,4 +3944,133 @@ import {getFirestore,doc,getDoc,runTransaction,Timestamp,serverTimestamp} from '
 })();
 </script>
 
+<script id="mx-p36-production-module" type="module">
+import {getApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+import {getFirestore,doc,getDoc,runTransaction,Timestamp,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+(() => {
+ 'use strict';
+ const ADMIN='3Z0MLHObZOay8OFFnhreMvbg0e53';
+ const auth=getAuth(getApp()),db=getFirestore(getApp()),el=id=>document.getElementById(id);
+ const body=el('mxP34Dialog')?.querySelector('.mx-p34-body');if(!body)return;
+ const stages=['Not Started','Materials Ready','Printing','Stitching','Quality Check','Packing','Ready for Dispatch'];
+ const stageNames={'Not Started':'শুরু হয়নি','Materials Ready':'উপকরণ প্রস্তুত','Printing':'প্রিন্টিং','Stitching':'সেলাই','Quality Check':'মান পরীক্ষা','Packing':'প্যাকিং','Ready for Dispatch':'ডেলিভারির জন্য প্রস্তুত'};
+ const shipStages=['Not Dispatched','Booked','In Transit','Out for Delivery','Handed Over','Returned'];
+ const shipNames={'Not Dispatched':'পাঠানো হয়নি','Booked':'বুকিং হয়েছে','In Transit':'পথে আছে','Out for Delivery':'ডেলিভারিতে আছে','Handed Over':'হস্তান্তরের তথ্য নথিভুক্ত','Returned':'ফেরত এসেছে'};
+ const methods=['Courier','Local Delivery','Customer Pickup'];
+ const printArea=document.createElement('section');printArea.id='mxP36SlipPrint';document.body.append(printArea);
+ const root=document.createElement('section');root.id='mxP36Panel';
+ const opts=(codes,names)=>codes.map(c=>`<option value="${c}">${names[c]||c}</option>`).join('');
+ root.innerHTML=`
+ <h3>🏭 P36 · উৎপাদন অগ্রগতি ও ডেলিভারি ব্যবস্থাপনা</h3>
+ <p class="mx-p36-caption">এই প্যানেলটি Custom Order-এর ভেতরে কাজ করে। এতে তৈরি পণ্যের অবস্থা, পিসের অগ্রগতি, পাঠানোর তথ্য ও নতুন পরিবর্তনের ইতিহাস থাকবে।</p>
+ <div class="mx-p36-grid">
+  <section class="mx-p36-card" aria-label="উৎপাদন অগ্রগতি"><h3>উৎপাদন অগ্রগতি</h3>
+   <p class="mx-p36-caption">মোট পিস অনুযায়ী সম্পন্ন পিস লিখবে। এটি স্টক কমাবে না।</p>
+   <div class="mx-p36-figure" id="mxP36ProgressText">অর্ডার লোড হচ্ছে…</div><div class="mx-p36-meter"><div class="mx-p36-fill" id="mxP36ProgressBar"></div></div>
+   <div class="mx-p36-fields">
+    <label>উৎপাদন ধাপ<select id="mxP36Stage">${opts(stages,stageNames)}</select></label>
+    <label>সম্পন্ন পিস<input id="mxP36Completed" type="number" min="0" step="1" value="0"></label>
+    <label>লক্ষ্য তারিখ (ঐচ্ছিক)<input id="mxP36TargetDate" type="date"></label>
+    <label class="mx-p36-full">কাজের নোট<textarea id="mxP36ProdNote" maxlength="500" placeholder="কত পিস প্রিন্ট হয়েছে, কী কাজ বাকি…"></textarea></label>
+   </div>
+   <div class="mx-p36-actions"><button type="button" id="mxP36SaveProduction">উৎপাদনের অগ্রগতি সেভ</button><button type="button" class="secondary" id="mxP36Refresh">রিফ্রেশ</button></div>
+   <h3 style="margin-top:18px">অগ্রগতির ইতিহাস</h3><ul class="mx-p36-hist" id="mxP36ProdHistory"></ul>
+  </section>
+  <section class="mx-p36-card" aria-label="ডেলিভারি ব্যবস্থাপনা"><h3>কুরিয়ার / হ্যান্ডওভার</h3>
+   <p class="mx-p36-caption">কুরিয়ারের তথ্য সংরক্ষণ করো। এখানে Handed Over নির্বাচন করা মানেই স্বতন্ত্র ডেলিভারি প্রমাণ নয়।</p>
+   <div class="mx-p36-fields">
+    <label>ডেলিভারির ধরন<select id="mxP36Method"><option value="Courier">কুরিয়ার</option><option value="Local Delivery">লোকাল ডেলিভারি</option><option value="Customer Pickup">কাস্টমার এসে নেবেন</option></select></label>
+    <label>ডেলিভারি অবস্থা<select id="mxP36ShipStatus">${opts(shipStages,shipNames)}</select></label>
+    <label>কুরিয়ার / বাহকের নাম<input id="mxP36Carrier" maxlength="100" placeholder="কুরিয়ার বা ডেলিভারিম্যান"></label>
+    <label>ট্র্যাকিং / বুকিং নম্বর<input id="mxP36Tracking" maxlength="100" placeholder="Tracking ID"></label>
+    <label>সম্ভাব্য পৌঁছানোর তারিখ<input id="mxP36Eta" type="date"></label>
+    <label>গ্রহণকারীর নাম<input id="mxP36Receiver" maxlength="100" placeholder="হ্যান্ডওভার হলে লিখুন"></label>
+    <label class="mx-p36-full">ডেলিভারি ঠিকানা / পিকআপ পয়েন্ট<textarea id="mxP36Address" maxlength="500" placeholder="লোকেশন বা কুরিয়ার ব্রাঞ্চ"></textarea></label>
+    <label class="mx-p36-full">প্রমাণ বা রেফারেন্স লিংক (ঐচ্ছিক)<input id="mxP36Evidence" type="url" maxlength="600" placeholder="https://..."></label>
+    <label class="mx-p36-full">ডেলিভারি সংক্রান্ত নোট<textarea id="mxP36DeliveryNote" maxlength="500" placeholder="হস্তান্তরের তথ্য বা কুরিয়ারের বিবরণ"></textarea></label>
+   </div>
+   <div class="mx-p36-actions"><button type="button" id="mxP36SaveDelivery">ডেলিভারি তথ্য সেভ</button><button type="button" class="secondary" id="mxP36Print">প্যাকিং / ডেলিভারি স্লিপ</button></div>
+   <h3 style="margin-top:18px">ডেলিভারি পরিবর্তনের ইতিহাস</h3><ul class="mx-p36-hist" id="mxP36DeliveryHistory"></ul>
+  </section>
+ </div>
+ <p class="mx-p36-alert">এগুলো কেবল Custom Order-এর কাজের রেকর্ড। অর্ডারের মূল স্ট্যাটাস, POS, Sales, Stock, Cash Ledger, Payment ও Customer Due স্বয়ংক্রিয়ভাবে পরিবর্তন করবে না। পেমেন্ট যাচাই এবং কাস্টমারের ডেলিভারি গ্রহণের প্রমাণ আলাদাভাবে নিশ্চিত করতে হবে। আগের ইতিহাস বানিয়ে দেখানো হবে না।</p>
+ <p role="status" aria-live="polite" id="mxP36Message"></p>`;
+ body.append(root);
+ let orderId=null,current=null,requestToken=0;
+ const canEdit=()=>auth.currentUser?.uid===ADMIN;
+ const localDate=t=>t?.toDate?.().toLocaleString('bn-BD')||'সময় পাওয়া যায়নি';
+ function listTo(container,history,display,empty){const ul=el(container);ul.replaceChildren();if(!history.length){const li=document.createElement('li');li.textContent=empty;ul.append(li);return}
+  for(const h of [...history].reverse()){const li=document.createElement('li'),strong=document.createElement('strong'),small=document.createElement('small');strong.textContent=display(h);small.textContent=`${localDate(h.at)} · পরিবর্তনকারী Admin`;li.append(strong,small);ul.append(li)}
+ }
+ const msg=t=>{el('mxP36Message').textContent=t};
+ const num=v=>Number(v);
+ function render(){if(!current)return;
+  const qty=Number(current.quantity||0),p=current.productionProgress||{},d=current.deliveryTracking||{};
+  el('mxP36Stage').value=stages.includes(p.stage)?p.stage:stages[0];
+  el('mxP36Completed').max=String(qty);el('mxP36Completed').value=String(Number.isInteger(p.completedQty)?p.completedQty:0);
+  el('mxP36TargetDate').value=p.targetDate||'';el('mxP36ProdNote').value=p.note||'';
+  const done=Number.isInteger(p.completedQty)?p.completedQty:0;
+  const percent=qty>0?Math.max(0,Math.min(100,done/qty*100)):0;
+  el('mxP36ProgressText').textContent=`${done} / ${qty} পিস সম্পন্ন (${percent.toFixed(0)}%) · ${stageNames[p.stage]||'শুরু হয়নি'}`;
+  el('mxP36ProgressBar').style.width=`${percent}%`;
+  el('mxP36Method').value=methods.includes(d.method)?d.method:methods[0];
+  el('mxP36ShipStatus').value=shipStages.includes(d.status)?d.status:shipStages[0];
+  for(const [id,k] of [['mxP36Carrier','carrier'],['mxP36Tracking','trackingId'],['mxP36Eta','etaDate'],['mxP36Receiver','receiver'],['mxP36Address','address'],['mxP36Evidence','evidenceUrl'],['mxP36DeliveryNote','note']])el(id).value=d[k]||'';
+  listTo('mxP36ProdHistory',Array.isArray(current.productionHistory)?current.productionHistory:[],h=>`${stageNames[h.stage]||h.stage} · ${h.completedQty} পিস · ${h.note||'নোট নেই'}`,'এখনো কোনো উৎপাদন ইতিহাস নেই');
+  listTo('mxP36DeliveryHistory',Array.isArray(current.deliveryHistory)?current.deliveryHistory:[],h=>`${shipNames[h.status]||h.status} · ${h.method||'—'} · ${h.trackingId||'ট্র্যাকিং নেই'}`,'এখনো কোনো ডেলিভারি ইতিহাস নেই');
+ }
+ async function reload(silent=false){if(!orderId||!canEdit())return;const seq=++requestToken;
+  try{const snap=await getDoc(doc(db,'customOrders',orderId));if(seq!==requestToken)return;if(!snap.exists())throw Error('অর্ডার খুঁজে পাওয়া যায়নি');current={id:snap.id,...snap.data()};render();if(!silent)msg('সর্বশেষ তথ্য লোড হয়েছে')}
+  catch(e){if(seq===requestToken)msg('তথ্য লোড হয়নি: '+(e.code||e.message))}
+ }
+ document.addEventListener('mx:p34-order-opened',e=>{orderId=e.detail?.id||null;current=null;requestToken++;msg('P36 তথ্য লোড হচ্ছে…');reload(true)});
+ const close=()=>{orderId=null;current=null;requestToken++;msg('')};
+ el('mxP34Close').addEventListener('click',close);el('mxP34Cancel').addEventListener('click',close);
+ // Close via overlay or Escape is handled by P34. Observe its visibility to reset active order.
+ new MutationObserver(()=>{if(el('mxP34Overlay')?.hidden&&orderId)close()}).observe(el('mxP34Overlay'),{attributes:true,attributeFilter:['hidden']});
+ el('mxP36Refresh').addEventListener('click',()=>reload());
+ function validDate(v){return !v||/^\d{4}-\d{2}-\d{2}$/.test(v)}
+ const validUrl=v=>!v||/^https?:\/\//i.test(v);
+ async function save(buttonId,fn){if(!orderId||!canEdit()){msg('Admin Login প্রয়োজন।');return}
+  const id=orderId,btn=el(buttonId);btn.disabled=true;msg('Firebase-এ সেভ হচ্ছে…');
+  try{const ref=doc(db,'customOrders',id);await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');const update=fn(snap.data());tx.update(ref,{...update,updatedAt:serverTimestamp()})});
+   if(orderId===id){await reload(true);msg('সফলভাবে সংরক্ষিত হয়েছে। বিক্রি, পেমেন্ট বা স্টক পরিবর্তিত হয়নি।')}
+  }catch(e){msg('সংরক্ষণ হয়নি: '+(e.code||e.message))}finally{btn.disabled=false}
+ }
+ el('mxP36SaveProduction').addEventListener('click',()=>{
+  const stage=el('mxP36Stage').value,completedQty=num(el('mxP36Completed').value),targetDate=el('mxP36TargetDate').value,note=el('mxP36ProdNote').value.trim();
+  const qty=num(current?.quantity);
+  if(!stages.includes(stage)||el('mxP36Completed').value.trim()===''||!Number.isSafeInteger(completedQty)||completedQty<0||completedQty>qty||!validDate(targetDate)||note.length>500){msg('উৎপাদন ধাপ, সম্পন্ন পিস বা নোট সঠিক নয়।');return}
+  save('mxP36SaveProduction',o=>{if(completedQty>num(o.quantity))throw Error('অর্ডারের মোট পিসের চেয়ে সম্পন্ন পিস বেশি');const h=Array.isArray(o.productionHistory)?o.productionHistory:[];
+   if(h.length>=100)throw Error('১০০টি উৎপাদন লগ পূর্ণ; পুরোনো লগ না মুছে আর্কাইভের ব্যবস্থা দরকার');
+   const event={stage,completedQty,targetDate,note,at:Timestamp.now(),by:auth.currentUser.uid};return {productionProgress:event,productionHistory:[...h,event]}
+  });
+ });
+ el('mxP36SaveDelivery').addEventListener('click',()=>{
+  const method=el('mxP36Method').value,status=el('mxP36ShipStatus').value,carrier=el('mxP36Carrier').value.trim(),trackingId=el('mxP36Tracking').value.trim(),etaDate=el('mxP36Eta').value;
+  const receiver=el('mxP36Receiver').value.trim(),address=el('mxP36Address').value.trim(),evidenceUrl=el('mxP36Evidence').value.trim(),note=el('mxP36DeliveryNote').value.trim();
+  if(!methods.includes(method)||!shipStages.includes(status)||!validDate(etaDate)||!validUrl(evidenceUrl)||[carrier,trackingId,receiver].some(v=>v.length>100)||address.length>500||evidenceUrl.length>600||note.length>500){msg('ডেলিভারি ফর্মের কোনো তথ্য সঠিক নয়।');return}
+  if(status==='Handed Over'&&!receiver&&!evidenceUrl){msg('হ্যান্ডওভার নথিভুক্ত করতে গ্রহণকারীর নাম অথবা প্রমাণের লিংক লিখবে।');return}
+  save('mxP36SaveDelivery',o=>{const h=Array.isArray(o.deliveryHistory)?o.deliveryHistory:[];
+   if(h.length>=100)throw Error('১০০টি ডেলিভারি লগ পূর্ণ; পুরোনো লগ না মুছে আর্কাইভ দরকার');
+   const event={method,status,carrier,trackingId,etaDate,receiver,address,evidenceUrl,note,at:Timestamp.now(),by:auth.currentUser.uid};return {deliveryTracking:event,deliveryHistory:[...h,event]}
+  });
+ });
+ function printSlip(){if(!current||!canEdit()){msg('অর্ডারের বিস্তারিত খুলে প্রিন্ট করো');return}
+  printArea.replaceChildren();const mk=(tag,txt='',cls='')=>{const n=document.createElement(tag);n.textContent=String(txt??'');if(cls)n.className=cls;return n};
+  const p=current.productionProgress||{},d=current.deliveryTracking||{};
+  const head=mk('div','','mx-p36-print-head'),brand=mk('div');brand.append(mk('h1','MEHEDI XPRESS'),mk('small','Sports • Fashion • Custom Print'));
+  head.append(brand,mk('div','Order: MXCO-'+current.id.slice(0,8).toUpperCase()));printArea.append(head,mk('h2','প্যাকিং / ডেলিভারি তথ্য স্লিপ'));
+  const table=mk('table');
+  for(const [title,value] of [['কাস্টমার',current.customerName],['মোবাইল',current.phone],['পণ্য',current.product],['সাইজ',current.sizeDetails],['অর্ডারের পরিমাণ',current.quantity],['সম্পন্ন পিস',p.completedQty??'রেকর্ড নেই'],['উৎপাদন ধাপ',stageNames[p.stage]||'রেকর্ড নেই'],['ডেলিভারি পদ্ধতি',d.method||'রেকর্ড নেই'],['ডেলিভারি অবস্থা',shipNames[d.status]||'রেকর্ড নেই'],['কুরিয়ার',d.carrier],['ট্র্যাকিং নম্বর',d.trackingId],['সম্ভাব্য ডেলিভারি',d.etaDate],['প্রাপক',d.receiver],['ঠিকানা',d.address]]){
+   const tr=mk('tr');tr.append(mk('th',title),mk('td',value||'—'));table.append(tr)}
+  printArea.append(table,mk('div','এটি কেবল প্যাকিং/ডেলিভারি তথ্য স্লিপ; বিক্রির Cash Memo, টাকা গ্রহণের রসিদ বা কুরিয়ার ডেলিভারির স্বাধীন প্রমাণ নয়।\nযাচাইকারী স্বাক্ষর: ____________________\nগ্রহণকারীর স্বাক্ষর: ____________________','mx-p36-foot'));
+  document.body.classList.add('mx-p36-print');let rule=el('mxP36PageRule');if(!rule){rule=document.createElement('style');rule.id='mxP36PageRule';document.head.append(rule)}
+  rule.textContent='@page { size: A4 portrait; margin: 10mm }';setTimeout(()=>window.print(),80);
+ }
+ el('mxP36Print').addEventListener('click',printSlip);
+ window.addEventListener('afterprint',()=>document.body.classList.remove('mx-p36-print'));
+})();
+</script>
 </body></html>
