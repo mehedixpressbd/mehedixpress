@@ -1323,6 +1323,48 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
 }
 </style>
 
+
+<style id="mx-p35-style">
+/* P35: history / quote revisions / internal design review only. POS and accounting are unchanged. */
+#mxP35Panel{margin-top:16px;border-top:1px solid #e0eaee;padding-top:17px;display:grid;gap:14px;min-width:0}
+#mxP35Panel .mx-p35-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;min-width:0}
+#mxP35Panel .mx-p35-card{border:1px solid #dbe7ec;border-radius:12px;background:#fff;padding:15px;min-width:0}
+#mxP35Panel h3{font-size:15px;margin:0 0 8px;color:#073a53}
+#mxP35Panel .mx-p35-muted{font-size:12px;line-height:1.5;color:#587081}
+#mxP35Panel label{display:grid;gap:5px;margin:10px 0 0;font-size:12px;font-weight:700;color:#3b5667}
+#mxP35Panel select,#mxP35Panel input,#mxP35Panel textarea{width:100%;min-width:0;padding:10px;border:1px solid #cedfe7;border-radius:8px;background:#fff;color:#15364a;font-size:13px}
+#mxP35Panel textarea{resize:vertical;min-height:80px}
+#mxP35Panel button{border:0;border-radius:8px;padding:9px 12px;cursor:pointer;background:#008e92;color:#fff;font-weight:700;font-size:12px}
+#mxP35Panel button.secondary{background:#e8f2f4;color:#18495d}
+#mxP35Panel button:disabled{opacity:.5;cursor:wait}
+#mxP35Panel .mx-p35-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+#mxP35Panel .mx-p35-history{display:grid;gap:8px;margin:10px 0 0;padding:0;list-style:none}
+#mxP35Panel .mx-p35-history li{padding:9px 10px;border:1px solid #e1eaee;border-left:3px solid #0b989b;border-radius:7px;background:#f9fcfd;overflow-wrap:anywhere}
+#mxP35Panel .mx-p35-history b{display:block;font-size:12px;color:#103b50}
+#mxP35Panel .mx-p35-history small{font-size:11px;color:#657b89}
+#mxP35Panel .mx-p35-revision{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+#mxP35Panel .mx-p35-warning{background:#fff8ed;color:#784e20;border:1px solid #f3dfc6;padding:9px;border-radius:8px;font-size:12px;line-height:1.5}
+#mxP35Status{min-height:18px;font-size:12px;font-weight:600;color:#0a666c}
+#mxP35Print{display:none!important}
+@media(max-width:690px){#mxP35Panel .mx-p35-grid{grid-template-columns:1fr}#mxP35Panel .mx-p35-card{padding:12px}}
+@media print{
+ body.mx-p35-print,html:has(body.mx-p35-print){height:auto!important;overflow:visible!important;background:white!important}
+ body.mx-p35-print #app,body.mx-p35-print #login,body.mx-p35-print #mxP34Overlay,body.mx-p35-print #memoPrint,body.mx-p35-print #orderInvoicePrint,body.mx-p35-print #mxP34Print{display:none!important;visibility:hidden!important}
+ body.mx-p35-print #mxP35Print,body.mx-p35-print #mxP35Print *{visibility:visible!important}
+ body.mx-p35-print #mxP35Print{display:block!important;position:relative!important;background:white!important;color:#1b2b34!important;padding:0!important;margin:0!important;width:100%!important;box-shadow:none!important;font:12px Arial,sans-serif!important}
+ #mxP35Print .mx-p35-header{border-bottom:3px solid #0b5b68;padding-bottom:10px;display:flex;justify-content:space-between;gap:12px}
+ #mxP35Print .mx-p35-header h1{font-size:21px;margin:0;color:#092b43!important}
+ #mxP35Print h2{text-align:center;margin:18px 0;font-size:17px}
+ #mxP35Print p{margin:6px 0;white-space:pre-line;overflow-wrap:anywhere}
+ #mxP35Print table{width:100%;border-collapse:collapse;margin-top:15px}
+ #mxP35Print th,#mxP35Print td{border:1px solid #9db2ba;padding:8px;text-align:left;word-break:break-word}
+ #mxP35Print th{background:#ecf4f6!important}
+ #mxP35Print .mx-p35-summary{max-width:345px;margin:15px 0 0 auto}
+ #mxP35Print .mx-p35-summary p{display:flex;justify-content:space-between;gap:15px}
+ #mxP35Print .mx-p35-foot{margin-top:28px;border-top:1px dashed #97abb6;padding-top:12px;font-size:11px}
+}
+</style>
+
 </head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin mx-p33-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
@@ -3615,7 +3657,7 @@ function render(){
   textCell(tr,money(order.quotedTotal));const td=document.createElement('td');td.style.minWidth='156px';const select=document.createElement('select');select.className='mx-p33-status';select.setAttribute('aria-label','Change custom order status');
   for(const st of states){const opt=document.createElement('option');opt.value=st;opt.textContent=st;select.append(opt)}select.value=states.includes(order.status)?order.status:states[0];
   select.addEventListener('change',async()=>{if(!authorized){select.value=order.status;return}select.disabled=true;
-   try{await updateDoc(doc(db,'customOrders',order.id),{status:select.value,updatedAt:serverTimestamp()})}
+   try{await window.mxP35CommitStatus(order.id,select.value)}
    catch(e){select.value=order.status;el('mxP33Message').textContent='স্ট্যাটাস সেভ হয়নি: '+(e.code||e.message)}finally{select.disabled=false}});
   td.append(select);if(order.designUrl){const a=document.createElement('a');a.href=order.designUrl;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' · ডিজাইন';td.append(a)}tr.append(td);rows.append(tr)
  }
@@ -3673,7 +3715,7 @@ import {getFirestore,doc,getDoc,updateDoc,serverTimestamp} from 'https://www.gst
   function enhance(){for(const tr of list.querySelectorAll('tr[data-mx-p34-id]')){const td=tr.lastElementChild;if(!td||td.querySelector('.mx-p34-inline-action'))continue;const b=document.createElement('button');b.type='button';b.className='mx-p34-inline-action';b.textContent='বিস্তারিত / কোটেশন';b.dataset.mxP34Open='1';td.append(b)}}
   let scheduled=false;const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;enhance()})});observer.observe(list,{childList:true,subtree:true});enhance();
   list.addEventListener('click',async e=>{const btn=e.target.closest('[data-mx-p34-open]');if(!btn)return;const tr=btn.closest('tr[data-mx-p34-id]');if(!tr)return;if(!canAccess()){$('mxP33Message').textContent='কোটেশন দেখতে Admin Login প্রয়োজন।';return}
-   btn.disabled=true;const old=btn.textContent;btn.textContent='লোড হচ্ছে…';try{const snap=await getDoc(doc(db,'customOrders',tr.dataset.mxP34Id));if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');active={id:snap.id,...snap.data()};previousFocus=btn;overlay.hidden=false;showOrder();dialog.focus()}catch(err){$('mxP33Message').textContent='বিস্তারিত লোড হয়নি: '+(err.code||err.message)}finally{btn.disabled=false;btn.textContent=old}});
+   btn.disabled=true;const old=btn.textContent;btn.textContent='লোড হচ্ছে…';try{const snap=await getDoc(doc(db,'customOrders',tr.dataset.mxP34Id));if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');active={id:snap.id,...snap.data()};previousFocus=btn;overlay.hidden=false;showOrder();document.dispatchEvent(new CustomEvent('mx:p34-order-opened',{detail:{id:active.id}}));dialog.focus()}catch(err){$('mxP33Message').textContent='বিস্তারিত লোড হয়নি: '+(err.code||err.message)}finally{btn.disabled=false;btn.textContent=old}});
   $('mxP34Close').onclick=close;$('mxP34Cancel').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});document.addEventListener('keydown',e=>{if(!overlay.hidden&&e.key==='Escape')close()});
   $('mxP34SaveLinks').onclick=async()=>{if(!active||!canAccess())return;const lines=$('mxP34MoreLinks').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);const unique=[...new Set(lines)];
     if(unique.length>6||unique.some(u=>u.length>600||!/^https?:\/\//i.test(u))){$('mxP34Status').textContent='সর্বোচ্চ ৬টি HTTP/HTTPS লিংক দিন; প্রতি লিংক ৬০০ অক্ষরের মধ্যে।';return}
@@ -3730,4 +3772,135 @@ el('mxP33PreviewBtn').addEventListener('click',()=>{
 });summary();
 })();
 </script>
+
+<script type="module" id="mx-p35-history-and-review">
+import {getApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+import {getFirestore,doc,getDoc,runTransaction,Timestamp,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+(() => {
+  const ADMIN='3Z0MLHObZOay8OFFnhreMvbg0e53';
+  const auth=getAuth(getApp()), db=getFirestore(getApp());
+  const $=id=>document.getElementById(id);
+  const dlg=$('mxP34Dialog'),body=dlg?.querySelector('.mx-p34-body');
+  if(!body)return;
+  const statusLabel={"Pending Review":"পর্যালোচনাধীন","Approved Internally":"অভ্যন্তরীণ অনুমোদিত","Revision Required":"সংশোধন প্রয়োজন","Rejected":"বাতিল / অসম্মত"};
+  const esc=v=>String(v??'');
+  const fmt=v=>'৳'+Number(v||0).toLocaleString('en-BD',{maximumFractionDigits:2});
+  const date=t=>t?.toDate?.().toLocaleString('bn-BD')||'সময় পাওয়া যায়নি';
+  const node=(tag,txt='',cls='')=>{const x=document.createElement(tag);x.textContent=esc(txt);if(cls)x.className=cls;return x};
+  const validMoney=n=>Number.isFinite(n)&&n>=0&&n<=100000000;
+  const panel=document.createElement('section');panel.id='mxP35Panel';
+  panel.innerHTML=`<div class="mx-p35-grid">
+   <div class="mx-p35-card"><h3>🗂 সংরক্ষিত কোটেশন ও সংস্করণ</h3>
+    <p class="mx-p35-muted">P34 ফর্মের পরিমাণ, প্রস্তাবিত অগ্রিম, ডেলিভারি ও শর্ত সংরক্ষণ করো। পুরোনো কোটেশন পরিবর্তন না করে প্রতিবার নতুন সংস্করণ রাখা হবে।</p>
+    <div class="mx-p35-actions"><button type="button" id="mxP35SaveQuote">নতুন কোটেশন সংস্করণ সেভ</button><button type="button" class="secondary" id="mxP35Reload">রেকর্ড রিফ্রেশ</button></div>
+    <ul class="mx-p35-history" id="mxP35QuoteHistory"></ul>
+   </div>
+   <div class="mx-p35-card"><h3>🎨 ডিজাইন পর্যালোচনা ও সিদ্ধান্ত</h3>
+    <p class="mx-p35-muted">এটি অ্যাডমিনের অভ্যন্তরীণ সিদ্ধান্ত। কাস্টমারের সম্মতি হিসেবে গণনা হবে না।</p>
+    <label>ডিজাইনের অবস্থা<select id="mxP35ReviewStatus"><option value="Pending Review">পর্যালোচনাধীন</option><option value="Approved Internally">অভ্যন্তরীণ অনুমোদিত</option><option value="Revision Required">সংশোধন প্রয়োজন</option><option value="Rejected">বাতিল / অসম্মত</option></select></label>
+    <label>পর্যালোচনার নোট<textarea id="mxP35ReviewNote" maxlength="600" placeholder="কী পরিবর্তন প্রয়োজন বা কেন অনুমোদন হলো..."></textarea></label>
+    <label>অনুমোদনের প্রমাণ বা যোগাযোগের লিংক (ঐচ্ছিক)<input id="mxP35Evidence" type="url" maxlength="600" placeholder="https://..."></label>
+    <div class="mx-p35-actions"><button id="mxP35SaveReview" type="button">ডিজাইন সিদ্ধান্ত সেভ</button></div>
+    <ul class="mx-p35-history" id="mxP35ReviewHistory"></ul>
+   </div>
+  </div>
+  <div class="mx-p35-card"><h3>🕓 অর্ডার স্ট্যাটাস পরিবর্তনের ইতিহাস</h3>
+   <p class="mx-p35-muted">P35 চালুর পরের পরিবর্তনগুলো দেখা যাবে। P35-এর আগের ইতিহাস না থাকলে তা অনুমান করে দেখানো হবে না।</p>
+   <ul class="mx-p35-history" id="mxP35StatusHistory"></ul>
+  </div>
+  <p class="mx-p35-warning">কোটেশন, ডিজাইন সিদ্ধান্ত বা স্ট্যাটাস হিস্ট্রি সংরক্ষণ করলে <b>Sales, POS, Cash Ledger, Stock, Customer Due বা Payment</b> স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে না। সময়ের লগ অ্যাডমিনের ডিভাইস ঘড়ি থেকে নেওয়া হয়; এটি স্বাধীনভাবে যাচাইকৃত টাইমস্ট্যাম্প নয়। প্রতি অর্ডারে কোটেশন সর্বোচ্চ ৩০টি ও প্রতিটি সিদ্ধান্ত/স্ট্যাটাস ইতিহাস সর্বোচ্চ ১৫০টি রাখা যাবে।</p>
+  <p role="status" id="mxP35Status" aria-live="polite"></p>`;
+  body.append(panel);
+  const printRoot=document.createElement('section');printRoot.id='mxP35Print';document.body.append(printRoot);
+  let activeId=null,current=null,loading=0;
+  const canEdit=()=>auth.currentUser?.uid===ADMIN;
+  const setMsg=v=>{$('mxP35Status').textContent=esc(v)};
+  function li(container,title,subtitle,children=null){const item=document.createElement('li');item.append(node('b',title),node('small',subtitle));if(children)item.append(children);$(container).append(item)}
+  function clearHist(){for(const id of ['mxP35QuoteHistory','mxP35ReviewHistory','mxP35StatusHistory'])$(id).replaceChildren()}
+  function render(){clearHist();if(!current)return;
+    const quotes=Array.isArray(current.quotationHistory)?current.quotationHistory:[];
+    if(!quotes.length)li('mxP35QuoteHistory','এখনো কোনো সংরক্ষিত সংস্করণ নেই','P34-এর তাৎক্ষণিক Print পুরোনো হিস্ট্রিতে জমা হয়নি।');
+    else for(const q of [...quotes].reverse()){
+      const buttons=node('div','','mx-p35-actions');const b=node('button','এই সংস্করণ প্রিন্ট');b.type='button';b.className='secondary';b.addEventListener('click',()=>printSaved(q));buttons.append(b);
+      li('mxP35QuoteHistory',`Revision ${q.revision} · ${fmt(q.total)}`,`${date(q.at)} · প্রস্তাবিত অগ্রিম ${fmt(q.proposedAdvance)} · প্রস্তাবিত বাকি ${fmt(q.proposedBalance)}`,buttons);
+    }
+    const decisions=Array.isArray(current.designReviewHistory)?current.designReviewHistory:[];
+    $('mxP35ReviewStatus').value=Object.keys(statusLabel).includes(current.designReview?.status)?current.designReview.status:'Pending Review';
+    $('mxP35ReviewNote').value=current.designReview?.note||'';
+    $('mxP35Evidence').value=current.designReview?.evidenceUrl||'';
+    if(!decisions.length)li('mxP35ReviewHistory','এখনো কোনো অভ্যন্তরীণ সিদ্ধান্ত নেই','আগের কাস্টমার সম্মতির তথ্য তৈরি করা হয়নি।');
+    else for(const h of [...decisions].reverse())li('mxP35ReviewHistory',statusLabel[h.status]||h.status,`${date(h.at)} · ${h.note||'নোট নেই'}${h.evidenceUrl?' · রেফারেন্স সংরক্ষিত':''}`);
+    const changes=Array.isArray(current.statusHistory)?current.statusHistory:[];
+    if(!changes.length)li('mxP35StatusHistory','পূর্ববর্তী স্ট্যাটাস লগ পাওয়া যায়নি',`বর্তমান স্ট্যাটাস: ${current.status||'—'} (আগের তারিখ অজানা)`);
+    else for(const h of [...changes].reverse())li('mxP35StatusHistory',`${h.from||'—'} → ${h.to||'—'}`,date(h.at));
+  }
+  async function reload(silent=false){if(!activeId||!canEdit())return;const seq=++loading;
+    try{const snap=await getDoc(doc(db,'customOrders',activeId));if(seq!==loading)return;if(!snap.exists())throw Error('অর্ডার খুঁজে পাওয়া যায়নি');current={id:snap.id,...snap.data()};render();if(!silent)setMsg('সর্বশেষ হিস্ট্রি লোড হয়েছে।')}
+    catch(e){if(seq===loading)setMsg('হিস্ট্রি লোড হয়নি: '+(e.code||e.message))}
+  }
+  document.addEventListener('mx:p34-order-opened',e=>{activeId=e.detail?.id||null;current=null;clearHist();setMsg('হিস্ট্রি লোড হচ্ছে…');reload(true)});
+  $('mxP34Close').addEventListener('click',()=>{activeId=null;current=null});
+  $('mxP34Cancel').addEventListener('click',()=>{activeId=null;current=null});
+  $('mxP35Reload').addEventListener('click',()=>reload());
+  function recordTime(){return Timestamp.now()} // admin device clock; not trusted server event time
+  async function changeStatus(id,newStatus){if(!canEdit())throw Error('Admin login প্রয়োজন।');
+   const ref=doc(db,'customOrders',id);
+   await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');const old=snap.data();
+    if(!['Pending Approval','Approved','In Production','Ready','Delivered','Cancelled'].includes(newStatus))throw Error('স্ট্যাটাস সঠিক নয়');
+    if(old.status===newStatus)return;
+    const history=Array.isArray(old.statusHistory)?old.statusHistory:[];
+    if(history.length>=150)throw Error('১৫০টি স্ট্যাটাস লগ হয়েছে; আর্কাইভ ছাড়া আরও যোগ করা নিরাপদ নয়।');
+    const event={from:old.status||'',to:newStatus,at:recordTime(),by:auth.currentUser.uid};
+    tx.update(ref,{status:newStatus,statusHistory:[...history,event],updatedAt:serverTimestamp()});
+   });if(activeId===id)await reload(true);
+  }
+  window.mxP35CommitStatus=changeStatus;
+  async function transactionWrite(builder){if(!canEdit()||!activeId){setMsg('Admin Login প্রয়োজন।');return false}
+    const id=activeId,ref=doc(db,'customOrders',id);
+    await runTransaction(db,async tx=>{const snap=await tx.get(ref);if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');const update=builder(snap.data());tx.update(ref,{...update,updatedAt:serverTimestamp()})});
+    await reload(true);return true;
+  }
+  $('mxP35SaveQuote').addEventListener('click',async()=>{if(!current)return;
+    const delivery=Number($('mxP34Delivery').value),advance=Number($('mxP34Advance').value),terms=$('mxP34Terms').value.trim();
+    const base=Number(current.quotedTotal),paper=$('mxP34Paper').value;
+    if(!validMoney(base)||!validMoney(delivery)||!validMoney(advance)||advance>base+delivery||terms.length>500||!['A4','A5'].includes(paper)){setMsg('প্রস্তাবিত অগ্রিম/ডেলিভারি বা শর্ত সঠিক নয়।');return}
+    const button=$('mxP35SaveQuote');button.disabled=true;setMsg('কোটেশন সেভ হচ্ছে…');
+    try{await transactionWrite(o=>{const list=Array.isArray(o.quotationHistory)?o.quotationHistory:[];
+      if(list.length>=30)throw Error('৩০টি সংস্করণ পূর্ণ; আগের কোটেশন না মুছে আর্কাইভের ব্যবস্থা প্রয়োজন।');
+      if(Math.abs(Number(o.quotedTotal)-base)>.01)throw Error('অর্ডারের দাম ইতিমধ্যে বদলেছে; রিফ্রেশ করে আবার চেষ্টা করুন।');
+      const total=Math.round((base+delivery)*100)/100;
+      const item={revision:list.length+1,at:recordTime(),by:auth.currentUser.uid,customerName:String(o.customerName||''),phone:String(o.phone||''),product:String(o.product||''),sizeDetails:String(o.sizeDetails||''),quantity:Number(o.quantity||0),unitQuote:Number(o.unitQuote||0),base,delivery,total,proposedAdvance:advance,proposedBalance:Math.round((total-advance)*100)/100,terms,paper,sourceOrderId:activeId,designReferences:[o.designUrl,...(Array.isArray(o.referenceUrls)?o.referenceUrls:[])].filter(x=>typeof x==='string'&&/^https?:\/\//i.test(x)).slice(0,7)};
+      return {quotationHistory:[...list,item]};
+    });setMsg('কোটেশনের নতুন সংস্করণ সংরক্ষিত হয়েছে (আসল পেমেন্ট/স্টক পরিবর্তন নয়)।')}
+    catch(e){setMsg('কোটেশন সেভ হয়নি: '+(e.code||e.message))}finally{button.disabled=false}
+  });
+  $('mxP35SaveReview').addEventListener('click',async()=>{if(!current)return;
+    const st=$('mxP35ReviewStatus').value,note=$('mxP35ReviewNote').value.trim(),evidenceUrl=$('mxP35Evidence').value.trim();
+    if(!statusLabel[st]||note.length>600||evidenceUrl.length>600||(evidenceUrl&&!/^https?:\/\//i.test(evidenceUrl))){setMsg('স্ট্যাটাস, নোট বা প্রমাণের লিংক সঠিক নয়।');return}
+    const button=$('mxP35SaveReview');button.disabled=true;setMsg('পর্যালোচনা সংরক্ষণ হচ্ছে…');
+    try{await transactionWrite(o=>{const list=Array.isArray(o.designReviewHistory)?o.designReviewHistory:[];
+      if(list.length>=150)throw Error('১৫০টি সিদ্ধান্ত লগ হয়েছে; আগে আর্কাইভ দরকার।');
+      const review={status:st,note,evidenceUrl,at:recordTime(),by:auth.currentUser.uid};return {designReview:review,designReviewHistory:[...list,review]}
+    });setMsg('অভ্যন্তরীণ ডিজাইন পর্যালোচনা সংরক্ষিত হয়েছে; কাস্টমারের অনুমোদন নিশ্চিত হয়নি।')}
+    catch(e){setMsg('ডিজাইন সিদ্ধান্ত সেভ হয়নি: '+(e.code||e.message))}finally{button.disabled=false}
+  });
+  function printSaved(q){if(!q||!canEdit())return;printRoot.replaceChildren();
+   const h=node('div','','mx-p35-header'),brand=node('div');brand.append(node('h1','MEHEDI XPRESS'),node('small','Sports • Fashion • Custom Print'));
+   const meta=node('div');meta.append(node('p',`Order: ${String(q.sourceOrderId||'').slice(0,15)} · Revision ${q.revision}`),node('p',date(q.at)));h.append(brand,meta);printRoot.append(h,node('h2','সংরক্ষিত কোটেশন / SAVED QUOTATION'));
+   printRoot.append(node('p',`Customer: ${q.customerName||'—'} · Phone: ${q.phone||'—'}`));
+   const t=document.createElement('table'),tr=document.createElement('tr');for(const c of ['পণ্য','সাইজ','পিস','ইউনিট মূল্য','পণ্য মূল্য'])tr.append(node('th',c));t.append(tr);
+   const row=document.createElement('tr');for(const v of [q.product,q.sizeDetails,q.quantity,fmt(q.unitQuote),fmt(q.base)])row.append(node('td',v));t.append(row);printRoot.append(t);
+   const summary=node('div','','mx-p35-summary');for(const [k,v] of [['পণ্যের মূল্য',fmt(q.base)],['ডেলিভারি',fmt(q.delivery)],['মোট কোটেশন',fmt(q.total)],['প্রস্তাবিত অগ্রিম (প্রাপ্ত নয়)',fmt(q.proposedAdvance)],['প্রস্তাবিত বাকি',fmt(q.proposedBalance)]]){const p=document.createElement('p');p.append(node('span',k),node('b',v));summary.append(p)}printRoot.append(summary);
+   printRoot.append(node('p',`শর্ত: ${q.terms||'—'}`));
+   const ref=Array.isArray(q.designReferences)?q.designReferences:[];if(ref.length)printRoot.append(node('p','ডিজাইন রেফারেন্স:\n'+ref.map((x,i)=>(i+1)+'. '+x).join('\n')));
+   printRoot.append(node('div','এটি কেবল সংরক্ষিত কোটেশন। Cash Memo বা Payment Receipt নয়।\nস্টক, বকেয়া বা বিক্রির হিসাবে কোনো পরিবর্তন হয়নি।','mx-p35-foot'));
+   document.body.classList.add('mx-p35-print');let st=$('mxP35PageRule');if(!st){st=document.createElement('style');st.id='mxP35PageRule';document.head.append(st)}
+   st.textContent='@page { size: '+(q.paper==='A5'?'A5':'A4')+' portrait; margin: 9mm; }';
+   setTimeout(()=>window.print(),70);
+  }
+  window.addEventListener('afterprint',()=>{document.body.classList.remove('mx-p35-print')});
+})();
+</script>
+
 </body></html>
