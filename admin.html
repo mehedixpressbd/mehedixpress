@@ -1261,6 +1261,68 @@ body.mx-p33-admin #app #mxCampaigns .mx-p33-coupon-search :is(input,select){flex
 @media(max-width:850px){body.mx-p33-admin #app .mx-p33-statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){body.mx-p33-admin #app .mx-p33-fields{grid-template-columns:1fr}body.mx-p33-admin #app .mx-p33-fields label{grid-column:1/-1}body.mx-p33-admin #app #mxCustomOrders .card{padding:12px!important}body.mx-p33-admin #app .mx-p33-stat{padding:10px}body.mx-p33-admin #app .mx-p33-stat strong{font-size:20px}}
 </style>
+
+<style id="mx-p34-quotation-style">
+/* P34 only: custom-order details, references, quotation print. Never overrides POS invoice. */
+body.mx-p33-admin .mx-p34-note{display:grid;gap:4px;margin:10px 0 15px;padding:13px 16px;border:1px solid #cce6e7;border-left:4px solid #099c9a;border-radius:11px;background:#f1faf9;color:#285662;font-size:12px}
+body.mx-p33-admin .mx-p34-inline-action{display:inline-flex;align-items:center;justify-content:center;margin-top:7px;padding:7px 11px;border:1px solid #0a8e92;border-radius:7px;background:#eaf8f7;color:#087478;font-size:12px;font-weight:750;cursor:pointer;white-space:nowrap}
+body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
+#mxP34Overlay[hidden]{display:none!important}
+#mxP34Overlay{position:fixed;z-index:50000;inset:0;background:#031826b9;overflow-y:auto;overscroll-behavior:contain;padding:20px;display:flex;justify-content:center;align-items:flex-start}
+#mxP34Dialog{width:min(980px,100%);margin:auto;background:white;border-radius:16px;box-shadow:0 26px 70px #00132377;color:#17354b;overflow:hidden;max-height:min(94vh,1100px);display:flex;flex-direction:column}
+#mxP34Dialog h2,#mxP34Dialog h3{margin:0;color:#082b42}
+#mxP34Dialog header{background:linear-gradient(100deg,#08263c,#075e69);padding:17px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+#mxP34Dialog header h2{color:white!important;font-size:19px}
+#mxP34Dialog header p{color:#dbf4f2;margin:4px 0 0;font-size:12px}
+#mxP34Dialog header button{width:38px;height:38px;border:1px solid #ffffff55;background:#ffffff23;color:white;border-radius:10px;font-size:22px;cursor:pointer}
+#mxP34Dialog .mx-p34-body{overflow:auto;padding:20px;scrollbar-gutter:stable}
+#mxP34Dialog .mx-p34-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:start}
+#mxP34Dialog .mx-p34-panel{padding:16px;border:1px solid #deebef;border-radius:12px;background:#fcfefe;min-width:0}
+#mxP34Dialog .mx-p34-panel h3{font-size:15px;margin-bottom:12px}
+#mxP34Dialog .mx-p34-summary{display:grid;grid-template-columns:130px minmax(0,1fr);gap:8px 10px;font-size:13px}
+#mxP34Dialog .mx-p34-summary dt{color:#637c88}
+#mxP34Dialog .mx-p34-summary dd{margin:0;font-weight:700;min-width:0;overflow-wrap:anywhere;white-space:pre-line}
+#mxP34Dialog label{display:grid;gap:5px;font-size:12px;font-weight:700;color:#456171;margin-bottom:11px}
+#mxP34Dialog input,#mxP34Dialog textarea,#mxP34Dialog select{width:100%;min-width:0;border:1px solid #cedfe6;border-radius:8px;padding:9px;font-size:13px;color:#14364b;background:#fff}
+#mxP34Dialog textarea{min-height:80px;resize:vertical}
+#mxP34Dialog button.mx-p34-btn{border:0;border-radius:9px;padding:11px 15px;background:#0a8e92;color:white;font-weight:750;cursor:pointer}
+#mxP34Dialog button.mx-p34-btn.secondary{background:#ebf3f6;color:#234e61}
+#mxP34Dialog button.mx-p34-btn.orange{background:#ff6823;color:white}
+#mxP34Dialog .mx-p34-preview{margin-top:8px;display:grid;gap:7px}
+#mxP34Dialog .mx-p34-preview a{word-break:break-all;font-size:12px;color:#007a85;text-decoration:underline}
+#mxP34Dialog .mx-p34-preview img{width:min(300px,100%);max-height:190px;object-fit:contain;border:1px solid #deebef;border-radius:8px;background:#fff}
+#mxP34Dialog .mx-p34-total{display:grid;gap:6px;padding:12px;background:#eaf8f6;border:1px solid #c4e7e2;border-radius:9px;font-size:13px;margin:8px 0}
+#mxP34Dialog .mx-p34-total div{display:flex;justify-content:space-between;gap:12px}
+#mxP34Dialog .mx-p34-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+#mxP34Dialog .mx-p34-hint{font-size:12px;color:#8a501f;background:#fff8ee;border:1px solid #f3dfc3;border-radius:7px;padding:9px;margin:12px 0}
+#mxP34Dialog #mxP34Status{font-size:12px;color:#1a6471;margin:8px 0;min-height:16px}
+#mxP34Print{display:none!important}
+#mxP34Print .mx-p34-brand{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #0b5364;padding-bottom:12px;gap:10px}
+#mxP34Print h1{font-size:23px!important;line-height:1.1;margin:0!important;color:#09293f!important}
+#mxP34Print h2{font-size:17px!important;text-align:center;margin:18px 0!important;color:#09293f!important}
+#mxP34Print .mx-p34-meta{font-size:11px;line-height:1.5;text-align:right}
+#mxP34Print .mx-p34-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;font-size:12px}
+#mxP34Print .mx-p34-cols p{margin:3px 0;word-break:break-word}
+#mxP34Print table{width:100%;border-collapse:collapse;font-size:12px!important}
+#mxP34Print th,#mxP34Print td{border:1px solid #a9bec5;padding:8px!important;color:#143448!important;word-break:break-word}
+#mxP34Print th{background:#e7f1f2!important}
+#mxP34Print .mx-p34-prices{margin:13px 0 0 auto;max-width:330px}
+#mxP34Print .mx-p34-prices p{display:flex;justify-content:space-between;gap:18px;margin:6px 0;font-size:12px}
+#mxP34Print .mx-p34-prices p:last-child{border-top:2px solid #284959;padding-top:7px;font-weight:800}
+#mxP34Print .mx-p34-pr-notes{font-size:12px;margin-top:16px;white-space:pre-line;overflow-wrap:anywhere}
+#mxP34Print .mx-p34-pr-foot{border-top:1px dashed #9db7bd;margin-top:30px;padding-top:15px;display:flex;justify-content:space-between;gap:20px;font-size:11px}
+#mxP34Print .mx-p34-watermark{position:absolute;inset:30% 0 auto;text-align:center;transform:rotate(-22deg);font-size:52px;font-weight:900;opacity:.045;color:#082e46;pointer-events:none;white-space:nowrap}
+@media(max-width:700px){#mxP34Overlay{padding:8px}#mxP34Dialog{max-height:97vh}#mxP34Dialog .mx-p34-grid{grid-template-columns:1fr}#mxP34Dialog .mx-p34-body{padding:12px}#mxP34Dialog .mx-p34-summary{grid-template-columns:106px 1fr}}
+@media print{
+ body.mx-p34-print{background:white!important;color:#111!important;height:auto!important;overflow:visible!important}
+ body.mx-p34-print #app,html body.mx-p34-print #app.layout,body.mx-p34-print #login,body.mx-p34-print #mxP34Overlay,body.mx-p34-print #memoPrint,body.mx-p34-print #orderInvoicePrint,body.mx-p34-print #mxReportPrint,body.mx-p34-print #mxLedgerPrint{display:none!important;visibility:hidden!important}
+ body.mx-p34-print #mxP34Print,body.mx-p34-print #mxP34Print *{visibility:visible!important}
+ body.mx-p34-print #mxP34Print{display:block!important;position:relative!important;left:0!important;top:0!important;width:100%!important;margin:0!important;padding:0!important;overflow:visible!important;background:white!important;color:#111!important;box-shadow:none!important}
+ body.mx-p34-print #mxP34Print table{border:1px solid #a9bec5!important}
+ body.mx-p34-print #mxP34Print .mx-p34-pr-foot{break-inside:avoid}
+}
+</style>
+
 </head><body class="mx-admin-root mx-p22-admin mx-p28-admin mx-p29-admin mx-p31-admin mx-p32-admin mx-p33-admin">
 <section class="login" id="login"><form class="loginbox" id="loginForm">
 <div style="text-align:center;margin-bottom:18px">
@@ -1613,6 +1675,7 @@ body.mx-p33-admin #app #mxCampaigns .mx-p33-coupon-search :is(input,select){flex
 <section class="panel" id="mxCustomOrders" aria-label="Custom orders">
 <div class="mx-p28-section-header"><span>MEHEDI XPRESS · CUSTOM PRINT STUDIO</span><h3>কাস্টম জার্সি ও প্রিন্ট অর্ডার</h3><p>কাস্টমার, সাইজ, ডিজাইন, কোটেশন এবং উৎপাদনের অবস্থা এক জায়গায়।</p></div>
 <div class="mx-p33-warning"><b>অর্ডার পরিচালনা — আলাদা হিসাব</b><span>এই বিভাগটি কাস্টম অর্ডারের কোটেশন ও উৎপাদন ট্র্যাক করে। এখানে নতুন রেকর্ড করলে POS বিক্রি, স্টক, Cash Ledger বা Customer Due স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে না।</span></div>
+<div class="mx-p34-note" role="note"><b>🧾 P34 · কোটেশন ও ডিজাইন রেফারেন্স</b><span>অর্ডার তালিকার ‘বিস্তারিত / কোটেশন’ বাটনে ক্লিক করে A4/A5 কোটেশন প্রিন্ট করুন এবং ডিজাইনের অতিরিক্ত লিংক রাখুন। প্রস্তাবিত অগ্রিম/বাকি শুধু কোটেশনের হিসাব; কোনো নগদ অর্থপ্রাপ্তি বা বকেয়া খাতায় এন্ট্রি নয়।</span></div>
 <div class="mx-p33-statgrid"><div class="mx-p33-stat"><small>মোট কাস্টম অর্ডার</small><strong id="mxP33Total">—</strong></div><div class="mx-p33-stat"><small>অপেক্ষমাণ অনুমোদন</small><strong id="mxP33Pending">—</strong></div><div class="mx-p33-stat"><small>প্রোডাকশনে</small><strong id="mxP33Production">—</strong></div><div class="mx-p33-stat"><small>ডেলিভারি সম্পন্ন</small><strong id="mxP33Delivered">—</strong></div></div>
 <div class="mx-p33-cols">
  <div class="card mx-p33-formbox"><div class="mx-p33-card-title"><h3>＋ নতুন কাস্টম অর্ডার / কোটেশন</h3><small>শুধু অ্যাডমিন অনুমোদিত</small></div>
@@ -3488,6 +3551,42 @@ document.addEventListener('click', function(event) {
   byId('mxP32CategoryShortcut')?.addEventListener('click',()=>gotoAdmin('categories'));
 })();
 </script>
+
+<div id="mxP34Overlay" hidden>
+  <div id="mxP34Dialog" role="dialog" aria-modal="true" aria-labelledby="mxP34Title" tabindex="-1">
+    <header><div><h2 id="mxP34Title">কাস্টম অর্ডার · বিস্তারিত ও কোটেশন</h2><p id="mxP34Sub">অর্ডারের আসল রেকর্ড দেখে কোটেশন তৈরি</p></div><button id="mxP34Close" type="button" aria-label="Close details">×</button></header>
+    <div class="mx-p34-body">
+      <div class="mx-p34-grid">
+        <div class="mx-p34-panel"><h3>অর্ডারের তথ্য</h3><dl id="mxP34Info" class="mx-p34-summary"></dl><div class="mx-p34-hint">বর্তমান স্ট্যাটাস দেখানো হচ্ছে; আগের প্রতিটি স্ট্যাটাসের নির্দিষ্ট তারিখ সংরক্ষিত না থাকলে তা দেখানো যাবে না।</div></div>
+        <div class="mx-p34-panel"><h3>ডিজাইন রেফারেন্স</h3><p class="hint">আগের প্রধান ডিজাইন লিংকের পাশাপাশি সর্বোচ্চ ৬টি অতিরিক্ত HTTPS/HTTP লিংক সংরক্ষণ করতে পারবে।</p>
+          <div id="mxP34References" class="mx-p34-preview"></div>
+          <label>অতিরিক্ত ডিজাইন লিংক (প্রতি লাইনে একটি)<textarea id="mxP34MoreLinks" rows="4" placeholder="https://example.com/design1.png"></textarea></label>
+          <button class="mx-p34-btn" id="mxP34SaveLinks" type="button">ডিজাইন রেফারেন্স সেভ</button>
+          <button class="mx-p34-btn secondary" id="mxP34ShowImage" type="button">প্রধান ছবির প্রিভিউ</button>
+          <div id="mxP34ImagePreview" class="mx-p34-preview"></div>
+        </div>
+      </div>
+      <div class="mx-p34-panel" style="margin-top:15px"><h3>প্রিন্টযোগ্য কোটেশন</h3>
+        <div class="mx-p34-grid">
+          <div>
+            <label>পেপার সাইজ<select id="mxP34Paper"><option value="A4">A4</option><option value="A5">A5</option></select></label>
+            <label>প্রস্তাবিত অগ্রিম (৳, টাকা গ্রহণের রসিদ নয়)<input id="mxP34Advance" type="number" value="0" min="0" step="0.01"/></label>
+            <label>প্রস্তাবিত ডেলিভারি চার্জ (৳)<input id="mxP34Delivery" type="number" value="0" min="0" step="0.01"/></label>
+          </div>
+          <div>
+            <label>কোটেশনের শর্ত / নোট<textarea id="mxP34Terms" maxlength="500" placeholder="যেমন: ডিজাইন অনুমোদনের পরে উৎপাদন শুরু হবে।">ডিজাইন অনুমোদনের পরে উৎপাদন শুরু হবে। চূড়ান্ত মূল্য নিশ্চিত করে অর্ডার সম্পন্ন করুন।</textarea></label>
+            <div class="mx-p34-total" id="mxP34Totals"></div>
+          </div>
+        </div>
+        <p class="mx-p34-hint">প্রস্তাবিত অগ্রিম, ডেলিভারি ও বাকি কেবল এই প্রিন্ট প্রিভিউতে হিসাব হয়—Firebase Payment/Ledger/Sales/Stock/Due-তে সংরক্ষিত বা জমা হয় না।</p>
+        <div class="mx-p34-actions"><button id="mxP34PrintButton" class="mx-p34-btn orange" type="button">🖨 A4/A5 কোটেশন প্রিন্ট</button><button id="mxP34CopyID" class="mx-p34-btn secondary" type="button">অর্ডার ID কপি</button><button id="mxP34Cancel" class="mx-p34-btn secondary" type="button">বন্ধ করুন</button></div>
+        <p role="status" id="mxP34Status"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="mxP34Print" aria-label="Print quotation"></section>
+
 <script id="mx-p33-custom-orders-module" type="module">
 import {getApps,getApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
@@ -3510,7 +3609,7 @@ function render(){
  rows.replaceChildren();
  if(!filtered.length){const tr=document.createElement('tr');const td=textCell(tr,'কোনো কাস্টম অর্ডার পাওয়া যায়নি।');td.colSpan=5;rows.append(tr);return}
  for(const order of filtered){
-  const tr=document.createElement('tr'),idCell=textCell(tr,'');const strong=document.createElement('strong');strong.className='mx-p33-id';strong.textContent=order.code||('MXCO-'+order.id.slice(0,8).toUpperCase());idCell.append(strong);
+  const tr=document.createElement('tr'),idCell=textCell(tr,'');tr.dataset.mxP34Id=order.id;const strong=document.createElement('strong');strong.className='mx-p33-id';strong.textContent=order.code||('MXCO-'+order.id.slice(0,8).toUpperCase());idCell.append(strong);
   const date=document.createElement('small');date.textContent=order.createdAt?.toDate?.().toLocaleDateString('en-BD')||'—';idCell.append(date);
   textCell(tr,(order.customerName||'')+'\n'+(order.phone||''));textCell(tr,(order.product||'')+' · '+(order.kind||'')+'\n'+(order.sizeDetails||'')+' · '+(order.quantity||0)+' pcs');
   textCell(tr,money(order.quotedTotal));const td=document.createElement('td');td.style.minWidth='156px';const select=document.createElement('select');select.className='mx-p33-status';select.setAttribute('aria-label','Change custom order status');
@@ -3547,6 +3646,64 @@ el('mxP33Csv').addEventListener('click',()=>{if(!authorized)return;const head=['
  const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='MX-Custom-Orders.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 estimate();render();
 </script>
+
+<script id="mx-p34-custom-quotation" type="module">
+import {getApps,getApp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+import {getFirestore,doc,getDoc,updateDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+(() => {
+  const ADMIN='3Z0MLHObZOay8OFFnhreMvbg0e53', $=id=>document.getElementById(id);
+  const list=$('mxP33Rows'), overlay=$('mxP34Overlay'), dialog=$('mxP34Dialog');
+  if(!list||!overlay)return;
+  const auth=getAuth(getApps().length?getApp():undefined), db=getFirestore(getApp());
+  const m=v=> '৳'+Number(v||0).toLocaleString('en-BD',{minimumFractionDigits:0,maximumFractionDigits:2});
+  const val=v=>String(v??''), num=v=>Number.isFinite(Number(v))?Number(v):0;
+  let active=null, previousFocus=null;
+  function info(k,v){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=val(v||'—');$('mxP34Info').append(dt,dd)}
+  function qDate(t){return t&&typeof t.toDate==='function'?t.toDate().toLocaleDateString('bn-BD'):'—'}
+  function code(o){return val(o.code||('MXCO-'+o.id.slice(0,8).toUpperCase()))}
+  function urlList(){const o=active;return [o?.designUrl,...(Array.isArray(o?.referenceUrls)?o.referenceUrls:[])].filter(v=>typeof v==='string' && /^https?:\/\//i.test(v)).slice(0,7)}
+  function showLinks(){const cont=$('mxP34References');cont.replaceChildren();const urls=urlList();if(!urls.length){const p=document.createElement('p');p.textContent='কোনো ডিজাইন লিংক সংরক্ষিত নেই।';cont.append(p)}urls.forEach((u,i)=>{const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener noreferrer';a.textContent=(i===0?'মূল ডিজাইন · ':'রেফারেন্স '+i+' · ')+u;cont.append(a)})}
+  function showOrder(){const o=active;if(!o)return;$('mxP34Title').textContent='কাস্টম অর্ডার · '+code(o);$('mxP34Sub').textContent=val(o.customerName)+' · '+val(o.phone);$('mxP34Info').replaceChildren();
+   [['কোটেশন ID',code(o)],['কাস্টমার',o.customerName],['মোবাইল',o.phone],['পণ্যের ধরন',o.kind],['পণ্যের নাম',o.product],['সাইজ ও পিস',val(o.sizeDetails||'—')+' · '+val(o.quantity)+' pcs'],['প্রতি পিস',m(o.unitQuote)],['কোটেশনের মোট',m(o.quotedTotal)],['ডেলিভারি লক্ষ্য',o.deadline||'—'],['বর্তমান স্ট্যাটাস',o.status],['অর্ডার তারিখ',qDate(o.createdAt)],['সর্বশেষ আপডেট',qDate(o.updatedAt)],['প্রিন্ট নির্দেশনা',o.notes||'—']].forEach(([k,v])=>info(k,v));
+   $('mxP34MoreLinks').value=(Array.isArray(o.referenceUrls)?o.referenceUrls:[]).join('\n');$('mxP34ImagePreview').replaceChildren();$('mxP34Status').textContent='';showLinks();updateQuote();}
+  function canAccess(){return auth.currentUser?.uid===ADMIN}
+  function clearPrint(){document.body.classList.remove('mx-p34-print');const st=$('mxP34PageRule');if(st)st.remove()}
+  function close(){overlay.hidden=true;active=null;$('mxP34ImagePreview').replaceChildren();previousFocus?.focus?.();previousFocus=null}
+  function enhance(){for(const tr of list.querySelectorAll('tr[data-mx-p34-id]')){const td=tr.lastElementChild;if(!td||td.querySelector('.mx-p34-inline-action'))continue;const b=document.createElement('button');b.type='button';b.className='mx-p34-inline-action';b.textContent='বিস্তারিত / কোটেশন';b.dataset.mxP34Open='1';td.append(b)}}
+  let scheduled=false;const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;queueMicrotask(()=>{scheduled=false;enhance()})});observer.observe(list,{childList:true,subtree:true});enhance();
+  list.addEventListener('click',async e=>{const btn=e.target.closest('[data-mx-p34-open]');if(!btn)return;const tr=btn.closest('tr[data-mx-p34-id]');if(!tr)return;if(!canAccess()){$('mxP33Message').textContent='কোটেশন দেখতে Admin Login প্রয়োজন।';return}
+   btn.disabled=true;const old=btn.textContent;btn.textContent='লোড হচ্ছে…';try{const snap=await getDoc(doc(db,'customOrders',tr.dataset.mxP34Id));if(!snap.exists())throw Error('অর্ডার পাওয়া যায়নি');active={id:snap.id,...snap.data()};previousFocus=btn;overlay.hidden=false;showOrder();dialog.focus()}catch(err){$('mxP33Message').textContent='বিস্তারিত লোড হয়নি: '+(err.code||err.message)}finally{btn.disabled=false;btn.textContent=old}});
+  $('mxP34Close').onclick=close;$('mxP34Cancel').onclick=close;overlay.addEventListener('click',e=>{if(e.target===overlay)close()});document.addEventListener('keydown',e=>{if(!overlay.hidden&&e.key==='Escape')close()});
+  $('mxP34SaveLinks').onclick=async()=>{if(!active||!canAccess())return;const lines=$('mxP34MoreLinks').value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);const unique=[...new Set(lines)];
+    if(unique.length>6||unique.some(u=>u.length>600||!/^https?:\/\//i.test(u))){$('mxP34Status').textContent='সর্বোচ্চ ৬টি HTTP/HTTPS লিংক দিন; প্রতি লিংক ৬০০ অক্ষরের মধ্যে।';return}
+    const b=$('mxP34SaveLinks');b.disabled=true;$('mxP34Status').textContent='রেফারেন্স সেভ হচ্ছে…';
+    try{await updateDoc(doc(db,'customOrders',active.id),{referenceUrls:unique,updatedAt:serverTimestamp()});active.referenceUrls=unique;$('mxP34Status').textContent='ডিজাইন রেফারেন্স Firebase-এ সংরক্ষিত হয়েছে।';showLinks()}
+    catch(err){$('mxP34Status').textContent='সেভ হয়নি: '+(err.code||err.message)}finally{b.disabled=false}
+  };
+  $('mxP34ShowImage').onclick=()=>{const box=$('mxP34ImagePreview');box.replaceChildren();const u=val(active?.designUrl);if(!/^https:\/\//i.test(u)||!(/\.(png|jpe?g|webp|gif)(\?.*)?$/i.test(u))){box.textContent='মূল ডিজাইনটি সরাসরি HTTPS ছবির লিংক নয়। উপরের লিংকে ক্লিক করে দেখুন।';return}
+   const img=document.createElement('img');img.alt='Customer design reference';img.loading='lazy';img.referrerPolicy='no-referrer';img.src=u;img.onerror=()=>{box.textContent='ছবিটি খোলা যায়নি। লিংক দিয়ে দেখুন।'};box.append(img)};
+  function amounts(){const o=active||{},base=Math.max(0,num(o.quotedTotal)),delivery=Math.max(0,num($('mxP34Delivery').value)),advance=Math.max(0,num($('mxP34Advance').value));return {base,delivery,advance,total:base+delivery,due:Math.max(0,base+delivery-advance),valid:Number.isFinite(advance)&&Number.isFinite(delivery)&&advance<=base+delivery}}
+  function updateQuote(){if(!active)return;const a=amounts(),t=$('mxP34Totals');t.replaceChildren();const items=[['পণ্যের মূল্য',m(a.base)],['প্রস্তাবিত ডেলিভারি',m(a.delivery)],['মোট কোটেশন',m(a.total)],['প্রস্তাবিত অগ্রিম',m(a.advance)],['প্রস্তাবিত বাকি',m(a.due)]];for(const [k,v] of items){const d=document.createElement('div');const k1=document.createElement('span'),v1=document.createElement('b');k1.textContent=k;v1.textContent=v;d.append(k1,v1);t.append(d)}if(!a.valid)$('mxP34Status').textContent='অগ্রিম মোট কোটেশনের বেশি হতে পারবে না।';else $('mxP34Status').textContent=''}
+  for(const id of ['mxP34Advance','mxP34Delivery'])$(id).addEventListener('input',updateQuote);
+  function node(tag,text='',cls=''){const x=document.createElement(tag);x.textContent=val(text);if(cls)x.className=cls;return x}
+  function fillPrint(){const o=active,a=amounts(),p=$('mxP34Print');p.replaceChildren();const wm=node('div','MEHEDI XPRESS','mx-p34-watermark');p.append(wm);
+   const brand=node('div','','mx-p34-brand'),left=document.createElement('div');left.append(node('h1','MEHEDI XPRESS'),node('small','SPORTS • FASHION • CUSTOM PRINT'));
+   const right=node('div','','mx-p34-meta');right.append(node('div','Quotation ID: '+code(o)),node('div','Prepared: '+new Date().toLocaleDateString('bn-BD')),node('div','Order date: '+qDate(o.createdAt)));brand.append(left,right);p.append(brand,node('h2','কাস্টম অর্ডারের মূল্য প্রস্তাব / QUOTATION'));
+   const columns=node('div','','mx-p34-cols'),cust=document.createElement('div'),order=document.createElement('div');cust.append(node('b','কাস্টমারের তথ্য'),node('p','নাম: '+val(o.customerName)),node('p','মোবাইল: '+val(o.phone)));
+   order.append(node('b','অর্ডারের তথ্য'),node('p','স্ট্যাটাস: '+val(o.status)),node('p','প্রয়োজনের তারিখ: '+val(o.deadline||'—')));columns.append(cust,order);p.append(columns);
+   const table=document.createElement('table'),thead=document.createElement('thead'),thtr=document.createElement('tr');for(const h of ['পণ্য / ডিজাইন','সাইজ','পিস','দর (৳)','মূল্য (৳)'])thtr.append(node('th',h));thead.append(thtr);table.append(thead);const tbody=document.createElement('tbody'),tr=document.createElement('tr');[val(o.product||o.kind),val(o.sizeDetails||'—'),val(o.quantity),num(o.unitQuote).toFixed(2),a.base.toFixed(2)].forEach(v=>tr.append(node('td',v)));tbody.append(tr);table.append(tbody);p.append(table);
+   const prices=node('div','','mx-p34-prices');[['পণ্যের মূল্য',m(a.base)],['প্রস্তাবিত ডেলিভারি',m(a.delivery)],['মোট',m(a.total)],['প্রস্তাবিত অগ্রিম (প্রাপ্ত টাকা নয়)',m(a.advance)],['প্রস্তাবিত বাকি',m(a.due)]].forEach(([k,v])=>{const d=document.createElement('p');d.append(node('span',k),node('b',v));prices.append(d)});p.append(prices);
+   const notes=node('div','','mx-p34-pr-notes');notes.append(node('b','প্রিন্ট/ডিজাইন নির্দেশনা'),node('p',val(o.notes||'—')),node('b','শর্ত'),node('p',$('mxP34Terms').value.trim().slice(0,500)||'—'));p.append(notes);
+   const urls=urlList();if(urls.length){const refs=node('div','','mx-p34-pr-notes');refs.append(node('b','ডিজাইন রেফারেন্স'));urls.forEach((u,i)=>refs.append(node('p',(i+1)+'. '+u)));p.append(refs)}
+   const footer=node('div','','mx-p34-pr-foot');footer.append(node('span','কোটেশন প্রস্তুত: Mehedi Xpress\nঅনুমোদিত স্বাক্ষর: __________'),node('span','এটি কোটেশন, Cash Memo/Payment Receipt নয়।\nবিক্রি, স্টক বা বকেয়া খাতায় কোনো এন্ট্রি হয়নি।'));p.append(footer);
+  }
+  $('mxP34PrintButton').onclick=()=>{if(!active||!canAccess())return;const a=amounts();if(!a.valid||a.advance<0||a.delivery<0){$('mxP34Status').textContent='সঠিক অগ্রিম ও ডেলিভারি লিখুন।';return}fillPrint();document.body.classList.add('mx-p34-print');let st=$('mxP34PageRule');if(!st){st=document.createElement('style');st.id='mxP34PageRule';document.head.append(st)}st.textContent='@page { size: '+($('mxP34Paper').value==='A5'?'A5':'A4')+' portrait; margin: 8mm; }';setTimeout(()=>window.print(),80)};
+  window.addEventListener('afterprint',clearPrint);
+  $('mxP34CopyID').onclick=async()=>{if(!active)return;try{await navigator.clipboard.writeText(code(active));$('mxP34Status').textContent='ID কপি হয়েছে।'}catch(_){$('mxP34Status').textContent='ID: '+code(active)}};
+})();
+</script>
+
 <script id="mx-p33-coupon-preview">
 /* READ-ONLY coupon calculator. Never applies discount or mutates Firebase. */
 (()=>{
