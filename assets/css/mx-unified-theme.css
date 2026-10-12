@@ -1,0 +1,183 @@
+/* MEHEDI XPRESS — P21 UNIFIED DESIGN SYSTEM
+   VISUAL LAYER ONLY — public storefront + admin panel.
+   Does not modify Firebase, pricing, inventory, business logic or printing logic.
+   Date: 2026-10-12. Based on user's supplied reference screens.
+*/
+:root {
+  --mx-ui-navy: #092b40;
+  --mx-ui-navy-dark: #041a2b;
+  --mx-ui-teal: #049f9b;
+  --mx-ui-teal-bright: #0ab7ae;
+  --mx-ui-orange: #ff6519;
+  --mx-ui-orange-dark: #e95411;
+  --mx-ui-bg: #f3f7fb;
+  --mx-ui-card: #fff;
+  --mx-ui-text: #172b3e;
+  --mx-ui-muted: #65768a;
+  --mx-ui-line: #e3ebf1;
+  --mx-ui-radius: 13px;
+  --mx-ui-shadow: 0 6px 22px rgba(9,43,64,.075);
+  --blue: var(--mx-ui-teal);
+  --blue2: var(--mx-ui-teal-bright);
+  --navy: var(--mx-ui-navy);
+  --navy2: var(--mx-ui-navy-dark);
+  --green: var(--mx-ui-teal);
+  --green2: var(--mx-ui-teal-bright);
+  --red: var(--mx-ui-orange);
+  --red2: var(--mx-ui-orange-dark);
+  --text: var(--mx-ui-text);
+  --light: var(--mx-ui-bg);
+  --border: var(--mx-ui-line);
+  --shadow: var(--mx-ui-shadow);
+}
+/* Public storefront */
+body:not(.mx-admin-root) { background: var(--mx-ui-bg); color: var(--mx-ui-text); }
+body:not(.mx-admin-root) .mx-container { width:min(1380px,95%); }
+body:not(.mx-admin-root) .mx-topbar {background:var(--mx-ui-navy-dark);border-top:3px solid var(--mx-ui-teal);}
+body:not(.mx-admin-root) .mx-topbar-inner{min-height:34px;gap:15px}
+body:not(.mx-admin-root) .mx-top-item{font-size:12px;gap:6px;font-weight:600}
+body:not(.mx-admin-root) .mx-top-icon{font-size:14px}
+body:not(.mx-admin-root) .mx-top-separator{height:14px}
+body:not(.mx-admin-root) .mx-top-left{gap:13px}
+body:not(.mx-admin-root) .mx-top-right{gap:12px}
+body:not(.mx-admin-root) .mx-top-phone{font-size:12px}
+body:not(.mx-admin-root) .mx-lang{min-width:38px;height:28px;font-size:11px;padding:3px 9px}
+body:not(.mx-admin-root) .mx-header{background:linear-gradient(110deg,var(--mx-ui-navy-dark),var(--mx-ui-navy));color:#fff;border-bottom:1px solid #ffffff16}
+body:not(.mx-admin-root) .mx-header-main{grid-template-columns:minmax(150px,220px) minmax(220px,1fr) auto;gap:22px;min-height:84px}
+body:not(.mx-admin-root) .mx-logo-image{width:135px;height:58px}
+body:not(.mx-admin-root) .mx-logo-image img{max-height:60px;object-fit:contain}
+body:not(.mx-admin-root) .mx-logo-divider{background:#ffffff2a;height:42px}
+body:not(.mx-admin-root) .mx-logo-tagline{font-size:9px;line-height:1.45;color:#c1d9e2;letter-spacing:.4px}
+body:not(.mx-admin-root) .mx-search{border:1px solid #ffffff38;border-radius:8px;height:45px;grid-template-columns:30px 1fr 91px;box-shadow:none;background:#fff}
+body:not(.mx-admin-root) .mx-search-icon{font-size:13px;color:#637181}
+body:not(.mx-admin-root) .mx-search input{font-size:13px;color:#122f44}
+body:not(.mx-admin-root) .mx-search-button{background:var(--mx-ui-teal)!important;color:#fff!important;font-size:12px;border:0;border-radius:0;height:100%}
+body:not(.mx-admin-root) .mx-header-actions{gap:8px}
+body:not(.mx-admin-root) .mx-header-action{color:#fff;font-size:12px;min-width:54px}
+body:not(.mx-admin-root) .mx-action-text small{color:#c1d9e2;font-size:10px}
+body:not(.mx-admin-root) .mx-action-text b{color:#fff;font-size:12px}
+body:not(.mx-admin-root) .mx-header-action-icon{font-size:20px}
+body:not(.mx-admin-root) .mx-action-count{background:var(--mx-ui-orange)!important;color:#fff}
+body:not(.mx-admin-root) .mx-header-divider{background:#ffffff26}
+body:not(.mx-admin-root) .mx-nav{background:#0b3046;box-shadow:0 3px 10px #091e2d1c}
+body:not(.mx-admin-root) .mx-nav-inner{min-height:43px;gap:13px}
+body:not(.mx-admin-root) .mx-nav-links{gap:4px}
+body:not(.mx-admin-root) .mx-nav-links a{color:#e8f3f6;padding:8px 12px;font-weight:700;font-size:12px;border-radius:5px}
+body:not(.mx-admin-root) .mx-nav-links a:hover,body:not(.mx-admin-root) .mx-nav-links a.active{color:#fff;background:#ffffff18}
+body:not(.mx-admin-root) .mx-nav-links a.active::after{background:var(--mx-ui-teal)}
+body:not(.mx-admin-root) .mx-all-category{background:var(--mx-ui-teal);color:#fff;border-radius:7px;padding:8px 13px;font-size:12px}
+body:not(.mx-admin-root) .mx-offer-button{background:var(--mx-ui-orange);border-radius:7px;color:#fff;padding:8px 14px;font-size:12px}
+body:not(.mx-admin-root) .mx-hero{max-width:1380px;width:95%;margin:16px auto 0;border-radius:12px;overflow:hidden;box-shadow:var(--mx-ui-shadow)}
+body:not(.mx-admin-root) .mx-banner-arrow{width:38px;height:38px;font-size:27px;border:1px solid #fff8;background:#092b407c}
+body:not(.mx-admin-root) .mx-banner-arrow.prev{left:15px}
+body:not(.mx-admin-root) .mx-banner-arrow.next{right:15px}
+body:not(.mx-admin-root) .mx-banner-dots button,body:not(.mx-admin-root) .mx-banner-dot{width:9px;height:9px}
+body:not(.mx-admin-root) .mx-category-section,body:not(.mx-admin-root) .mx-products-section,body:not(.mx-admin-root) .mx-showcase-section{background:transparent;padding:28px 0}
+body:not(.mx-admin-root) .mx-category-section .mx-container,body:not(.mx-admin-root) .mx-showcase-section .mx-container,body:not(.mx-admin-root) .mx-products-section .mx-container{background:var(--mx-ui-card);border:1px solid var(--mx-ui-line);border-radius:13px;padding:22px;box-shadow:var(--mx-ui-shadow)}
+body:not(.mx-admin-root) .mx-category-top,body:not(.mx-admin-root) .mx-showcase-heading,body:not(.mx-admin-root) .mx-all-products-head{margin-bottom:17px}
+body:not(.mx-admin-root) .mx-category-top h2,body:not(.mx-admin-root) .mx-showcase-heading h2,body:not(.mx-admin-root) .mx-all-products-head h2{font-size:clamp(20px,2vw,27px);color:var(--mx-ui-navy);letter-spacing:-.02em}
+body:not(.mx-admin-root) .mx-category-top span,body:not(.mx-admin-root) .mx-section-kicker{color:var(--mx-ui-teal);font-size:10px;letter-spacing:.12em}
+body:not(.mx-admin-root) .mx-section-kicker::before{background:var(--mx-ui-teal)}
+body:not(.mx-admin-root) .mx-section-link,body:not(.mx-admin-root) .mx-category-top>a{color:var(--mx-ui-teal);font-size:12px;font-weight:750}
+body:not(.mx-admin-root) .mx-category-grid{gap:10px}
+body:not(.mx-admin-root) .mx-category-card{height:155px;border:1px solid var(--mx-ui-line);border-radius:9px;box-shadow:none;background-color:#f2f6f8}
+body:not(.mx-admin-root) .mx-category-card:hover{transform:translateY(-3px);box-shadow:var(--mx-ui-shadow)}
+body:not(.mx-admin-root) .mx-category-overlay{background:linear-gradient(to top,#082b43ef 0%,#092b4380 30%,transparent 75%)}
+body:not(.mx-admin-root) .mx-category-content{left:9px;right:9px;bottom:9px}
+body:not(.mx-admin-root) .mx-category-content b{font-size:12px;color:#fff}
+body:not(.mx-admin-root) .mx-category-content small{font-size:10px;color:#e1f2f4}
+body:not(.mx-admin-root) .mx-category-content i{width:23px;height:23px}
+body:not(.mx-admin-root) .mx-product-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:13px}
+body:not(.mx-admin-root) .mx-product-card,body:not(.mx-admin-root) .product-card{border-radius:9px;border-color:var(--mx-ui-line);box-shadow:none;background:#fff;transition:box-shadow .15s,transform .15s}
+body:not(.mx-admin-root) .mx-product-card:hover,body:not(.mx-admin-root) .product-card:hover{transform:translateY(-3px);box-shadow:var(--mx-ui-shadow)}
+body:not(.mx-admin-root) .mx-product-card .content,body:not(.mx-admin-root) .product-card .content{padding:12px}
+body:not(.mx-admin-root) .mx-product-card h3,body:not(.mx-admin-root) .product-card h3{font-size:14px;color:#1b3448;margin-bottom:4px}
+body:not(.mx-admin-root) .mx-product-card .price,body:not(.mx-admin-root) .price{color:var(--mx-ui-orange);font-size:18px}
+body:not(.mx-admin-root) .mx-product-card button,body:not(.mx-admin-root) .product-card button,body:not(.mx-admin-root) .btn.primary{background:var(--mx-ui-orange)!important;color:#fff!important;border-radius:7px}
+body:not(.mx-admin-root) .mx-product-card button:hover,body:not(.mx-admin-root) .btn.primary:hover{background:var(--mx-ui-orange-dark)!important}
+body:not(.mx-admin-root) #cats button.active{background:var(--mx-ui-teal);color:#fff;border-color:var(--mx-ui-teal)}
+body:not(.mx-admin-root) .mx-category-filter button{border-radius:7px}
+body:not(.mx-admin-root) .mx-custom-print-box{border-radius:13px;overflow:hidden}
+body:not(.mx-admin-root) .mx-delivery-section{background:transparent;padding:20px 0}
+body:not(.mx-admin-root) .mx-delivery-card{background:#fff;border:1px solid var(--mx-ui-line);border-radius:11px;box-shadow:var(--mx-ui-shadow)}
+body:not(.mx-admin-root) .mx-footer{background:linear-gradient(105deg,#061d2c,#0c364b);}
+body:not(.mx-admin-root) .mx-footer-grid{padding:35px 0 28px;gap:25px}
+body:not(.mx-admin-root) .mx-footer h4{font-size:14px}
+body:not(.mx-admin-root) .modal-card{background:#fff;border:1px solid var(--mx-ui-line)!important;border-radius:14px!important;box-shadow:0 25px 65px #031f3265!important}
+body:not(.mx-admin-root) input:focus,body:not(.mx-admin-root) select:focus{border-color:var(--mx-ui-teal);outline:2px solid #049f9b25}
+/* Admin panel: P20 markup preserved (no app behavior changed). */
+body.mx-admin-root{background:var(--mx-ui-bg)!important;color:var(--mx-ui-text)!important;font-family:"Hind Siliguri","Inter",Arial,sans-serif}
+body.mx-admin-root .layout{grid-template-columns:224px minmax(0,1fr)!important}
+body.mx-admin-root .side{background:linear-gradient(175deg,var(--mx-ui-navy-dark),var(--mx-ui-navy))!important;padding:19px 12px!important;border-right:1px solid #ffffff22}
+body.mx-admin-root .brand{font-size:22px!important;color:#fff!important;font-weight:900!important;line-height:1.1;letter-spacing:-.02em;padding:10px 8px 18px!important;border-bottom:1px solid #ffffff24}
+body.mx-admin-root .brand small{font-size:10px!important;color:var(--mx-ui-teal-bright)!important;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+body.mx-admin-root .menu button{font-size:12px!important;font-weight:650!important;color:#c8dde5!important;border-radius:8px!important;margin:2px 0!important;padding:10px 12px!important;transition:background .2s}
+body.mx-admin-root .menu button.active,body.mx-admin-root .menu button:hover{background:linear-gradient(90deg,var(--mx-ui-teal),#077f83)!important;color:#fff!important;box-shadow:0 4px 12px #00141b31}
+body.mx-admin-root .main{max-width:none!important;width:100%!important;padding:18px 22px!important}
+body.mx-admin-root .top{background:#fff!important;border:1px solid var(--mx-ui-line)!important;border-radius:10px!important;box-shadow:none!important;padding:13px 17px!important;position:relative}
+body.mx-admin-root .top h2{color:var(--mx-ui-navy)!important;font-size:22px!important}
+body.mx-admin-root .top a{font-size:12px;color:var(--mx-ui-teal)!important;font-weight:700}
+body.mx-admin-root .head{margin:20px 0 12px}
+body.mx-admin-root .head h3,body.mx-admin-root .card>h3{color:var(--mx-ui-navy);font-size:19px}
+body.mx-admin-root .card,body.mx-admin-root .stat{background:#fff!important;border:1px solid var(--mx-ui-line)!important;box-shadow:var(--mx-ui-shadow)!important;border-radius:12px!important;padding:18px!important}
+body.mx-admin-root .stat:before{background:var(--mx-ui-teal)!important}
+body.mx-admin-root .stat b{color:var(--mx-ui-navy)!important;font-size:27px}
+body.mx-admin-root .stats{gap:12px}
+body.mx-admin-root .primary{background:var(--mx-ui-orange)!important;color:#fff!important;border:0!important}
+body.mx-admin-root .primary:hover{background:var(--mx-ui-orange-dark)!important}
+body.mx-admin-root .btn{font-size:12px!important;padding:10px 13px!important;border-radius:8px!important}
+body.mx-admin-root .btn:not(.primary):not(.danger){background:#f0f5f8;border:1px solid #dce6ec;color:#24465d}
+body.mx-admin-root input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),body.mx-admin-root select,body.mx-admin-root textarea{border:1px solid #dce5eb!important;border-radius:8px!important;background:#fff;font-size:13px}
+body.mx-admin-root input:focus,body.mx-admin-root select:focus,body.mx-admin-root textarea:focus{outline:2px solid #00a6a522!important;border-color:var(--mx-ui-teal)!important}
+body.mx-admin-root table{border:1px solid var(--mx-ui-line)!important;border-radius:10px!important;box-shadow:none!important}
+body.mx-admin-root th{background:#f1f6f8!important;color:#486074!important;text-transform:none!important;font-size:12px!important;font-weight:800!important}
+body.mx-admin-root td{font-size:12px;color:#274156}
+body.mx-admin-root .status{background:#e3f7f4!important;color:#077f72!important;border:1px solid #b8e8e0!important;font-size:11px}
+body.mx-admin-root .notice{background:#fff8f0;color:#934b19;border:1px solid #ffe1c8}
+body.mx-admin-root .posgrid{grid-template-columns:minmax(0,1.18fr) minmax(0,1fr);gap:14px}
+body.mx-admin-root .mx-pos-scroll-button{background:var(--mx-ui-navy)!important;color:#fff!important;border:0}
+body.mx-admin-root .mx-pos-catbar button.active,body.mx-admin-root .mx-pos-catbar .active{background:var(--mx-ui-teal)!important;color:#fff!important}
+body.mx-admin-root .mx-pos-memo-area{border-left:4px solid var(--mx-ui-teal)!important}
+body.mx-admin-root .login{background:radial-gradient(circle at top,#daeeee,#edf4f8 54%,#f7fbfd)}
+body.mx-admin-root .loginbox{border-radius:16px!important}
+body.mx-admin-root .loginbox:before{color:var(--mx-ui-navy)}
+/* Printing intentionally unchanged: browser print must retain original P20 receipt layout. */
+@media print{body.mx-admin-root .side,body.mx-admin-root .top{display:none!important}body.mx-admin-root .memo{color:#111!important;background:#fff!important;box-shadow:none!important}}
+@media(max-width:1050px){
+ body:not(.mx-admin-root) .mx-header-main{grid-template-columns:150px minmax(200px,1fr) auto;gap:11px}
+ body:not(.mx-admin-root) .mx-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ body.mx-admin-root .layout{grid-template-columns:190px minmax(0,1fr)!important}
+ body.mx-admin-root .main{padding:14px!important}
+ body.mx-admin-root .posgrid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+ body:not(.mx-admin-root) .mx-topbar-inner{min-height:32px}
+ body:not(.mx-admin-root) .mx-header-main{display:flex;flex-wrap:wrap;justify-content:space-between;min-height:68px;padding:10px 0;gap:8px}
+ body:not(.mx-admin-root) .mx-logo-image{width:106px;height:45px}
+ body:not(.mx-admin-root) .mx-logo-divider,body:not(.mx-admin-root) .mx-logo-tagline{display:none}
+ body:not(.mx-admin-root) .mx-search-wrap{order:3;width:100%}
+ body:not(.mx-admin-root) .mx-header-actions{margin-left:auto}
+ body:not(.mx-admin-root) .mx-action-text{display:none}
+ body:not(.mx-admin-root) .mx-nav-inner{overflow-x:auto}
+ body:not(.mx-admin-root) .mx-category-card{height:130px}
+ body:not(.mx-admin-root) .mx-category-section .mx-container,body:not(.mx-admin-root) .mx-showcase-section .mx-container,body:not(.mx-admin-root) .mx-products-section .mx-container{padding:13px}
+ body:not(.mx-admin-root) .mx-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ body:not(.mx-admin-root) .mx-category-top h2,body:not(.mx-admin-root) .mx-showcase-heading h2{font-size:19px}
+ body.mx-admin-root .layout{display:block!important}
+ body.mx-admin-root .side{position:static!important;max-height:none!important;width:100%!important}
+ body.mx-admin-root .menu{display:flex!important;gap:5px;overflow-x:auto;flex-wrap:nowrap!important}
+ body.mx-admin-root .menu button{flex:0 0 auto;white-space:nowrap}
+ body.mx-admin-root .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.mx-admin-root .main{padding:11px!important}
+}
+@media(prefers-reduced-motion:reduce){body:not(.mx-admin-root) .mx-product-card,body:not(.mx-admin-root) .mx-category-card{transition:none!important}}
+/* P21 category-image defaults — never overwrite images specifically set by the admin. */
+.mx-cat-football-jersey{background-image:url('../images/categories/football-jersey.jpg')}
+.mx-cat-cricket-jersey{background-image:url('../images/categories/cricket-jersey.jpg')}
+.mx-cat-kids{background-image:url('../images/categories/kids-jersey.jpg')}
+.mx-cat-tshirt{background-image:url('../images/categories/t-shirt-polo.jpg')}
+.mx-cat-shorts{background-image:url('../images/categories/shorts-trouser.jpg')}
+.mx-cat-football{background-image:url('../images/categories/football.jpg')}
+.mx-cat-cricket{background-image:url('../images/categories/cricket-equipment.jpg')}
+.mx-cat-badminton{background-image:url('../images/categories/badminton.jpg')}
+.mx-cat-custom-jersey,.mx-cat-custom-print{background-image:url('../images/categories/custom-jersey.jpg')}
