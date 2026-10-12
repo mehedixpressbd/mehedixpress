@@ -1,0 +1,166 @@
+/* Mehedi Xpress P25: P24 look on LIVE P22/P23 public markup.
+   Presentation only. DOES NOT write to Firebase or replace store.js.
+   Load after mx-unified-theme.css, mx-reference-full.css, mx-header-p23.css. */
+body.mx-p22-public.mx-p25-public{
+ --p25-navy:#092b40;--p25-deep:#061e31;--p25-teal:#009f98;
+ --p25-orange:#ff681c;--p25-paper:#fff;--p25-bg:#f3f7fa;
+ --p25-ink:#17364a;--p25-line:#dfe8ee;background:var(--p25-bg)!important;
+ color:var(--p25-ink);font-family:Arial,'Hind Siliguri','Noto Sans Bengali',sans-serif;
+}
+body.mx-p25-public .mx-container {width:min(1330px,calc(100% - 32px))!important;max-width:1330px!important}
+/* Compact header: P24 navy/teal proportions, P23 selectors retained */
+body.mx-p25-public .mx-topbar{background:#041b2b!important;border-top:0!important}
+body.mx-p25-public .mx-topbar .mx-topbar-inner{height:30px!important;min-height:30px!important;max-height:30px!important}
+body.mx-p25-public .mx-header{background:#061e31!important}
+body.mx-p25-public .mx-header .mx-header-main{height:66px!important;min-height:66px!important;grid-template-columns:200px minmax(260px,1fr) 235px!important;gap:23px!important}
+body.mx-p25-public .mx-logo{display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:center!important;text-decoration:none!important}
+body.mx-p25-public .mx-logo-image,body.mx-p25-public .mx-logo-divider,body.mx-p25-public .mx-logo-tagline{display:none!important}
+.mx-p25-wordmark{display:block;font-size:23px;font-weight:950;letter-spacing:-.06em;color:white;line-height:1.06;white-space:nowrap}
+.mx-p25-wordmark strong{color:#03b9af;font-weight:950}
+.mx-p25-brand-sub{display:block;font-size:8px;font-weight:750;letter-spacing:.10em;color:#88b0bf;margin-top:4px;white-space:nowrap}
+body.mx-p25-public .mx-header .mx-search{height:38px!important;min-height:38px!important;border:0!important;border-radius:5px!important}
+body.mx-p25-public .mx-header .mx-search input{font-size:12px!important}
+body.mx-p25-public .mx-header .mx-search-button{background:var(--p25-teal)!important}
+body.mx-p25-public .mx-header .mx-header-action{min-width:68px!important;padding:2px 4px!important}
+body.mx-p25-public .mx-header .mx-header-divider{display:none!important}
+body.mx-p25-public .mx-nav{background:#103548!important}
+body.mx-p25-public .mx-nav .mx-nav-inner{height:39px!important;min-height:39px!important;grid-template-columns:132px minmax(0,1fr) 78px!important;gap:6px!important}
+body.mx-p25-public .mx-nav .mx-all-category{min-height:31px!important;height:31px!important;font-size:10px!important;background:#0b817f!important;padding:0 9px!important}
+body.mx-p25-public .mx-nav .mx-nav-links{justify-content:center!important}
+body.mx-p25-public .mx-nav .mx-nav-links a{font-size:11px!important;padding:0 9px!important;color:#effaff!important;font-weight:750!important}
+body.mx-p25-public .mx-nav .mx-nav-links a:hover{background:#0f6067!important;color:white!important}
+body.mx-p25-public .mx-nav .mx-offer-button{height:31px!important;min-height:31px!important;font-size:10px!important;background:var(--p25-orange)!important;border-radius:4px!important;padding:0 7px!important}
+/* Hero P24 -- actual banners remain from siteSettings/Firebase, no replacement demo items */
+body.mx-p25-public .mx-hero{width:min(1330px,calc(100% - 32px))!important;margin:16px auto 0!important;border:0!important;border-radius:8px!important;overflow:hidden;box-shadow:none!important}
+body.mx-p25-public .mx-banner-track{height:auto!important;aspect-ratio:4.5/1!important;min-height:220px!important;max-height:340px!important}
+body.mx-p25-public .mx-banner-slide{background:#062839!important}
+body.mx-p25-public .mx-banner-slide .mx-hero-banner-image{width:100%!important;height:100%!important;object-fit:cover!important}
+body.mx-p25-public .mx-p22-trust-strip{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px!important;margin:12px auto 4px!important}
+body.mx-p25-public .mx-p22-trust-strip>div{min-height:52px!important;padding:8px 11px!important;background:#fff;border-radius:6px!important;box-shadow:none!important}
+body.mx-p25-public .mx-p22-trust-icon{width:31px;height:31px;border-radius:5px;font-size:17px}
+body.mx-p25-public .mx-p22-trust-strip strong{font-size:11px}
+body.mx-p25-public .mx-p22-trust-strip small{font-size:9px}
+/* Category cards -- P24 picture tile style, keep existing category links and Firestore-backed images */
+body.mx-p25-public .mx-category-section,body.mx-p25-public .mx-showcase-section,body.mx-p25-public .mx-products-section{padding:17px 0 0!important;background:transparent!important}
+body.mx-p25-public .mx-category-section>.mx-container,body.mx-p25-public .mx-showcase-section>.mx-container,body.mx-p25-public .mx-products-section>.mx-container{
+ border:0!important;background:transparent!important;border-radius:0!important;padding:0!important;box-shadow:none!important;
+}
+body.mx-p25-public .mx-category-top,body.mx-p25-public .mx-showcase-heading{margin-bottom:12px!important}
+body.mx-p25-public .mx-category-top h2,body.mx-p25-public .mx-showcase-heading h2,body.mx-p25-public .mx-all-products-head h2{font-size:21px!important;line-height:1.2!important;color:#15334a!important}
+body.mx-p25-public .mx-category-grid{grid-template-columns:repeat(10,minmax(0,1fr))!important;gap:9px!important}
+body.mx-p25-public .mx-category-grid .mx-category-card{height:123px!important;border:1px solid #dae5ec!important;border-radius:7px!important;background-color:#eaf3f6!important;background-size:auto 83%!important;background-position:center 0!important}
+body.mx-p25-public .mx-category-grid .mx-category-content{height:34px!important;background:white!important}
+body.mx-p25-public .mx-category-grid .mx-category-content b{font-size:10px!important}
+body.mx-p25-public .mx-category-grid .mx-category-content small{display:none!important}
+/* P24 branded, truthful promotional strip (no invented % offer) */
+.mx-p25-promo{width:min(1330px,calc(100% - 32px));margin:19px auto 8px;background:linear-gradient(100deg,#078f8e,#053b57);border-radius:7px;color:white;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mx-p25-promo b{font-size:15px}.mx-p25-promo span{font-size:12px;color:#e3fbf9}.mx-p25-promo a{background:#ff681c;padding:10px 15px;color:#fff!important;font-weight:800;font-size:11px;text-decoration:none;border-radius:5px;white-space:nowrap}
+/* Feature real products in 4 columns just like P24, and keep new/popular rails interactive */
+body.mx-p25-public .mx-product-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+body.mx-p25-public .mx-product-card.product-card{background:#fff!important;border:1px solid #dfe8ee!important;border-radius:7px!important;box-shadow:none!important}
+body.mx-p25-public .mx-product-card.product-card img{aspect-ratio:1/1!important;object-fit:contain!important;padding:7px!important;background:#edf3f6!important}
+body.mx-p25-public .mx-product-card.product-card h3{font-size:12px!important;line-height:1.35!important;min-height:32px!important}
+body.mx-p25-public .mx-product-card.product-card .content{padding:12px!important;gap:5px!important}
+body.mx-p25-public .mx-card-price .price{font-size:19px!important;color:#ff6419!important}
+body.mx-p25-public .mx-card-order{background:#ff681c!important;color:white!important;border-radius:5px!important;min-height:36px!important}
+body.mx-p25-public .mx-discount-badge{background:#ff681c!important}
+body.mx-p25-public .mx-wish-btn{background:white!important;border-color:#e2e9ed!important}
+body.mx-p25-public .mx-p22-shop-layout{grid-template-columns:220px minmax(0,1fr)!important;gap:16px!important}
+body.mx-p25-public .mx-p22-filter-sidebar{border-radius:7px!important;background:#f8fafc!important;top:12px!important}
+body.mx-p25-public #products #grid.mx-horizontal-product-rail{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;overflow:visible!important;max-width:none!important;scroll-snap-type:none!important}
+body.mx-p25-public #products #grid .mx-product-card{width:auto!important;min-width:0!important;max-width:none!important}
+body.mx-p25-public .mx-rail-controls[data-for="grid"]{display:none!important}
+body.mx-p25-public .mx-p22-results-bar{background:#fff!important;font-size:11px!important;border-radius:6px!important}
+body.mx-p25-public .mx-products-section>.mx-container{padding:0!important}
+.mx-p25-breadcrumb{display:none;align-items:center;gap:8px;color:#526e82;font-size:12px;padding:9px 0 14px}
+.mx-p25-breadcrumb a{color:#069d96;text-decoration:none;font-weight:750}
+/* Catalog is a genuine filtered product grid; use existing store.js and #cats/#stock/#sort. */
+body.mx-p25-catalog-view #home,body.mx-p25-catalog-view .mx-p22-trust-strip,body.mx-p25-catalog-view #categories,body.mx-p25-catalog-view #new-products,body.mx-p25-catalog-view #popular-products,body.mx-p25-catalog-view .mx-p25-promo,body.mx-p25-catalog-view #custom-print,body.mx-p25-catalog-view #delivery,body.mx-p25-catalog-view #wishlist-section,body.mx-p25-catalog-view #contact{display:none!important}
+body.mx-p25-catalog-view #products{padding:22px 0!important;min-height:55vh}
+body.mx-p25-catalog-view .mx-p25-breadcrumb{display:flex!important}
+body.mx-p25-catalog-view #products .mx-all-products-head h2{font-size:27px!important}
+/* Product, cart, login and checkout views: original live modals, page-like P24 presentation */
+body.mx-p25-public .modal{padding:20px 14px!important;background:#061e31b8!important;backdrop-filter:blur(2px)}
+body.mx-p25-public .modal-card{width:min(1100px,100%)!important;max-width:1100px!important;border-radius:10px!important;padding:24px!important;background:#fff!important;box-shadow:0 24px 85px #02172550!important}
+body.mx-p25-public #detail .modal-card{width:min(1190px,100%)!important}
+body.mx-p25-public #cart .modal-card{width:min(1050px,100%)!important}
+body.mx-p25-public #checkoutModal .modal-card{width:min(980px,100%)!important}
+body.mx-p25-public .mx-order-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr)!important;gap:22px!important}
+body.mx-p25-public .mx-order-image-wrap{background:#f1f5f8!important;border-radius:8px!important}
+body.mx-p25-public .mx-order-info h2{color:#14364a!important;font-size:22px!important}
+body.mx-p25-public .mx-order-price strong{color:#ff681c!important;font-size:24px!important}
+body.mx-p25-public .mx-detail-actions .btn.primary,body.mx-p25-public #checkout,body.mx-p25-public #mxCartOrderNow{background:#ff681c!important;color:white!important;border-radius:5px!important}
+body.mx-p25-public #checkoutForm .field{border-radius:6px!important}
+body.mx-p25-public .mx-footer{background:#061e31!important}
+/* Tablet */
+@media(max-width:1050px){
+ body.mx-p25-public .mx-header .mx-header-main{grid-template-columns:150px minmax(140px,1fr) 200px!important;gap:10px!important}
+ .mx-p25-wordmark{font-size:19px}
+ body.mx-p25-public .mx-category-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+ body.mx-p25-public .mx-nav .mx-nav-links a{padding:0 6px!important;font-size:10px!important}
+ body.mx-p25-public .mx-p22-shop-layout{grid-template-columns:185px minmax(0,1fr)!important}
+ body.mx-p25-public #products #grid.mx-horizontal-product-rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+/* Mobile: P24 2-column product cards and 4-column categories */
+@media(max-width:700px){
+ body.mx-p25-public .mx-container{width:calc(100% - 20px)!important}
+ body.mx-p25-public .mx-topbar{display:none!important}
+ body.mx-p25-public .mx-header .mx-header-main{height:auto!important;min-height:95px!important;grid-template-columns:32px minmax(0,1fr) auto!important;grid-template-rows:39px 36px!important;gap:5px 7px!important;padding:7px 0!important}
+ body.mx-p25-public .mx-logo{grid-column:2!important;grid-row:1!important}
+ .mx-p25-wordmark{font-size:18px}.mx-p25-brand-sub{font-size:7px}
+ body.mx-p25-public .mx-header .mx-header-actions{grid-column:3!important;grid-row:1!important;gap:1px!important}
+ body.mx-p25-public .mx-header .mx-header-action{min-width:28px!important;width:30px!important;height:31px!important;padding:1px!important}
+ body.mx-p25-public .mx-header .mx-header-action .mx-action-text{display:none!important}
+ body.mx-p25-public .mx-header .mx-search-wrap{grid-column:1/-1!important;grid-row:2!important}
+ body.mx-p25-public .mx-header .mx-search{height:35px!important;min-height:35px!important}
+ body.mx-p25-public .mx-header .mx-search input{font-size:11px!important}
+ body.mx-p25-public .mx-header .mx-search-button{font-size:11px!important}
+ body.mx-p25-public .mx-nav .mx-nav-inner{width:calc(100% - 20px)!important;height:auto!important;min-height:36px!important;display:flex!important;gap:8px!important}
+ body.mx-p25-public .mx-nav .mx-all-category{font-size:10px!important;height:30px!important;min-height:30px!important;flex:0 0 auto!important}
+ body.mx-p25-public .mx-nav .mx-offer-button{display:none!important}
+ body.mx-p25-public .mx-nav .mx-nav-links{display:flex!important;overflow-x:auto!important;gap:8px!important;max-width:calc(100% - 126px)!important;justify-content:flex-start!important;scrollbar-width:none}
+ body.mx-p25-public .mx-nav .mx-nav-links a{height:33px!important;white-space:nowrap!important;padding:0 7px!important;font-size:10px!important}
+ body.mx-p25-public .mx-hero{width:calc(100% - 20px)!important;margin:10px auto 0!important}
+ body.mx-p25-public .mx-banner-track{min-height:138px!important;max-height:180px!important;aspect-ratio:2.3/1!important}
+ body.mx-p25-public .mx-p22-trust-strip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important}
+ body.mx-p25-public .mx-p22-trust-strip>div{min-height:49px!important;padding:6px!important;gap:6px!important}
+ body.mx-p25-public .mx-p22-trust-strip strong{font-size:10px}
+ body.mx-p25-public .mx-p22-trust-strip small{font-size:8px}
+ body.mx-p25-public .mx-category-section,body.mx-p25-public .mx-showcase-section,body.mx-p25-public .mx-products-section{padding:13px 0 0!important}
+ body.mx-p25-public .mx-category-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important}
+ body.mx-p25-public .mx-category-grid .mx-category-card{height:98px!important;background-size:auto 78%!important}
+ body.mx-p25-public .mx-category-grid .mx-category-content{height:31px!important;padding:3px 2px!important}
+ body.mx-p25-public .mx-category-grid .mx-category-content b{font-size:9px!important}
+ body.mx-p25-public .mx-category-top h2,body.mx-p25-public .mx-showcase-heading h2,body.mx-p25-public .mx-all-products-head h2{font-size:18px!important}
+ .mx-p25-promo{width:calc(100% - 20px);padding:11px;gap:8px;flex-wrap:wrap}
+ .mx-p25-promo b{font-size:12px}.mx-p25-promo span{font-size:10px}.mx-p25-promo a{font-size:10px;padding:8px 10px}
+ body.mx-p25-public .mx-product-grid,body.mx-p25-public #products #grid.mx-horizontal-product-rail{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+ body.mx-p25-public .mx-product-card.product-card img{aspect-ratio:1/1!important}
+ body.mx-p25-public .mx-product-card.product-card h3{font-size:11px!important}
+ body.mx-p25-public .mx-card-price .price{font-size:16px!important}
+ body.mx-p25-public .mx-p22-shop-layout{display:block!important}
+ body.mx-p25-public .mx-p22-filter-sidebar{position:static!important;margin-bottom:10px!important}
+ body.mx-p25-public .mx-p22-filter-sidebar #cats{display:flex!important;flex-direction:row!important;overflow-x:auto!important;max-height:none!important;gap:6px!important}
+ body.mx-p25-public .mx-p22-filter-sidebar #cats button{min-width:85px!important;white-space:nowrap!important;text-align:center!important;padding:8px 6px!important}
+ body.mx-p25-public .mx-p22-support-box{display:none!important}
+ body.mx-p25-public .mx-p22-results-bar{font-size:10px!important}
+ body.mx-p25-public .modal{padding:5px!important}
+ body.mx-p25-public .modal-card{padding:14px!important;border-radius:8px!important;max-height:calc(100dvh - 10px)!important}
+ body.mx-p25-public .mx-order-detail{display:block!important}
+ body.mx-p25-public .mx-order-info h2{font-size:19px!important}
+ body.mx-p25-public #checkoutForm{display:block!important}
+ body.mx-p25-public #checkoutForm .field{display:block;width:100%!important;margin:7px 0!important}
+ body.mx-p25-public .mx-mobile-bottom-nav{z-index:100!important}
+}
+@media(max-width:375px){body.mx-p25-public .mx-header .mx-header-action{width:25px!important;min-width:25px!important}body.mx-p25-public .mx-category-grid .mx-category-content b{font-size:8px!important}}
+/* Dedicated P24 category art. Separate folder means older category images are NEVER overwritten.
+   If Firebase loads an admin-managed category image, its inline background takes priority. */
+body.mx-p25-public .mx-cat-football-jersey{background-image:url('../images/p25-categories/football-jersey.jpg')}
+body.mx-p25-public .mx-cat-cricket-jersey{background-image:url('../images/p25-categories/cricket-jersey.jpg')}
+body.mx-p25-public .mx-cat-kids{background-image:url('../images/p25-categories/kids-jersey.jpg')}
+body.mx-p25-public .mx-cat-tshirt{background-image:url('../images/p25-categories/t-shirt-polo.jpg')}
+body.mx-p25-public .mx-cat-shorts{background-image:url('../images/p25-categories/shorts-trouser.jpg')}
+body.mx-p25-public .mx-cat-football{background-image:url('../images/p25-categories/football.jpg')}
+body.mx-p25-public .mx-cat-cricket{background-image:url('../images/p25-categories/cricket-equipment.jpg')}
+body.mx-p25-public .mx-cat-badminton{background-image:url('../images/p25-categories/badminton.jpg')}
+body.mx-p25-public .mx-cat-custom-jersey,body.mx-p25-public .mx-cat-custom-print{background-image:url('../images/p25-categories/custom-jersey.jpg')}
