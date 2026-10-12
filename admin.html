@@ -304,7 +304,9 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 }
 </style>
 <link rel="stylesheet" href="assets/css/mx-unified-theme.css?v=p21-20261012">
-</head><body class="mx-admin-root">
+  <!-- P22: Full sample-reference desktop/tablet/mobile layout -->
+  <link rel="stylesheet" href="assets/css/mx-reference-full.css?v=p22-20261012">
+</head><body class="mx-admin-root mx-p22-admin">
 <section id="login" class="login"><form id="loginForm" class="loginbox">
 <div style="text-align:center;margin-bottom:18px">
   <img src="assets/images/logo.png" alt="Mehedi Xpress" style="width:82px;height:82px;object-fit:contain;border-radius:18px" onerror="this.style.display='none'">
@@ -320,8 +322,10 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 </form></section>
 <div id="app" class="layout" style="display:none"><aside class="side"><div class="brand">MEHEDI XPRESS<br><small>Admin Panel</small></div><div class="menu"><button class="active" data-p="dashboard">📊 Dashboard</button><button data-p="products">📦 Products</button><button data-p="categories">🗂 Categories</button><button data-p="inventory">📋 Inventory</button><button data-p="orders">🛒 Orders</button><button data-p="pos">🧾 দোকান বিক্রি</button><button data-p="cashmemo">🖨 ক্যাশ মেমো</button><button data-p="mxReturns">↩️ পণ্য ফেরত</button>
 <button data-p="reports">📈 Sales Report</button><button data-p="expenses">💸 Expenses</button><button data-p="ledger">💳 Cash & Wallet Ledger</button><button data-p="purchases">🚚 Purchases & Suppliers</button><button data-p="analytics">📊 Business Analytics</button><button data-p="reviews">⭐ Reviews</button><button data-p="banners">🖼 হেডার ও ব্যানারের ছবি</button><button data-p="settings">⚙ Settings</button><button data-p="mxEmployees">👥 Employees</button><button data-p="mxAttendance">📅 Attendance</button><button data-p="mxPayroll">💵 Salary</button><button data-p="mxActivity">🛡 Activity Log</button><button data-p="mx12Redemption">🎟 কুপন ও পয়েন্ট</button><button data-p="mxCampaigns">📣 Campaigns & Coupons</button><button data-p="mxRewards">🎯 Loyalty Rewards</button><button data-p="mxCRM">🤝 Customer CRM</button><button data-p="mxLoyalty">🎁 Loyalty Points</button><button data-p="mxDues">💳 Customer Due</button><button id="logout">🚪 Logout</button></div></aside>
-<main class="main"><div class="top"><h2 id="title">Dashboard</h2><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
-<section id="dashboard" class="panel active"><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
+<main class="main"><div class="top"><div class="mx-p22-top-left"><button class="mx-p22-menu-toggle" id="mxP22MenuToggle" type="button" aria-label="মেনু খুলুন বা বন্ধ করুন" aria-expanded="false">☰</button><div><span class="mx-p22-breadcrumb">MEHEDI XPRESS / ADMIN MANAGEMENT</span><h2 id="title">Dashboard</h2></div></div><label class="mx-p22-admin-search"><span>⌕</span><input id="mxP22MenuSearch" type="search" placeholder="মেনু খুঁজুন: POS, Orders, Products..." aria-label="অ্যাডমিন মেনু অনুসন্ধান"></label><div class="mx-lang-switch"><button type="button" class="mx-lang-btn" data-lang="bn">বাংলা</button><button type="button" class="mx-lang-btn" data-lang="en">English</button></div><a href="index.html" target="_blank">🌐 Website দেখুন</a></div>
+<section id="dashboard" class="panel active">
+  <div class="mx-p22-dashboard-welcome"><div><span>BUSINESS OVERVIEW</span><h3>Mehedi Xpress — Dashboard</h3><p>অনলাইন ও দোকানের বিক্রি, অর্ডার এবং স্টকের লাইভ তথ্য এখানেই দেখুন।</p></div><a href="index.html" target="_blank" rel="noopener noreferrer">↗ Public Website</a></div>
+  <div class="mx-p22-quick-actions" aria-label="দ্রুত কাজ"><button type="button" data-mx-goto="pos">▣ দোকান বিক্রি</button><button type="button" data-mx-goto="orders">▤ Online Orders</button><button type="button" data-mx-goto="products">＋ Add / Edit Product</button><button type="button" data-mx-goto="reports">▥ Sales Report</button></div><div class="stats"><div class="stat"><b id="sProducts">0</b>Products</div><div class="stat"><b id="sOrders">0</b>Orders</div><div class="stat"><b id="sSales">৳0</b>Sales</div><div class="stat"><b id="sPending">0</b>Pending</div></div><div class="stats" style="margin-top:14px">
 <div class="stat"><b id="sTotalStock">0</b>Total Stock</div>
 <div class="stat"><b id="sLowStock">0</b>Low Stock</div>
 <div class="stat"><b id="sOutStock">0</b>Out of Stock</div>
@@ -391,6 +395,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
 </section>
 
 <section id="pos" class="panel">
+<div class="mx-p22-section-intro"><div><span>POINT OF SALE • LIVE STOCK</span><h3>দোকান বিক্রি ও ক্যাশ মেমো</h3><p>পণ্য নির্বাচন → সাইজ ও দাম → কাস্টমার তথ্য → বিক্রি সম্পন্ন → একসঙ্গে দুই কপি রসিদ।</p></div><div class="mx-p22-intro-symbol">▣</div></div>
 <div class="head"><h3>দোকান বিক্রি</h3><span class="status">Shared Product Stock</span></div>
 <div class="posgrid">
  <div>
@@ -552,6 +557,7 @@ body:not(.admin-authenticated) { overflow-y:auto !important; }
  </div>
 </section>
 <section id="settings" class="panel">
+<div class="mx-p22-section-intro"><div><span>STORE SETTINGS • DESIGN</span><h3>Mehedi Xpress — Website Design Center</h3><p>পাবলিক ওয়েবসাইটের থিম, লোগো ও ব্যানারের বর্তমান সেটিংস এখান থেকে নিয়ন্ত্রণ করুন। পূর্ণ Drag-and-Drop Editor এখনও তৈরি হয়নি।</p></div><div class="mx-p22-intro-symbol">✎</div></div>
 <!-- P19: non-destructive public storefront preset editor. Stored in existing siteSettings/homepage. -->
 <div class="card" id="mxStorefrontThemeEditor" style="margin-top:14px">
  <h3>🎨 পাবলিক ওয়েবসাইট — ডিজাইন সেন্টার (প্রথম ধাপ)</h3>
@@ -2220,4 +2226,5 @@ $('mxPublicThemeSave').onclick=async()=>{
 $('mxPublicThemeReset').onclick=()=>{$('mxPublicPreset').value='classic';mxPublicFillForm(mxPublicPresets.classic);$('mxPublicThemeMsg').textContent='Classic প্রিভিউ হয়েছে। ওয়েবসাইটে প্রয়োগ করতে Save চাপুন।'};
 async function mxPublicLoadCurrentTheme(){try{const snap=await getDoc(doc(db,'siteSettings','homepage'));const t=snap.data()?.storefrontTheme;if(t)mxPublicFillForm(t);else mxPublicFillForm(mxPublicPresets.classic)}catch(err){console.warn('Public theme preview load',err)}}
 mxPublicLoadCurrentTheme();
-</script></body></html>
+</script><script defer src="assets/js/mx-design-interactions.js?v=p22-20261012"></script>
+</body></html>
