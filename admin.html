@@ -1795,7 +1795,7 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
 <p aria-live="polite" class="hint" id="mxPublicThemeMsg" role="status">বর্তমান ডিজাইন অপরিবর্তিত আছে।</p>
 </div>
 <div class="mx-p32-design-hint mx-p32-design-explain"><strong>বর্তমানে কোন অংশ এখান থেকে পরিবর্তন করা যায়?</strong><span>পাবলিক থিমের রং, ব্যাকগ্রাউন্ড ও কার্ডের কোণা সেভ করা যায়। লোগো ও স্লাইডের জন্য “ব্যানার” বিভাগ; ক্যাটাগরির ছবির জন্য “ক্যাটাগরি” বিভাগ ব্যবহার করবে। ডেমোর সম্পূর্ণ Drag-and-Drop Page Builder এবং পৃথক পেজের লেআউট প্রকাশের ব্যবস্থা এখনো তৈরি হয়নি।</span></div><div id="mxP38Studio" class="card" aria-label="Website layout studio">
-  <div class="mx38-title"><div><h3>🧩 P38 · Website Layout Studio</h3><p class="mx38-help">সেকশন সাজাও, লুকাও, Desktop/Mobile-এ দেখে নাও। পরিবর্তন আগে শুধু প্রিভিউতে দেখা যাবে।</p></div><span class="mx38-pill">Safe draft → Publish</span></div>
+  <div class="mx38-title"><div><h3>🧩 P40 · Website Layout Studio + Public Sync</h3><p class="mx38-help">সেকশন সাজাও, লুকাও, Desktop/Mobile-এ দেখে নাও। পরিবর্তন আগে শুধু প্রিভিউতে দেখা যাবে।</p></div><span class="mx38-pill">Safe draft → Publish</span></div>
   <div class="mx38-info">এখানে “Publish” মানে ডিজাইনের সেটিংস Firestore-এ সংরক্ষণ। <strong>পাবলিক ওয়েবসাইটে এই নতুন লেআউট প্রয়োগ করার কোড এখনো যুক্ত নয়।</strong> আগের ওয়েবসাইট, POS, Stock, Customer Due বা Cash Memo বদলাবে না।</div>
   <div class="mx38-grid">
     <div class="mx38-panel">
@@ -1818,9 +1818,9 @@ body.mx-p33-admin .mx-p34-inline-action:hover{background:#0a8e92;color:white}
       <h4>৩. লাইভ প্রিভিউ (নমুনা তথ্য)</h4>
       <div class="mx38-controls"><button type="button" class="mx38-primary" id="mxP38Desktop">🖥 PC</button><button type="button" id="mxP38Mobile">📱 Mobile</button><span class="mx38-help" id="mxP38ViewLabel">Desktop Preview</span></div>
       <div class="mx38-preview-wrap"><div class="mx38-preview" id="mxP38Preview"><div class="mx38-topline" id="mxP38PreviewTop">🚚 Nationwide Delivery · COD / bKash / Nagad</div><div class="mx38-brand"><strong>MEHEDI <span style="color:#20cec8">XPRESS</span></strong><span>🔍 Search　 ♡　🛒</span></div><div class="mx38-nav">Home　 Jerseys　 Sportswear　 Custom Print</div><div id="mxP38PreviewContent"></div><div class="mx38-footer">MEHEDI XPRESS · Sports • Fashion • Custom Print</div></div></div>
-      <div class="mx38-controls"><button type="button" class="mx38-primary" id="mxP38Publish">Publish Settings to Firebase</button><button type="button" id="mxP38Load">সেভ করা সেটিংস লোড</button><button type="button" class="mx38-warn" id="mxP38Restore">আগের সংস্করণ ফেরত</button></div>
+      <div class="mx38-controls"><button type="button" class="mx38-primary" id="mxP38Publish">Publish Settings to Firebase</button><button type="button" id="mxP38Load">সেভ করা সেটিংস লোড</button><button type="button" class="mx38-warn" id="mxP38Restore">আগের সংস্করণ ফেরত</button><button type="button" id="mxP40Verify">🔎 Public Sync পরীক্ষা</button></div>
       <p id="mxP38Status" role="status" aria-live="polite" class="mx38-status">প্রিভিউ প্রস্তুত। Firebase-এ কোনো পরিবর্তন হয়নি।</p>
-      <p class="mx38-help">পাবলিক ওয়েবসাইটে নতুন লেআউট সত্যিই দেখানোর জন্য পরের ধাপে Public `index.html`/`store.js`-এর নিরাপদ সংযোগ যুক্ত করতে হবে।</p>
+      <p class="mx38-help">P40: Publish করলে শুধু প্রকাশযোগ্য ডিজাইন <code>publicDesigns/homepage</code>-এ যাবে। Draft ও Version History অ্যাডমিনের <code>siteSettings/homepage</code>-এ থাকবে। পরিবর্তন দেখতে Public Website রিফ্রেশ করো।</p>
     </div>
   </div>
 </div>
@@ -4263,8 +4263,8 @@ import {getFirestore,doc,getDoc,runTransaction,Timestamp,serverTimestamp} from '
 })();
 </script>
 <script id="mx-p38-layout-studio" type="module">
-/* P38 admin-only website layout studio. Writes only siteSettings/homepage.designStudio(+History).
-   Existing storefront/POS/stock/receipt/payment logic untouched. Preview is sample UI only. */
+/* P40 design publisher. Atomically writes private siteSettings/homepage history
+   and publicDesigns/homepage (PUBLIC DESIGN ONLY). No POS/stock/receipt/payment effects. */
 import {getApp,getApps} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {getAuth,onAuthStateChanged} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 import {getFirestore,doc,getDoc,runTransaction,serverTimestamp} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
@@ -4336,6 +4336,7 @@ import {getFirestore,doc,getDoc,runTransaction,serverTimestamp} from 'https://ww
  $('mxP38Default').onclick=()=>{model=defaults();render();notice('ডিফল্ট লেআউট প্রিভিউ হয়েছে। Firebase-এ কিছু সেভ হয়নি।')};
  $('mxP38Draft').onclick=()=>{try{localStorage.setItem('mx-p38-layout-draft',JSON.stringify(model));notice('এই ব্রাউজারে খসড়া সেভ হয়েছে। Firebase বদলায়নি।')}catch(e){notice('ব্রাউজারে Draft রাখা যায়নি: '+(e.message||e))}};
  const ref=doc(db,'siteSettings','homepage');
+ const publicRef=doc(db,'publicDesigns','homepage');
  async function loadLive(){if(!authorized){notice('এটি পড়তে Admin Login প্রয়োজন।');return}try{const snap=await getDoc(ref);const v=snap.exists()?snap.data()?.designStudio:null;
   if(v){model=clean(v);render();notice('Firebase-এ সংরক্ষিত Layout Studio সেটিংস লোড হয়েছে।')}else notice('Firebase-এ এখনো কোনো P38 ডিজাইন সংরক্ষণ করা হয়নি।');
  }catch(e){notice('Firebase থেকে লোড হয়নি: '+(e.code||e.message))}}
@@ -4346,9 +4347,25 @@ import {getFirestore,doc,getDoc,runTransaction,serverTimestamp} from 'https://ww
     const snap=await tx.get(ref), data=snap.exists()?snap.data():{}, hist=Array.isArray(data.designStudioHistory)?data.designStudioHistory.slice(-4):[];
     if(data.designStudio)hist.push({savedAt:new Date().toISOString(),layout:clean(data.designStudio)});
     tx.set(ref,{designStudio:sanitized,designStudioHistory:hist.slice(-5),updatedAt:serverTimestamp()},{merge:true});
-   });model=sanitized;render();notice(restoring?'আগের ডিজাইন সেটিংস পুনরায় Firebase-এ সংরক্ষিত হয়েছে।':'P38 ডিজাইন সেটিংস Firebase-এ সেভ হয়েছে। পাবলিক পেজে দেখানোর সংযোগ এখনো বাকি।');
+    // P40: public-facing copy contains no private history or site settings.
+    tx.set(publicRef,{schemaVersion:1,designStudio:sanitized,publishedAt:serverTimestamp()});
+   });model=sanitized;render();notice(restoring?'আগের ডিজাইন আবার Publish হয়েছে। Public Website Refresh করো।':'P40 ডিজাইন Publish সফল। Public Website Refresh করলে পরিবর্তন দেখা যাবে।');
   }catch(e){notice('Publish ব্যর্থ: '+(e.code||e.message))}finally{busy=false;$('mxP38Publish').disabled=false;$('mxP38Restore').disabled=false}}
  $('mxP38Publish').onclick=()=>publish(model,false);
+ // P40: Compare two server-side documents, not the current unsaved form.
+ $('mxP40Verify').onclick=async()=>{
+  if(!authorized){notice('Sync পরীক্ষা করতে Admin Login প্রয়োজন।');return}
+  try{
+   const [privateSnap,publicSnap]=await Promise.all([getDoc(ref),getDoc(publicRef)]);
+   const privateData=privateSnap.exists()?privateSnap.data().designStudio:null;
+   const publicData=publicSnap.exists()?publicSnap.data().designStudio:null;
+   if(!publicData){notice('Public Design এখনো Publish করা হয়নি। আগে Publish Settings চাপুন।');return}
+   if(!privateData){notice('Public Design আছে, কিন্তু অ্যাডমিনের সংরক্ষিত ডিজাইন নেই। যাচাই করে আবার Publish করুন।');return}
+   const ok=JSON.stringify(clean(privateData))===JSON.stringify(clean(publicData));
+   notice(ok?'✅ Public Sync সঠিক। পাবলিক ওয়েবসাইট Refresh করে দেখো।':'⚠️ Admin ও Public Design এক নয়। আবার Publish Settings চাপো।');
+  }catch(e){notice('Public Sync পরীক্ষা ব্যর্থ: '+(e.code||e.message)+' — Firestore Rules-এ publicDesigns/homepage অনুমতি দেখুন।')}
+ };
+
  $('mxP38Restore').onclick=async()=>{if(!authorized){notice('Admin Login প্রয়োজন।');return}try{const snap=await getDoc(ref),h=snap.exists()?snap.data()?.designStudioHistory:[];
   if(!Array.isArray(h)||!h.length){notice('পূর্বের কোনো সংরক্ষিত সংস্করণ নেই।');return}
   const prev=h[h.length-1];if(!prev.layout){notice('সংরক্ষিত সংস্করণে Layout পাওয়া যায়নি।');return}
