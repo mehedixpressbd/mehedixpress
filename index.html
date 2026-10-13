@@ -27,7 +27,7 @@
   <link rel="stylesheet" href="assets/css/mx-p24-live-public.css?v=p25-20261012">
   <!-- P26: Full page-structure styling, P24 reference integration -->
   <link rel="stylesheet" href="assets/css/mx-p26-pages.css?v=p26-20261012">
-<!-- P27: Full layout repair inlined so only ONE index.html file must be pasted. -->
+<!-- P27 layout; P40 adds a public-only Firebase design snapshot reader without modifying store.js. -->
 <style id="mx-p27-layout-fix">
 /* MEHEDI XPRESS P27 — P24 PHOTO-REFERENCE PUBLIC LAYOUT REPAIR
    Only visual styling. DO NOT modify price, stock, orders, Firebase, cart calculation.
@@ -211,6 +211,48 @@ body.mx-p27-public .mx-footer{background:#041f30!important}
 }
 @media(max-width:360px){body.mx-p27-public .mx-header .mx-header-main{grid-template-columns:24px minmax(0,1fr) 70px!important;gap:4px!important}body.mx-p27-public .mx-p25-wordmark{font-size:17px!important}body.mx-p27-public .mx-category-grid .mx-category-content b{font-size:8px!important}}
 @media print{body.mx-p27-public .mx-mobile-bottom-nav{display:none!important}}
+
+</style>
+
+<style id="mx-p39-public-layout-css">
+
+/* P39 — Admin P38's published designStudio, applied to the LIVE public storefront.
+   Scoped layout only; no cart, checkout, pricing, stock, order or authentication edits. */
+body.mx-p39-enabled { --mx39-desktop-cols:4; --mx39-tablet-cols:3; --mx39-mobile-cols:2; }
+body.mx-p39-enabled #mx-p39-home-sections { display:contents; }
+body.mx-p39-enabled #mx-p39-home-sections > [hidden],body.mx-p39-enabled .mx-topbar[hidden]{display:none!important;}
+body.mx-p27-public.mx-p39-enabled #newGrid,
+body.mx-p27-public.mx-p39-enabled #popularGrid,
+body.mx-p27-public.mx-p39-enabled #grid,
+body.mx-p27-public.mx-p39-enabled #wishlistGrid {grid-template-columns:repeat(var(--mx39-desktop-cols),minmax(0,1fr))!important;}
+body.mx-p39-enabled.mx39-card-flat :is(#newGrid,#popularGrid,#grid,#wishlistGrid) > :is(.mx-product-card,.product-card){border-radius:0!important;box-shadow:none!important;}
+body.mx-p39-enabled.mx39-card-outline :is(#newGrid,#popularGrid,#grid,#wishlistGrid) > :is(.mx-product-card,.product-card){border:2px solid #049f9b!important;box-shadow:none!important;}
+body.mx-p39-enabled .mx-p39-hero-message{position:absolute;left:24px;bottom:25px;z-index:14;max-width:min(450px,55%);padding:16px 20px;background:rgba(3,27,45,.84);color:white;border-radius:10px;pointer-events:none;box-shadow:0 7px 20px #00142342}
+body.mx-p39-enabled .mx-p39-hero-message strong{display:block;font-size:clamp(17px,2vw,26px);line-height:1.1;letter-spacing:-.01em}
+body.mx-p39-enabled .mx-p39-hero-message p{color:#d9f7f8;font-size:clamp(11px,1.15vw,14px);margin:5px 0 9px}
+body.mx-p39-enabled .mx-p39-hero-message a{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;min-height:32px;background:#ff6519;color:#fff;border-radius:5px;padding:5px 12px;font-size:12px;font-weight:800;text-decoration:none}
+body.mx-p39-enabled .mx-p39-reviews{background:#fff;padding:22px 0;margin:16px auto;max-width:1330px;width:95%;border:1px solid #e1ebee;border-radius:9px}
+body.mx-p39-enabled .mx-p39-reviews-inner{width:min(1270px,96%);margin:auto}
+body.mx-p39-enabled .mx-p39-reviews h2{font-size:23px;margin:0 0 15px;color:#0a3145}
+body.mx-p39-enabled .mx-p39-review-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+body.mx-p39-enabled .mx-p39-review{border:1px solid #e2eaee;border-radius:8px;background:#f8fbfc;padding:15px;min-width:0;overflow-wrap:anywhere}
+body.mx-p39-enabled .mx-p39-review strong{display:block;color:#123549;margin-bottom:5px}
+body.mx-p39-enabled .mx-p39-review .stars{color:#ee8618;font-size:17px}
+body.mx-p39-enabled .mx-p39-review p{margin:6px 0 0;color:#3c5360;font-size:13px;line-height:1.6;white-space:pre-wrap}
+@media(max-width:1050px){
+ body.mx-p27-public.mx-p39-enabled #newGrid,body.mx-p27-public.mx-p39-enabled #popularGrid,
+ body.mx-p27-public.mx-p39-enabled #grid,body.mx-p27-public.mx-p39-enabled #wishlistGrid{grid-template-columns:repeat(var(--mx39-tablet-cols),minmax(0,1fr))!important;}
+}
+@media(max-width:760px){
+ body.mx-p27-public.mx-p39-enabled #newGrid,body.mx-p27-public.mx-p39-enabled #popularGrid,
+ body.mx-p27-public.mx-p39-enabled #grid,body.mx-p27-public.mx-p39-enabled #wishlistGrid{grid-template-columns:repeat(var(--mx39-mobile-cols),minmax(0,1fr))!important;}
+ body.mx-p39-enabled .mx-p39-hero-message{left:11px;bottom:11px;padding:10px 11px;max-width:65%}
+ body.mx-p39-enabled .mx-p39-hero-message strong{font-size:13px}
+ body.mx-p39-enabled .mx-p39-hero-message p{font-size:10px;margin:3px 0 6px}
+ body.mx-p39-enabled .mx-p39-hero-message a{font-size:10px;min-height:25px;padding:3px 7px}
+ body.mx-p39-enabled .mx-p39-review-list{grid-template-columns:1fr}
+ body.mx-p39-enabled .mx-p39-reviews h2{font-size:18px}
+}
 
 </style>
 </head>
@@ -2430,5 +2472,126 @@ body.mx-p27-public .mx-footer{background:#041f30!important}
 
 <script defer src="assets/js/mx-design-interactions.js?v=p22-20261012"></script>
 <script defer src="assets/js/mx-p24-live-public.js?v=p25-20261012"></script>
+<script type="module" id="mx-p40-layout-reader">
+
+/* P40 storefront adapter: reads ONLY publicDesigns/homepage.designStudio.
+   Admin's P40 publishes this public-only snapshot; no private siteSettings exposure.
+   On missing data/network/permission failure, the original public layout stays intact. */
+import { db } from './assets/js/firebase.js';
+import { doc, getDoc, getDocs, collection, query, limit } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js';
+
+(async () => {
+  'use strict';
+  const ALLOWED = ['hero','categories','featured','new','custom','delivery','reviews'];
+  const sectionIds = {hero:'home',categories:'categories',featured:'popular-products',new:'new-products',custom:'custom-print',delivery:'delivery'};
+  function normalize(raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const selected=[],seen=new Set();
+    if(Array.isArray(raw.sections)) for(const item of raw.sections.slice(0,30)) {
+      if(item && typeof item==='object' && ALLOWED.includes(item.id) && !seen.has(item.id)) {
+        selected.push({id:item.id,visible:item.visible!==false});seen.add(item.id);
+      }
+    }
+    for(const id of ALLOWED) if(!seen.has(id)) selected.push({id,visible:true});
+    return {
+      sections:selected,
+      desktopCols:[3,4,5,6].includes(Number(raw.desktopCols))?Number(raw.desktopCols):4,
+      mobileCols:[1,2].includes(Number(raw.mobileCols))?Number(raw.mobileCols):2,
+      cardStyle:['soft','flat','outline'].includes(raw.cardStyle)?raw.cardStyle:'soft',
+      heroTitle:typeof raw.heroTitle==='string'?raw.heroTitle.trim().slice(0,75):'',
+      heroSubtitle:typeof raw.heroSubtitle==='string'?raw.heroSubtitle.trim().slice(0,125):'',
+      cta:typeof raw.cta==='string'?raw.cta.trim().slice(0,32):'',
+      announcement:raw.announcement!==false
+    };
+  }
+  function node(tag,className,text) {
+    const el=document.createElement(tag); if(className) el.className=className;
+    if(text!==undefined) el.textContent=text;return el;
+  }
+  async function prepareReviews() {
+    const sec=node('section','mx-p39-reviews');sec.id='mx-p39-public-reviews';
+    const inner=node('div','mx-p39-reviews-inner');sec.append(inner);
+    inner.append(node('h2','', 'গ্রাহকদের মতামত'));
+    const grid=node('div','mx-p39-review-list');inner.append(grid);
+    try {
+      const snap=await getDocs(query(collection(db,'reviews'),limit(12)));
+      const records=snap.docs.map(x=>x.data()).filter(v=>v && typeof v.comment==='string' && v.comment.trim() && Number(v.rating)>=1 && Number(v.rating)<=5).slice(0,6);
+      if(!records.length) {
+        const p=node('p','', 'এখনো কোনো প্রকাশিত গ্রাহক রিভিউ নেই।');inner.append(p);
+      } else {
+        for(const r of records) {
+          const card=node('article','mx-p39-review');
+          card.append(node('span','stars','★'.repeat(Math.floor(Number(r.rating)))+'☆'.repeat(5-Math.floor(Number(r.rating)))));
+          card.append(node('strong','',String(r.name||'ক্রেতা').slice(0,100)));
+          card.append(node('p','',r.comment.slice(0,500)));
+          grid.append(card);
+        }
+      }
+    } catch(error) {
+      // Never show mock reviews or disturb the storefront when access fails.
+      console.warn('[P39] Reviews were not loaded:',error?.code||error?.message);
+      return null;
+    }
+    return sec;
+  }
+  function applyModel(model,reviewSection) {
+    const main=document.querySelector('main');
+    if(!main) return;
+    const sections={};
+    for(const [key,id] of Object.entries(sectionIds)) sections[key]=document.getElementById(id);
+    const bannerTrust=main.querySelector(':scope > .mx-p22-trust-strip');
+    if(reviewSection) sections.reviews=reviewSection;
+    const usable=model.sections.filter(item=>sections[item.id] && (item.id==='reviews' || sections[item.id].parentElement));
+    if(!usable.length) return;
+    // The safe subset of sections moves into a dedicated home layout host.
+    // The all-products grid, wishlist, contact/footer, modals and Firebase IDs remain untouched.
+    const host=node('div','mx-p39-home-sections');host.id='mx-p39-home-sections';
+    const first=sections.hero || sections[usable[0].id];
+    main.insertBefore(host,first);
+    for(const item of usable) {
+      const sec=sections[item.id];host.append(sec);
+      sec.hidden=!item.visible;
+      if(item.id==='hero' && bannerTrust) {
+        host.append(bannerTrust);bannerTrust.hidden=!item.visible;
+      }
+    }
+    // Preserve the trust strip in the home layout even when the hero entry is absent.
+    if(bannerTrust && !host.contains(bannerTrust))host.append(bannerTrust);
+    const body=document.body;
+    body.classList.add('mx-p39-enabled');
+    body.classList.remove('mx39-card-flat','mx39-card-outline');
+    if(model.cardStyle!=='soft')body.classList.add('mx39-card-'+model.cardStyle);
+    body.style.setProperty('--mx39-desktop-cols',String(model.desktopCols));
+    body.style.setProperty('--mx39-tablet-cols',String(Math.min(model.desktopCols,3)));
+    body.style.setProperty('--mx39-mobile-cols',String(model.mobileCols));
+    const topbar=document.querySelector('.mx-topbar');if(topbar) topbar.hidden=!model.announcement;
+    const hero=sections.hero;
+    if(hero) {
+      hero.querySelector('.mx-p39-hero-message')?.remove();
+      if(model.heroTitle || model.heroSubtitle || model.cta) {
+        const panel=node('div','mx-p39-hero-message');
+        if(model.heroTitle)panel.append(node('strong','',model.heroTitle));
+        if(model.heroSubtitle)panel.append(node('p','',model.heroSubtitle));
+        if(model.cta){const link=node('a','',model.cta);link.href='#products';panel.append(link)}
+        hero.append(panel);
+      }
+    }
+    document.dispatchEvent(new CustomEvent('mx:p39:layout-applied',{detail:{source:'publicDesigns/homepage.designStudio'}}));
+  }
+  try {
+    const snap=await getDoc(doc(db,'publicDesigns','homepage'));
+    const config=snap.exists()?snap.data().designStudio:null;
+    const model=normalize(config);
+    if(!model) return; // No published layout; preserve P27 as-is.
+    // Build the real reviews section only when enabled; never use demo reviews.
+    const showReviews=model.sections.some(x=>x.id==='reviews'&&x.visible);
+    const reviews=showReviews?await prepareReviews():null;
+    applyModel(model,reviews);
+  } catch(error) {
+    console.warn('[P40] Public design not loaded; original storefront is unchanged:',error?.code||error?.message);
+  }
+})();
+
+</script>
 </body>
 </html>
