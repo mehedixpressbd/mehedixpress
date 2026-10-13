@@ -507,8 +507,9 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 }
 @media(prefers-reduced-motion:reduce){body.mx-p41-public *,body.mx-p41-public *::before,body.mx-p41-public *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 @media print{body.mx-p41-public .mx41-quicklinks{display:none!important}body.mx-p41-public .mx-header{position:static!important}}
-</style></head>
-<body class="mx-p22-public mx-p25-public mx-p26-public mx-p27-public mx-p41-public">
+</style><link rel="stylesheet" href="assets/css/mx-p42-full.css?v=p42-20261013"/>
+</head>
+<body class="mx-p22-public mx-p25-public mx-p26-public mx-p27-public mx-p41-public mx-p42-public">
 <a class="mx-p22-skip" href="#products">সরাসরি পণ্যে যান</a>
 <!-- =====================================================
      TOP BAR
@@ -566,7 +567,7 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 ===================================================== -->
 <header class="mx-header">
 <div class="mx-container mx-header-main">
-<a aria-label="ক্যাটাগরি দেখুন" class="mx-p27-menu-trigger" href="#categories">☰</a>
+<a aria-label="ক্যাটাগরি দেখুন" class="mx-p27-menu-trigger" href="#categories"><img src="assets/images/header-icons/menu.svg" alt="" class="mx42-icon"/></a>
 <a aria-label="Mehedi Xpress Home" class="mx-logo" href="#home">
 <span class="mx-p25-wordmark">MEHEDI<strong>XPRESS</strong></span>
 <small class="mx-p25-brand-sub">SPORTS · FASHION · CUSTOM PRINT</small>
@@ -582,9 +583,7 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 </a>
 <div class="mx-search-wrap">
 <form class="mx-search" id="searchForm">
-<span class="mx-search-icon">
-          🔍
-        </span>
+<span class="mx-search-icon"><img class="mx42-icon" src="assets/images/header-icons/search-dark.svg" alt=""/></span>
 <input autocomplete="off" id="search" placeholder="পণ্য, জার্সি বা Product Code খুঁজুন..." type="search"/>
 <button class="mx-search-button" type="submit">
           খুঁজুন
@@ -593,8 +592,7 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 </div>
 <div class="mx-header-actions">
 <a class="mx-header-action" href="#wishlist-section" id="wishlistBtn">
-<span class="mx-header-action-icon">
-          ♡
+<span class="mx-header-action-icon"><img class="mx42-icon" src="assets/images/header-icons/heart.svg" alt=""/>
 
           <span class="mx-action-count" id="wishlistCount">
             0
@@ -606,19 +604,16 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 </span>
 </a>
 <span class="mx-header-divider"></span>
-<button class="mx-header-action" id="account" type="button">
-<span class="mx-header-action-icon">
-          ♙
-        </span>
+<button aria-label="অ্যাকাউন্ট খুলুন" class="mx-header-action" id="account" type="button">
+<span class="mx-header-action-icon"><img class="mx42-icon" src="assets/images/header-icons/user.svg" alt=""/></span>
 <span class="mx-action-text">
 <small>অ্যাকাউন্ট</small>
 <b>Login</b>
 </span>
 </button>
 <span class="mx-header-divider"></span>
-<button class="mx-header-action" id="cartBtn" type="button">
-<span class="mx-header-action-icon">
-          🛒
+<button aria-label="কার্ট খুলুন" class="mx-header-action" id="cartBtn" type="button">
+<span class="mx-header-action-icon"><img class="mx42-icon" src="assets/images/header-icons/cart.svg" alt=""/>
 
           <span class="mx-action-count" id="cartBadge">
             0
@@ -641,13 +636,11 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 <nav class="mx-nav">
 <div class="mx-container mx-nav-inner">
 <a class="mx-all-category" href="#categories">
-<span class="mx-menu-icon">☰</span>
+<span class="mx-menu-icon"><img class="mx42-icon" src="assets/images/header-icons/grid.svg" alt=""/></span>
 <span>সব ক্যাটাগরি</span>
 </a>
 <div class="mx-nav-links">
-<a class="active" href="#home">
-        ⌂ হোম
-      </a>
+<a class="active" href="#home"><img class="mx42-icon" src="assets/images/header-icons/home.svg" alt=""/> হোম</a>
 <a href="#products">
         নতুন পণ্য
       </a>
@@ -671,11 +664,11 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
       </a>
 </div>
 <a class="mx-offer-button" href="#products">
-<span>%</span>
+<span><img class="mx42-icon" src="assets/images/header-icons/tag.svg" alt=""/></span>
       অফার
     </a>
 </div>
-</nav><div aria-label="দ্রুত বিভাগ বেছে নিন" class="mx41-quicklinks"><a href="#categories">⚽ ফুটবল জার্সি</a><a href="#new-products">✦ নতুন কালেকশন</a><a href="#popular-products">★ জনপ্রিয় পণ্য</a><a class="mx41-chip-strong" href="#custom-print">✎ কাস্টম প্রিন্ট</a><a href="#delivery">🚚 ডেলিভারি তথ্য</a></div>
+</nav><section class="mx42-category-rail" aria-label="ছবিসহ পণ্যের বিভাগ"><div class="mx-container mx42-category-inner"><div class="mx42-rail-heading"><strong>ক্যাটাগরি দেখুন</strong><span>পছন্দের পণ্য দ্রুত খুঁজুন</span></div><div class="mx42-category-scroll"><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-football-jersey" aria-label="ফুটবল জার্সি"><span class="mx42-cat-photo"><img src="assets/images/header-categories/football-jersey.jpg" alt="ফুটবল জার্সি" width="104" height="104" fetchpriority="high"/></span><span class="mx42-cat-name">ফুটবল জার্সি</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-cricket-jersey" aria-label="ক্রিকেট জার্সি"><span class="mx42-cat-photo"><img src="assets/images/header-categories/cricket-jersey.jpg" alt="ক্রিকেট জার্সি" width="104" height="104" fetchpriority="high"/></span><span class="mx42-cat-name">ক্রিকেট জার্সি</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-kids" aria-label="বাচ্চাদের জার্সি"><span class="mx42-cat-photo"><img src="assets/images/header-categories/kids-jersey.jpg" alt="বাচ্চাদের জার্সি" width="104" height="104" fetchpriority="high"/></span><span class="mx42-cat-name">বাচ্চাদের জার্সি</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-tshirt" aria-label="টি-শার্ট ও পোলো"><span class="mx42-cat-photo"><img src="assets/images/header-categories/tshirt-polo.jpg" alt="টি-শার্ট ও পোলো" width="104" height="104" fetchpriority="high"/></span><span class="mx42-cat-name">টি-শার্ট ও পোলো</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-shorts" aria-label="শর্টস / ট্রাউজার"><span class="mx42-cat-photo"><img src="assets/images/header-categories/shorts-trouser.jpg" alt="শর্টস / ট্রাউজার" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">শর্টস / ট্রাউজার</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-football" aria-label="ফুটবল"><span class="mx42-cat-photo"><img src="assets/images/header-categories/football.jpg" alt="ফুটবল" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">ফুটবল</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-cricket" aria-label="ক্রিকেট সামগ্রী"><span class="mx42-cat-photo"><img src="assets/images/header-categories/cricket-equipment.jpg" alt="ক্রিকেট সামগ্রী" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">ক্রিকেট সামগ্রী</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-badminton" aria-label="ব্যাডমিন্টন"><span class="mx42-cat-photo"><img src="assets/images/header-categories/badminton.jpg" alt="ব্যাডমিন্টন" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">ব্যাডমিন্টন</span></a><a class="mx42-cat-item" href="#products" data-mx-card="mx-cat-custom-jersey" aria-label="কাস্টম জার্সি"><span class="mx42-cat-photo"><img src="assets/images/header-categories/custom-jersey.jpg" alt="কাস্টম জার্সি" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">কাস্টম জার্সি</span></a><a class="mx42-cat-item" href="#custom-print" aria-label="কাস্টম প্রিন্ট"><span class="mx42-cat-photo"><img src="assets/images/header-categories/custom-print.jpg" alt="কাস্টম প্রিন্ট" width="104" height="104" loading="lazy"/></span><span class="mx42-cat-name">কাস্টম প্রিন্ট</span></a></div></div></section>
 <!-- =====================================================
      HERO — 4 IMAGE SLIDER
 ===================================================== -->
@@ -1375,22 +1368,20 @@ body.mx-p41-public #checkoutForm :is(input,select,textarea){max-width:100%!impor
 ===================================================== -->
 <nav class="mx-mobile-bottom-nav">
 <a class="active" href="#home">
-<span>⌂</span>
+<span><img class="mx42-icon" src="assets/images/header-icons/home-dark.svg" alt=""/></span>
 <small>হোম</small>
 </a>
 <a href="#categories">
-<span>☰</span>
+<span><img class="mx42-icon" src="assets/images/header-icons/grid-dark.svg" alt=""/></span>
 <small>ক্যাটাগরি</small>
 </a>
 <button id="mobileCartBtn" type="button">
-<span>
-      🛒
-      <i id="mobileCartCount">0</i>
+<span><img class="mx42-icon" src="assets/images/header-icons/cart-dark.svg" alt=""/><i id="mobileCartCount">0</i>
 </span>
 <small>কার্ট</small>
 </button>
 <button id="mobileAccountBtn" type="button">
-<span>♙</span>
+<span><img class="mx42-icon" src="assets/images/header-icons/user-dark.svg" alt=""/></span>
 <small>Account</small>
 </button>
 </nav>
@@ -2154,5 +2145,6 @@ import { doc, getDoc, getDocs, collection, query, limit } from 'https://www.gsta
 })();
 
 </script>
+<script defer="" src="assets/js/mx-p42-header.js?v=p42-20261013"></script>
 </body>
 </html>
