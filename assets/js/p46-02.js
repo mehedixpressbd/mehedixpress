@@ -101,8 +101,8 @@ let settings = {};
 let user = null;
 let activeCategory = "";
 
-let currentLanguage =
-  localStorage.getItem("mx-lang") || "bn";
+let currentLanguage = "bn";
+try { currentLanguage = localStorage.getItem("mx-lang") || "bn"; } catch (_) { /* Storage may be blocked */ }
 
 let cart = [];
 let wishlist = [];
@@ -125,6 +125,8 @@ try {
   );
 
   if (!Array.isArray(wishlist)) wishlist = [];
+  // IDs loaded from Firebase or prior storage may be numbers or strings.
+  wishlist = [...new Set(wishlist.filter(id => id != null).map(id => String(id)))];
 } catch {
   wishlist = [];
 }
@@ -261,21 +263,23 @@ function uiText(bn, en) {
    ========================================================= */
 
 function saveCart() {
-  localStorage.setItem(
-    "mx-cart",
-    JSON.stringify(cart)
-  );
-
+  try {
+    localStorage.setItem("mx-cart", JSON.stringify(cart));
+  } catch (error) {
+    // Private browsing / disabled or full storage must not break the cart UI.
+    console.warn("[MX P51] Cart could not be persisted in this browser", error);
+  }
   renderCart();
 }
 
 
 function saveWishlist() {
-  localStorage.setItem(
-    "mx-wishlist",
-    JSON.stringify(wishlist)
-  );
-
+  wishlist = [...new Set(wishlist.map(id => String(id)))];
+  try {
+    localStorage.setItem("mx-wishlist", JSON.stringify(wishlist));
+  } catch (error) {
+    console.warn("[MX P51] Wishlist could not be persisted in this browser", error);
+  }
   updateWishlistCount();
   renderProducts(activeCategory);
   renderPopularProducts();
@@ -284,17 +288,17 @@ function saveWishlist() {
 
 
 function isWished(id) {
-  return wishlist.includes(id);
+  return wishlist.includes(String(id));
 }
 
 
 function toggleWishlist(id) {
   if (isWished(id)) {
     wishlist = wishlist.filter(
-      (itemId) => itemId !== id
+      (itemId) => String(itemId) !== String(id)
     );
   } else {
-    wishlist.push(id);
+    wishlist.push(String(id));
   }
 
   saveWishlist();
@@ -1182,7 +1186,7 @@ function renderWishlistSection() {
   const list =
     products.filter(
       (product) =>
-        wishlist.includes(product.id)
+        isWished(product.id)
     );
 
 
