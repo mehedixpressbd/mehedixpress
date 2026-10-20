@@ -1599,11 +1599,9 @@ function renderCart() {
         if (!item) return;
 
 
-        let quantity =
-          Math.max(
-            1,
-            Number(input.value)
-          );
+        // P52: Prevent NaN, Infinity, decimals and blank quantities entering cart.
+        const requested = Number(input.value);
+        let quantity = Number.isFinite(requested) ? Math.max(1, Math.floor(requested)) : 1;
 
 
         if (
@@ -1620,6 +1618,23 @@ function renderCart() {
         }
 
 
+        // Shared variant stock: other sizes with the same SKU also consume this stock.
+        if (item.maxStock) {
+          const otherUsed = cart.reduce((sum, other, otherIndex) =>
+            otherIndex !== index && String(other.productId) === String(item.productId) &&
+            String(other.sku || "") === String(item.sku || "")
+              ? sum + Math.max(0, Number(other.qty) || 0) : sum, 0);
+          const available = Math.floor(Number(item.maxStock)) - otherUsed;
+          if (available < 1) {
+            alert(uiText("এই সাইজের জন্য আর স্টক অবশিষ্ট নেই।", "No stock remains for this size."));
+            input.value = item.qty;
+            return;
+          }
+          if (quantity > available) {
+            quantity = available;
+            alert(uiText("একই ভ্যারিয়েন্টের অন্য সাইজসহ স্টক সীমা অতিক্রম করা যাবে না।", "Combined sizes exceed the available variant stock."));
+          }
+        }
         item.qty = quantity;
         saveCart();
       };
@@ -1816,6 +1831,21 @@ $("#checkout")
   );
 
 
+/* P53: one checkout submission at a time; only client-side guards. */
+let mxP53CheckoutInFlight = false;
+function mxP53ValidPhone(value) {
+  const v = String(value || "").replace(/[\s-]/g, "");
+  return /^(?:\+?88)?01[3-9]\d{8}$/.test(v);
+}
+function mxP53ValidOrderLines(lines) {
+  return Array.isArray(lines) && lines.length > 0 && lines.length <= 100 && lines.every(item => {
+    const qty = Number(item.qty), price = Number(item.price);
+    return Number.isSafeInteger(qty) && qty > 0 && qty <= 1000 &&
+      Number.isFinite(price) && price > 0 && price <= 10000000 &&
+      String(item.productId || "").trim().length > 0;
+  });
+}
+
 /* =========================================================
    CHECKOUT SUBMIT
    ========================================================= */
@@ -1841,6 +1871,16 @@ $("#checkoutForm")
         );
 
 
+      if (mxP53CheckoutInFlight) return;
+      const submitButton = event.target.querySelector('[type="submit"]');
+      const phone = String(form.phone || "").replace(/[\s-]/g, "");
+      if (!String(form.name || "").trim() || !mxP53ValidPhone(phone) ||
+          ![form.division, form.district, form.upazila, form.area, form.address]
+            .every(value => String(value || "").trim().length > 0)) {
+        alert("নাম, বৈধ বাংলাদেশি মোবাইল নম্বর এবং সম্পূর্ণ ডেলিভারি ঠিকানা দিন।");
+        return;
+      }
+
       const items =
         cart.filter(
           (item) =>
@@ -1855,6 +1895,11 @@ $("#checkoutForm")
         return;
       }
 
+
+      if (!mxP53ValidOrderLines(items)) {
+        alert("Cart-এ পণ্যের তথ্য, মূল্য বা পরিমাণে সমস্যা আছে। Cart আবার যাচাই করুন।");
+        return;
+      }
 
       const subtotal =
         items.reduce(
@@ -1945,7 +1990,7 @@ $("#checkoutForm")
         userId: user.uid,
         customerEmail: user.email || "",
         customerName: form.name || "",
-        phone: form.phone || "",
+        phone,
         division: form.division || "",
         district: form.district || "",
         upazila: form.upazila || "",
@@ -1975,8 +2020,15 @@ $("#checkoutForm")
       };
 
 
+      if (!Number.isFinite(orderData.total) || orderData.subtotal <= 0 ||
+          orderData.subtotal > 100000000 || orderData.delivery < 0 || orderData.delivery > 100000) {
+        alert("অর্ডারের মোট টাকা সঠিক নয়। আবার চেষ্টা করুন।");
+        return;
+      }
+      mxP53CheckoutInFlight = true;
+      if (submitButton) { submitButton.disabled = true; submitButton.setAttribute("aria-busy", "true"); }
       try {
-        await addDoc(
+        const createdOrder = await addDoc(
           collection(db, "orders"),
           orderData
         );
@@ -1999,9 +2051,10 @@ $("#checkoutForm")
 
 
         alert(
-          paymentMethod === "bkash" || paymentMethod === "nagad"
-            ? uiText("ধন্যবাদ। আপনার অর্ডার ও Transaction ID গ্রহণ করা হয়েছে। পেমেন্ট যাচাই করে Admin থেকে স্ট্যাটাস আপডেট করা হবে।", "Thank you. Your order and Transaction ID were received. Payment will be verified by Admin and the status will be updated.")
-            : uiText("ধন্যবাদ। আপনার Cash on Delivery অর্ডার সফলভাবে গ্রহণ করা হয়েছে।", "Thank you. Your Cash on Delivery order was received successfully.")
+          (paymentMethod === "bkash" || paymentMethod === "nagad"
+            ? uiText("ধন্যবাদ। অর্ডার জমা হয়েছে, তবে পেমেন্ট এখনো যাচাই হয়নি।", "Order received. Payment is not verified yet.")
+            : uiText("ধন্যবাদ। আপনার Cash on Delivery অর্ডার জমা হয়েছে।", "Your Cash on Delivery order was received."))
+          + "\nOrder ID: " + createdOrder.id
         );
 
       } catch (error) {
@@ -2011,9 +2064,12 @@ $("#checkoutForm")
         );
 
         alert(
-          "Order করা যায়নি। " +
+          "Order করা যায়নি। Cart-এর পণ্য এখনো রাখা আছে। আবার চেষ্টা করুন। " +
           error.message
         );
+      } finally {
+        mxP53CheckoutInFlight = false;
+        if (submitButton) { submitButton.disabled = false; submitButton.removeAttribute("aria-busy"); }
       }
     }
   );
@@ -3567,7 +3623,36 @@ function showProduct(id) {
   const qty=c=>Number(body.querySelector(`[data-size-qty="${c.choiceIndex}"]`)?.value||0), total=()=>{const t=choices.reduce((s,c)=>s+qty(c)*c.sell,0);if($("#detailTotal"))$("#detailTotal").textContent=money(t);};
   body.querySelectorAll("[data-plus]").forEach(b=>b.onclick=()=>{const c=choices.find(x=>x.choiceIndex===b.dataset.plus),i=body.querySelector(`[data-size-qty="${b.dataset.plus}"]`);if(!c||!i)return;const used=choices.filter(x=>x.variantIndex===c.variantIndex).reduce((s,x)=>s+qty(x),0);if(used>=c.stock)return alert(uiText("পর্যাপ্ত স্টক নেই।","Not enough stock."));i.value=Number(i.value||0)+1;total();});
   body.querySelectorAll("[data-minus]").forEach(b=>b.onclick=()=>{const i=body.querySelector(`[data-size-qty="${b.dataset.minus}"]`);if(i){i.value=Math.max(0,Number(i.value||0)-1);total();}});
-  const add=()=>{const selected=choices.filter(c=>qty(c)>0);if(!selected.length){alert(uiText("কমপক্ষে একটি সাইজের পরিমাণ নির্বাচন করুন।","Select at least one size quantity."));return false;}selected.forEach(c=>{const q=qty(c),sku=c.sku||product.sku||product.code||"default",key=`${product.id}|${sku}|${c.size||""}|${c.color||""}`,ex=cart.find(i=>i.key===key);if(ex)ex.qty+=q;else cart.push({key,productId:product.id,name:productName(product),image,sku,size:c.size==="Standard"?"":c.size,color:c.color||"",price:c.sell,qty:q,maxStock:c.stock,selected:true});});saveCart();return true;};
+  const add=()=>{
+    const selected=choices.filter(c=>qty(c)>0);
+    if(!selected.length){alert(uiText("কমপক্ষে একটি সাইজের পরিমাণ নির্বাচন করুন।","Select at least one size quantity."));return false;}
+    // P52: Validate all rows BEFORE mutating cart. A combined-size variant shares one stock pool.
+    // Group by variant identity (not size); existing cart amounts count toward that same pool.
+    const groups=new Map();
+    for(const c of selected){
+      const sku=String(c.sku||product.sku||product.code||"default");
+      const groupKey=`${String(product.id)}|${sku}`;
+      const g=groups.get(groupKey)||{sku,limit:Number(c.stock||0),requested:0};
+      g.limit=Math.min(g.limit,Number(c.stock||0));
+      g.requested+=qty(c);
+      groups.set(groupKey,g);
+    }
+    for(const g of groups.values()){
+      const inCart=cart.filter(i=>String(i.productId)===String(product.id)&&String(i.sku||product.sku||product.code||"default")===g.sku)
+        .reduce((sum,i)=>sum+Math.max(0,Number(i.qty)||0),0);
+      if(!Number.isFinite(g.limit)||g.limit<=0||inCart+g.requested>g.limit){
+        alert(uiText("কার্টে আগে যোগ করা পরিমাণসহ পর্যাপ্ত স্টক নেই।", "Not enough stock including quantities already in your cart."));
+        return false;
+      }
+    }
+    for(const c of selected){
+      const q=qty(c),sku=c.sku||product.sku||product.code||"default",key=`${product.id}|${sku}|${c.size||""}|${c.color||""}`;
+      const ex=cart.find(i=>i.key===key);
+      if(ex)ex.qty+=q;
+      else cart.push({key,productId:product.id,name:productName(product),image,sku,size:c.size==="Standard"?"":c.size,color:c.color||"",price:c.sell,qty:q,maxStock:c.stock,selected:true});
+    }
+    saveCart();return true;
+  };
   $("#addCart").onclick=()=>{if(add()){closeModal(detail);openModal($("#cart"));}};
   $("#buyNow").onclick=async()=>{if(add()){closeModal(detail);if(!user){showAccount();openModal($("#accountModal"));alert(uiText("অর্ডার করতে আগে Account তৈরি বা Login করুন।","Create an account or log in before checkout."));return;}await initAddressSelectors(true);await fillCheckoutProfile();openModal($("#checkoutModal"));}};
 }
